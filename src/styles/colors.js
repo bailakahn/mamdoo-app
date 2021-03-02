@@ -15,16 +15,17 @@
 
 export const colors = {
     light: {
-        accent: "#03dac4",
+        accent: "#E2087C",
         backdrop: "rgba(0, 0, 0, 0.5)",
         background: "#f6f6f6",
+        border: "#D3D3D3",
         disabled: "rgba(0, 0, 0, 0.26)",
         error: "#B00020",
         notification: "#f50057",
         onBackground: "#000000",
         onSurface: "#000000",
         placeholder: "rgba(0, 0, 0, 0.54)",
-        primary: "#6200ee",
+        primary: "#67B032",
         surface: "#ffffff",
         text: "#000000",
         white: "#ffffff",
