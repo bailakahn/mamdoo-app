@@ -5,7 +5,8 @@ export default {
         start: "Start",
         iAmAPartner: "Partner",
         iWantMoreClients: "I want more clients",
-        noInternetConnection: "No Internet Connection"
+        noInternetConnection: "No Internet Connection",
+        darkTheme:"Dark mode"
     },
     errors: {
         crashErrorTitle: "Oops, Something Went Wrong",

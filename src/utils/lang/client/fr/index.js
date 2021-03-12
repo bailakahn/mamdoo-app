@@ -5,7 +5,8 @@ export default {
         start: "Commencer",
         iAmAPartner: "Partenaire",
         iWantMoreClients: "Je veux plus de clients",
-        noInternetConnection: "Pas de connexion internet"
+        noInternetConnection: "Pas de connexion internet",
+        darkTheme:"Theme Noir"
     },
     errors: {
         crashErrorTitle: "Oops, Quelque chose s'est mal passé",

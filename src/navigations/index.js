@@ -3,9 +3,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SplashScreen from "expo-splash-screen";
 import { useStore } from "_store";
-import ClientRoutes from "./client";
 import AppEntry from "../";
-export default function NavigationRoot({ theme, mode }) {
+import DrawerNavigator from "../navigations/app/drawer/index";
+export default function NavigationRoot({theme, mode }) {
     const {
         main: { app },
         actions: { getApp }
@@ -38,7 +38,7 @@ export default function NavigationRoot({ theme, mode }) {
 
     return (
         <NavigationContainer theme={theme}>
-            {!app ? <AppEntry /> : app === "client" ? <ClientRoutes /> : null}
+            {!app ? <AppEntry /> : app === "client" ? <DrawerNavigator /> : null}
         </NavigationContainer>
     );
 }

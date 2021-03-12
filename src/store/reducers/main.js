@@ -4,7 +4,7 @@ import types from "_store/types";
 export default (state = main, action) => {
     switch (action.type) {
         case types.SET_APP:
-            AsyncStorage.setItem("@mamdoo-selected-app", action.app);
+           // AsyncStorage.setItem("@mamdoo-selected-app", action.app);
             return {
                 ...state,
                 app: action.app

@@ -25,3 +25,10 @@ export const text = (colors) => ({
 export const spinner = (colors) => ({
     color: colors.white
 });
+
+export const drawerPreference = (colors) => ({
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  });
