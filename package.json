@@ -1,0 +1,16 @@
+{
+    "scripts": {
+      "native": "cd native && yarn start -c",
+      "provider": "cd provider && yarn start",
+      "proxy": "cd proxy && yarn start",
+      "start": "concurrently --kill-others  \"npm run provider\" \"npm run proxy\" \"npm run native\""
+    },
+    "private": true,
+    "devDependencies": {
+      "concurrently": "^6.0.0"
+    },
+    "dependencies": {
+      "history": "^5.0.0"
+    }
+  }
+  

@@ -19,5 +19,7 @@ provider/node_modules/**/*
 proxy/.env
 proxy/node_modules/**/*
 
+node_modules/**/*
+
 # macOS
 .DS_Store
