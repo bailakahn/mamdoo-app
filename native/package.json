@@ -1,0 +1,52 @@
+{
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject"
+  },
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "1.13.4",
+    "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-community/netinfo": "^6.0.0",
+    "@react-navigation/drawer": "^5.12.4",
+    "@react-navigation/material-bottom-tabs": "^5.3.14",
+    "@react-navigation/native": "^5.9.3",
+    "@react-navigation/stack": "^5.14.3",
+    "deepmerge": "^4.2.2",
+    "expo": "~40.0.0",
+    "expo-localization": "~9.1.0",
+    "expo-splash-screen": "~0.8.1",
+    "expo-status-bar": "~1.0.3",
+    "i18n-js": "^3.8.0",
+    "lodash": "^4.17.21",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
+    "react-native-appearance": "^0.3.4",
+    "react-native-dotenv": "^2.5.3",
+    "react-native-elements": "^3.2.0",
+    "react-native-gesture-handler": "~1.8.0",
+    "react-native-loading-spinner-overlay": "^2.0.0",
+    "react-native-normalize": "^1.0.1",
+    "react-native-offline": "^5.7.0",
+    "react-native-paper": "^4.7.2",
+    "react-native-reanimated": "~1.13.0",
+    "react-native-restart": "^0.0.20",
+    "react-native-safe-area-context": "3.1.9",
+    "react-native-screens": "~2.15.2",
+    "react-native-vector-icons": "^8.1.0",
+    "react-native-web": "~0.13.12",
+    "socket.io-client": "^4.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "~7.9.0",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "eslint-import-resolver-babel-module": "^5.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "prettier": "^2.2.1"
+  },
+  "private": true
+}
