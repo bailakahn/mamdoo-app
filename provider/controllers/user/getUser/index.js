@@ -11,12 +11,12 @@ module.exports = async ({ req, res }) => {
 
       let payload = [
         {
-          topic: "dev_topic",
+          topic: "dev_topic_2",
           messages: JSON.stringify({
             controller: "requests/newRequest",
             event: "dynamic",
             recipients: [`client-${userId}`],
-            data: { baila: true },
+            data: { baila: false },
           }),
         },
       ];

@@ -5,7 +5,11 @@ export default {
         start: "Start",
         iAmAPartner: "Partner",
         iWantMoreClients: "I want more clients",
-        noInternetConnection: "No Internet Connection"
+        noInternetConnection: "No Internet Connection",
+        locationPermission: "Location Permission",
+        locationNeeded:
+            "We need to access your location to serve you better! Grant us permission to use your location to be able to use Mamdoo",
+        givePermission: "Give Permission"
     },
     errors: {
         crashErrorTitle: "Oops, Something Went Wrong",

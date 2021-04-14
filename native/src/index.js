@@ -5,14 +5,10 @@ import { useTheme } from "react-native-paper";
 import { useStore } from "_store";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
-
+import { useApp } from "_hooks";
 const Main = () => {
     const { colors } = useTheme();
-
-    const {
-        main: { app },
-        actions: { setApp }
-    } = useStore();
+    const app = useApp();
 
     return (
         <SafeAreaView style={Classes.container(colors)}>
@@ -21,7 +17,7 @@ const Main = () => {
                 title={t("main.iAmAClient")}
                 info={[t("main.bookABike")]}
                 button={{ title: t("main.start") }}
-                onButtonPress={() => setApp("client")}
+                onButtonPress={() => app.actions.setApp("client")}
                 containerStyle={{
                     backgroundColor: colors.background,
                     borderColor: colors.border
@@ -35,7 +31,7 @@ const Main = () => {
                 title={t("main.iAmAPartner")}
                 info={[t("main.iWantMoreClients")]}
                 button={{ title: t("main.start") }}
-                onButtonPress={() => setApp("driver")}
+                onButtonPress={() => app.actions.setApp("driver")}
                 containerStyle={{
                     backgroundColor: colors.background,
                     borderColor: colors.border

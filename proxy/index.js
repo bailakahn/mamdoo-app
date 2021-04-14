@@ -6,8 +6,9 @@ require("dotenv").config();
 const app = express();
 const mongoose = require("mongoose");
 const kafka = require("kafka-node");
-const consume = require("./app/startup/consume");
+const consume = require("_app/consume");
 const userList = require("_lib/userList");
+const kafkaTopics = require("_constants/kafkaTopics");
 
 const {
   PORT,
@@ -24,7 +25,7 @@ const Consumer = kafka.Consumer,
     requestTimeout: false,
     kafkaHost: KAFKA_HOST,
   }),
-  consumer = new Consumer(client, [{ topic: "dev_topic", partition: 0 }], {
+  consumer = new Consumer(client, kafkaTopics, {
     autoCommit: false,
   });
 

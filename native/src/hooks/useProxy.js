@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import socketIOClient from "socket.io-client";
 import { PROXY_URL } from "@env";
-import { useUser } from "_hooks";
+import useUser from "./useUser";
 export default function useProxy() {
     const user = useUser();
 

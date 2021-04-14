@@ -17,6 +17,8 @@
     "@react-navigation/stack": "^5.14.3",
     "deepmerge": "^4.2.2",
     "expo": "~40.0.0",
+    "expo-constants": "~9.3.3",
+    "expo-intent-launcher": "~8.4.0",
     "expo-localization": "~9.1.0",
     "expo-splash-screen": "~0.8.1",
     "expo-status-bar": "~1.0.3",

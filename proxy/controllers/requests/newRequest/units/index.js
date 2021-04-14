@@ -1,1 +1,0 @@
-module.exports.newRequest = require("./newRequest.js")
