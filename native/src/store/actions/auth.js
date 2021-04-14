@@ -10,7 +10,7 @@ export default function authActions(state, dispatch) {
             });
         },
         getUser: () => {
-            AsyncStorage.removeItem("@mamdoo-client");
+            // AsyncStorage.removeItem("@mamdoo-client");
             AsyncStorage.getItem("@mamdoo-client").then(
                 (user) =>
                     user &&

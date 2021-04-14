@@ -30,7 +30,7 @@ export function useApi() {
                 url += "?" + queryString;
             }
 
-        console.log("Making request", { url, options });
+        // console.log("Making request", { url, options });
         return fetch(url, options)
             .then(async (res) => ({
                 status: res.status,

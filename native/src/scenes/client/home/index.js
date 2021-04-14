@@ -4,7 +4,10 @@ import { Button, useTheme } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { useApi } from "_api";
+import { useProxy } from "_hooks";
 export default function HomeScreen() {
+    // connect to proxy server
+    useProxy();
     const { colors } = useTheme();
 
     const getRequest = useApi();

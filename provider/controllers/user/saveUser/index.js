@@ -9,5 +9,5 @@ module.exports = async ({ req, res }) => {
 
   const accessToken = await authenticate(userId);
 
-  return { ...newUser, accessToken };
+  return { ...newUser, accessToken, userId };
 };

@@ -3,7 +3,7 @@ const mainDirectory = "controllers";
 
 const endpointHandler = require("./endpointHandler");
 
-module.exports = async (app) => {
+module.exports = async (app, producer) => {
   // get all directories from `mainDirectory`
   const directories = await getDirectories(mainDirectory);
 
@@ -16,7 +16,6 @@ module.exports = async (app) => {
       const {
         Method,
         Routes,
-        Scopes,
       } = require(`../../../${mainDirectory}/${dir}/${endpoint}/config.json`);
 
       // get the endpoint handler
@@ -27,7 +26,7 @@ module.exports = async (app) => {
         `/${dir}/${endpoint}`,
         async (req, res, next) => {
           // get scopes from endpoints config
-          req.scopes = Scopes;
+          req.producer = producer;
           // run endpoint handler
           await endpointHandler(req, res, next, handler);
         }
@@ -44,7 +43,7 @@ module.exports = async (app) => {
             `/${dir}/${route}`,
             async (req, res, next) => {
               // get scopes from endpoints config
-              req.scopes = Scopes;
+              req.producer = producer;
               await endpointHandler(req, res, next, handler);
             }
           );

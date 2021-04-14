@@ -5,6 +5,7 @@ var stackTrace = require("stack-trace");
 require("dotenv").config();
 const app = express();
 const mongoose = require("mongoose");
+const kafka = require("kafka-node");
 
 const {
   PORT,
@@ -12,8 +13,14 @@ const {
   MONGO_DB_URL,
   MONGO_DB_NAME,
   ALLOW_ORIGIN,
+  KAFKA_HOST,
 } = process.env;
 const port = PORT || 3005;
+
+const Producer = kafka.Producer,
+  client = new kafka.KafkaClient({ kafkaHost: KAFKA_HOST }),
+  producer = new Producer(client);
+
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());
 
@@ -35,55 +42,60 @@ app.get("/", (req, res) => {
 
 const registerEndpoints = require("./app/startup/endpoints");
 
-registerEndpoints(app).then(() => {
-  app.route("*").all(function (req, res, next) {
-    next({
-      status: 404,
-      message: "The route you are trying to get is not defined",
-    });
-  });
-
-  // error handler middleware
-  app.use((error, req, res, next) => {
-    const stack = stackTrace.parse(error);
-
-    console.log({
-      error,
-      endpoint: req.url,
-      ...(Array.isArray(stack) &&
-        stack[0] && {
-          fileName: stack[0].getFileName(),
-          lineNumber: stack[0].getLineNumber(),
-        }),
+producer.on("ready", () => {
+  console.log("Kafka Producer Ready");
+  registerEndpoints(app, producer).then(() => {
+    app.route("*").all(function (req, res, next) {
+      next({
+        status: 404,
+        message: "The route you are trying to get is not defined",
+      });
     });
 
-    // if its an internal error and its not running on local
-    // then send a general error message
-    if (ENV_NAME !== "development" && !error.applauz)
-      return res.status(500).json({
-        type: "InternalServerError",
-        code: "errors.internal",
-        message: "Internal Server Error",
+    // error handler middleware
+    app.use((error, req, res, next) => {
+      const stack = stackTrace.parse(error);
+
+      console.log({
+        error,
+        endpoint: req.url,
+        ...(Array.isArray(stack) &&
+          stack[0] && {
+            fileName: stack[0].getFileName(),
+            lineNumber: stack[0].getLineNumber(),
+          }),
       });
 
-    return res.status(error.status || 500).json({
-      type: error.type || "InternalServerError",
-      code: error.code || "errors.internal",
-      message: error.message || "Internal Server Error",
+      // if its an internal error and its not running on local
+      // then send a general error message
+      if (ENV_NAME !== "development" && !error.applauz)
+        return res.status(500).json({
+          type: "InternalServerError",
+          code: "errors.internal",
+          message: "Internal Server Error",
+        });
+
+      return res.status(error.status || 500).json({
+        type: error.type || "InternalServerError",
+        code: error.code || "errors.internal",
+        message: error.message || "Internal Server Error",
+      });
     });
+
+    mongoose
+      .connect(`mongodb://${MONGO_DB_URL}/${MONGO_DB_NAME}`, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+      })
+      .then((err, res) => {
+        console.log("MongoDB Connected Successfully");
+      });
   });
-
-  mongoose
-    .connect(`mongodb://${MONGO_DB_URL}/${MONGO_DB_NAME}`, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-    })
-    .then((err, res) => {
-      console.log("MongoDB connected successfully");
-    });
-
-  app.listen(port, () =>
-    console.log(`aw-hub provider started on port ${port}!`)
-  );
 });
+
+producer.on("error", (producerError) => {
+  console.log({ producerError });
+});
+
+app.listen(port, () => console.log(`mamdoo-provider started on port ${port}!`));
