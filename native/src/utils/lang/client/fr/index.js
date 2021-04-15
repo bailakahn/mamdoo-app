@@ -24,6 +24,12 @@ export default {
     home: {
         bookRide: "Commander une moto"
     },
+    rideRequest: {
+        hello: "Salut",
+        driverSearch: "Recherche de votre",
+        wait: "Veuillez patienter pendant que nous trouvons votre Mamdoo",
+        mamdoo: "Mamdoo"
+    },
     form: {
         fullName: "Prénom Nom",
         firstName: "Prénom",

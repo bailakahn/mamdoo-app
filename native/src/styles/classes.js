@@ -60,3 +60,7 @@ export const roundedButton = (colors) => ({
     borderRadius: 100,
     backgroundColor: colors.primary
 });
+
+export const animation = (colors) => ({
+    backgroundColor: colors.background
+});

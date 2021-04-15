@@ -28,6 +28,12 @@ export default {
     home: {
         bookRide: "Book a ride"
     },
+    rideRequest: {
+        hello: "Hello",
+        driverSearch: "Searching a",
+        wait: "Please wait while we find you a driver",
+        mamdoo: "Mamdoo"
+    },
     form: {
         fullName: "Full Name",
         firstName: "First Name",
