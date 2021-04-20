@@ -54,29 +54,35 @@ const io = require("socket.io")(server, {
   },
 });
 
+var consumerStarted = false;
+
 io.on("connection", (socket) => {
   socket.on("join", (user) => {
     console.log(user, " >>> Connected");
     userList.addUser(user, socket);
   });
 
-  consumer.on("message", async function (message) {
-    try {
-      await consume(io, message);
-    } catch (error) {
-      const stack = stackTrace.parse(error);
+  if (!consumerStarted) {
+    consumerStarted = true;
+    consumer.on("message", async function (message) {
+      try {
+        console.log(message);
+        await consume(io, message);
+      } catch (error) {
+        const stack = stackTrace.parse(error);
 
-      console.log({
-        error,
-        data: message,
-        ...(Array.isArray(stack) &&
-          stack[0] && {
-            fileName: stack[0].getFileName(),
-            lineNumber: stack[0].getLineNumber(),
-          }),
-      });
-    }
-  });
+        console.log({
+          error,
+          data: message,
+          ...(Array.isArray(stack) &&
+            stack[0] && {
+              fileName: stack[0].getFileName(),
+              lineNumber: stack[0].getLineNumber(),
+            }),
+        });
+      }
+    });
+  }
 
   socket.on("disconnect", () => {
     const userId = userList.removeUser(socket);

@@ -23,16 +23,25 @@ export default {
         firstName: "The first name is not valid",
         lastName: "The last name is not valid",
         phoneNumber: "The phone number is not valid",
-        duplicateClient: "A client with this phone number already exists"
+        duplicateClient: "A client with this phone number already exists",
+        unsuportedPhoneNumber: "This phone number is not supported"
     },
     home: {
         bookRide: "Book a ride"
     },
-    rideRequest: {
+    ride: {
         hello: "Hello",
         driverSearch: "Searching a",
         wait: "Please wait while we find you a driver",
-        mamdoo: "Mamdoo"
+        mamdoo: "Mamdoo",
+        foundMamdoo: "Mamdoo Found",
+        driver: "Mamdoo",
+        isOnHisWay: "is on his way",
+        phoneNumber: "Phone Number",
+        callDriver: "Call",
+        cancelRide: "Cancel Ride",
+        driverArrived: "is here!",
+        meetHimOutside: "Meet him outside!"
     },
     form: {
         fullName: "Full Name",

@@ -64,3 +64,9 @@ export const roundedButton = (colors) => ({
 export const animation = (colors) => ({
     backgroundColor: colors.background
 });
+
+export const callButton = (colors) => ({
+    width: Mixins.width(0.7, true),
+    height: 50,
+    justifyContent: "center"
+});

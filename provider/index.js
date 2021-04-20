@@ -87,6 +87,7 @@ producer.on("ready", () => {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,
+        useFindAndModify: false,
       })
       .then((err, res) => {
         console.log("MongoDB Connected Successfully");

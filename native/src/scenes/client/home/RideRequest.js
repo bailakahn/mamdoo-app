@@ -5,10 +5,12 @@ import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import LottieView from "lottie-react-native";
 import PinAnimation from "_assets/animation/location-pin-jumping-animation-11.json";
-
-export default function RideRequestScreen() {
+import { useRide } from "_hooks";
+export default function RideRequestScreen({ navigation }) {
     const { colors } = useTheme();
     const animation = useRef();
+
+    const ride = useRide();
 
     useEffect(() => {
         if (animation.current) animation.current.play();
@@ -22,7 +24,7 @@ export default function RideRequestScreen() {
                     { fontSize: 30, fontWeight: "bold" }
                 ]}
             >
-                {t("rideRequest.driverSearch")}
+                {t("ride.driverSearch")}
             </Text>
 
             <LottieView
@@ -42,7 +44,7 @@ export default function RideRequestScreen() {
                     { fontSize: 30, fontWeight: "bold" }
                 ]}
             >
-                {t("rideRequest.mamdoo")}
+                {t("ride.mamdoo")}
             </Text>
         </View>
     );

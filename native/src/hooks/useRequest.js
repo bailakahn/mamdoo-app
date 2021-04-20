@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from "react";
 import useLocation from "./useLocation";
+import { useApi } from "_api";
+
 export default function useRequest() {
     const location = useLocation();
-    const makeRideRequest = async () => {
-        await location.actions.getCurrentPosition();
+    const getRequest = useApi();
 
-        // getRequest({
-        //     method: "GET",
-        //     endpoint: "user/getuser"
-        // }).catch((err) => {
-        //     console.log(err);
-        // });
+    const makeRideRequest = async () => {
+        const {
+            latitude,
+            longitude
+        } = await location.actions.getCurrentPosition();
+        getRequest({
+            method: "POST",
+            endpoint: "rides/newRequest",
+            params: {
+                coordinates: [longitude, latitude]
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
     };
 
     return {

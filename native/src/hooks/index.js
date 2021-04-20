@@ -3,3 +3,4 @@ export { default as useProxy } from "./useProxy";
 export { default as useApp } from "./useApp";
 export { default as useLocation } from "./useLocation";
 export { default as useRequest } from "./useRequest";
+export { default as useRide } from "./useRide";

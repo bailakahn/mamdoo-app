@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useStore } from "_store";
 
-export default function useLocation() {
+export default function useApp() {
     const {
         main: { app },
         actions: { getApp, setApp }

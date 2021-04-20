@@ -19,14 +19,20 @@ export default function useLocation() {
             setIsLoading(false);
 
             // TODO: find out why getting location is slow
-            let location = await Location.getCurrentPositionAsync({});
-            setLocation(location);
+            let {
+                coords: { latitude, longitude }
+            } = await Location.getCurrentPositionAsync({});
+            setLocation({ latitude, longitude });
         })();
     }, []);
 
     const getCurrentPosition = async () => {
-        let location = await Location.getCurrentPositionAsync({});
-        setLocation(location);
+        let {
+            coords: { latitude, longitude }
+        } = await Location.getCurrentPositionAsync({});
+        setLocation({ latitude, longitude });
+
+        return { latitude, longitude };
     };
 
     return {

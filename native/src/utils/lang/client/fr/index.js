@@ -19,16 +19,25 @@ export default {
         firstName: "Le prénom n'est pas valide",
         lastName: "Le nom de famille n'est pas valide",
         phoneNumber: "Le numéro de téléphone n'est pas valide",
-        duplicateClient: "Ce numero de téléphone existe déjà"
+        duplicateClient: "Ce numero de téléphone existe déjà",
+        unsuportedPhoneNumber: "Ce numéro de téléphone n'est pas supporté"
     },
     home: {
         bookRide: "Commander une moto"
     },
-    rideRequest: {
+    ride: {
         hello: "Salut",
         driverSearch: "Recherche de votre",
         wait: "Veuillez patienter pendant que nous trouvons votre Mamdoo",
-        mamdoo: "Mamdoo"
+        mamdoo: "Mamdoo",
+        foundMamdoo: "Mamdoo trouvé",
+        driver: "Mamdoo",
+        isOnHisWay: "est en route vers votre position",
+        phoneNumber: "Numéro",
+        callDriver: "Appeler",
+        cancelRide: "Annuler votre course",
+        driverArrived: "est la!",
+        meetHimOutside: "Rencontrer le dehors!"
     },
     form: {
         fullName: "Prénom Nom",

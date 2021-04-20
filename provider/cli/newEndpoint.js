@@ -52,7 +52,7 @@ fsExtra
       fs.writeFileSync(
         `${path}/index.js`,
         beautify(`const { ${endpoint} } = require("./units");
-      const auth = require("@app/auth");
+      const auth = require("_app/auth");
       
       module.exports = async ({req,res}) => {
         return await auth({req}, async ({ userId, accessToken, app }) => {
