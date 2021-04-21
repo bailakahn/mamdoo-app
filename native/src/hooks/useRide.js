@@ -46,7 +46,8 @@ export default function useRide() {
 
         var platformText = "";
         if (Platform.OS === "ios") platformText = `tel://${phoneNumber}`;
-        else platformText = `telprompt:${phoneNumber}`;
+        // TODO why `tel` works and `telprompt` dont
+        else platformText = `tel://${phoneNumber}`;
 
         Linking.canOpenURL(platformText)
             .then((supported) => {

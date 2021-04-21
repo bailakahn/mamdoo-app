@@ -6,8 +6,8 @@ module.exports = async ({ requestId: _id, driverId }, { producer }) => {
     "Ride",
     {
       _id,
-      driverId,
       // TODO: remove comment
+      // driverId,
       // status: rideStatuses.ONGOING
     },
     { one: true, fields: ["_id", "clientId", "startLocation.coordinates"] }

@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useMemo } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, Image, Platform } from "react-native";
 import { Button, useTheme, us } from "react-native-paper";
 import LottieView from "lottie-react-native";
 import { useColorScheme } from "react-native-appearance";
@@ -7,8 +7,12 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import LightAvatar from "_assets/animation/light-avatar.json";
+import LightAvatarGif from "_assets/animation/light-avatar.gif";
+import DarkAvatarGif from "_assets/animation/dark-avatar.gif";
 import DarkAvatar from "_assets/animation/dark-avatar.json";
 import ReadyAmimation from "_assets/animation/ready.json";
+import LightReadyAmimation from "_assets/animation/light-ready.gif";
+import DarkReadyAmimation from "_assets/animation/dark-ready.gif";
 import { useRide } from "_hooks";
 
 export default function RideRequestScreen() {
@@ -18,6 +22,10 @@ export default function RideRequestScreen() {
     const colorScheme = useColorScheme();
 
     const avatarAnimation = colorScheme === "dark" ? DarkAvatar : LightAvatar;
+    const avatarAnimationGif =
+        colorScheme === "dark" ? DarkAvatarGif : LightAvatarGif;
+    const readyAnimationGif =
+        colorScheme === "dark" ? DarkReadyAmimation : LightReadyAmimation;
 
     const animation = useRef();
 
@@ -28,6 +36,7 @@ export default function RideRequestScreen() {
     if (!ride.driver) return null;
 
     console.log({ driverArrived: ride.driverArrived });
+
     return (
         <View style={Classes.container(colors)}>
             <Text
@@ -54,17 +63,34 @@ export default function RideRequestScreen() {
                 </Text>
             )}
 
-            <LottieView
-                ref={animation}
-                style={[
-                    Classes.animation(colors),
-                    {
-                        width: 200,
-                        height: 200
+            {Platform.OS === "ios" ? (
+                <LottieView
+                    ref={animation}
+                    style={[
+                        Classes.animation(colors),
+                        {
+                            width: 200,
+                            height: 200
+                        }
+                    ]}
+                    source={
+                        ride.driverArrived ? ReadyAmimation : avatarAnimation
                     }
-                ]}
-                source={ride.driverArrived ? ReadyAmimation : avatarAnimation}
-            />
+                />
+            ) : (
+                <Image
+                    source={
+                        ride.driverArrived
+                            ? readyAnimationGif
+                            : avatarAnimationGif
+                    }
+                    style={{
+                        width: 200,
+                        height: 200,
+                        backgroundColor: colors.background
+                    }}
+                />
+            )}
 
             {!ride.driverArrived && (
                 <Text
