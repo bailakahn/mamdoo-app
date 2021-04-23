@@ -1,5 +1,6 @@
 export default {
     SET_APP: "SET_APP",
+    APP_LOADED: "APP_LOADED",
     GET_APP: "GET_APP",
     SET_USER: "SET_USER",
     GET_USER: "GET_USER",

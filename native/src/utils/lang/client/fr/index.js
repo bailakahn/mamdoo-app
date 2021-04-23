@@ -45,5 +45,8 @@ export default {
         lastName: "Nom de famille",
         phoneNumber: "Numéro de téléphone",
         start: "Commencer"
+    },
+    account: {
+        changeApp: "Changer d'application"
     }
 };

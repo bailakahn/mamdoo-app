@@ -5,3 +5,6 @@ export { default as RideScene } from "./home/Ride";
 
 // FORM
 export { default as FormScene } from "./form";
+
+// ACCOUNT
+export { default as AccountScene } from "./account";

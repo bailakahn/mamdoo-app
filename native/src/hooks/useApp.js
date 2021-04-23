@@ -3,12 +3,12 @@ import { useStore } from "_store";
 
 export default function useApp() {
     const {
-        main: { app },
+        main: { app, appLoaded },
         actions: { getApp, setApp }
     } = useStore();
 
     useEffect(() => {
-        getApp();
+        if (!appLoaded) getApp();
     }, []);
 
     return {

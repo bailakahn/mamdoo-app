@@ -49,5 +49,8 @@ export default {
         lastName: "Last Name",
         phoneNumber: "Phone Number",
         start: "Start"
+    },
+    account: {
+        changeApp: "Change App"
     }
 };

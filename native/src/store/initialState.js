@@ -1,6 +1,7 @@
 export default {
     main: {
-        app: null
+        app: null,
+        appLoaded: false
     },
     auth: {
         user: null
