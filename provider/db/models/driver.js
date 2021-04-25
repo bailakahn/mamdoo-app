@@ -6,6 +6,11 @@ const locationSchema = new Schema({
   coordinates: { type: Array, required: true },
 });
 
+const cabSchema = new Schema({
+  model: { type: String, required: true },
+  licensePlate: { type: String, required: true },
+});
+
 const clientSchema = new Schema(
   {
     firstName: { type: String, required: true },
@@ -14,12 +19,15 @@ const clientSchema = new Schema(
       type: String,
       required: true,
     },
+    password: { type: String, required: true },
+    salt: { type: String, required: true },
     isOnline: { type: Boolean, default: false },
     deleted: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
     currentLocation: {
       type: locationSchema,
     },
+    cab: { type: cabSchema },
   },
   { collection: "drivers" }
 );

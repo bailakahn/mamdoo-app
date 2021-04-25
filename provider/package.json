@@ -12,6 +12,7 @@
     "preinstall": "command -v link-module-alias && link-module-alias clean || true"
   },
   "dependencies": {
+    "argon2": "^0.27.2",
     "aws-sdk": "^2.846.0",
     "body-parser": "^1.19.0",
     "cookies": "^0.8.0",

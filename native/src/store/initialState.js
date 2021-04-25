@@ -4,7 +4,8 @@ export default {
         appLoaded: false
     },
     auth: {
-        user: null
+        user: null,
+        partner: null
     },
     ride: {
         driver: null,

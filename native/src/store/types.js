@@ -7,6 +7,8 @@ export default {
     RESET_RIDE: "RESET_RIDE",
     SET_CAN_CANCEL: "SET_CAN_CANCEL",
 
+    // PARTNER
+    SET_PARTNER: "SET_PARTNER",
     // Socket events
     FOUND_DRIVER: "FOUND_DRIVER",
     DRIVER_ARRIVED: "DRIVER_ARRIVED"

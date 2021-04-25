@@ -19,6 +19,23 @@ export default function authActions(state, dispatch) {
                         user: JSON.parse(user)
                     })
             );
+        },
+        setPartner: (partner) => {
+            dispatch({
+                type: types.SET_PARTNER,
+                partner
+            });
+        },
+        getPartner: () => {
+            // AsyncStorage.removeItem("@mamdoo-partner");
+            AsyncStorage.getItem("@mamdoo-partner").then(
+                (partner) =>
+                    partner &&
+                    dispatch({
+                        type: types.SET_PARTNER,
+                        partner: JSON.parse(partner)
+                    })
+            );
         }
     };
 }

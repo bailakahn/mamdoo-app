@@ -4,9 +4,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SplashScreen from "expo-splash-screen";
 import { useApp } from "_hooks";
 import ClientRoutes from "./client";
+import PartnerRoutes from "./partner";
 import AppEntry from "../";
 export default function NavigationRoot({ theme, mode }) {
     const { app } = useApp();
+
     // const [ready, setIsReady] = useState(false);
 
     // useEffect(() => {
@@ -29,7 +31,13 @@ export default function NavigationRoot({ theme, mode }) {
 
     return (
         <NavigationContainer theme={theme}>
-            {!app ? <AppEntry /> : app === "client" ? <ClientRoutes /> : null}
+            {!app ? (
+                <AppEntry />
+            ) : app === "client" ? (
+                <ClientRoutes />
+            ) : (
+                <PartnerRoutes />
+            )}
         </NavigationContainer>
     );
 }

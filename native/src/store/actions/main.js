@@ -13,6 +13,7 @@ export default function authActions(state, dispatch) {
             dispatch({
                 type: types.APP_LOADED
             });
+            // AsyncStorage.removeItem("@mamdoo-selected-app");
             AsyncStorage.getItem("@mamdoo-selected-app").then(
                 (app) =>
                     app &&

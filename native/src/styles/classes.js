@@ -22,6 +22,10 @@ export const errorText = (colors) => ({
     color: colors.error
 });
 
+export const error = (colors) => ({
+    width: Mixins.width(0.85, true)
+});
+
 export const formLogo = (colors) => ({
     width: Mixins.width(0.9, true),
     height: Mixins.height(0.2, true)
@@ -32,6 +36,25 @@ export const formButton = (colors) => ({
     width: Mixins.width(0.85, true),
     height: Mixins.height(40),
     justifyContent: "center"
+});
+
+export const nextButton = (colors) => ({
+    marginTop: 20,
+    width: Mixins.width(0.5, true),
+    height: Mixins.height(40)
+});
+
+export const nextButtonView = (colors) => ({
+    width: Mixins.width(0.85, true),
+    alignItems: "flex-end"
+});
+
+export const backButton = (colors) => ({
+    marginTop: 20,
+    width: Mixins.width(0.5, true),
+    height: Mixins.height(40),
+    justifyContent: "center",
+    backgroundColor: colors.accent
 });
 
 export const offlineContainer = {
