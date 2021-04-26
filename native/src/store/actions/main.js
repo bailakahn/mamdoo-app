@@ -9,7 +9,11 @@ export default function authActions(state, dispatch) {
                 app
             });
         },
-        getApp: () =>
+        getApp: () => {
+            dispatch({
+                type: types.APP_LOADED
+            });
+            // AsyncStorage.removeItem("@mamdoo-selected-app");
             AsyncStorage.getItem("@mamdoo-selected-app").then(
                 (app) =>
                     app &&
@@ -17,6 +21,7 @@ export default function authActions(state, dispatch) {
                         type: types.SET_APP,
                         app
                     })
-            )
+            );
+        }
     };
 }

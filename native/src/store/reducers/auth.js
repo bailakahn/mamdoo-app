@@ -1,6 +1,6 @@
 import { auth } from "../initialState";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import types from "_store/types";
+import types from "../types";
 export default (state = auth, action) => {
     switch (action.type) {
         case types.SET_USER:
@@ -8,6 +8,15 @@ export default (state = auth, action) => {
             return {
                 ...state,
                 user: action.user
+            };
+        case types.SET_PARTNER:
+            AsyncStorage.setItem(
+                "@mamdoo-partner",
+                JSON.stringify(action.partner)
+            );
+            return {
+                ...state,
+                partner: action.partner
             };
         default:
             return state;

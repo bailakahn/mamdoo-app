@@ -5,7 +5,11 @@ export default {
         start: "Start",
         iAmAPartner: "Partner",
         iWantMoreClients: "I want more clients",
-        noInternetConnection: "No Internet Connection"
+        noInternetConnection: "No Internet Connection",
+        locationPermission: "Location Permission",
+        locationNeeded:
+            "We need to access your location to serve you better! Grant us permission to use your location to be able to use Mamdoo",
+        givePermission: "Give Permission"
     },
     errors: {
         crashErrorTitle: "Oops, Something Went Wrong",
@@ -19,10 +23,25 @@ export default {
         firstName: "The first name is not valid",
         lastName: "The last name is not valid",
         phoneNumber: "The phone number is not valid",
-        duplicateClient: "A client with this phone number already exists"
+        duplicateClient: "A client with this phone number already exists",
+        unsuportedPhoneNumber: "This phone number is not supported"
     },
     home: {
         bookRide: "Book a ride"
+    },
+    ride: {
+        hello: "Hello",
+        driverSearch: "Searching a",
+        wait: "Please wait while we find you a driver",
+        mamdoo: "Mamdoo",
+        foundMamdoo: "Mamdoo Found",
+        driver: "Mamdoo",
+        isOnHisWay: "is on his way",
+        phoneNumber: "Phone Number",
+        callDriver: "Call",
+        cancelRide: "Cancel Ride",
+        driverArrived: "is here!",
+        meetHimOutside: "Meet him outside!"
     },
     form: {
         fullName: "Full Name",
@@ -30,5 +49,8 @@ export default {
         lastName: "Last Name",
         phoneNumber: "Phone Number",
         start: "Start"
+    },
+    account: {
+        changeApp: "Change App"
     }
 };

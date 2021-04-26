@@ -7,10 +7,12 @@
     "start": "nodemon index.js",
     "new:endpoint": "node cli/newEndpoint.js",
     "new:unit": "node cli/newUnit.js",
+    "sync:topics": "node cli/syncTopics.js",
     "postinstall": "link-module-alias",
     "preinstall": "command -v link-module-alias && link-module-alias clean || true"
   },
   "dependencies": {
+    "argon2": "^0.27.2",
     "aws-sdk": "^2.846.0",
     "body-parser": "^1.19.0",
     "cookies": "^0.8.0",
@@ -21,6 +23,7 @@
     "js-beautify": "^1.13.5",
     "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^1.12.3",
+    "kafka-node": "^5.0.0",
     "knex": "^0.95.2",
     "link-module-alias": "^1.2.0",
     "module-alias": "^2.2.2",

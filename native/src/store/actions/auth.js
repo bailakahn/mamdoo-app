@@ -10,13 +10,30 @@ export default function authActions(state, dispatch) {
             });
         },
         getUser: () => {
-            AsyncStorage.removeItem("@mamdoo-client");
+            // AsyncStorage.removeItem("@mamdoo-client");
             AsyncStorage.getItem("@mamdoo-client").then(
                 (user) =>
                     user &&
                     dispatch({
                         type: types.SET_USER,
                         user: JSON.parse(user)
+                    })
+            );
+        },
+        setPartner: (partner) => {
+            dispatch({
+                type: types.SET_PARTNER,
+                partner
+            });
+        },
+        getPartner: () => {
+            // AsyncStorage.removeItem("@mamdoo-partner");
+            AsyncStorage.getItem("@mamdoo-partner").then(
+                (partner) =>
+                    partner &&
+                    dispatch({
+                        type: types.SET_PARTNER,
+                        partner: JSON.parse(partner)
                     })
             );
         }

@@ -1,6 +1,6 @@
 import { main } from "../initialState";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import types from "_store/types";
+import types from "../types";
 export default (state = main, action) => {
     switch (action.type) {
         case types.SET_APP:
@@ -8,6 +8,11 @@ export default (state = main, action) => {
             return {
                 ...state,
                 app: action.app
+            };
+        case types.APP_LOADED:
+            return {
+                ...state,
+                appLoaded: true
             };
         default:
             return state;

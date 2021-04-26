@@ -2,9 +2,8 @@ import React, { useEffect } from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import HomeStack from "./stacks/Home";
+import AccountStack from "./stacks/Account";
 import { useTheme } from "@react-navigation/native";
-import socketIOClient from "socket.io-client";
-import { PROXY_URL } from "@env";
 import { useUser } from "_hooks";
 import { Loading } from "_atoms";
 const Tab = createMaterialBottomTabNavigator();
@@ -13,16 +12,6 @@ import { FormScene } from "_scenes/client";
 export default function MainTabs({ role }) {
     const { colors } = useTheme();
     const user = useUser();
-
-    useEffect(() => {
-        const socket = socketIOClient(PROXY_URL);
-        socket.on("request", (data) => {
-            console.log(data);
-        });
-
-        // CLEAN UP THE EFFECT
-        return () => socket.disconnect();
-    }, []);
 
     if (user.isLoading) return <Loading visible={true} size="large" />;
 
@@ -50,6 +39,20 @@ export default function MainTabs({ role }) {
                         />
                     )
                 }}
+            />
+
+            <Tab.Screen
+                name="Account"
+                children={({}) => <AccountStack />}
+                options={({ navigation }) => ({
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons
+                            name="account-settings"
+                            color={color}
+                            size={25}
+                        />
+                    )
+                })}
             />
         </Tab.Navigator>
     ) : (

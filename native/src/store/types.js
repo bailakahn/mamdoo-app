@@ -1,6 +1,15 @@
 export default {
     SET_APP: "SET_APP",
+    APP_LOADED: "APP_LOADED",
     GET_APP: "GET_APP",
     SET_USER: "SET_USER",
-    GET_USER: "GET_USER"
+    GET_USER: "GET_USER",
+    RESET_RIDE: "RESET_RIDE",
+    SET_CAN_CANCEL: "SET_CAN_CANCEL",
+
+    // PARTNER
+    SET_PARTNER: "SET_PARTNER",
+    // Socket events
+    FOUND_DRIVER: "FOUND_DRIVER",
+    DRIVER_ARRIVED: "DRIVER_ARRIVED"
 };
