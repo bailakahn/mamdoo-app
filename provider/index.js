@@ -7,13 +7,6 @@ const app = express();
 const mongoose = require("mongoose");
 const swaggerUi = require("swagger-ui-express");
 swaggerDocument = require("./swagger.json");
-
-const {
-    PORT,
-    ENV_NAME,
-    MONGO_DB_URL,
-    MONGO_DB_NAME,
-    ALLOW_ORIGIN,
 const kafka = require("kafka-node");
 
 const {
@@ -36,18 +29,18 @@ app.use(express.json());
 // Add cors
 // app.use(cors());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", `${ALLOW_ORIGIN}`); //* will allow from all cross domain
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    next();
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", `${ALLOW_ORIGIN}`); //* will allow from all cross domain
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  next();
 });
 
 app.get("/", (req, res) => {
-    return res.send("Healthy");
+  return res.send("Healthy");
 });
 
 const registerEndpoints = require("./app/startup/endpoints");
