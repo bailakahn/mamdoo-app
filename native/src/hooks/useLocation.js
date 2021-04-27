@@ -7,23 +7,30 @@ export default function useLocation() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        let isMounted = true;
         (async () => {
             let { status } = await Location.requestPermissionsAsync();
-            setGrantStatus(status);
+            if (isMounted) setGrantStatus(status);
             if (status !== "granted") {
-                setIsLoading(false);
-                setError("Permission to access location was denied");
+                if (isMounted) {
+                    setIsLoading(false);
+                    setError("Permission to access location was denied");
+                }
                 return;
             }
 
-            setIsLoading(false);
+            if (isMounted) setIsLoading(false);
 
             // TODO: find out why getting location is slow
             let {
                 coords: { latitude, longitude }
             } = await Location.getCurrentPositionAsync({});
-            setLocation({ latitude, longitude });
+            if (isMounted) setLocation({ latitude, longitude });
         })();
+
+        return () => {
+            isMounted = false;
+        };
     }, []);
 
     const getCurrentPosition = async () => {

@@ -14,6 +14,12 @@ export default (state = main, action) => {
                 ...state,
                 appLoaded: true
             };
+        case types.REMOVE_APP:
+            AsyncStorage.removeItem("@mamdoo-selected-app");
+            return {
+                ...state,
+                app: null
+            };
         default:
             return state;
     }

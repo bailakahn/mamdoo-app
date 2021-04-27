@@ -22,6 +22,9 @@ export default function authActions(state, dispatch) {
                         app
                     })
             );
+        },
+        removeApp: () => {
+            dispatch({ type: types.REMOVE_APP });
         }
     };
 }

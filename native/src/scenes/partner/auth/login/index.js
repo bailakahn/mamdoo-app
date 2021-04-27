@@ -4,7 +4,7 @@ import { Button, useTheme, TextInput } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useStore } from "_store";
 import { Classes } from "_styles";
-import { t } from "_utils/lang";
+import { t2 } from "_utils/lang";
 import { usePartner } from "_hooks";
 
 export default function Login({ navigation }) {
@@ -31,14 +31,14 @@ export default function Login({ navigation }) {
                             { fontSize: 25, fontWeight: "bold" }
                         ]}
                     >
-                        {t("form.loginHeader")}
+                        {t2("form.loginHeader")}
                     </Text>
                 </View>
                 <View>
                     <TextInput
-                        style={Classes.formInput(colors)}
+                        style={Classes.formInput2(colors)}
                         mode="outlined"
-                        label={t("form.phoneNumber")}
+                        label={t2("form.phoneNumber")}
                         value={partner.auth.phoneNumber}
                         onChangeText={(phoneNumber) =>
                             partner.actions.setAuth({
@@ -52,9 +52,9 @@ export default function Login({ navigation }) {
                     />
 
                     <TextInput
-                        style={Classes.formInput(colors)}
+                        style={Classes.formInput2(colors)}
                         mode="outlined"
-                        label={t("form.password")}
+                        label={t2("form.password")}
                         value={partner.auth.password}
                         onChangeText={(password) =>
                             partner.actions.setAuth({
@@ -68,7 +68,7 @@ export default function Login({ navigation }) {
             </>
             <View style={Classes.error(colors)}>
                 {partner.formError && (
-                    <Text style={Classes.errorText(colors)}>
+                    <Text style={Classes.errortext(colors)}>
                         {partner.formError}
                     </Text>
                 )}
@@ -83,7 +83,7 @@ export default function Login({ navigation }) {
                         !partner.auth.phoneNumber || !partner.auth.password
                     }
                 >
-                    {t("form.start")}
+                    {t2("form.start")}
                 </Button>
             </View>
 
@@ -95,7 +95,7 @@ export default function Login({ navigation }) {
                 }}
             >
                 <Text style={[Classes.text(colors), { fontSize: 20 }]}>
-                    {t("form.notRegisteredYet")}
+                    {t2("form.notRegisteredYet")}
                 </Text>
                 <TouchableOpacity
                     style={{ marginLeft: 10 }}
@@ -107,7 +107,7 @@ export default function Login({ navigation }) {
                             { color: colors.accent, fontSize: 20 }
                         ]}
                     >
-                        {t("form.register")}
+                        {t2("form.register")}
                     </Text>
                 </TouchableOpacity>
             </View>

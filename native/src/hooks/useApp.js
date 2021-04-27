@@ -4,7 +4,7 @@ import { useStore } from "_store";
 export default function useApp() {
     const {
         main: { app, appLoaded },
-        actions: { getApp, setApp }
+        actions: { getApp, setApp, removeApp }
     } = useStore();
 
     useEffect(() => {
@@ -13,6 +13,6 @@ export default function useApp() {
 
     return {
         app,
-        actions: { setApp }
+        actions: { setApp, removeApp }
     };
 }

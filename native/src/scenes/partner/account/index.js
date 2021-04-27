@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 import { Classes } from "_styles";
-import { t } from "_utils/lang";
+import { t2 } from "_utils/lang";
 import { useApp } from "_hooks";
 
 export default function AccountScene({}) {
@@ -14,10 +14,10 @@ export default function AccountScene({}) {
             <Button
                 mode="contained"
                 onPress={() => {
-                    app.actions.setApp(null);
+                    app.actions.removeApp();
                 }}
             >
-                {t("account.changeApp")}
+                {t2("account.changeApp")}
             </Button>
         </View>
     );

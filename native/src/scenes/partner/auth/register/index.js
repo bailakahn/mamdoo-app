@@ -4,7 +4,7 @@ import { Button, useTheme, TextInput } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useStore } from "_store";
 import { Classes } from "_styles";
-import { t } from "_utils/lang";
+import { t2 } from "_utils/lang";
 import { usePartner } from "_hooks";
 
 export default function Register({ navigation }) {
@@ -34,15 +34,15 @@ export default function Register({ navigation }) {
                                 { fontSize: 25, fontWeight: "bold" }
                             ]}
                         >
-                            {t("form.personalInfo")}
+                            {t2("form.personalInfo")}
                         </Text>
                     </View>
                     <View>
                         <TextInput
-                            style={Classes.formInput(colors)}
+                            style={Classes.formInput2(colors)}
                             mode="outlined"
-                            label={t("form.firstName")}
-                            placeholder={t("form.firstName")}
+                            label={t2("form.firstName")}
+                            placeholder={t2("form.firstName")}
                             value={partner.formPartner.firstName}
                             onChangeText={(firstName) =>
                                 partner.actions.setFormPartner({
@@ -54,10 +54,10 @@ export default function Register({ navigation }) {
                         />
 
                         <TextInput
-                            style={Classes.formInput(colors)}
+                            style={Classes.formInput2(colors)}
                             mode="outlined"
-                            label={t("form.lastName")}
-                            placeholder={t("form.lastName")}
+                            label={t2("form.lastName")}
+                            placeholder={t2("form.lastName")}
                             value={partner.formPartner.lastName}
                             onChangeText={(lastName) =>
                                 partner.actions.setFormPartner({
@@ -69,9 +69,9 @@ export default function Register({ navigation }) {
                         />
 
                         <TextInput
-                            style={Classes.formInput(colors)}
+                            style={Classes.formInput2(colors)}
                             mode="outlined"
-                            label={t("form.phoneNumber")}
+                            label={t2("form.phoneNumber")}
                             value={partner.formPartner.phoneNumber}
                             onChangeText={(phoneNumber) =>
                                 partner.actions.setFormPartner({
@@ -85,10 +85,10 @@ export default function Register({ navigation }) {
                         />
 
                         <TextInput
-                            style={Classes.formInput(colors)}
+                            style={Classes.formInput2(colors)}
                             mode="outlined"
-                            label={t("form.password")}
-                            placeholder={t("form.password")}
+                            label={t2("form.password")}
+                            placeholder={t2("form.password")}
                             value={partner.formPartner.password}
                             onChangeText={(password) =>
                                 partner.actions.setFormPartner({
@@ -139,7 +139,7 @@ export default function Register({ navigation }) {
                                         paddingRight: 50
                                     }}
                                 >
-                                    {t("form.back")}
+                                    {t2("form.back")}
                                 </Text>
                             </View>
                         </Button>
@@ -158,14 +158,14 @@ export default function Register({ navigation }) {
                                     { fontSize: 25, fontWeight: "bold" }
                                 ]}
                             >
-                                {t("form.cabInfo")}
+                                {t2("form.cabInfo")}
                             </Text>
                         </View>
                         <TextInput
-                            style={Classes.formInput(colors)}
+                            style={Classes.formInput2(colors)}
                             mode="outlined"
-                            label={t("form.cabModel")}
-                            placeholder={t("form.cabModel")}
+                            label={t2("form.cabModel")}
+                            placeholder={t2("form.cabModel")}
                             value={partner.formPartner.cab.model}
                             onChangeText={(model) =>
                                 partner.actions.setFormPartner({
@@ -177,10 +177,10 @@ export default function Register({ navigation }) {
                         />
 
                         <TextInput
-                            style={Classes.formInput(colors)}
+                            style={Classes.formInput2(colors)}
                             mode="outlined"
-                            label={t("form.licensePlate")}
-                            placeholder={t("form.licensePlate")}
+                            label={t2("form.licensePlate")}
+                            placeholder={t2("form.licensePlate")}
                             value={partner.formPartner.cab.licensePlate}
                             onChangeText={(licensePlate) =>
                                 partner.actions.setFormPartner({
@@ -198,7 +198,7 @@ export default function Register({ navigation }) {
             )}
             <View>
                 {partner.formError && (
-                    <Text style={Classes.errorText(colors)}>
+                    <Text style={Classes.errortext(colors)}>
                         {partner.formError}
                     </Text>
                 )}
@@ -233,7 +233,7 @@ export default function Register({ navigation }) {
                                         alignSelf: "center"
                                     }}
                                 >
-                                    {t("form.next")}
+                                    {t2("form.next")}
                                 </Text>
                                 <Icon
                                     name="arrow-forward"
@@ -258,7 +258,7 @@ export default function Register({ navigation }) {
                             !partner.formPartner.cab.licensePlate
                         }
                     >
-                        {t("form.start")}
+                        {t2("form.start")}
                     </Button>
                 )}
 
@@ -270,7 +270,7 @@ export default function Register({ navigation }) {
                     }}
                 >
                     <Text style={[Classes.text(colors), { fontSize: 20 }]}>
-                        {t("form.alreadyHaveAccount")}
+                        {t2("form.alreadyHaveAccount")}
                     </Text>
                     <TouchableOpacity
                         style={{ marginLeft: 10 }}
@@ -282,7 +282,7 @@ export default function Register({ navigation }) {
                                 { color: colors.accent, fontSize: 20 }
                             ]}
                         >
-                            {t("form.login")}
+                            {t2("form.login")}
                         </Text>
                     </TouchableOpacity>
                 </View>

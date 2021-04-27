@@ -29,6 +29,7 @@ module.exports = async ({ phoneNumber, password }) => {
   delete user.salt;
 
   const accessToken = await authenticate(user._id);
-
-  return { ...user, accessToken };
+  const userId = user._id;
+  delete user._id;
+  return { ...user, accessToken, userId };
 };

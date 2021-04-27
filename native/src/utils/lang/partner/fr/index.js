@@ -25,7 +25,8 @@ export default {
             "Le mot de passe doit avoir au moins 8 caractères et inclure un chiffre au moins",
         licensePlate: "La plaque d'immatriculation n'est pas valide",
         duplicateClient: "Ce numero de téléphone existe déjà",
-        unsuportedPhoneNumber: "Ce numéro de téléphone n'est pas supporté"
+        unsuportedPhoneNumber: "Ce numéro de téléphone n'est pas supporté",
+        login: "Le numéro de téléphone ou le mot de passe est incorrecte"
     },
     home: {
         go: "COMMENCER",

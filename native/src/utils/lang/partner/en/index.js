@@ -29,7 +29,8 @@ export default {
         cabModel: "The cab model is not valid",
         licensePlate: "The license plate is not valid",
         duplicateClient: "A client with this phone number already exists",
-        unsuportedPhoneNumber: "This phone number is not supported"
+        unsuportedPhoneNumber: "This phone number is not supported",
+        login: "The phone number or password is incorrect"
     },
     home: {
         go: "GO",

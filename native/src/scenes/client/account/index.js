@@ -14,7 +14,7 @@ export default function AccountScene({}) {
             <Button
                 mode="contained"
                 onPress={() => {
-                    app.actions.setApp(null);
+                    app.actions.removeApp();
                 }}
             >
                 {t("account.changeApp")}

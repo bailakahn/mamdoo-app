@@ -3,11 +3,12 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { Button, Headline, useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Classes } from "_styles";
-import { t } from "_utils/lang";
-import { usePartner } from "_hooks";
+import { t2 } from "_utils/lang";
+import { usePartner, usePartnerProxy } from "_hooks";
 
 export default function AccountScene({}) {
     const { colors } = useTheme();
+    usePartnerProxy();
 
     const partner = usePartner();
 
@@ -16,7 +17,7 @@ export default function AccountScene({}) {
             <View style={Classes.container(colors)}>
                 <View>
                     <Headline style={Classes.text(colors)}>
-                        {t("home.welcome")}
+                        {t2("home.welcome")}
                     </Headline>
                 </View>
 
@@ -33,8 +34,8 @@ export default function AccountScene({}) {
                         ]}
                     >
                         {partner.partner.isOnline
-                            ? t("home.onlineWelcomeText")
-                            : t("home.offlineWelcomeText")}
+                            ? t2("home.onlineWelcomeText")
+                            : t2("home.offlineWelcomeText")}
                     </Text>
                 </View>
             </View>
@@ -56,8 +57,8 @@ export default function AccountScene({}) {
                             }}
                         >
                             {!partner.partner.isOnline
-                                ? t("home.go")
-                                : t("home.stop")}
+                                ? t2("home.go")
+                                : t2("home.stop")}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -79,8 +80,8 @@ export default function AccountScene({}) {
                     ]}
                 >
                     {!partner.partner.isOnline
-                        ? t("home.goNotice")
-                        : t("home.stopNotice")}
+                        ? t2("home.goNotice")
+                        : t2("home.stopNotice")}
                 </Text>
             </View>
         </>
