@@ -7,7 +7,7 @@ import { HomeScene } from "_scenes/partner";
 
 export default function HomeStack({ role }) {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen
                 name="Home"
                 component={HomeScene}

@@ -10,6 +10,57 @@ export const container = (colors) => ({
     justifyContent: "center"
 });
 
+export const bottonView = (colors) => ({
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginBottom: 20
+});
+
+export const goButton = (colors) => ({
+    borderRadius: Mixins.width(0.35, true),
+    width: Mixins.width(0.35, true),
+    height: Mixins.width(0.35, true),
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.primary
+});
+
+export const statusNoticeView = (colors) => ({
+    flexDirection: "row",
+    width: Mixins.width(1, true),
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20
+});
+
+export const driverWelcomeNoticeView = (colors, isOnline) => ({
+    width: Mixins.width(0.85, true),
+    borderWidth: 1,
+    borderColor: !isOnline ? colors.accent : colors.primary,
+    borderRadius: 10,
+    padding: 20,
+    marginTop: 50
+});
+export const stopButton = (colors) => ({
+    borderRadius: Mixins.width(0.35, true),
+    width: Mixins.width(0.35, true),
+    height: Mixins.width(0.35, true),
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.accent
+});
+
+export const shadowView = (colors) => ({
+    borderRadius: Mixins.width(0.3, true),
+    width: Mixins.width(0.3, true),
+    height: Mixins.width(0.3, true),
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: colors.background
+});
+
 export const formInput = (colors) => ({
     width: Mixins.width(0.85, true),
     height: Mixins.height(40),

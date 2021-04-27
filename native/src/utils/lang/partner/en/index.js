@@ -32,7 +32,15 @@ export default {
         unsuportedPhoneNumber: "This phone number is not supported"
     },
     home: {
-        bookRide: "Book a ride"
+        go: "GO",
+        goNotice: "Receive Ride Requests",
+        stop: "STOP",
+        stopNotice: "Stop New Requests",
+        welcome: "Welcome On Mamdoo",
+        onlineWelcomeText:
+            "You are online, You will be receiving ride requests soon",
+        offlineWelcomeText:
+            "You are offline, click on `GO` to start receiving ride requests"
     },
     ride: {
         hello: "Hello",

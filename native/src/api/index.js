@@ -5,7 +5,7 @@ const baseUrl = "http://192.168.1.127:3005/";
 export function useApi() {
     const {
         main: { app },
-        auth: { user = {} }
+        auth: { user = {}, partner = {} }
     } = useStore();
 
     const getRequest = ({ method = "GET", endpoint, params }) => {
@@ -14,7 +14,8 @@ export function useApi() {
         const options = {
             headers: {
                 app,
-                ...(user && { "x-mamdoo-access-token": user.accessToken })
+                ...(user && { "x-mamdoo-access-token": user.accessToken }),
+                ...(partner && { "x-mamdoo-access-token": partner.accessToken })
             },
             method
         };

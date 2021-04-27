@@ -28,7 +28,15 @@ export default {
         unsuportedPhoneNumber: "Ce numéro de téléphone n'est pas supporté"
     },
     home: {
-        bookRide: "Commander une moto"
+        go: "COMMENCER",
+        goNotice: "Recevoir les demandes de courses",
+        stop: "ARRETER",
+        stopNotice: "Ne plus recevoir de courses",
+        welcome: "Bienvenue sur Mamdoo",
+        onlineWelcomeText:
+            "Vous êtes en ligne, Vous allez bientot recevoir des demandes de courses",
+        offlineWelcomeText:
+            "Vous n'êtes pas en ligne. appuyez sur `COMMENCER` pour recevoir des demande de course"
     },
     ride: {
         hello: "Salut",

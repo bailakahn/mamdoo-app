@@ -73,7 +73,7 @@ export default function usePartner() {
             params: formPartner
         })
             .then((newPartner) => {
-                // setPartner(newPartner);
+                setPartner(newPartner);
             })
             .catch((err) => {
                 console.log(err);
@@ -108,12 +108,33 @@ export default function usePartner() {
             });
     };
 
+    const changeStatus = () => {
+        getRequest({
+            method: "POST",
+            endpoint: "drivers/status",
+            params: auth
+        })
+            .then(({ isOnline }) => {
+                setPartner({ ...partner, isOnline });
+            })
+            .catch((err) => {
+                console.log(err);
+                // setFormError(t(err.code));
+            });
+    };
+
     return {
         formPartner,
         formError,
         partner,
         auth,
         isLoading,
-        actions: { savePartner, setFormPartner, setAuth, loginPartner }
+        actions: {
+            savePartner,
+            setFormPartner,
+            setAuth,
+            loginPartner,
+            changeStatus
+        }
     };
 }
