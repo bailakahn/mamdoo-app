@@ -39,7 +39,7 @@ export default function Register({ navigation }) {
                     </View>
                     <View>
                         <TextInput
-                            style={Classes.formInput2(colors)}
+                            style={Classes.formInput(colors)}
                             mode="outlined"
                             label={t2("form.firstName")}
                             placeholder={t2("form.firstName")}
@@ -54,7 +54,7 @@ export default function Register({ navigation }) {
                         />
 
                         <TextInput
-                            style={Classes.formInput2(colors)}
+                            style={Classes.formInput(colors)}
                             mode="outlined"
                             label={t2("form.lastName")}
                             placeholder={t2("form.lastName")}
@@ -69,7 +69,7 @@ export default function Register({ navigation }) {
                         />
 
                         <TextInput
-                            style={Classes.formInput2(colors)}
+                            style={Classes.formInput(colors)}
                             mode="outlined"
                             label={t2("form.phoneNumber")}
                             value={partner.formPartner.phoneNumber}
@@ -85,7 +85,7 @@ export default function Register({ navigation }) {
                         />
 
                         <TextInput
-                            style={Classes.formInput2(colors)}
+                            style={Classes.formInput(colors)}
                             mode="outlined"
                             label={t2("form.password")}
                             placeholder={t2("form.password")}
@@ -162,7 +162,7 @@ export default function Register({ navigation }) {
                             </Text>
                         </View>
                         <TextInput
-                            style={Classes.formInput2(colors)}
+                            style={Classes.formInput(colors)}
                             mode="outlined"
                             label={t2("form.cabModel")}
                             placeholder={t2("form.cabModel")}
@@ -177,7 +177,7 @@ export default function Register({ navigation }) {
                         />
 
                         <TextInput
-                            style={Classes.formInput2(colors)}
+                            style={Classes.formInput(colors)}
                             mode="outlined"
                             label={t2("form.licensePlate")}
                             placeholder={t2("form.licensePlate")}

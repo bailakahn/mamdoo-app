@@ -4,13 +4,14 @@ import { Button, Headline, useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
-import { usePartner, usePartnerProxy } from "_hooks";
+import { usePartner, usePartnerProxy, useLocation } from "_hooks";
 
 export default function AccountScene({}) {
     const { colors } = useTheme();
     usePartnerProxy();
 
     const partner = usePartner();
+    const location = useLocation();
 
     return (
         <>

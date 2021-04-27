@@ -36,7 +36,7 @@ export default function Login({ navigation }) {
                 </View>
                 <View>
                     <TextInput
-                        style={Classes.formInput2(colors)}
+                        style={Classes.formInput(colors)}
                         mode="outlined"
                         label={t2("form.phoneNumber")}
                         value={partner.auth.phoneNumber}
@@ -52,7 +52,7 @@ export default function Login({ navigation }) {
                     />
 
                     <TextInput
-                        style={Classes.formInput2(colors)}
+                        style={Classes.formInput(colors)}
                         mode="outlined"
                         label={t2("form.password")}
                         value={partner.auth.password}
