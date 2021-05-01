@@ -37,7 +37,9 @@ export default {
         callDriver: "Appeler",
         cancelRide: "Annuler votre course",
         driverArrived: "est la!",
-        meetHimOutside: "Rencontrer le dehors!"
+        meetHimOutside: "Rencontrer le dehors!",
+        rideCanceled:
+            "Votre Mamdoo a annulé la course, nous cherchons un autre Mamdoo"
     },
     form: {
         fullName: "Prénom Nom",

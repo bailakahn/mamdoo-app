@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
 
-import { HomeScene } from "_scenes/partner";
+import { HomeScene, Ride } from "_scenes/partner";
 
 export default function HomeStack({ role }) {
     return (
@@ -11,6 +11,19 @@ export default function HomeStack({ role }) {
             <Stack.Screen
                 name="Home"
                 component={HomeScene}
+                options={({ navigation }) => ({
+                    headerStyle: {
+                        borderBottomWidth: 1
+                    },
+                    headerTitleStyle: {
+                        // color: "#000"
+                    }
+                })}
+            />
+
+            <Stack.Screen
+                name="DriverOnTheWay"
+                component={Ride}
                 options={({ navigation }) => ({
                     headerStyle: {
                         borderBottomWidth: 1

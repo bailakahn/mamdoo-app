@@ -9,6 +9,7 @@ const kafka = require("kafka-node");
 const consume = require("_app/consume");
 const userList = require("_lib/userList");
 const kafkaTopics = require("_constants/kafkaTopics");
+const { Kafka } = require("aws-sdk");
 
 const {
   PORT,
@@ -27,7 +28,9 @@ const Consumer = kafka.Consumer,
   }),
   consumer = new Consumer(client, kafkaTopics, {
     autoCommit: false,
-  });
+    fromOffset: -1,
+  }),
+  offset = new kafka.Offset(client);
 
 const server = app.listen(port, () => {
   console.log(`Proxy ready on port ${server.address().port}`);
@@ -64,9 +67,23 @@ io.on("connection", (socket) => {
 
   if (!consumerStarted) {
     consumerStarted = true;
+    kafkaTopics.forEach(({ topic, partition }) => {
+      offset.fetchLatestOffsets([topic], (err, offsets) => {
+        if (err) {
+          console.log(`error fetching latest offsets ${err}`);
+          return;
+        }
+        var latest = 1;
+        Object.keys(offsets[topic]).forEach((o) => {
+          latest = offsets[topic][o] > latest ? offsets[topic][o] : latest;
+        });
+        consumer.setOffset(topic, 0, latest - 1);
+      });
+    });
+
     consumer.on("message", async function (message) {
       try {
-        console.log(message);
+        // console.log(message);
         await consume(io, message);
       } catch (error) {
         const stack = stackTrace.parse(error);

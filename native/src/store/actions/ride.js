@@ -12,6 +12,16 @@ export default function rideActions(state, dispatch) {
             dispatch({
                 type: types.SET_CAN_CANCEL
             });
+        },
+        // partner
+        resetRequest: () => {
+            dispatch({ type: types.RESET_REQUEST });
+        },
+        setRide: (request) => {
+            dispatch({ type: types.SET_RIDE, request });
+        },
+        setCancelRide: (value) => {
+            dispatch({ type: types.CANCEL_REQUEST, value });
         }
     };
 }

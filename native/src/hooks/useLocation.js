@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
-
+import useApp from "./useApp";
 const TASK_FETCH_LOCATION = "TASK_FETCH_LOCATION";
 
 export default function useLocation() {
@@ -13,9 +13,19 @@ export default function useLocation() {
     useEffect(() => {
         let isMounted = true;
         (async () => {
-            let { status } = await Location.requestPermissionsAsync();
+            let { status } = await Location.requestForegroundPermissionsAsync();
+
+            // TODO: check this only for partner app
+            // let {
+            //     status: backgroundStatus
+            // } = await Location.requestBackgroundPermissionsAsync().catch(
+            //     (backgroundPermissionError) =>
+            //         console.log({ backgroundPermissionError })
+            // );
+
             if (isMounted) setGrantStatus(status);
-            if (status !== "granted") {
+
+            if (status !== "granted" && backgroundStatus != "granted") {
                 if (isMounted) {
                     setIsLoading(false);
                     setError("Permission to access location was denied");
@@ -37,7 +47,7 @@ export default function useLocation() {
             //                 "To turn off, go back to the app and switch something off."
             //         }
             //     });
-            // TODO: find out why getting location is slow
+
             let {
                 coords: { latitude, longitude }
             } = await Location.getCurrentPositionAsync({});

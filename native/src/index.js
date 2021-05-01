@@ -31,7 +31,7 @@ const Main = () => {
                 title={t("main.iAmAPartner")}
                 info={[t("main.iWantMoreClients")]}
                 button={{ title: t("main.start") }}
-                onButtonPress={() => app.actions.setApp("driver")}
+                onButtonPress={() => app.actions.setApp("partner")}
                 containerStyle={{
                     backgroundColor: colors.background,
                     borderColor: colors.border

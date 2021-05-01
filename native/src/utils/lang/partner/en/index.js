@@ -9,7 +9,8 @@ export default {
         locationPermission: "Location Permission",
         locationNeeded:
             "We need to access your location to serve you better! Grant us permission to use your location to be able to use Mamdoo",
-        givePermission: "Give Permission"
+        givePermission: "Give Permission",
+        close: "Close"
     },
     errors: {
         crashErrorTitle: "Oops, Something Went Wrong",
@@ -30,7 +31,8 @@ export default {
         licensePlate: "The license plate is not valid",
         duplicateClient: "A client with this phone number already exists",
         unsuportedPhoneNumber: "This phone number is not supported",
-        login: "The phone number or password is incorrect"
+        login: "The phone number or password is incorrect",
+        alreadyTaken: "This ride was already taken by another driver."
     },
     home: {
         go: "GO",
@@ -41,21 +43,16 @@ export default {
         onlineWelcomeText:
             "You are online, You will be receiving ride requests soon",
         offlineWelcomeText:
-            "You are offline, click on `GO` to start receiving ride requests"
+            "You are offline, click on `GO` to start receiving ride requests",
+        close: "Close"
     },
     ride: {
-        hello: "Hello",
-        driverSearch: "Searching a",
-        wait: "Please wait while we find you a driver",
         mamdoo: "Mamdoo",
-        foundMamdoo: "Mamdoo Found",
-        driver: "Mamdoo",
-        isOnHisWay: "is on his way",
         phoneNumber: "Phone Number",
         callDriver: "Call",
         cancelRide: "Cancel Ride",
-        driverArrived: "is here!",
-        meetHimOutside: "Meet him outside!"
+        openMap: "Open Map",
+        rideCanceled: "The client canceled the ride."
     },
     form: {
         fullName: "Full Name",

@@ -11,6 +11,7 @@ export default function useRequest() {
             latitude,
             longitude
         } = await location.actions.getCurrentPosition();
+
         getRequest({
             method: "POST",
             endpoint: "rides/newRequest",

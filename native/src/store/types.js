@@ -10,7 +10,15 @@ export default {
 
     // PARTNER
     SET_PARTNER: "SET_PARTNER",
+    SET_RIDE: "SET_RIDE",
+
     // Socket events
     FOUND_DRIVER: "FOUND_DRIVER",
-    DRIVER_ARRIVED: "DRIVER_ARRIVED"
+    DRIVER_ARRIVED: "DRIVER_ARRIVED",
+
+    // Partner socket events
+    NEW_REQUEST: "NEW_REQUEST",
+    RESET_REQUEST: "RESET_REQUEST",
+    CLEAR_RIDE: "CLEAR_RIDE",
+    CANCEL_REQUEST: "CANCEL_REQUEST"
 };

@@ -34,6 +34,37 @@ export const statusNoticeView = (colors) => ({
     marginBottom: 20
 });
 
+export const modalContent = (colors) => ({
+    backgroundColor: colors.background,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 30,
+    width: Mixins.width(0.9, true)
+});
+
+export const modalWrapper = (colors) => ({
+    alignItems: "center"
+});
+
+export const roundButton = (colors, size, color) => ({
+    borderRadius: Mixins.width(size, true),
+    width: Mixins.width(size, true),
+    height: Mixins.width(size, true),
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors[color] || color
+});
+
+export const buttonShadow = (colors, size) => ({
+    borderRadius: Mixins.width(size, true),
+    width: Mixins.width(size, true),
+    height: Mixins.width(size, true),
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: colors.background
+});
+
 export const driverWelcomeNoticeView = (colors, isOnline) => ({
     width: Mixins.width(0.85, true),
     borderWidth: 1,
@@ -140,6 +171,12 @@ export const animation = (colors) => ({
 });
 
 export const callButton = (colors) => ({
+    width: Mixins.width(0.7, true),
+    height: 50,
+    justifyContent: "center"
+});
+
+export const openMapButton = (colors) => ({
     width: Mixins.width(0.7, true),
     height: 50,
     justifyContent: "center"

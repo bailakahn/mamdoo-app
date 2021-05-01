@@ -1,4 +1,9 @@
-const { cancelRequest, notifyDrivers } = require("./units");
+const {
+  cancelRequest,
+  notifyDrivers,
+  getDrivers,
+  getRequest,
+} = require("./units");
 const auth = require("_app/auth");
 const { getBody } = require("_lib/helpers");
 const get = require("_lib/helpers/get");
@@ -8,12 +13,43 @@ module.exports = async ({ req, res }) => {
       req,
     },
     async ({ userId, accessToken, app }) => {
-      const { requestId, driverId } = getBody(req);
+      const { requestId } = getBody(req);
 
-      await cancelRequest(requestId);
+      const {
+        startLocation: { coordinates },
+        ...request
+      } = await getRequest(requestId);
+
+      await cancelRequest(requestId, app);
+
+      if (app === "partner") {
+        const nearByDrivers = await getDrivers(coordinates);
+
+        const { producer } = req;
+
+        let payload = [
+          {
+            topic: "newrequest",
+            messages: JSON.stringify({
+              event: "NEW_REQUEST",
+              // TODO: test other drivers receiving the ride
+              recipients: nearByDrivers.filter(
+                (driver) => driver != `driver-${userId}`
+              ),
+              data: { requestId },
+            }),
+            partition: 0,
+          },
+        ];
+
+        producer.send(payload, (err, data) => {
+          if (err) console.log(err);
+          // else console.log({ data });
+        });
+      }
 
       //   TODO: implement fucntion to notify ride driver
-      //   await notifyDrivers(requestId, req);
+      await notifyDrivers(req, { request, app });
     }
   );
 };

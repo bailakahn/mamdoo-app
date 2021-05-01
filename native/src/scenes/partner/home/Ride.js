@@ -5,7 +5,7 @@ import LottieView from "lottie-react-native";
 import { useColorScheme } from "react-native-appearance";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Classes } from "_styles";
-import { t } from "_utils/lang";
+import { t2 } from "_utils/lang";
 import LightAvatar from "_assets/animation/light-avatar.json";
 import LightAvatarGif from "_assets/animation/light-avatar.gif";
 import DarkAvatarGif from "_assets/animation/dark-avatar.gif";
@@ -13,9 +13,9 @@ import DarkAvatar from "_assets/animation/dark-avatar.json";
 import ReadyAmimation from "_assets/animation/ready.json";
 import LightReadyAmimation from "_assets/animation/light-ready.gif";
 import DarkReadyAmimation from "_assets/animation/dark-ready.gif";
-import { useRide } from "_hooks";
+import { useRide } from "_hooks/partner";
 
-export default function RideRequestScreen() {
+export default function DriverOnTheWayScene() {
     const { colors } = useTheme();
     const ride = useRide();
 
@@ -33,7 +33,7 @@ export default function RideRequestScreen() {
         if (animation.current) animation.current.play();
     }, [ride.driverArrived]);
 
-    if (!ride.driver) return null;
+    if (!ride.request) return null;
 
     return (
         <View style={Classes.container(colors)}>
@@ -43,7 +43,7 @@ export default function RideRequestScreen() {
                     { fontSize: 30, fontWeight: "bold" }
                 ]}
             >
-                {`${ride.driver.firstName} ${ride.driver.lastName}`}
+                {`${ride.request.client.firstName} ${ride.request.client.lastName}`}
                 {/* {t("ride.foundMamdoo")} */}
             </Text>
 
@@ -90,34 +90,6 @@ export default function RideRequestScreen() {
                 />
             )}
 
-            {!ride.driverArrived && (
-                <Text
-                    style={[
-                        Classes.text(colors),
-                        {
-                            fontSize: 15,
-                            fontWeight: "bold"
-                        }
-                    ]}
-                >
-                    {t("ride.isOnHisWay")}
-                </Text>
-            )}
-
-            <View>
-                <Text
-                    style={[
-                        Classes.text(colors),
-                        {
-                            fontSize: 20,
-                            fontWeight: "bold"
-                        }
-                    ]}
-                >
-                    {t("ride.meetHimOutside")}
-                </Text>
-            </View>
-
             <View style={{ marginTop: 40, flexDirection: "row" }}>
                 <Text
                     style={[
@@ -139,8 +111,20 @@ export default function RideRequestScreen() {
                         }
                     ]}
                 >
-                    {ride.driver.phoneNumber}
+                    {ride.request.client.phoneNumber}
                 </Text>
+            </View>
+
+            <View style={{ marginTop: 30 }}>
+                <Button
+                    style={Classes.openMapButton(colors)}
+                    mode="contained"
+                    onPress={ride.actions.openMap}
+                    color="#04009A"
+                    labelStyle={{ color: colors.text }}
+                >
+                    {t2("ride.openMap")}
+                </Button>
             </View>
 
             <View style={{ marginTop: 30 }}>
@@ -149,7 +133,7 @@ export default function RideRequestScreen() {
                     mode="contained"
                     onPress={ride.actions.callDriver}
                 >
-                    {t("ride.callDriver")} {ride.driver.firstName}
+                    {t2("ride.callDriver")} {ride.request.client.firstName}
                 </Button>
             </View>
 
@@ -164,21 +148,19 @@ export default function RideRequestScreen() {
                             mode="contained"
                             onPress={ride.actions.cancelRide}
                         >
-                            {t("ride.cancelRide")}
+                            {t2("ride.cancelRide")}
                         </Button>
                     ) : (
-                        <Text
+                        <Button
                             style={[
-                                Classes.text(colors),
-                                {
-                                    fontSize: 20,
-                                    fontWeight: "bold",
-                                    color: colors.accent
-                                }
+                                Classes.callButton(colors),
+                                { backgroundColor: colors.accent }
                             ]}
+                            mode="contained"
+                            onPress={ride.actions.cancelRide}
                         >
-                            Call Mamdoo to cancel ride
-                        </Text>
+                            {t2("ride.cancelRide")}
+                        </Button>
                     )}
                 </View>
             )}

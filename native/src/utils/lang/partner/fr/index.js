@@ -9,7 +9,8 @@ export default {
         locationPermission: "Permission de localisation",
         locationNeeded:
             "Nous avons besoin de pouvoir vous localiser pour vous donner le meilleur service! Activez la localisation dans vos paramètres pour utiliser Mamdoo.",
-        givePermission: "Autoriser"
+        givePermission: "Autoriser",
+        close: "Fermer"
     },
     errors: {
         crashErrorTitle: "Oops, Quelque chose s'est mal passé",
@@ -26,7 +27,8 @@ export default {
         licensePlate: "La plaque d'immatriculation n'est pas valide",
         duplicateClient: "Ce numero de téléphone existe déjà",
         unsuportedPhoneNumber: "Ce numéro de téléphone n'est pas supporté",
-        login: "Le numéro de téléphone ou le mot de passe est incorrecte"
+        login: "Le numéro de téléphone ou le mot de passe est incorrecte",
+        alreadyTaken: "Cette course a déjà été acceptée par un autre Mamdoo"
     },
     home: {
         go: "COMMENCER",
@@ -37,21 +39,16 @@ export default {
         onlineWelcomeText:
             "Vous êtes en ligne, Vous allez bientot recevoir des demandes de courses",
         offlineWelcomeText:
-            "Vous n'êtes pas en ligne. appuyez sur `COMMENCER` pour recevoir des demande de course"
+            "Vous n'êtes pas en ligne. appuyez sur `COMMENCER` pour recevoir des demande de course",
+        close: "Fermer"
     },
     ride: {
-        hello: "Salut",
-        driverSearch: "Recherche de votre",
-        wait: "Veuillez patienter pendant que nous trouvons votre Mamdoo",
         mamdoo: "Mamdoo",
-        foundMamdoo: "Mamdoo trouvé",
-        driver: "Mamdoo",
-        isOnHisWay: "est en route vers votre position",
         phoneNumber: "Numéro",
         callDriver: "Appeler",
         cancelRide: "Annuler votre course",
-        driverArrived: "est la!",
-        meetHimOutside: "Rencontrer le dehors!"
+        openMap: "Ouvrir la carte",
+        rideCanceled: "Le client a annulé la course."
     },
     form: {
         fullName: "Prénom Nom",

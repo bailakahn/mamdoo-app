@@ -6,7 +6,7 @@ module.exports = async (io, message) => {
   // TODO: remove hardcoded driver id
   const driver = await get(
     "Driver",
-    { _id: "60790e8fd54af91c526841db", deleted: false },
+    { _id: data.driverId, deleted: false },
     { one: true, fields: ["_id", "firstName", "lastName", "phoneNumber"] }
   );
 

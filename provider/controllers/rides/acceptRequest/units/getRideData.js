@@ -5,7 +5,10 @@ module.exports = async (requestId) => {
   const request = await get(
     "Ride",
     { _id: requestId, status: rideStatuses.REQUEST },
-    { one: true, fields: ["_id", "clientId", "startLocation.coordinates"] }
+    {
+      one: true,
+      fields: ["_id", "clientId", "startLocation.coordinates", "drivers"],
+    }
   );
 
   if (!request) error("NotFound", "Could find ride", "errors.alreadyTaken");

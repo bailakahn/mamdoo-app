@@ -8,20 +8,25 @@ module.exports = async ({ req, res }) => {
     },
     async ({ userId, accessToken, app }) => {
       const { coordinates } = getBody(req);
-      const requestId = await saveRequest({ userId, coordinates });
-
       const nearByDrivers = await getDrivers(coordinates);
+
+      const requestId = await saveRequest({
+        userId,
+        coordinates,
+        nearByDrivers,
+      });
 
       const { producer } = req;
 
       let payload = [
         {
-          topic: "requests",
+          topic: "newrequest",
           messages: JSON.stringify({
-            event: "newRequest",
+            event: "NEW_REQUEST",
             recipients: nearByDrivers,
             data: { requestId },
           }),
+          partition: 0,
         },
       ];
 

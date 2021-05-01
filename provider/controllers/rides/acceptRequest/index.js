@@ -16,10 +16,14 @@ module.exports = async ({ req, res }) => {
 
       const rideData = await getRideData(requestId);
 
-      //   await acceptRequest(requestId, userId);
+      await acceptRequest(requestId, userId);
 
       //   TODO: find way to clear ride
-      //   await clearRide();
+      await clearRide(
+        req,
+        rideData.drivers.filter((driver) => driver != !`driver-${userId}`),
+        rideData._id
+      );
 
       notifyClient(req, rideData, userId);
 

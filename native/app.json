@@ -2,6 +2,7 @@
   "expo": {
     "name": "mamdoo-client",
     "slug": "mamdoo-client",
+    "sdkVersion": "41.0.0",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,7 +18,13 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Mamdoo requires your location so that we can centre the map on you & show you where [x] is",
+        "NSLocationAlwaysUsageDescription": "Mamdoo requires your location so that we can centre the map on you & show you where [x] is",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Mamdoo requires your location so that we can centre the map on you & show you where [x] is",
+        "NSLocationUsageDescription": "Mamdoo requires your location so that we can centre the map on you & show you where [x] is"
+      }
     },
     "android": {
       "adaptiveIcon": {

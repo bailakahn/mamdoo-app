@@ -41,7 +41,9 @@ export default {
         callDriver: "Call",
         cancelRide: "Cancel Ride",
         driverArrived: "is here!",
-        meetHimOutside: "Meet him outside!"
+        meetHimOutside: "Meet him outside!",
+        rideCanceled:
+            "Your Mamdoo canceled the ride, we are looking for a new Mamdoo"
     },
     form: {
         fullName: "Full Name",
