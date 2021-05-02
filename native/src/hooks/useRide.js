@@ -65,6 +65,6 @@ export default function useRide() {
         canCancel,
         driverArrived,
         canceled,
-        actions: { callDriver, cancelRide, setCancelRide }
+        actions: { callDriver, cancelRide, setCancelRide, resetRide }
     };
 }

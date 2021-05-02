@@ -4,7 +4,13 @@ import { useNavigation } from "@react-navigation/native";
 import { PROXY_URL } from "@env";
 import useUser from "./useUser";
 import { useStore } from "_store";
-const socketEvents = ["FOUND_DRIVER", "DRIVER_ARRIVED", "CANCEL_REQUEST"];
+import types from "_store/types";
+const socketEvents = [
+    "FOUND_DRIVER",
+    "DRIVER_ARRIVED",
+    "CANCEL_REQUEST",
+    "END_RIDE"
+];
 export default function useProxy() {
     const { dispatch } = useStore();
     const navigation = useNavigation();
@@ -27,9 +33,16 @@ export default function useProxy() {
                         dispatch({ type: "SET_CAN_CANCEL" });
                     }, 10000);
                 }
+
                 if (event == "CANCEL_REQUEST") {
                     dispatch({ type: event, value: true });
                     navigation.navigate("RideRequest");
+                    return;
+                }
+
+                if (event == "END_RIDE") {
+                    dispatch({ type: types.RESET_RIDE });
+                    navigation.navigate("Home");
                     return;
                 }
 

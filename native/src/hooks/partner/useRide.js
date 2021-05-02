@@ -6,19 +6,23 @@ import { useStore } from "_store";
 import { t } from "_utils/lang";
 import { useApi } from "_api";
 import { useNavigation } from "@react-navigation/native";
+import types from "_store/types";
 export default function useRide() {
     const getRequest = useApi();
     const navigation = useNavigation();
     const [error, setError] = useState(false);
+    const [info, setInfo] = useState(false);
     const {
         ride: { canCancel, driverArrived, request, requestId, canceled },
+        auth: { partner },
         actions: {
             resetRide,
             setCanCancel,
             resetRequest,
             setRide,
             setCancelRide
-        }
+        },
+        dispatch
     } = useStore();
 
     const acceptRequest = () => {
@@ -114,6 +118,41 @@ export default function useRide() {
             });
     };
 
+    const onDriverArrived = () => {
+        getRequest({
+            method: "POST",
+            endpoint: "rides/driverArrived",
+            params: {
+                requestId: request._id,
+                driverId: partner.userId
+            }
+        })
+            .then(() => {
+                dispatch({ type: types.DRIVER_ARRIVED });
+                setInfo(true);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    const onEndRide = () => {
+        getRequest({
+            method: "POST",
+            endpoint: "rides/endRide",
+            params: {
+                requestId: request._id,
+                driverId: partner.userId
+            }
+        })
+            .then(() => {
+                navigation.navigate("Home");
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     return {
         requestId,
         request,
@@ -121,6 +160,7 @@ export default function useRide() {
         driverArrived,
         canceled,
         error,
+        info,
         actions: {
             resetRequest,
             acceptRequest,
@@ -128,7 +168,11 @@ export default function useRide() {
             callDriver,
             openMap,
             cancelRide,
-            setCancelRide
+            setCancelRide,
+            onDriverArrived,
+            setInfo,
+            resetRide,
+            onEndRide
         }
     };
 }

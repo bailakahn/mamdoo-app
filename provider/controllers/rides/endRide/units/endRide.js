@@ -1,6 +1,6 @@
 const { get, error } = require("_lib/helpers");
 const rideStatuses = require("_constants/rideStatuses");
-
+const { Ride } = require("_db/models");
 module.exports = async ({ requestId: _id, driverId }, { producer }) => {
   const request = await get(
     "Ride",
@@ -9,16 +9,24 @@ module.exports = async ({ requestId: _id, driverId }, { producer }) => {
       driverId,
       status: rideStatuses.ONGOING,
     },
-    { one: true, fields: ["_id", "clientId", "startLocation.coordinates"] }
+    { one: true, fields: ["_id", "clientId"] }
   );
 
-  if (!request) error("NotFound", "Could find ride", "errors.alreadyTaken");
+  if (!request) error("NotFound", "Could find ride", "errors.internal");
+
+  await Ride.findByIdAndUpdate(
+    { _id, driverId, status: rideStatuses.ONGOING },
+    {
+      status: rideStatuses.COMPLETED,
+      modifiedAt: Date.now(),
+    }
+  );
 
   let payload = [
     {
-      topic: "driverArrived",
+      topic: "endRide",
       messages: JSON.stringify({
-        event: "DRIVER_ARRIVED",
+        event: "END_RIDE",
         recipients: [`client-${request.clientId}`],
         data: { driverId, clientId: request.clientId, requestId: _id },
       }),

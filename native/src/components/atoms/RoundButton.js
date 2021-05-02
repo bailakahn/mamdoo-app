@@ -17,7 +17,8 @@ export default function RoundButton({ size, text, color, onPress, shadow }) {
                         style={{
                             color: colors.background,
                             fontWeight: "bold",
-                            fontSize: 15
+                            fontSize: 15,
+                            textAlign: "center"
                         }}
                     >
                         {text}

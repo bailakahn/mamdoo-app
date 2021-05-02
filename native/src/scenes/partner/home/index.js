@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import {
     Button,
@@ -22,7 +22,11 @@ export default function AccountScene({}) {
     const ride = useRide();
     const partner = usePartner();
     const location = useLocation();
-    // console.log(partner);
+
+    useEffect(() => {
+        ride.actions.resetRide();
+    }, []);
+
     return (
         <>
             <Portal>

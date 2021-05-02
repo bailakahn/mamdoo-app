@@ -1,6 +1,6 @@
 import { ride } from "../initialState";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import types from "../types";
+import * as RootNavigation from "_navigations/RootNavigation";
 export default (state = ride, action) => {
     switch (action.type) {
         case types.FOUND_DRIVER:
@@ -14,7 +14,10 @@ export default (state = ride, action) => {
                 ...state,
                 driver: null,
                 requestId: null,
-                request: null
+                canCancel: false,
+                driverArrived: false,
+                request: null,
+                canceled: false
             };
         case types.SET_CAN_CANCEL:
             return {
@@ -48,6 +51,17 @@ export default (state = ride, action) => {
                 request: null,
                 canceled: action.value,
                 driver: null
+            };
+        case types.END_RIDE:
+            RootNavigation.navigate("Home");
+            return {
+                ...state,
+                driver: null,
+                requestId: null,
+                canCancel: false,
+                driverArrived: false,
+                request: null,
+                canceled: false
             };
         default:
             return state;

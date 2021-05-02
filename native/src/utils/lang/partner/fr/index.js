@@ -46,9 +46,14 @@ export default {
         mamdoo: "Mamdoo",
         phoneNumber: "Numéro",
         callDriver: "Appeler",
+        callRider: "Appeler",
         cancelRide: "Annuler votre course",
         openMap: "Ouvrir la carte",
-        rideCanceled: "Le client a annulé la course."
+        rideCanceled: "Le client a annulé la course.",
+        endRide: "Terminer la course",
+        arrived: "Je suis arrivé",
+        clientOnHisWay:
+            "Le client arrive vers vous. S'il ne vient pas, appelez le."
     },
     form: {
         fullName: "Prénom Nom",

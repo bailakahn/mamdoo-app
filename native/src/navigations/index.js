@@ -6,6 +6,7 @@ import { useApp } from "_hooks";
 import ClientRoutes from "./client";
 import PartnerRoutes from "./partner";
 import AppEntry from "../";
+import { navigationRef } from "./RootNavigation";
 export default function NavigationRoot({ theme, mode }) {
     const { app } = useApp();
 
@@ -30,7 +31,7 @@ export default function NavigationRoot({ theme, mode }) {
     // if (!ready) return null;
 
     return (
-        <NavigationContainer theme={theme}>
+        <NavigationContainer ref={navigationRef} theme={theme}>
             {!app ? (
                 <AppEntry />
             ) : app === "client" ? (

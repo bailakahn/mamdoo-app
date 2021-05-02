@@ -14,6 +14,8 @@ import ReadyAmimation from "_assets/animation/ready.json";
 import LightReadyAmimation from "_assets/animation/light-ready.gif";
 import DarkReadyAmimation from "_assets/animation/dark-ready.gif";
 import { useRide } from "_hooks/partner";
+import { RoundButton } from "_atoms";
+import { Info } from "_molecules";
 
 export default function DriverOnTheWayScene() {
     const { colors } = useTheme();
@@ -46,20 +48,6 @@ export default function DriverOnTheWayScene() {
                 {`${ride.request.client.firstName} ${ride.request.client.lastName}`}
                 {/* {t("ride.foundMamdoo")} */}
             </Text>
-
-            {ride.driverArrived && (
-                <Text
-                    style={[
-                        Classes.text(colors),
-                        {
-                            fontSize: 30,
-                            fontWeight: "bold"
-                        }
-                    ]}
-                >
-                    {t("ride.driverArrived")}
-                </Text>
-            )}
 
             {Platform.OS === "ios" ? (
                 <LottieView
@@ -115,17 +103,19 @@ export default function DriverOnTheWayScene() {
                 </Text>
             </View>
 
-            <View style={{ marginTop: 30 }}>
-                <Button
-                    style={Classes.openMapButton(colors)}
-                    mode="contained"
-                    onPress={ride.actions.openMap}
-                    color="#04009A"
-                    labelStyle={{ color: colors.text }}
-                >
-                    {t2("ride.openMap")}
-                </Button>
-            </View>
+            {!ride.driverArrived && (
+                <View style={{ marginTop: 30 }}>
+                    <Button
+                        style={Classes.openMapButton(colors)}
+                        mode="contained"
+                        onPress={ride.actions.openMap}
+                        color="#04009A"
+                        labelStyle={{ color: colors.text }}
+                    >
+                        {t2("ride.openMap")}
+                    </Button>
+                </View>
+            )}
 
             <View style={{ marginTop: 30 }}>
                 <Button
@@ -133,7 +123,7 @@ export default function DriverOnTheWayScene() {
                     mode="contained"
                     onPress={ride.actions.callDriver}
                 >
-                    {t2("ride.callDriver")} {ride.request.client.firstName}
+                    {t2("ride.callRider")} {ride.request.client.firstName}
                 </Button>
             </View>
 
@@ -151,19 +141,52 @@ export default function DriverOnTheWayScene() {
                             {t2("ride.cancelRide")}
                         </Button>
                     ) : (
-                        <Button
+                        <Text
                             style={[
-                                Classes.callButton(colors),
-                                { backgroundColor: colors.accent }
+                                Classes.text(colors),
+                                {
+                                    fontSize: 20,
+                                    fontWeight: "bold",
+                                    color: colors.accent
+                                }
                             ]}
-                            mode="contained"
-                            onPress={ride.actions.cancelRide}
                         >
-                            {t2("ride.cancelRide")}
-                        </Button>
+                            Call Mamdoo to cancel ride
+                        </Text>
                     )}
                 </View>
             )}
+
+            {!ride.driverArrived ? (
+                <View style={{ marginTop: 30 }}>
+                    <RoundButton
+                        size={0.35}
+                        shadow={{ size: 0.3 }}
+                        color="text"
+                        text={t2("ride.arrived")}
+                        onPress={ride.actions.onDriverArrived}
+                    />
+                </View>
+            ) : (
+                <View style={{ marginTop: 30 }}>
+                    <RoundButton
+                        size={0.35}
+                        shadow={{ size: 0.3 }}
+                        color="accent"
+                        text={t2("ride.endRide")}
+                        onPress={ride.actions.onEndRide}
+                    />
+                </View>
+            )}
+
+            <View style={{ marginTop: 30 }}>
+                <Info
+                    visible={ride.info}
+                    text={t2(`ride.clientOnHisWay`)}
+                    onDismiss={() => ride.actions.setInfo(false)}
+                    onClose={() => ride.actions.setInfo(false)}
+                />
+            </View>
         </View>
     );
 }

@@ -50,9 +50,14 @@ export default {
         mamdoo: "Mamdoo",
         phoneNumber: "Phone Number",
         callDriver: "Call",
+        callRider: "Call",
         cancelRide: "Cancel Ride",
         openMap: "Open Map",
-        rideCanceled: "The client canceled the ride."
+        rideCanceled: "The client canceled the ride.",
+        endRide: "End Ride",
+        arrived: "I arrived",
+        clientOnHisWay:
+            "The client is coming to you. If he does not come call him."
     },
     form: {
         fullName: "Full Name",
