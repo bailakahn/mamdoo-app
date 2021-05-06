@@ -27,6 +27,7 @@ export default function useProxy() {
         socketEvents.forEach((event) => {
             socket.on(event, (data) => {
                 if (event === "FOUND_DRIVER") {
+                    console.log({ data });
                     dispatch({ type: "SET_CAN_CANCEL" });
                     // TODO: set time out to 3 minutes
                     setTimeout(() => {

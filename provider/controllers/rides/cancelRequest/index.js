@@ -20,7 +20,7 @@ module.exports = async ({ req, res }) => {
         ...request
       } = await getRequest(requestId);
 
-      await cancelRequest(requestId, app);
+      await cancelRequest(requestId, app, userId);
 
       if (app === "partner") {
         const nearByDrivers = await getDrivers(coordinates);

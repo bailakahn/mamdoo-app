@@ -3,4 +3,5 @@ module.exports = {
   Setting: require("./setting"),
   Ride: require("./ride"),
   Driver: require("./driver"),
+  RideCancelation: require("./rideCancelation"),
 };
