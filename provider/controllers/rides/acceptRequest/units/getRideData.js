@@ -7,7 +7,7 @@ module.exports = async (requestId) => {
     { _id: requestId, status: rideStatuses.REQUEST },
     {
       one: true,
-      fields: ["_id", "clientId", "startLocation.coordinates", "drivers"],
+      fields: ["_id", "clientId", "pickUp.coordinates", "drivers"],
     }
   );
 

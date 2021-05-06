@@ -5,7 +5,7 @@ module.exports = async ({ producer }, drivers, id) => {
       messages: JSON.stringify({
         event: "RESET_REQUEST",
         recipients: drivers,
-        data: { requestId: id },
+        data: { requestId: id, drivers },
       }),
     },
   ];

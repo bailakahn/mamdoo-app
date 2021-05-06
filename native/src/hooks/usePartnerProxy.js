@@ -14,7 +14,7 @@ export default function usePartnerProxy() {
     useEffect(() => {
         const socket = socketIOClient(PROXY_URL);
         socket.on("connect", () => {
-            socket.emit("join", `driver-${partner.partner.userId}`);
+            socket.emit("join", `${partner.partner.userId}`);
         });
 
         socketEvents.forEach((event) => {

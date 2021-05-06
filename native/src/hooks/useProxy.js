@@ -21,7 +21,7 @@ export default function useProxy() {
         const socket = socketIOClient(PROXY_URL);
 
         socket.on("connect", () => {
-            socket.emit("join", `client-${user.user.userId}`);
+            socket.emit("join", `${user.user.userId}`);
         });
 
         socketEvents.forEach((event) => {

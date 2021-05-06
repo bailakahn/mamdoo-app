@@ -16,7 +16,7 @@ module.exports = async ({ req, res }) => {
       const { requestId } = getBody(req);
 
       const {
-        startLocation: { coordinates },
+        pickUp: { coordinates },
         ...request
       } = await getRequest(requestId);
 
@@ -29,14 +29,14 @@ module.exports = async ({ req, res }) => {
 
         let payload = [
           {
-            topic: "newrequest",
+            topic: "requestCreated",
             messages: JSON.stringify({
               event: "NEW_REQUEST",
               // TODO: test other drivers receiving the ride
               recipients: nearByDrivers.filter(
-                (driver) => driver != `driver-${userId}`
+                (driver) => driver != `${userId}`
               ),
-              data: { requestId },
+              data: { requestId, driverId: userId, ...request },
             }),
             partition: 0,
           },

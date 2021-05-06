@@ -15,7 +15,7 @@ module.exports = async ({ req, res }) => {
           messages: JSON.stringify({
             controller: "requests/newRequest",
             event: "dynamic",
-            recipients: [`client-${userId}`],
+            recipients: [`${userId}`],
             data: { baila: false },
           }),
         },

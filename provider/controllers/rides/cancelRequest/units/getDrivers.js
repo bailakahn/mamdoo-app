@@ -26,5 +26,5 @@ module.exports = async (coordinates) => {
     )
   )
     .filter(({ onGoingRide }) => !onGoingRide)
-    .map(({ _id }) => `driver-${_id}`);
+    .map(({ _id }) => `${_id}`);
 };

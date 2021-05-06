@@ -15,7 +15,10 @@ const rideSchema = new Schema(
       enum: ["request", "ongoing", "completed", "canceled"],
       default: "request",
     },
-    startLocation: {
+    pickUp: {
+      type: locationSchema,
+    },
+    dropOff: {
       type: locationSchema,
     },
     endLocation: {

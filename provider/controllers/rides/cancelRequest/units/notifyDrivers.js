@@ -1,14 +1,12 @@
 module.exports = ({ producer }, { request, app, driverId }) => {
   let payload = [
     {
-      topic: "cancelRequest",
+      topic: "requestCanceled",
       messages: JSON.stringify({
         event: "CANCEL_REQUEST",
         recipients:
-          app == "client"
-            ? [`driver-${request.driverId}`]
-            : [`client-${request.clientId}`],
-        data: { driverId, requestId: request._id },
+          app == "client" ? [`${request.driverId}`] : [`${request.clientId}`],
+        data: { driverId, requestId: request._id, ...request },
       }),
     },
   ];

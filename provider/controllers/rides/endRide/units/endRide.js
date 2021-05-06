@@ -19,15 +19,16 @@ module.exports = async ({ requestId: _id, driverId }, { producer }) => {
     {
       status: rideStatuses.COMPLETED,
       modifiedAt: Date.now(),
+      endTime: Date.now(),
     }
   );
 
   let payload = [
     {
-      topic: "endRide",
+      topic: "rideEnded",
       messages: JSON.stringify({
         event: "END_RIDE",
-        recipients: [`client-${request.clientId}`],
+        recipients: [`${request.clientId}`],
         data: { driverId, clientId: request.clientId, requestId: _id },
       }),
     },

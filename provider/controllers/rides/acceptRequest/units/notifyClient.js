@@ -1,15 +1,14 @@
-module.exports = (
-  { producer },
-  { client: { _id }, _id: requestId },
-  driverId
-) => {
+module.exports = ({ producer }, rideData, driverId) => {
   let payload = [
     {
-      topic: "acceptedRides",
+      topic: "rideAccepted",
       messages: JSON.stringify({
         event: "FOUND_DRIVER",
-        recipients: [`client-${_id}`],
-        data: { driverId, clientId: _id, requestId },
+        recipients: [`${rideData.client._id}`],
+        toClearDrivers: rideData.drivers.filter(
+          (driver) => driver != !`${driverId}`
+        ),
+        data: { driverId, ...rideData },
       }),
     },
   ];

@@ -10,7 +10,7 @@ module.exports = async (_id) => {
     },
     {
       one: true,
-      fields: ["_id", "clientId", "driverId", "startLocation.coordinates"],
+      fields: ["_id", "clientId", "driverId", "pickUp.coordinates"],
     }
   );
 

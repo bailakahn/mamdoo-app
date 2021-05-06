@@ -1,7 +1,7 @@
 module.exports = [
-  { topic: "newrequest", partition: 0 },
-  { topic: "acceptedRides", partition: 0 },
+  { topic: "requestCreated", partition: 0 },
+  { topic: "rideAccepted", partition: 0 },
   { topic: "driverArrived", partition: 0 },
-  { topic: "cancelRequest", partition: 0 },
-  { topic: "endRide", partition: 0 },
+  { topic: "requestCanceled", partition: 0 },
+  { topic: "rideEnded", partition: 0 },
 ];

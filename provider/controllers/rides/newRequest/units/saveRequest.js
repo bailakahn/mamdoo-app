@@ -6,7 +6,7 @@ module.exports = async ({
 }) => {
   const newRequest = new Ride({
     clientId,
-    startLocation: { type: "Point", coordinates },
+    pickUp: { type: "Point", coordinates },
     drivers,
   });
   const { _id } = await newRequest.save();

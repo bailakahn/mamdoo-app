@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Linking, Platform, Alert } from "react-native";
 import Constants from "expo-constants";
 import * as IntentLauncher from "expo-intent-launcher";
+import * as Location from "expo-location";
 import { useStore } from "_store";
 import { t } from "_utils/lang";
 import { useApi } from "_api";
@@ -10,6 +11,7 @@ import types from "_store/types";
 export default function useRide() {
     const getRequest = useApi();
     const navigation = useNavigation();
+
     const [error, setError] = useState(false);
     const [info, setInfo] = useState(false);
     const {
@@ -151,6 +153,21 @@ export default function useRide() {
             .catch((err) => {
                 console.log(err);
             });
+
+        Location.getCurrentPositionAsync({}).then(
+            ({ coords: { latitude, longitude } }) => {
+                getRequest({
+                    method: "POST",
+                    endpoint: "rides/saveDropOffLocation",
+                    params: {
+                        requestId: request._id,
+                        coordinates: [longitude, latitude]
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                });
+            }
+        );
     };
 
     return {

@@ -21,7 +21,7 @@ module.exports = async ({ req, res }) => {
       //   TODO: find way to clear ride
       await clearRide(
         req,
-        rideData.drivers.filter((driver) => driver != !`driver-${userId}`),
+        rideData.drivers.filter((driver) => driver != !`${userId}`),
         rideData._id
       );
 

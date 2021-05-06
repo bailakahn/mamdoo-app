@@ -20,11 +20,16 @@ module.exports = async ({ req, res }) => {
 
       let payload = [
         {
-          topic: "newrequest",
+          topic: "requestCreated",
           messages: JSON.stringify({
             event: "NEW_REQUEST",
             recipients: nearByDrivers,
-            data: { requestId },
+            data: {
+              requestId,
+              coordinates,
+              clientId: userId,
+              drivers: nearByDrivers,
+            },
           }),
           partition: 0,
         },
