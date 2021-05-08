@@ -173,7 +173,7 @@ export default function Register({ navigation }) {
                                     cab: { ...partner.formPartner.cab, model }
                                 })
                             }
-                            maxLength={10}
+                            maxLength={20}
                         />
 
                         <TextInput

@@ -9,7 +9,7 @@ export default function usePartner() {
 
     const {
         auth: { partner },
-        actions: { getPartner, setPartner }
+        actions: { getPartner, setPartner, removePartner }
     } = useStore();
 
     useEffect(() => {
@@ -123,6 +123,30 @@ export default function usePartner() {
             });
     };
 
+    const saveChanges = (editPartner, setShowSuccess) => {
+        getRequest({
+            method: "POST",
+            endpoint: "drivers/edit",
+            params: {
+                ...editPartner,
+                _id: partner.userId,
+                cab: undefined,
+                phoneNumber: undefined
+            }
+        })
+            .then((newValues) => {
+                setPartner({ ...partner, ...newValues });
+                setShowSuccess(true);
+                setTimeout(() => {
+                    setShowSuccess(false);
+                }, 1000);
+            })
+            .catch((err) => {
+                console.log(err);
+                setFormError(t(err.code));
+            });
+    };
+
     return {
         formPartner,
         formError,
@@ -134,7 +158,9 @@ export default function usePartner() {
             setFormPartner,
             setAuth,
             loginPartner,
-            changeStatus
+            changeStatus,
+            saveChanges,
+            logout: () => removePartner()
         }
     };
 }

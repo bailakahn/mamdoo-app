@@ -11,7 +11,7 @@ export default {
     // PARTNER
     SET_PARTNER: "SET_PARTNER",
     SET_RIDE: "SET_RIDE",
-
+    REMOVE_PARTNER: "REMOVE_PARTNER",
     // Socket events
     FOUND_DRIVER: "FOUND_DRIVER",
     DRIVER_ARRIVED: "DRIVER_ARRIVED",

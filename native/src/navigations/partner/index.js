@@ -7,6 +7,8 @@ import AuthStack from "./stacks/Auth";
 import { useTheme } from "@react-navigation/native";
 import { usePartner } from "_hooks";
 import { Loading } from "_atoms";
+import { t2 } from "_utils/lang";
+
 const Tab = createMaterialBottomTabNavigator();
 
 export default function MainTabs({ role }) {
@@ -37,7 +39,8 @@ export default function MainTabs({ role }) {
                             color={color}
                             size={25}
                         />
-                    )
+                    ),
+                    title: t2("screens.home")
                 }}
             />
 
@@ -51,7 +54,8 @@ export default function MainTabs({ role }) {
                             color={color}
                             size={25}
                         />
-                    )
+                    ),
+                    title: t2("screens.account")
                 })}
             />
         </Tab.Navigator>

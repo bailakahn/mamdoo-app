@@ -8,7 +8,16 @@ module.exports = async ({ phoneNumber, password }) => {
     { phoneNumber, deleted: false },
     {
       one: true,
-      fields: ["_id", "firstName", "lastName", "isOnline", "password", "salt"],
+      fields: [
+        "_id",
+        "firstName",
+        "lastName",
+        "phoneNumber",
+        "isOnline",
+        "password",
+        "salt",
+        "cab",
+      ],
     }
   );
 

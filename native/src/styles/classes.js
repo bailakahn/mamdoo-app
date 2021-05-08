@@ -10,11 +10,26 @@ export const container = (colors) => ({
     justifyContent: "center"
 });
 
+export const container2 = (colors) => ({
+    flex: 1,
+    backgroundColor: colors.background
+});
+
 export const bottonView = (colors) => ({
     flex: 1,
     justifyContent: "flex-end",
     alignItems: "center",
     marginBottom: 20
+});
+
+export const menuItem = (colors) => ({
+    height: Mixins.height(60),
+    justifyContent: "center"
+});
+
+export const accountMenuItem = (colors) => ({
+    height: Mixins.height(80),
+    justifyContent: "center"
 });
 
 export const goButton = (colors) => ({
@@ -100,6 +115,14 @@ export const formInput = (colors) => ({
     marginBottom: 20
 });
 
+export const profileFormInput = (colors) => ({
+    width: Mixins.width(0.95, true),
+    height: Mixins.height(50),
+    fontSize: 20,
+    borderBottomColor: "grey",
+    marginBottom: 20
+});
+
 export const errorText = (colors) => ({
     color: colors.error
 });
@@ -117,6 +140,19 @@ export const formButton = (colors) => ({
     marginTop: 20,
     width: Mixins.width(0.85, true),
     height: Mixins.height(40),
+    justifyContent: "center"
+});
+
+export const profileFormButton = (colors) => ({
+    marginTop: 20,
+    width: Mixins.width(0.95, true),
+    height: Mixins.height(50),
+    justifyContent: "center"
+});
+
+export const profileFormButtonContent = (colors) => ({
+    width: Mixins.width(0.95, true),
+    height: Mixins.height(50),
     justifyContent: "center"
 });
 

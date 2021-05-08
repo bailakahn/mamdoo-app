@@ -36,6 +36,11 @@ export default function authActions(state, dispatch) {
                         partner: JSON.parse(partner)
                     })
             );
+        },
+        removePartner: () => {
+            AsyncStorage.removeItem("@mamdoo-partner").then(() => {
+                dispatch({ type: types.REMOVE_PARTNER });
+            });
         }
     };
 }

@@ -80,6 +80,22 @@ export default {
         notRegisteredYet: "Not Register Yet ?"
     },
     account: {
-        changeApp: "Change App"
+        changeApp: "Change App",
+        viewProfile: "View Profile",
+        ridesHistory: "Rides History",
+        logout: "Logout"
+    },
+    screens: {
+        home: "Home",
+        account: "Account",
+        profile: "Profile",
+        ridesHistory: "Rides History"
+    },
+    profile: {
+        edit: "Edit",
+        saveChanges: "Save Changes",
+        cancel: "Cancel",
+        secureInfoInfo: "To edit the information above, contact us!",
+        sucessfullySaved: "Successfully updated your information!"
     }
 };

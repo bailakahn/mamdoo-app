@@ -76,6 +76,23 @@ export default {
         notRegisteredYet: "Pas de compte ?"
     },
     account: {
-        changeApp: "Changer d'application"
+        changeApp: "Changer d'application",
+        viewProfile: "Voir votre profil",
+        ridesHistory: "Historique de courses",
+        logout: "Se déconnecter"
+    },
+    screens: {
+        home: "Accueil",
+        account: "Compte",
+        profile: "Profil",
+        ridesHistory: "Historique de courses"
+    },
+    profile: {
+        edit: "Modifier",
+        saveChanges: "Sauvegarder les changements",
+        cancel: "Annuler",
+        secureInfoInfo:
+            "Pour modifier les informations ci-dessus, contactez-nous!",
+        sucessfullySaved: "Vos informations ont été mise à jour!"
     }
 };

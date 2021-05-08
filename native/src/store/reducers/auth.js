@@ -18,6 +18,11 @@ export default (state = auth, action) => {
                 ...state,
                 partner: action.partner
             };
+        case types.REMOVE_PARTNER:
+            return {
+                ...state,
+                partner: null
+            };
         default:
             return state;
     }
