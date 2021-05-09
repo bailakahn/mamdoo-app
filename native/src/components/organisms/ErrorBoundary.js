@@ -3,9 +3,10 @@ import { View, Text, SafeAreaView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import FontAwesome from "react-native-vector-icons/Ionicons";
 import RNRestart from "react-native-restart";
-import { Button, withTheme } from "react-native-paper";
+import { withTheme } from "react-native-paper";
 import { Classes, Mixins } from "_styles";
 import { t } from "_utils/lang";
+import { Button } from "_atoms";
 
 export class ErrorBoundary extends React.Component {
     state = {

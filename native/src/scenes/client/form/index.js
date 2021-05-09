@@ -1,10 +1,11 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
-import { Button, useTheme, TextInput } from "react-native-paper";
+import { useTheme, TextInput } from "react-native-paper";
 import { useStore } from "_store";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { useUser } from "_hooks";
+import { Button } from "_atoms";
 
 export default function Form() {
     const { colors } = useTheme();

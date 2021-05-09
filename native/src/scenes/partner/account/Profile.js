@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState, useLayoutEffect } from "react";
 import { View, ScrollView } from "react-native";
 import {
-    Button,
     useTheme,
     List,
     Divider,
@@ -13,6 +12,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import { usePartner } from "_hooks";
+import { Button } from "_atoms";
 
 export default function ProfileScene({ navigation }) {
     const { colors } = useTheme();

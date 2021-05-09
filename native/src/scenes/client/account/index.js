@@ -1,9 +1,10 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { Button, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { useApp } from "_hooks";
+import { Button } from "_atoms";
 
 export default function AccountScene({}) {
     const { colors } = useTheme();

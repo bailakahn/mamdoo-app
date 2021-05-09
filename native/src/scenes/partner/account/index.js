@@ -1,7 +1,6 @@
 import React, { useMemo } from "react";
 import { View, ScrollView } from "react-native";
-import { Button, useTheme, List, Divider, Avatar } from "react-native-paper";
-import { ListItem } from "react-native-elements";
+import { useTheme, List, Divider, Avatar } from "react-native-paper";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import { useApp, usePartner } from "_hooks";

@@ -1,15 +1,9 @@
 import React from "react";
 import { View } from "react-native";
-import {
-    Portal,
-    Modal,
-    Headline,
-    useTheme,
-    Button,
-    Text
-} from "react-native-paper";
+import { Portal, Modal, Headline, useTheme, Text } from "react-native-paper";
 import { t2 } from "_utils/lang";
 import { Classes } from "_styles";
+import { Button } from "_atoms";
 
 export default function Info({ onDismiss, visible, text, onClose }) {
     const { colors } = useTheme();

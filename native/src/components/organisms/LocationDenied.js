@@ -1,11 +1,11 @@
 import React from "react";
 import { View, Linking, Platform } from "react-native";
-import { Button, useTheme, Text } from "react-native-paper";
+import { useTheme, Text } from "react-native-paper";
 import Constants from "expo-constants";
 import * as IntentLauncher from "expo-intent-launcher";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
-
+import { Button } from "_atoms";
 export default function LocationDenied() {
     const { colors } = useTheme();
 

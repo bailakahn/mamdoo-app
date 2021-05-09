@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { View, Image, Platform } from "react-native";
-import { Button, useTheme, Text } from "react-native-paper";
+import { useTheme, Text } from "react-native-paper";
 import LottieView from "lottie-react-native";
 import { useColorScheme } from "react-native-appearance";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -14,7 +14,7 @@ import ReadyAmimation from "_assets/animation/ready.json";
 import LightReadyAmimation from "_assets/animation/light-ready.gif";
 import DarkReadyAmimation from "_assets/animation/dark-ready.gif";
 import { useRide } from "_hooks/partner";
-import { RoundButton } from "_atoms";
+import { RoundButton, Button } from "_atoms";
 import { Info } from "_molecules";
 
 export default function DriverOnTheWayScene() {
@@ -99,7 +99,6 @@ export default function DriverOnTheWayScene() {
                         mode="contained"
                         onPress={ride.actions.openMap}
                         color="#04009A"
-                        labelStyle={{ color: colors.text }}
                     >
                         {t2("ride.openMap")}
                     </Button>

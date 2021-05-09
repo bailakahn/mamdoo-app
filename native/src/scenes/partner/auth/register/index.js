@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { View, Image, TouchableOpacity } from "react-native";
-import { Button, useTheme, TextInput, Text } from "react-native-paper";
+import { useTheme, TextInput, Text } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useStore } from "_store";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import { usePartner } from "_hooks";
-
+import { Button } from "_atoms";
 export default function Register({ navigation }) {
     const { colors } = useTheme();
     const {
@@ -125,14 +125,15 @@ export default function Register({ navigation }) {
                                     style={{
                                         alignSelf: "flex-start",
                                         width: 50,
-                                        color: colors.text
+                                        color: "#ffffff"
                                     }}
                                 />
                                 <Text
                                     style={{
                                         fontSize: 20,
                                         textAlign: "center",
-                                        paddingRight: 50
+                                        paddingRight: 50,
+                                        color: "#ffffff"
                                     }}
                                 >
                                     {t2("form.back")}
@@ -221,7 +222,8 @@ export default function Register({ navigation }) {
                                     style={{
                                         fontSize: 25,
                                         textAlign: "center",
-                                        alignSelf: "center"
+                                        alignSelf: "center",
+                                        color: "#ffffff"
                                     }}
                                 >
                                     {t2("form.next")}
@@ -231,7 +233,7 @@ export default function Register({ navigation }) {
                                     size={25}
                                     style={{
                                         alignSelf: "flex-end",
-                                        color: colors.text
+                                        color: "#ffffff"
                                     }}
                                 />
                             </View>

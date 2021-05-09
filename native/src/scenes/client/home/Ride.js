@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useMemo } from "react";
 import { View, Image, Platform } from "react-native";
-import { Button, useTheme, Text } from "react-native-paper";
+import { useTheme, Text } from "react-native-paper";
 import LottieView from "lottie-react-native";
 import { useColorScheme } from "react-native-appearance";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -14,6 +14,7 @@ import ReadyAmimation from "_assets/animation/ready.json";
 import LightReadyAmimation from "_assets/animation/light-ready.gif";
 import DarkReadyAmimation from "_assets/animation/dark-ready.gif";
 import { useRide } from "_hooks";
+import { Button } from "_atoms";
 
 export default function RideRequestScreen() {
     const { colors } = useTheme();

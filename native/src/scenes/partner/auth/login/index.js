@@ -1,10 +1,11 @@
 import React from "react";
 import { View, Image, TouchableOpacity } from "react-native";
-import { Button, useTheme, TextInput, Text } from "react-native-paper";
+import { useTheme, TextInput, Text } from "react-native-paper";
 import { useStore } from "_store";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import { usePartner } from "_hooks";
+import { Button } from "_atoms";
 
 export default function Login({ navigation }) {
     const { colors } = useTheme();
