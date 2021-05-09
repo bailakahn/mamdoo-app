@@ -28,6 +28,7 @@ export default function usePartner() {
     const [auth, setAuth] = useState({ phoneNumber: "", password: "" });
 
     const [formError, setFormError] = useState(false);
+    const [ridesHistory, setRidesHistory] = useState([]);
 
     const savePartner = () => {
         setFormError(false);
@@ -147,11 +148,25 @@ export default function usePartner() {
             });
     };
 
+    const getRidesHistory = () => {
+        getRequest({
+            method: "GET",
+            endpoint: "rides/drivers/history"
+        })
+            .then((data) => {
+                setRidesHistory(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     return {
         formPartner,
         formError,
         partner,
         auth,
+        ridesHistory,
         isLoading,
         actions: {
             savePartner,
@@ -160,6 +175,7 @@ export default function usePartner() {
             loginPartner,
             changeStatus,
             saveChanges,
+            getRidesHistory,
             logout: () => removePartner()
         }
     };

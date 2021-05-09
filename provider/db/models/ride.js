@@ -34,4 +34,18 @@ const rideSchema = new Schema(
   { collection: "rides" }
 );
 
+rideSchema.virtual("client", {
+  ref: "Client",
+  localField: "clientId",
+  foreignField: "_id",
+  justOne: true,
+});
+
+rideSchema.virtual("driver", {
+  ref: "Driver",
+  localField: "driverId",
+  foreignField: "_id",
+  justOne: true,
+});
+
 module.exports = model("Ride", rideSchema);

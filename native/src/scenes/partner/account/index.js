@@ -16,7 +16,9 @@ export default function AccountScene({ navigation }) {
             {
                 title: t2("account.ridesHistory"),
                 icon: "format-list-text",
-                onPress: () => {}
+                onPress: () => {
+                    navigation.navigate("RidesHistory");
+                }
             },
             {
                 title: t2("account.changeApp"),

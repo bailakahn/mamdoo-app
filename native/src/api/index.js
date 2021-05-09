@@ -14,8 +14,8 @@ export function useApi() {
         const options = {
             headers: {
                 app,
-                ...(user && { "x-mamdoo-access-token": user.accessToken }),
-                ...(partner && { "x-mamdoo-access-token": partner.accessToken })
+                "x-mamdoo-access-token":
+                    app === "client" ? user.accessToken : partner.accessToken
             },
             method
         };

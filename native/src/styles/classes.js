@@ -217,3 +217,7 @@ export const openMapButton = (colors) => ({
     height: 50,
     justifyContent: "center"
 });
+
+export const dataCell = (colors) => ({
+    justifyContent: "center"
+});

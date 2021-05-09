@@ -96,6 +96,8 @@ export default {
         saveChanges: "Save Changes",
         cancel: "Cancel",
         secureInfoInfo: "To edit the information above, contact us!",
-        sucessfullySaved: "Successfully updated your information!"
+        sucessfullySaved: "Successfully updated your information!",
+        canceled: "Canceled",
+        completed: "Completed"
     }
 };

@@ -93,6 +93,8 @@ export default {
         cancel: "Annuler",
         secureInfoInfo:
             "Pour modifier les informations ci-dessus, contactez-nous!",
-        sucessfullySaved: "Vos informations ont été mise à jour!"
+        sucessfullySaved: "Vos informations ont été mise à jour!",
+        canceled: "Anulée",
+        completed: "Complétée"
     }
 };
