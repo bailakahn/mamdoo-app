@@ -77,7 +77,7 @@ export const buttonShadow = (colors, size) => ({
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: colors.background
+    borderColor: "#ffffff"
 });
 
 export const driverWelcomeNoticeView = (colors, isOnline) => ({

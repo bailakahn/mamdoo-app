@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useMemo } from "react";
-import { View, Text, Image, Platform } from "react-native";
-import { Button, useTheme, us } from "react-native-paper";
+import { View, Image, Platform } from "react-native";
+import { Button, useTheme, Text } from "react-native-paper";
 import LottieView from "lottie-react-native";
 import { useColorScheme } from "react-native-appearance";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -37,25 +37,17 @@ export default function RideRequestScreen() {
 
     return (
         <View style={Classes.container(colors)}>
-            <Text
-                style={[
-                    Classes.text(colors),
-                    { fontSize: 30, fontWeight: "bold" }
-                ]}
-            >
+            <Text style={{ fontSize: 30, fontWeight: "bold" }}>
                 {`${ride.driver.firstName} ${ride.driver.lastName}`}
                 {/* {t("ride.foundMamdoo")} */}
             </Text>
 
             {ride.driverArrived && (
                 <Text
-                    style={[
-                        Classes.text(colors),
-                        {
-                            fontSize: 30,
-                            fontWeight: "bold"
-                        }
-                    ]}
+                    style={{
+                        fontSize: 30,
+                        fontWeight: "bold"
+                    }}
                 >
                     {t("ride.driverArrived")}
                 </Text>
@@ -92,13 +84,10 @@ export default function RideRequestScreen() {
 
             {!ride.driverArrived && (
                 <Text
-                    style={[
-                        Classes.text(colors),
-                        {
-                            fontSize: 15,
-                            fontWeight: "bold"
-                        }
-                    ]}
+                    style={{
+                        fontSize: 15,
+                        fontWeight: "bold"
+                    }}
                 >
                     {t("ride.isOnHisWay")}
                 </Text>
@@ -106,13 +95,10 @@ export default function RideRequestScreen() {
 
             <View>
                 <Text
-                    style={[
-                        Classes.text(colors),
-                        {
-                            fontSize: 20,
-                            fontWeight: "bold"
-                        }
-                    ]}
+                    style={{
+                        fontSize: 20,
+                        fontWeight: "bold"
+                    }}
                 >
                     {t("ride.meetHimOutside")}
                 </Text>
@@ -120,24 +106,18 @@ export default function RideRequestScreen() {
 
             <View style={{ marginTop: 40, flexDirection: "row" }}>
                 <Text
-                    style={[
-                        Classes.text(colors),
-                        {
-                            fontWeight: "bold",
-                            marginRight: 20
-                        }
-                    ]}
+                    style={{
+                        fontWeight: "bold",
+                        marginRight: 20
+                    }}
                 >
                     <Icon size={40} name="phone-forwarded" />
                 </Text>
                 <Text
-                    style={[
-                        Classes.text(colors),
-                        {
-                            fontSize: 25,
-                            fontWeight: "bold"
-                        }
-                    ]}
+                    style={{
+                        fontSize: 25,
+                        fontWeight: "bold"
+                    }}
                 >
                     {ride.driver.phoneNumber}
                 </Text>
@@ -168,14 +148,11 @@ export default function RideRequestScreen() {
                         </Button>
                     ) : (
                         <Text
-                            style={[
-                                Classes.text(colors),
-                                {
-                                    fontSize: 20,
-                                    fontWeight: "bold",
-                                    color: colors.accent
-                                }
-                            ]}
+                            style={{
+                                fontSize: 20,
+                                fontWeight: "bold",
+                                color: colors.accent
+                            }}
                         >
                             Call Mamdoo to cancel ride
                         </Text>

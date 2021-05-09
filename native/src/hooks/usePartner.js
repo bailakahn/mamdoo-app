@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { t } from "_utils/lang";
+import { t2 } from "_utils/lang";
 import { useApi } from "_api";
 import { useStore } from "_store";
 export default function usePartner() {
@@ -33,12 +33,12 @@ export default function usePartner() {
     const savePartner = () => {
         setFormError(false);
         if (/\d/.test(formPartner.firstName) || !formPartner.firstName.length) {
-            setFormError(t("errors.firstName"));
+            setFormError(t2("errors.firstName"));
             return;
         }
 
         if (/\d/.test(formPartner.lastName) || !formPartner.lastName.length) {
-            setFormError(t("errors.lastName"));
+            setFormError(t2("errors.lastName"));
             return;
         }
 
@@ -46,7 +46,7 @@ export default function usePartner() {
             !/^\d+$/.test(formPartner.phoneNumber) ||
             !formPartner.phoneNumber.length
         ) {
-            setFormError(t("errors.phoneNumber"));
+            setFormError(t2("errors.phoneNumber"));
             return;
         }
 
@@ -54,17 +54,17 @@ export default function usePartner() {
             !/[a-zA-Z0-9]{8,}/.test(formPartner.password) ||
             !formPartner.password.length
         ) {
-            setFormError(t("errors.passwordRegex"));
+            setFormError(t2("errors.passwordRegex"));
             return;
         }
 
         if (/\d/.test(formPartner.cab.model) || !formPartner.cab.model.length) {
-            setFormError(t("errors.cabModel"));
+            setFormError(t2("errors.cabModel"));
             return;
         }
 
         if (!/^[A-Z]{1,2}\d{4}$/.test(formPartner.cab.licensePlate)) {
-            setFormError(t("errors.licensePlate"));
+            setFormError(t2("errors.licensePlate"));
             return;
         }
 
@@ -78,7 +78,7 @@ export default function usePartner() {
             })
             .catch((err) => {
                 console.log(err);
-                setFormError(t(err.code));
+                setFormError(t2(err.code));
             });
     };
 
@@ -86,12 +86,12 @@ export default function usePartner() {
         setFormError(false);
 
         if (!/^\d+$/.test(auth.phoneNumber) || !auth.phoneNumber.length) {
-            setFormError(t("errors.phoneNumber"));
+            setFormError(t2("errors.phoneNumber"));
             return;
         }
 
         if (!/[a-zA-Z0-9]{8,}/.test(auth.password) || !auth.password.length) {
-            setFormError(t("errors.passwordRegex"));
+            setFormError(t2("errors.passwordRegex"));
             return;
         }
 
@@ -105,7 +105,7 @@ export default function usePartner() {
             })
             .catch((err) => {
                 console.log(err);
-                setFormError(t(err.code));
+                setFormError(t2(err.code));
             });
     };
 
@@ -144,7 +144,7 @@ export default function usePartner() {
             })
             .catch((err) => {
                 console.log(err);
-                setFormError(t(err.code));
+                setFormError(t2(err.code));
             });
     };
 

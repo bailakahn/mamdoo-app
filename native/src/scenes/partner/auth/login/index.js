@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
-import { Button, useTheme, TextInput } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import React from "react";
+import { View, Image, TouchableOpacity } from "react-native";
+import { Button, useTheme, TextInput, Text } from "react-native-paper";
 import { useStore } from "_store";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
@@ -25,12 +24,7 @@ export default function Login({ navigation }) {
             </View>
             <>
                 <View style={{ marginBottom: 25 }}>
-                    <Text
-                        style={[
-                            Classes.text(colors),
-                            { fontSize: 25, fontWeight: "bold" }
-                        ]}
-                    >
+                    <Text style={{ fontSize: 25, fontWeight: "bold" }}>
                         {t2("form.loginHeader")}
                     </Text>
                 </View>
@@ -68,7 +62,7 @@ export default function Login({ navigation }) {
             </>
             <View style={Classes.error(colors)}>
                 {partner.formError && (
-                    <Text style={Classes.errortext(colors)}>
+                    <Text style={Classes.errorText(colors)}>
                         {partner.formError}
                     </Text>
                 )}
@@ -94,19 +88,14 @@ export default function Login({ navigation }) {
                     marginTop: 30
                 }}
             >
-                <Text style={[Classes.text(colors), { fontSize: 20 }]}>
+                <Text style={{ fontSize: 20 }}>
                     {t2("form.notRegisteredYet")}
                 </Text>
                 <TouchableOpacity
                     style={{ marginLeft: 10 }}
                     onPress={() => navigation.navigate("Register")}
                 >
-                    <Text
-                        style={[
-                            Classes.text(colors),
-                            { color: colors.accent, fontSize: 20 }
-                        ]}
-                    >
+                    <Text style={{ color: colors.accent, fontSize: 20 }}>
                         {t2("form.register")}
                     </Text>
                 </TouchableOpacity>

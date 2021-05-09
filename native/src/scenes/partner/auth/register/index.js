@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
-import { Button, useTheme, TextInput } from "react-native-paper";
+import { View, Image, TouchableOpacity } from "react-native";
+import { Button, useTheme, TextInput, Text } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useStore } from "_store";
 import { Classes } from "_styles";
@@ -28,12 +28,7 @@ export default function Register({ navigation }) {
             {step === 1 ? (
                 <>
                     <View style={{ marginBottom: 25 }}>
-                        <Text
-                            style={[
-                                Classes.text(colors),
-                                { fontSize: 25, fontWeight: "bold" }
-                            ]}
-                        >
+                        <Text style={{ fontSize: 25, fontWeight: "bold" }}>
                             {t2("form.personalInfo")}
                         </Text>
                     </View>
@@ -129,7 +124,8 @@ export default function Register({ navigation }) {
                                     size={25}
                                     style={{
                                         alignSelf: "flex-start",
-                                        width: 50
+                                        width: 50,
+                                        color: colors.text
                                     }}
                                 />
                                 <Text
@@ -152,12 +148,7 @@ export default function Register({ navigation }) {
                                 alignItems: "center"
                             }}
                         >
-                            <Text
-                                style={[
-                                    Classes.text(colors),
-                                    { fontSize: 25, fontWeight: "bold" }
-                                ]}
-                            >
+                            <Text style={{ fontSize: 25, fontWeight: "bold" }}>
                                 {t2("form.cabInfo")}
                             </Text>
                         </View>
@@ -198,7 +189,7 @@ export default function Register({ navigation }) {
             )}
             <View>
                 {partner.formError && (
-                    <Text style={Classes.errortext(colors)}>
+                    <Text style={Classes.errorText(colors)}>
                         {partner.formError}
                     </Text>
                 )}
@@ -239,7 +230,8 @@ export default function Register({ navigation }) {
                                     name="arrow-forward"
                                     size={25}
                                     style={{
-                                        alignSelf: "flex-end"
+                                        alignSelf: "flex-end",
+                                        color: colors.text
                                     }}
                                 />
                             </View>
@@ -269,19 +261,14 @@ export default function Register({ navigation }) {
                         marginTop: 30
                     }}
                 >
-                    <Text style={[Classes.text(colors), { fontSize: 20 }]}>
+                    <Text style={{ fontSize: 20 }}>
                         {t2("form.alreadyHaveAccount")}
                     </Text>
                     <TouchableOpacity
                         style={{ marginLeft: 10 }}
                         onPress={() => navigation.navigate("Login")}
                     >
-                        <Text
-                            style={[
-                                Classes.text(colors),
-                                { color: colors.accent, fontSize: 20 }
-                            ]}
-                        >
+                        <Text style={{ color: colors.accent, fontSize: 20 }}>
                             {t2("form.login")}
                         </Text>
                     </TouchableOpacity>

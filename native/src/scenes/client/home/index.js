@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import { Button, useTheme } from "react-native-paper";
+import React from "react";
+import { View, TouchableOpacity } from "react-native";
+import { Text, useTheme } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { useProxy, useRequest } from "_hooks";
@@ -20,7 +20,7 @@ export default function HomeScreen({ navigation }) {
                 }}
                 style={Classes.roundedButton(colors)}
             >
-                <Text style={Classes.text(colors)}>{t("home.bookRide")}</Text>
+                <Text>{t("home.bookRide")}</Text>
             </TouchableOpacity>
         </View>
     );

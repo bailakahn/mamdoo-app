@@ -1,6 +1,6 @@
-import React, { useRef, useEffect, useMemo } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import { Button, useTheme } from "react-native-paper";
+import React, { useRef, useEffect } from "react";
+import { View } from "react-native";
+import { Text, useTheme } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import LottieView from "lottie-react-native";
@@ -28,12 +28,7 @@ export default function RideRequestScreen({ navigation }) {
                     onClose={() => ride.actions.setCancelRide(false)}
                 />
             )}
-            <Text
-                style={[
-                    Classes.text(colors),
-                    { fontSize: 30, fontWeight: "bold" }
-                ]}
-            >
+            <Text style={{ fontSize: 30, fontWeight: "bold" }}>
                 {t("ride.driverSearch")}
             </Text>
 
@@ -48,12 +43,7 @@ export default function RideRequestScreen({ navigation }) {
                 ]}
                 source={PinAnimation}
             />
-            <Text
-                style={[
-                    Classes.text(colors),
-                    { fontSize: 30, fontWeight: "bold" }
-                ]}
-            >
+            <Text style={{ fontSize: 30, fontWeight: "bold" }}>
                 {t("ride.mamdoo")}
             </Text>
         </View>

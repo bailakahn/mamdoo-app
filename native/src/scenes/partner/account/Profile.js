@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, useLayoutEffect } from "react";
-import { View, ScrollView, Text } from "react-native";
+import { View, ScrollView } from "react-native";
 import {
     Button,
     useTheme,
@@ -7,17 +7,16 @@ import {
     Divider,
     TextInput,
     Caption,
-    HelperText
+    Text
 } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
-import { useApp, usePartner } from "_hooks";
+import { usePartner } from "_hooks";
 
 export default function ProfileScene({ navigation }) {
     const { colors } = useTheme();
     const partner = usePartner();
-    const app = useApp();
     const [isEdit, setIsEdit] = useState(false);
 
     const [editUser, setEditUser] = useState({});
@@ -197,12 +196,7 @@ export default function ProfileScene({ navigation }) {
                             color={colors.accent}
                             size={30}
                         />
-                        <Text
-                            style={[
-                                Classes.text(colors),
-                                { fontSize: 10, marginLeft: 10 }
-                            ]}
-                        >
+                        <Text style={{ fontSize: 10, marginLeft: 10 }}>
                             {t2("profile.secureInfoInfo")}
                         </Text>
                     </View>

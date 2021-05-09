@@ -1,13 +1,6 @@
 import React, { useEffect } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import {
-    Button,
-    Headline,
-    useTheme,
-    Portal,
-    Dialog,
-    Modal
-} from "react-native-paper";
+import { View } from "react-native";
+import { Headline, useTheme, Portal, Text, Modal } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
@@ -39,7 +32,7 @@ export default function AccountScene({}) {
                         <Headline style={Classes.text(colors)}>
                             Nouvelle demande de course
                         </Headline>
-                        <Text style={Classes.text(colors)}>
+                        <Text>
                             Un utilisateur vient d'effectuer une demande de
                             course
                         </Text>
@@ -106,12 +99,7 @@ export default function AccountScene({}) {
                         partner.partner.isOnline
                     )}
                 >
-                    <Text
-                        style={[
-                            Classes.text(colors),
-                            { fontSize: 20, fontWeight: "bold" }
-                        ]}
-                    >
+                    <Text style={{ fontSize: 20, fontWeight: "bold" }}>
                         {partner.partner.isOnline
                             ? t2("home.onlineWelcomeText")
                             : t2("home.offlineWelcomeText")}
@@ -141,12 +129,7 @@ export default function AccountScene({}) {
                     }
                     size={30}
                 />
-                <Text
-                    style={[
-                        Classes.text(colors),
-                        { fontSize: 20, marginLeft: 10 }
-                    ]}
-                >
+                <Text style={{ fontSize: 20, marginLeft: 10 }}>
                     {!partner.partner.isOnline
                         ? t2("home.goNotice")
                         : t2("home.stopNotice")}

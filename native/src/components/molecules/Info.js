@@ -1,6 +1,13 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { Portal, Modal, Headline, useTheme, Button } from "react-native-paper";
+import { View } from "react-native";
+import {
+    Portal,
+    Modal,
+    Headline,
+    useTheme,
+    Button,
+    Text
+} from "react-native-paper";
 import { t2 } from "_utils/lang";
 import { Classes } from "_styles";
 
@@ -15,14 +22,7 @@ export default function Info({ onDismiss, visible, text, onClose }) {
                 visible={visible}
             >
                 <Headline>Mamdoo</Headline>
-                <Text
-                    style={[
-                        Classes.text(colors),
-                        { marginTop: 20, marginBottom: 20 }
-                    ]}
-                >
-                    {text}
-                </Text>
+                <Text style={{ marginTop: 20, marginBottom: 20 }}>{text}</Text>
 
                 <View>
                     <Button

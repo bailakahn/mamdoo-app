@@ -15,7 +15,7 @@ export default function RoundButton({ size, text, color, onPress, shadow }) {
                 <View style={Classes.buttonShadow(colors, shadow.size)}>
                     <Text
                         style={{
-                            color: colors.background,
+                            color: "#ffffff",
                             fontWeight: "bold",
                             fontSize: 15,
                             textAlign: "center"

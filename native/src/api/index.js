@@ -15,7 +15,7 @@ export function useApi() {
             headers: {
                 app,
                 "x-mamdoo-access-token":
-                    app === "client" ? user.accessToken : partner.accessToken
+                    app === "client" ? user?.accessToken : partner?.accessToken
             },
             method
         };
