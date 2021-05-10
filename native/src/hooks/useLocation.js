@@ -39,6 +39,7 @@ export default function useLocation() {
             //     Location.startLocationUpdatesAsync(TASK_FETCH_LOCATION, {
             //         accuracy: Location.Accuracy.Highest,
             //         distanceInterval: 1, // minimum change (in meters) betweens updates
+            //         timeInterval: 2000,
             //         deferredUpdatesInterval: 1000, // minimum interval (in milliseconds) between updates
             //         // foregroundService is how you get the task to be updated as often as would be if the app was open
             //         foregroundService: {
@@ -87,7 +88,8 @@ TaskManager.defineTask(
         const [location] = locations;
         try {
             const url = `https://<your-api-endpoint>`;
-            await axios.post(url, { location }); // you should use post instead of get to persist data on the backend
+            console.log("Update Loacation");
+            // await axios.post(url, { location }); // you should use post instead of get to persist data on the backend
         } catch (err) {
             console.error(err);
         }

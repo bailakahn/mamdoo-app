@@ -32,7 +32,7 @@ export default {
     ride: {
         hello: "Hello",
         driverSearch: "Searching a",
-        wait: "Please wait while we find you a driver",
+        wait: "Please wait while we find you a Mamdoo",
         mamdoo: "Mamdoo",
         foundMamdoo: "Mamdoo Found",
         driver: "Mamdoo",

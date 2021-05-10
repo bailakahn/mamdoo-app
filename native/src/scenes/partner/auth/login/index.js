@@ -1,17 +1,15 @@
 import React from "react";
-import { View, Image, TouchableOpacity } from "react-native";
-import { useTheme, TextInput, Text } from "react-native-paper";
+import { View, Image, TouchableOpacity, SafeAreaView } from "react-native";
+import { useTheme, Text, TextInput } from "react-native-paper";
 import { useStore } from "_store";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
-import { usePartner } from "_hooks";
-import { Button } from "_atoms";
+import { usePartner, useApp } from "_hooks";
+import { Button, RoundButton } from "_atoms";
 
 export default function Login({ navigation }) {
     const { colors } = useTheme();
-    const {
-        main: { app }
-    } = useStore();
+    const app = useApp();
 
     const partner = usePartner();
 
@@ -34,6 +32,7 @@ export default function Login({ navigation }) {
                         style={Classes.formInput(colors)}
                         mode="outlined"
                         label={t2("form.phoneNumber")}
+                        placeholder={t2("form.phoneNumber")}
                         value={partner.auth.phoneNumber}
                         onChangeText={(phoneNumber) =>
                             partner.actions.setAuth({
@@ -50,6 +49,7 @@ export default function Login({ navigation }) {
                         style={Classes.formInput(colors)}
                         mode="outlined"
                         label={t2("form.password")}
+                        placeholder={t2("form.password")}
                         value={partner.auth.password}
                         onChangeText={(password) =>
                             partner.actions.setAuth({
@@ -100,6 +100,18 @@ export default function Login({ navigation }) {
                         {t2("form.register")}
                     </Text>
                 </TouchableOpacity>
+            </View>
+
+            <View style={{ marginTop: 50 }}>
+                <RoundButton
+                    size={0.3}
+                    color={"grey"}
+                    text={"Changer d'application"}
+                    onPress={() => {
+                        app.actions.removeApp();
+                    }}
+                    shadow={{ size: 0.27 }}
+                />
             </View>
         </View>
     );

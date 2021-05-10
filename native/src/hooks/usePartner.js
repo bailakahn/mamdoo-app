@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { t2 } from "_utils/lang";
 import { useApi } from "_api";
 import { useStore } from "_store";
+import useLocation from "./useLocation";
 export default function usePartner() {
     const getRequest = useApi();
-
+    const location = useLocation();
     const [isLoading, setIsLoading] = useState(true);
 
     const {
@@ -71,7 +72,16 @@ export default function usePartner() {
         getRequest({
             method: "POST",
             endpoint: "drivers/save",
-            params: formPartner
+            params: {
+                ...formPartner,
+                currentLocation: {
+                    type: "Point",
+                    coordinates: [
+                        location.location.longitude,
+                        location.location.latitude
+                    ]
+                }
+            }
         })
             .then((newPartner) => {
                 setPartner(newPartner);

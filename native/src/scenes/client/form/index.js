@@ -4,14 +4,12 @@ import { useTheme, TextInput } from "react-native-paper";
 import { useStore } from "_store";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
-import { useUser } from "_hooks";
-import { Button } from "_atoms";
+import { useUser, useApp } from "_hooks";
+import { Button, RoundButton } from "_atoms";
 
 export default function Form() {
     const { colors } = useTheme();
-    const {
-        main: { app }
-    } = useStore();
+    const app = useApp();
 
     const user = useUser();
 
@@ -89,6 +87,18 @@ export default function Form() {
                 >
                     {t("form.start")}
                 </Button>
+            </View>
+
+            <View style={{ marginTop: 50, alignItems: "center" }}>
+                <RoundButton
+                    size={0.3}
+                    color={"grey"}
+                    text={"Changer d'application"}
+                    onPress={() => {
+                        app.actions.removeApp();
+                    }}
+                    shadow={{ size: 0.27 }}
+                />
             </View>
         </View>
     );

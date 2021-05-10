@@ -7,7 +7,7 @@ import { HomeScene, RideRequestScene, RideScene } from "_scenes/client";
 
 export default function HomeStack({ role }) {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen
                 name="Home"
                 component={HomeScene}

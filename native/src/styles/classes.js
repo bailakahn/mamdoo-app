@@ -1,7 +1,7 @@
 import * as Spacing from "./spacing";
 import * as Typography from "./typography";
 import * as Mixins from "./mixins";
-import { colors } from "react-native-elements";
+import { Platform } from "react-native";
 
 export const container = (colors) => ({
     flex: 1,
@@ -20,6 +20,12 @@ export const bottonView = (colors) => ({
     justifyContent: "flex-end",
     alignItems: "center",
     marginBottom: 20
+});
+
+export const topView = (colors) => ({
+    justifyContent: "flex-end",
+    alignItems: "center"
+    // marginTop: 100
 });
 
 export const menuItem = (colors) => ({
@@ -109,10 +115,14 @@ export const shadowView = (colors) => ({
 
 export const formInput = (colors) => ({
     width: Mixins.width(0.85, true),
-    height: Mixins.height(40),
+    height: Mixins.height(0.06, true),
     fontSize: 20,
     borderBottomColor: "grey",
     marginBottom: 20
+    // ...(Platform.OS === "android" && {
+    //     borderWidth: 1,
+    //     paddingLeft: 18
+    // })
 });
 
 export const profileFormInput = (colors) => ({
@@ -157,14 +167,13 @@ export const profileFormButtonContent = (colors) => ({
 });
 
 export const nextButton = (colors) => ({
-    marginTop: 20,
-    width: Mixins.width(0.5, true),
+    width: Mixins.width(0.85, true),
     height: Mixins.height(40)
 });
 
-export const nextButtonView = (colors) => ({
-    width: Mixins.width(0.85, true),
-    alignItems: "flex-end"
+export const nextButtonLabel = (colors) => ({
+    width: Mixins.width(0.8, true),
+    justifyContent: "center"
 });
 
 export const backButton = (colors) => ({
@@ -173,6 +182,11 @@ export const backButton = (colors) => ({
     height: Mixins.height(40),
     justifyContent: "center",
     backgroundColor: colors.accent
+});
+
+export const backButtonLabel = (colors) => ({
+    width: Mixins.width(0.5, true),
+    justifyContent: "center"
 });
 
 export const offlineContainer = {

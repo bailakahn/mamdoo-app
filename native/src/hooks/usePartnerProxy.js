@@ -33,6 +33,8 @@ export default function usePartnerProxy() {
                     return;
                 }
 
+                if (event === "RESET_REQUEST") console.log({ event, data });
+
                 dispatch({ type: event, data });
             });
         });

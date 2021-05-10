@@ -147,7 +147,7 @@ export default function DriverOnTheWayScene() {
                     <RoundButton
                         size={0.35}
                         shadow={{ size: 0.3 }}
-                        color="text"
+                        color="grey"
                         text={t2("ride.arrived")}
                         onPress={ride.actions.onDriverArrived}
                     />

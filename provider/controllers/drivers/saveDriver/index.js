@@ -14,5 +14,5 @@ module.exports = async ({ req, res }) => {
 
   const accessToken = await authenticate(driverId);
 
-  return { ...newDriver, accessToken, driverId };
+  return { ...newDriver, accessToken, userId: driverId };
 };

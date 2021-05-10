@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import { View, Image, TouchableOpacity } from "react-native";
-import { useTheme, TextInput, Text } from "react-native-paper";
+import { View, Image, TouchableOpacity, Platform } from "react-native";
+import { useTheme, Text, TextInput } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useStore } from "_store";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
-import { usePartner } from "_hooks";
-import { Button } from "_atoms";
+import { usePartner, useApp } from "_hooks";
+import { Button, RoundButton } from "_atoms";
+
 export default function Register({ navigation }) {
     const { colors } = useTheme();
-    const {
-        main: { app }
-    } = useStore();
+    const app = useApp();
 
     const partner = usePartner();
 
@@ -34,7 +33,7 @@ export default function Register({ navigation }) {
                     </View>
                     <View>
                         <TextInput
-                            style={Classes.formInput(colors)}
+                            style={[Classes.formInput(colors)]}
                             mode="outlined"
                             label={t2("form.firstName")}
                             placeholder={t2("form.firstName")}
@@ -67,6 +66,7 @@ export default function Register({ navigation }) {
                             style={Classes.formInput(colors)}
                             mode="outlined"
                             label={t2("form.phoneNumber")}
+                            placeholder={t2("form.phoneNumber")}
                             value={partner.formPartner.phoneNumber}
                             onChangeText={(phoneNumber) =>
                                 partner.actions.setFormPartner({
@@ -112,33 +112,18 @@ export default function Register({ navigation }) {
                                     alignItems: "center"
                                 }
                             ]}
+                            labelStyle={Classes.backButtonLabel(colors)}
                         >
-                            <View
+                            <Text
                                 style={{
-                                    flexDirection: "row",
-                                    alignItems: "center"
+                                    fontSize: 20,
+                                    textAlign: "center",
+                                    paddingRight: 50,
+                                    color: "#ffffff"
                                 }}
                             >
-                                <Icon
-                                    name="arrow-back"
-                                    size={25}
-                                    style={{
-                                        alignSelf: "flex-start",
-                                        width: 50,
-                                        color: "#ffffff"
-                                    }}
-                                />
-                                <Text
-                                    style={{
-                                        fontSize: 20,
-                                        textAlign: "center",
-                                        paddingRight: 50,
-                                        color: "#ffffff"
-                                    }}
-                                >
-                                    {t2("form.back")}
-                                </Text>
-                            </View>
+                                {t2("form.back")}
+                            </Text>
                         </Button>
                     </View>
                     <View>
@@ -197,63 +182,69 @@ export default function Register({ navigation }) {
             </View>
             <View>
                 {step === 1 ? (
-                    <View style={Classes.nextButtonView(colors)}>
+                    <View style={{ alignItems: "center" }}>
                         <Button
                             mode="contained"
                             onPress={() => setStep((step) => step + 1)}
                             style={[
-                                Classes.nextButton(colors)
-                                // { alignItems: "flex-end" }
+                                Classes.nextButton(colors),
+                                {
+                                    alignItems: "center",
+                                    justifyContent: "center"
+                                }
                             ]}
+                            labelStyle={Classes.nextButtonLabel(colors)}
+                            // right={
+                            //     <TextInput.Icon
+                            //     name={<Icon name="info" color="#ff0000" />} // where <Icon /> is any component from vector-icons or anything else
+                            //     onPress={() => {}}
+                            //   />
+                            // }
                             // disabled={
                             //     !partner.formPartner.firstName ||
                             //     !partner.formPartner.lastName ||
-                            //     !partner.formPartner.phoneNumber
+                            //     !partner.formPartner.phoneNumber ||
+                            //     !partner.formPartner.password
                             // }
                         >
-                            <View
+                            {/* <View
                                 style={{
                                     flexDirection: "row",
                                     alignItems: "center",
                                     justifyContent: "center"
                                 }}
+                            > */}
+                            <Text
+                                style={{
+                                    fontSize: 20,
+                                    textAlign: "center",
+                                    alignSelf: "center",
+                                    color: "#ffffff"
+                                }}
                             >
-                                <Text
-                                    style={{
-                                        fontSize: 25,
-                                        textAlign: "center",
-                                        alignSelf: "center",
-                                        color: "#ffffff"
-                                    }}
-                                >
-                                    {t2("form.next")}
-                                </Text>
-                                <Icon
-                                    name="arrow-forward"
-                                    size={25}
-                                    style={{
-                                        alignSelf: "flex-end",
-                                        color: "#ffffff"
-                                    }}
-                                />
-                            </View>
+                                {t2("form.next")}
+                            </Text>
+
+                            {/* </View> */}
                         </Button>
                     </View>
                 ) : (
-                    <Button
-                        mode="contained"
-                        onPress={partner.actions.savePartner}
-                        style={Classes.formButton(colors)}
-                        disabled={
-                            !partner.formPartner.firstName ||
-                            !partner.formPartner.lastName ||
-                            !partner.formPartner.phoneNumber ||
-                            !partner.formPartner.cab.model ||
-                            !partner.formPartner.cab.licensePlate
-                        }
-                    >
-                        {t2("form.start")}
-                    </Button>
+                    <View style={{ alignItems: "center" }}>
+                        <Button
+                            mode="contained"
+                            onPress={partner.actions.savePartner}
+                            style={Classes.formButton(colors)}
+                            disabled={
+                                !partner.formPartner.firstName ||
+                                !partner.formPartner.lastName ||
+                                !partner.formPartner.phoneNumber ||
+                                !partner.formPartner.cab.model ||
+                                !partner.formPartner.cab.licensePlate
+                            }
+                        >
+                            {t2("form.start")}
+                        </Button>
+                    </View>
                 )}
 
                 <View
@@ -263,17 +254,37 @@ export default function Register({ navigation }) {
                         marginTop: 30
                     }}
                 >
-                    <Text style={{ fontSize: 20 }}>
+                    <Text
+                        adjustsFontSizeToFit
+                        style={{ fontSize: Platform.OS === "ios" ? 20 : 18 }}
+                    >
                         {t2("form.alreadyHaveAccount")}
                     </Text>
                     <TouchableOpacity
                         style={{ marginLeft: 10 }}
                         onPress={() => navigation.navigate("Login")}
                     >
-                        <Text style={{ color: colors.accent, fontSize: 20 }}>
+                        <Text
+                            adjustsFontSizeToFit
+                            style={{
+                                color: colors.accent,
+                                fontSize: Platform.OS === "ios" ? 20 : 18
+                            }}
+                        >
                             {t2("form.login")}
                         </Text>
                     </TouchableOpacity>
+                </View>
+                <View style={{ marginTop: 50, alignItems: "center" }}>
+                    <RoundButton
+                        size={0.3}
+                        color={"grey"}
+                        text={"Changer d'application"}
+                        onPress={() => {
+                            app.actions.removeApp();
+                        }}
+                        shadow={{ size: 0.27 }}
+                    />
                 </View>
             </View>
         </View>
