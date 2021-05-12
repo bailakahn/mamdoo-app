@@ -10,7 +10,9 @@ export default {
         locationNeeded:
             "Nous avons besoin de pouvoir vous localiser pour vous donner le meilleur service! Activez la localisation dans vos paramètres pour utiliser Mamdoo.",
         givePermission: "Autoriser",
-        close: "Fermer"
+        close: "Fermer",
+        darkMode: "Mode sombre",
+        enableDarkMode: "Activer le mode sombre"
     },
     errors: {
         crashErrorTitle: "Oops, Quelque chose s'est mal passé",
@@ -96,5 +98,10 @@ export default {
         sucessfullySaved: "Vos informations ont été mise à jour!",
         canceled: "Anulée",
         completed: "Complétée"
+    },
+    ridesHistory: {
+        date: "Date",
+        client: "Client",
+        status: "Status"
     }
 };

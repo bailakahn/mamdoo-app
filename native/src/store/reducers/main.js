@@ -14,6 +14,21 @@ export default (state = main, action) => {
                 ...state,
                 appLoaded: true
             };
+
+        case types.SET_DARK_MODE:
+            AsyncStorage.setItem(
+                "@mamdoo-dark-mode",
+                action.isDarkMode ? "true" : "false"
+            );
+            return {
+                ...state,
+                isDarkMode: action.isDarkMode
+            };
+        case types.DARK_MODE_LOADED:
+            return {
+                ...state,
+                darkModeLoaded: true
+            };
         case types.REMOVE_APP:
             AsyncStorage.removeItem("@mamdoo-selected-app");
             return {

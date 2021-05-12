@@ -3,8 +3,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
 
-import { AccountScene } from "_scenes/client";
+import { AccountScene, ProfileScene, RidesHistoryScene } from "_scenes/client";
 
+import { t } from "_utils/lang";
 export default function AccountStack({ role }) {
     return (
         <Stack.Navigator>
@@ -17,7 +18,36 @@ export default function AccountStack({ role }) {
                     },
                     headerTitleStyle: {
                         // color: "#000"
-                    }
+                    },
+                    title: t("screens.account")
+                })}
+            />
+
+            <Stack.Screen
+                name="Profile"
+                component={ProfileScene}
+                options={({ navigation }) => ({
+                    headerStyle: {
+                        borderBottomWidth: 1
+                    },
+                    headerTitleStyle: {
+                        // color: "#000"
+                    },
+                    title: t("screens.profile")
+                })}
+            />
+
+            <Stack.Screen
+                name="RidesHistory"
+                component={RidesHistoryScene}
+                options={({ navigation }) => ({
+                    headerStyle: {
+                        borderBottomWidth: 1
+                    },
+                    headerTitleStyle: {
+                        // color: "#000"
+                    },
+                    title: t("screens.ridesHistory")
                 })}
             />
         </Stack.Navigator>

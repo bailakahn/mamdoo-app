@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useMemo } from "react";
 import { View, Image, Platform } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import LottieView from "lottie-react-native";
-import { useColorScheme } from "react-native-appearance";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
@@ -13,20 +12,21 @@ import DarkAvatar from "_assets/animation/dark-avatar.json";
 import ReadyAmimation from "_assets/animation/ready.json";
 import LightReadyAmimation from "_assets/animation/light-ready.gif";
 import DarkReadyAmimation from "_assets/animation/dark-ready.gif";
-import { useRide } from "_hooks";
+import { useRide, useTheme as useMamdooTheme } from "_hooks";
 import { Button } from "_atoms";
 
 export default function RideRequestScreen() {
     const { colors } = useTheme();
     const ride = useRide();
+    const theme = useMamdooTheme();
 
-    const colorScheme = useColorScheme();
-
-    const avatarAnimation = colorScheme === "dark" ? DarkAvatar : LightAvatar;
-    const avatarAnimationGif =
-        colorScheme === "dark" ? DarkAvatarGif : LightAvatarGif;
-    const readyAnimationGif =
-        colorScheme === "dark" ? DarkReadyAmimation : LightReadyAmimation;
+    const avatarAnimation = theme.isDarkMode ? DarkAvatar : LightAvatar;
+    const avatarAnimationGif = theme.isDarkMode
+        ? DarkAvatarGif
+        : LightAvatarGif;
+    const readyAnimationGif = theme.isDarkMode
+        ? DarkReadyAmimation
+        : LightReadyAmimation;
 
     const animation = useRef();
 

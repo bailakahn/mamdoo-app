@@ -24,6 +24,20 @@ export default function authActions(state, dispatch) {
         },
         removeApp: () => {
             dispatch({ type: types.REMOVE_APP });
+        },
+        setDarkMode: (isDarkMode) => {
+            dispatch({ type: types.SET_DARK_MODE, isDarkMode });
+        },
+        getDarkMode: () => {
+            AsyncStorage.getItem("@mamdoo-dark-mode").then((darkMode) => {
+                darkMode &&
+                    dispatch({
+                        type: types.SET_DARK_MODE,
+                        isDarkMode: darkMode === "true" ? true : false
+                    });
+
+                dispatch({ type: types.DARK_MODE_LOADED });
+            });
         }
     };
 }

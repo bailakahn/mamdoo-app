@@ -9,7 +9,9 @@ export default {
         locationPermission: "Permission de localisation",
         locationNeeded:
             "Nous avons besoin de pouvoir vous localiser pour vous donner le meilleur service! Activez la localisation dans vos paramètres pour utiliser Mamdoo.",
-        givePermission: "Autoriser"
+        givePermission: "Autoriser",
+        darkMode: "Mode sombre",
+        enableDarkMode: "Activer le mode sombre"
     },
     errors: {
         crashErrorTitle: "Oops, Quelque chose s'est mal passé",
@@ -49,6 +51,30 @@ export default {
         start: "Commencer"
     },
     account: {
-        changeApp: "Changer d'application"
+        changeApp: "Changer d'application",
+        viewProfile: "Voir votre profil",
+        ridesHistory: "Historique de courses",
+        logout: "Se déconnecter"
+    },
+    screens: {
+        home: "Accueil",
+        account: "Compte",
+        profile: "Profil",
+        ridesHistory: "Historique de courses"
+    },
+    profile: {
+        edit: "Modifier",
+        saveChanges: "Sauvegarder les changements",
+        cancel: "Annuler",
+        secureInfoInfo:
+            "Pour modifier les informations ci-dessus, contactez-nous!",
+        sucessfullySaved: "Vos informations ont été mise à jour!",
+        canceled: "Anulée",
+        completed: "Complétée"
+    },
+    ridesHistory: {
+        date: "Date",
+        mamdoo: "Mamdoo",
+        status: "Status"
     }
 };

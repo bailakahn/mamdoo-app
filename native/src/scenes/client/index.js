@@ -8,3 +8,5 @@ export { default as FormScene } from "./form";
 
 // ACCOUNT
 export { default as AccountScene } from "./account";
+export { default as ProfileScene } from "./account/Profile";
+export { default as RidesHistoryScene } from "./account/RidesHistory";

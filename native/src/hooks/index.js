@@ -5,6 +5,7 @@ export { default as useApp } from "./useApp";
 export { default as useLocation } from "./useLocation";
 export { default as useRequest } from "./useRequest";
 export { default as useRide } from "./useRide";
+export { default as useTheme } from "./useTheme";
 
 // PARTNER
 export { default as usePartner } from "./usePartner";

@@ -10,7 +10,9 @@ export default {
         locationNeeded:
             "We need to access your location to serve you better! Grant us permission to use your location to be able to use Mamdoo",
         givePermission: "Give Permission",
-        close: "Close"
+        close: "Close",
+        darkMode: "Dark Mode",
+        enableDarkMode: "Enable Dark Mode"
     },
     errors: {
         crashErrorTitle: "Oops, Something Went Wrong",
@@ -99,5 +101,10 @@ export default {
         sucessfullySaved: "Successfully updated your information!",
         canceled: "Canceled",
         completed: "Completed"
+    },
+    ridesHistory: {
+        date: "Date",
+        client: "Client",
+        status: "Status"
     }
 };

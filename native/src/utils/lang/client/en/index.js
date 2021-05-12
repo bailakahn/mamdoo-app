@@ -9,7 +9,9 @@ export default {
         locationPermission: "Location Permission",
         locationNeeded:
             "We need to access your location to serve you better! Grant us permission to use your location to be able to use Mamdoo",
-        givePermission: "Give Permission"
+        givePermission: "Give Permission",
+        darkMode: "Dark Mode",
+        enableDarkMode: "Enable Dark Mode"
     },
     errors: {
         crashErrorTitle: "Oops, Something Went Wrong",
@@ -53,6 +55,29 @@ export default {
         start: "Start"
     },
     account: {
-        changeApp: "Change App"
+        changeApp: "Change App",
+        viewProfile: "View Profile",
+        ridesHistory: "Rides History",
+        logout: "Logout"
+    },
+    screens: {
+        home: "Home",
+        account: "Account",
+        profile: "Profile",
+        ridesHistory: "Rides History"
+    },
+    profile: {
+        edit: "Edit",
+        saveChanges: "Save Changes",
+        cancel: "Cancel",
+        secureInfoInfo: "To edit the information above, contact us!",
+        sucessfullySaved: "Successfully updated your information!",
+        canceled: "Canceled",
+        completed: "Completed"
+    },
+    ridesHistory: {
+        date: "Date",
+        mamdoo: "Mamdoo",
+        status: "Status"
     }
 };

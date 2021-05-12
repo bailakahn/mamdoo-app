@@ -1,14 +1,15 @@
 import React, { useMemo } from "react";
 import { View, ScrollView } from "react-native";
-import { useTheme, List, Divider, Avatar } from "react-native-paper";
+import { useTheme, List, Divider, Avatar, Switch } from "react-native-paper";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
-import { useApp, usePartner } from "_hooks";
+import { useApp, usePartner, useTheme as useMamdooTheme } from "_hooks";
 
 export default function AccountScene({ navigation }) {
     const { colors } = useTheme();
     const partner = usePartner();
     const app = useApp();
+    const theme = useMamdooTheme();
 
     const menu = useMemo(
         () => [
@@ -83,6 +84,25 @@ export default function AccountScene({ navigation }) {
                         <Divider />
                     </View>
                 ))}
+            </View>
+
+            <View>
+                <List.Item
+                    title={t2("main.darkMode")}
+                    description={t2("main.enableDarkMode")}
+                    right={(props) => (
+                        <Switch
+                            color={colors.primary}
+                            value={theme.isDarkMode}
+                            onValueChange={() =>
+                                theme.actions.setDarkMode(!theme.isDarkMode)
+                            }
+                        />
+                    )}
+                    style={Classes.accountMenuItem(colors)}
+                    titleStyle={{ fontWeight: "bold", fontSize: 20 }}
+                />
+                <Divider />
             </View>
         </ScrollView>
     );

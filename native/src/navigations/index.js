@@ -1,15 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
+import {
+    Provider as PaperProvider,
+    DefaultTheme,
+    DarkTheme
+} from "react-native-paper";
+// import { useColorScheme, AppearanceProvider } from "react-native-appearance";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SplashScreen from "expo-splash-screen";
-import { useApp } from "_hooks";
+import { useStore } from "_store";
+import { useApp, useTheme } from "_hooks";
+import { Colors } from "_styles";
 import ClientRoutes from "./client";
 import PartnerRoutes from "./partner";
 import AppEntry from "../";
 import { navigationRef } from "./RootNavigation";
 import { Loading } from "_atoms";
-export default function NavigationRoot({ theme, mode }) {
+
+export default function NavigationRoot({ mode }) {
+    const mamdooTheme = useTheme();
+
     const { app, appLoaded } = useApp();
+
+    // const colorScheme = useColorScheme();
+
+    const themeMode = (mamdooTheme.isDarkMode && DarkTheme) || DefaultTheme;
+
+    const theme = {
+        ...themeMode,
+        roundness: 2,
+        colors: Colors.colors[mamdooTheme.isDarkMode ? "dark" : "light"]
+    };
 
     // const [ready, setIsReady] = useState(false);
 
@@ -30,17 +51,20 @@ export default function NavigationRoot({ theme, mode }) {
     //     bootStrapAsync();
     // }, [app]);
 
-    if (!appLoaded) return <Loading visible={true} size="large" />;
+    if (!appLoaded || !mamdooTheme.darkModeLoaded)
+        return <Loading visible={true} size="large" />;
 
     return (
-        <NavigationContainer ref={navigationRef} theme={theme}>
-            {!app ? (
-                <AppEntry />
-            ) : app === "client" ? (
-                <ClientRoutes />
-            ) : (
-                <PartnerRoutes />
-            )}
-        </NavigationContainer>
+        <PaperProvider theme={theme}>
+            <NavigationContainer ref={navigationRef} theme={theme}>
+                {!app ? (
+                    <AppEntry />
+                ) : app === "client" ? (
+                    <ClientRoutes />
+                ) : (
+                    <PartnerRoutes />
+                )}
+            </NavigationContainer>
+        </PaperProvider>
     );
 }

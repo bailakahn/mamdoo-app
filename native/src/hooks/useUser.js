@@ -21,6 +21,7 @@ export default function useUser() {
     });
 
     const [formError, setFormError] = useState(false);
+    const [ridesHistory, setRidesHistory] = useState([]);
 
     const saveUser = () => {
         setFormError(false);
@@ -56,11 +57,47 @@ export default function useUser() {
             });
     };
 
+    const saveChanges = (editUser, setShowSuccess) => {
+        getRequest({
+            method: "POST",
+            endpoint: "user/edit",
+            params: {
+                ...editUser,
+                _id: user.userId
+            }
+        })
+            .then((newValues) => {
+                setUser({ ...user, ...newValues });
+                setShowSuccess(true);
+                setTimeout(() => {
+                    setShowSuccess(false);
+                }, 1000);
+            })
+            .catch((err) => {
+                console.log(err);
+                setFormError(t(err.code));
+            });
+    };
+
+    const getRidesHistory = () => {
+        getRequest({
+            method: "GET",
+            endpoint: "rides/clients/history"
+        })
+            .then((data) => {
+                setRidesHistory(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     return {
         formUser,
         formError,
         user,
         userLoaded,
-        actions: { saveUser, setFormUser }
+        ridesHistory,
+        actions: { saveUser, setFormUser, saveChanges, getRidesHistory }
     };
 }
