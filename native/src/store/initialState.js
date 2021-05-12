@@ -5,7 +5,9 @@ export default {
     },
     auth: {
         user: null,
-        partner: null
+        userLoaded: false,
+        partner: null,
+        partnerLoaded: false
     },
     ride: {
         driver: null,

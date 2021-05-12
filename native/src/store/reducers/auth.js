@@ -9,6 +9,11 @@ export default (state = auth, action) => {
                 ...state,
                 user: action.user
             };
+        case types.USER_LOADED:
+            return {
+                ...state,
+                userLoaded: true
+            };
         case types.SET_PARTNER:
             AsyncStorage.setItem(
                 "@mamdoo-partner",
@@ -17,6 +22,11 @@ export default (state = auth, action) => {
             return {
                 ...state,
                 partner: action.partner
+            };
+        case types.PARTNER_LOADED:
+            return {
+                ...state,
+                partnerLoaded: true
             };
         case types.REMOVE_PARTNER:
             return {

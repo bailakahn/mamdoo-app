@@ -15,7 +15,7 @@ export default function MainTabs({ role }) {
     const { colors } = useTheme();
     const partner = usePartner();
 
-    if (partner.isLoading) return <Loading visible={true} size="large" />;
+    if (!partner.partnerLoaded) return <Loading visible={true} size="large" />;
 
     return partner.partner ? (
         <Tab.Navigator

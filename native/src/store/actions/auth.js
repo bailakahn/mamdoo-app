@@ -11,14 +11,15 @@ export default function authActions(state, dispatch) {
         },
         getUser: () => {
             // AsyncStorage.removeItem("@mamdoo-client");
-            AsyncStorage.getItem("@mamdoo-client").then(
-                (user) =>
-                    user &&
+            AsyncStorage.getItem("@mamdoo-client").then((user) => {
+                user &&
                     dispatch({
                         type: types.SET_USER,
                         user: JSON.parse(user)
-                    })
-            );
+                    });
+
+                dispatch({ type: types.USER_LOADED });
+            });
         },
         setPartner: (partner) => {
             dispatch({
@@ -28,14 +29,14 @@ export default function authActions(state, dispatch) {
         },
         getPartner: () => {
             // AsyncStorage.removeItem("@mamdoo-partner");
-            AsyncStorage.getItem("@mamdoo-partner").then(
-                (partner) =>
-                    partner &&
+            AsyncStorage.getItem("@mamdoo-partner").then((partner) => {
+                partner &&
                     dispatch({
                         type: types.SET_PARTNER,
                         partner: JSON.parse(partner)
-                    })
-            );
+                    });
+                dispatch({ type: types.PARTNER_LOADED });
+            });
         },
         removePartner: () => {
             AsyncStorage.removeItem("@mamdoo-partner").then(() => {

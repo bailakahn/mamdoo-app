@@ -7,8 +7,9 @@ import ClientRoutes from "./client";
 import PartnerRoutes from "./partner";
 import AppEntry from "../";
 import { navigationRef } from "./RootNavigation";
+import { Loading } from "_atoms";
 export default function NavigationRoot({ theme, mode }) {
-    const { app } = useApp();
+    const { app, appLoaded } = useApp();
 
     // const [ready, setIsReady] = useState(false);
 
@@ -28,7 +29,8 @@ export default function NavigationRoot({ theme, mode }) {
 
     //     bootStrapAsync();
     // }, [app]);
-    // if (!ready) return null;
+
+    if (!appLoaded) return <Loading visible={true} size="large" />;
 
     return (
         <NavigationContainer ref={navigationRef} theme={theme}>

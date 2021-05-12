@@ -5,16 +5,13 @@ import { useStore } from "_store";
 export default function useUser() {
     const getRequest = useApi();
 
-    const [isLoading, setIsLoading] = useState(true);
-
     const {
-        auth: { user },
+        auth: { user, userLoaded },
         actions: { getUser, setUser }
     } = useStore();
 
     useEffect(() => {
-        getUser();
-        setIsLoading(false);
+        if (!user) getUser();
     }, []);
 
     const [formUser, setFormUser] = useState({
@@ -63,7 +60,7 @@ export default function useUser() {
         formUser,
         formError,
         user,
-        isLoading,
+        userLoaded,
         actions: { saveUser, setFormUser }
     };
 }

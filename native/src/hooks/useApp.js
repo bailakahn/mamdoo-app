@@ -13,6 +13,7 @@ export default function useApp() {
 
     return {
         app,
+        appLoaded,
         actions: { setApp, removeApp }
     };
 }

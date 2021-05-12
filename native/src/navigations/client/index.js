@@ -13,7 +13,7 @@ export default function MainTabs({ role }) {
     const { colors } = useTheme();
     const user = useUser();
 
-    if (user.isLoading) return <Loading visible={true} size="large" />;
+    if (!user.userLoaded) return <Loading visible={true} size="large" />;
 
     return user.user ? (
         <Tab.Navigator

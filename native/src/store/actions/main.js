@@ -10,18 +10,17 @@ export default function authActions(state, dispatch) {
             });
         },
         getApp: () => {
-            dispatch({
-                type: types.APP_LOADED
-            });
             // AsyncStorage.removeItem("@mamdoo-selected-app");
-            AsyncStorage.getItem("@mamdoo-selected-app").then(
-                (app) =>
-                    app &&
+            AsyncStorage.getItem("@mamdoo-selected-app").then((app) => {
+                app &&
                     dispatch({
                         type: types.SET_APP,
                         app
-                    })
-            );
+                    });
+                dispatch({
+                    type: types.APP_LOADED
+                });
+            });
         },
         removeApp: () => {
             dispatch({ type: types.REMOVE_APP });

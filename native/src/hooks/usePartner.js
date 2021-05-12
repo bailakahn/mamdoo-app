@@ -6,16 +6,14 @@ import useLocation from "./useLocation";
 export default function usePartner() {
     const getRequest = useApi();
     const location = useLocation();
-    const [isLoading, setIsLoading] = useState(true);
 
     const {
-        auth: { partner },
+        auth: { partner, partnerLoaded },
         actions: { getPartner, setPartner, removePartner }
     } = useStore();
 
     useEffect(() => {
-        getPartner();
-        setIsLoading(false);
+        if (!partner) getPartner();
     }, []);
 
     const [formPartner, setFormPartner] = useState({
@@ -177,7 +175,7 @@ export default function usePartner() {
         partner,
         auth,
         ridesHistory,
-        isLoading,
+        partnerLoaded,
         actions: {
             savePartner,
             setFormPartner,
