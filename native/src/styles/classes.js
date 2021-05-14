@@ -115,7 +115,6 @@ export const shadowView = (colors) => ({
 
 export const formInput = (colors) => ({
     width: Mixins.width(0.85, true),
-    height: Mixins.height(0.06, true),
     fontSize: 20,
     borderBottomColor: "grey",
     marginBottom: 20
@@ -127,7 +126,6 @@ export const formInput = (colors) => ({
 
 export const profileFormInput = (colors) => ({
     width: Mixins.width(0.95, true),
-    height: Mixins.height(50),
     fontSize: 20,
     borderBottomColor: "grey",
     marginBottom: 20

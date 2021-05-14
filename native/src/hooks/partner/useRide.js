@@ -78,8 +78,7 @@ export default function useRide() {
             ios: "maps:0,0?q=",
             android: "geo:0,0?q="
         });
-
-        const latLng = `${request?.startLocation.coordinates[1]},${request?.startLocation.coordinates[0]}`;
+        const latLng = `${request?.pickUp?.coordinates[1]},${request?.pickUp.coordinates[0]}`;
         // const latLng = `9.546180211569874,-13.679201504435497`;
 
         const label = `${(request.client.firstName, request.client.lastName)}`;
@@ -91,7 +90,7 @@ export default function useRide() {
 
         const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latLng}&dir_action=driving`;
 
-        Linking.openURL(url);
+        Linking.openURL(googleMapsUrl);
         return;
         Linking.canOpenURL(googleMapsUrl).then((canOpen) => {
             if (canOpen) {
@@ -148,6 +147,7 @@ export default function useRide() {
             }
         })
             .then(() => {
+                resetRide();
                 navigation.navigate("Home");
             })
             .catch((err) => {
