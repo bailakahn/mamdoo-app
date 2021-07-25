@@ -1,9 +1,7 @@
 const { get } = require("_lib/helpers");
 const userList = require("_lib/userList");
 module.exports = async (io, message) => {
-  const { event = "", recipients = [], data, toClearDrivers } = JSON.parse(
-    message.value
-  );
+  const { event = "", recipients = [], data, toClearDrivers } = message;
 
   // TODO: remove hardcoded driver id
   const driver = await get(

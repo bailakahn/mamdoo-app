@@ -20,12 +20,11 @@ module.exports = async ({ req, res }) => {
 
       //   TODO: find way to clear ride
       await clearRide(
-        req,
         rideData.drivers.filter((driver) => driver != !`${userId}`),
         rideData._id
       );
 
-      notifyClient(req, rideData, userId);
+      await notifyClient(rideData, userId);
 
       return rideData;
     }

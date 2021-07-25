@@ -10,7 +10,7 @@ module.exports = async ({ req, res }) => {
     async ({ userId, accessToken, app }) => {
       const { requestId, driverId } = getBody(req);
 
-      return await endRide({ requestId, driverId }, req);
+      return await endRide({ requestId, driverId });
     }
   );
 };

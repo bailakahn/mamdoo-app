@@ -1,14 +1,14 @@
 const fs = require("fs");
 const mainDirectory = "controllers";
 const { error } = require("_lib/helpers");
-module.exports = async (io, message) => {
-  const { topic } = message;
+const getConsumers = require("./getConsumers");
+module.exports = async (io) => {
+  // get all directories from `mainDirectory`
+  const consumers = await getConsumers(mainDirectory);
 
-  const path = `${mainDirectory}/${topic}`;
-
-  if (!fs.existsSync(path)) {
-    error("NotFound", "Could not find controller");
+  for (let consumer of consumers) {
+    // get the consumer handler
+    const handler = require(`../../${mainDirectory}/${consumer}`);
+    await handler(io);
   }
-
-  await require(`../../${path}`)(io, message);
 };

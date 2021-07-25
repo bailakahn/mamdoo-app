@@ -1,7 +1,9 @@
 const { get, error } = require("_lib/helpers");
 const rideStatuses = require("_constants/rideStatuses");
 const { Ride } = require("_db/models");
-module.exports = async ({ requestId: _id, driverId }, { producer }) => {
+const kafka = require("_lib/kafka");
+
+module.exports = async ({ requestId: _id, driverId }) => {
   const request = await get(
     "Ride",
     {
@@ -23,21 +25,20 @@ module.exports = async ({ requestId: _id, driverId }, { producer }) => {
     }
   );
 
-  let payload = [
-    {
-      topic: "rideEnded",
-      messages: JSON.stringify({
-        event: "END_RIDE",
-        recipients: [`${request.clientId}`],
-        data: { driverId, clientId: request.clientId, requestId: _id },
-      }),
-    },
-  ];
+  const producer = await kafka.producer();
 
-  producer.send(payload, (err, data) => {
-    if (err) console.log(err);
-    // else console.log({ data });
-  });
+  let payload = {
+    topic: "rideEnded",
+    messages: [
+      {
+        value: JSON.stringify({
+          event: "END_RIDE",
+          recipients: [`${request.clientId}`],
+          data: { driverId, clientId: request.clientId, requestId: _id },
+        }),
+      },
+    ],
+  };
 
-  // return request;
+  await producer.send(payload);
 };

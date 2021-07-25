@@ -1,17 +1,19 @@
-module.exports = async ({ producer }, drivers, id) => {
-  let payload = [
-    {
-      topic: "clearRides",
-      messages: JSON.stringify({
-        event: "RESET_REQUEST",
-        recipients: drivers,
-        data: { requestId: id, drivers },
-      }),
-    },
-  ];
+const kafka = require("_lib/kafka");
+module.exports = async (drivers, id) => {
+  const producer = await kafka.producer();
 
-  producer.send(payload, (err, data) => {
-    if (err) console.log(err);
-    // else console.log({ data });
-  });
+  let payload = {
+    topic: "clearRides",
+    messages: [
+      {
+        value: JSON.stringify({
+          event: "RESET_REQUEST",
+          recipients: drivers,
+          data: { requestId: id, drivers },
+        }),
+      },
+    ],
+  };
+
+  await producer.send(payload);
 };

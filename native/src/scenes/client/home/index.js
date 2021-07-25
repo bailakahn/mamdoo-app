@@ -3,10 +3,11 @@ import { View, TouchableOpacity } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
-import { useProxy, useRequest } from "_hooks";
+import { useProxy, useRequest, useRide } from "_hooks";
 export default function HomeScreen({ navigation }) {
     // connect to proxy server
     useProxy();
+    const ride = useRide();
     const { colors } = useTheme();
 
     const request = useRequest();

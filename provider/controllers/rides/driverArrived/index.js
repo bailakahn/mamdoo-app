@@ -9,7 +9,7 @@ module.exports = async ({ req, res }) => {
     },
     async ({ userId, accessToken, app }) => {
       const { requestId, driverId } = getBody(req);
-      await driverArrived({ requestId, driverId }, req);
+      await driverArrived({ requestId, driverId });
 
       return { success: true };
     }

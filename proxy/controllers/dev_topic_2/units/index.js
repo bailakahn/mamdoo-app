@@ -1,1 +1,0 @@
-module.exports.dev_topic_2 = require("./dev_topic_2.js")

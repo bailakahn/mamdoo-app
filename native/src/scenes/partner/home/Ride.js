@@ -21,7 +21,6 @@ export default function DriverOnTheWayScene() {
     const { colors } = useTheme();
     const ride = useRide();
 
-    console.log(ride);
     const colorScheme = useColorScheme();
 
     const avatarAnimation = colorScheme === "dark" ? DarkAvatar : LightAvatar;

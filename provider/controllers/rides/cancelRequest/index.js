@@ -7,6 +7,8 @@ const {
 const auth = require("_app/auth");
 const { getBody } = require("_lib/helpers");
 const get = require("_lib/helpers/get");
+const kafka = require("_lib/kafka");
+
 module.exports = async ({ req, res }) => {
   return await auth(
     {
@@ -22,34 +24,32 @@ module.exports = async ({ req, res }) => {
 
       await cancelRequest(requestId, app, userId);
 
+      const producer = await kafka.producer();
+
       if (app === "partner") {
         const nearByDrivers = await getDrivers(coordinates);
 
-        const { producer } = req;
+        let payload = {
+          topic: "requestCreated",
+          messages: [
+            {
+              value: JSON.stringify({
+                event: "NEW_REQUEST",
+                // TODO: test other drivers receiving the ride
+                recipients: nearByDrivers.filter(
+                  (driver) => driver != `${userId}`
+                ),
+                data: { requestId, driverId: userId, ...request },
+              }),
+            },
+          ],
+        };
 
-        let payload = [
-          {
-            topic: "requestCreated",
-            messages: JSON.stringify({
-              event: "NEW_REQUEST",
-              // TODO: test other drivers receiving the ride
-              recipients: nearByDrivers.filter(
-                (driver) => driver != `${userId}`
-              ),
-              data: { requestId, driverId: userId, ...request },
-            }),
-            partition: 0,
-          },
-        ];
-
-        producer.send(payload, (err, data) => {
-          if (err) console.log(err);
-          // else console.log({ data });
-        });
+        await producer.send(payload);
       }
 
       //   TODO: implement fucntion to notify ride driver
-      await notifyDrivers(req, { request, app });
+      await notifyDrivers({ producer, request, app, driverId: userId });
     }
   );
 };

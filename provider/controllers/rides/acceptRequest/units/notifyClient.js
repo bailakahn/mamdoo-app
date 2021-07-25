@@ -1,20 +1,22 @@
-module.exports = ({ producer }, rideData, driverId) => {
-  let payload = [
-    {
-      topic: "rideAccepted",
-      messages: JSON.stringify({
-        event: "FOUND_DRIVER",
-        recipients: [`${rideData.client._id}`],
-        toClearDrivers: rideData.drivers.filter(
-          (driver) => driver != !`${driverId}`
-        ),
-        data: { driverId, ...rideData },
-      }),
-    },
-  ];
+const kafka = require("_lib/kafka");
+module.exports = async (rideData, driverId) => {
+  const producer = await kafka.producer();
 
-  producer.send(payload, (err, data) => {
-    if (err) console.log(err);
-    // else console.log({ data });
-  });
+  let payload = {
+    topic: "rideAccepted",
+    messages: [
+      {
+        value: JSON.stringify({
+          event: "FOUND_DRIVER",
+          recipients: [`${rideData.client._id}`],
+          toClearDrivers: rideData.drivers.filter(
+            (driver) => driver != !`${driverId}`
+          ),
+          data: { driverId, ...rideData },
+        }),
+      },
+    ],
+  };
+
+  await producer.send(payload);
 };
