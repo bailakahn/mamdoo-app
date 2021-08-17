@@ -3,7 +3,7 @@ const kafka = require("_lib/kafka");
 
 module.exports = async (io) => {
   await kafka.init();
-  const consumer = await kafka.consumer("driverArrived", "group1");
+  const consumer = await kafka.consumer("driverArrived", "driverArrived-1");
   consumer.run({
     autoCommit: false,
     eachMessage: async ({ topic, partition, message }) => {
