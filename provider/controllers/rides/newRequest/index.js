@@ -2,7 +2,7 @@ const { newRequest, saveRequest, getDrivers } = require("./units");
 const auth = require("_app/auth");
 const { getBody } = require("_lib/helpers");
 const kafka = require("_lib/kafka");
-
+const { send } = require("_lib/expo");
 module.exports = async ({ req, res }) => {
   return await auth(
     {
@@ -12,6 +12,7 @@ module.exports = async ({ req, res }) => {
       const { coordinates } = getBody(req);
       const nearByDrivers = await getDrivers(coordinates);
 
+      send("partner", 1000, nearByDrivers);
       const requestId = await saveRequest({
         userId,
         coordinates,

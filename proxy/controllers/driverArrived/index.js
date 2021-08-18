@@ -12,7 +12,6 @@ module.exports = async (io) => {
         { topic, partition, offset: (Number(message.offset) + 1).toString() },
       ]);
       try {
-        console.log({ message: JSON.parse(message.value) });
         await driverArrived(io, JSON.parse(message.value));
       } catch (driverArrivedError) {
         console.log({ driverArrivedError });

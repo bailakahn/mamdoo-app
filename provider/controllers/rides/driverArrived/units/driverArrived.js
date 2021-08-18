@@ -2,6 +2,7 @@ const { get, error } = require("_lib/helpers");
 const rideStatuses = require("_constants/rideStatuses");
 const { Ride } = require("_db/models");
 const kafka = require("_lib/kafka");
+const { send } = require("_lib/expo");
 
 module.exports = async ({ requestId: _id, driverId }) => {
   const request = await get(
@@ -19,6 +20,8 @@ module.exports = async ({ requestId: _id, driverId }) => {
   await Ride.findByIdAndUpdate(_id, {
     startTime: Date.now(),
   });
+
+  send("client", 1002, [request.clientId]);
 
   const producer = await kafka.producer();
 

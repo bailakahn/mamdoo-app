@@ -12,7 +12,6 @@ module.exports = async (io) => {
         { topic, partition, offset: (Number(message.offset) + 1).toString() },
       ]);
       try {
-        console.log({ message: JSON.parse(message.value) });
         await cancelRequest(io, JSON.parse(message.value));
       } catch (sendRideRequestError) {
         console.log({ sendRideRequestError });

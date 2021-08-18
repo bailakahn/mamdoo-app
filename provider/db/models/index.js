@@ -4,4 +4,5 @@ module.exports = {
   Ride: require("./ride"),
   Driver: require("./driver"),
   RideCancelation: require("./rideCancelation"),
+  Notification: require("./notification"),
 };

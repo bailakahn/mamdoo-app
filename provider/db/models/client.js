@@ -9,8 +9,11 @@ const clientSchema = new Schema(
       type: String,
       required: true,
     },
+    lang: { type: String },
+    expoPushToken: { type: String, required: false },
     deleted: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
+    lastSeenAt: { type: Date, default: Date.now },
   },
   { collection: "clients" }
 );

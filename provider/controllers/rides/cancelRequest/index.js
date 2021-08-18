@@ -8,6 +8,7 @@ const auth = require("_app/auth");
 const { getBody } = require("_lib/helpers");
 const get = require("_lib/helpers/get");
 const kafka = require("_lib/kafka");
+const { send } = require("_lib/expo");
 
 module.exports = async ({ req, res }) => {
   return await auth(
@@ -28,6 +29,8 @@ module.exports = async ({ req, res }) => {
 
       if (app === "partner") {
         const nearByDrivers = await getDrivers(coordinates);
+
+        send("partner", 1000, nearByDrivers);
 
         let payload = {
           topic: "requestCreated",

@@ -4,7 +4,13 @@ import { Headline, useTheme, Portal, Text, Modal } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
-import { usePartner, usePartnerProxy, useLocation } from "_hooks";
+import {
+    usePartner,
+    usePartnerProxy,
+    useLocation,
+    useNotifications,
+    useLanguage
+} from "_hooks";
 import { useRide } from "_hooks/partner";
 import { RoundButton } from "_atoms";
 import { Info } from "_molecules";
@@ -12,6 +18,8 @@ import { Info } from "_molecules";
 export default function AccountScene({}) {
     const { colors } = useTheme();
     usePartnerProxy();
+    useNotifications();
+    useLanguage();
     const ride = useRide();
     const partner = usePartner();
     const location = useLocation();

@@ -1,4 +1,12 @@
+const { send } = require("_lib/expo");
+
 module.exports = async ({ producer, request, app, driverId }) => {
+  send(
+    app == "client" ? "partner" : "client",
+    1004,
+    app == "client" ? [`${request.driverId}`] : [`${request.clientId}`]
+  );
+
   let payload = {
     topic: "requestCanceled",
     messages: [
