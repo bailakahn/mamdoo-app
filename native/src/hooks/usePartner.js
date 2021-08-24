@@ -169,6 +169,20 @@ export default function usePartner() {
             });
     };
 
+    const logout = () => {
+        getRequest({
+            method: "POST",
+            endpoint: "auth/logout"
+        })
+            .then(() => {
+                removePartner();
+            })
+            .catch((err) => {
+                console.log(err);
+                setFormError(t2(err.code));
+            });
+    };
+
     return {
         formPartner,
         formError,
@@ -184,7 +198,7 @@ export default function usePartner() {
             changeStatus,
             saveChanges,
             getRidesHistory,
-            logout: () => removePartner()
+            logout
         }
     };
 }
