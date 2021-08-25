@@ -8,7 +8,6 @@ module.exports = async ({ req, res }) => {
     },
     async ({ userId, accessToken, app }) => {
       const { lang } = getBody(req);
-      console.log({ lang });
       return await saveLanguage(app, userId, lang);
     }
   );
