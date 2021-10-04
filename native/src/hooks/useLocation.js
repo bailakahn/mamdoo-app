@@ -14,7 +14,7 @@ export default function useLocation() {
 
             if (isMounted) setGrantStatus(status);
 
-            if (status !== "granted" && backgroundStatus != "granted") {
+            if (status !== "granted") {
                 if (isMounted) {
                     setIsLoading(false);
                     setError("Permission to access location was denied");

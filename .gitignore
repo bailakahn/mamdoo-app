@@ -19,7 +19,8 @@ provider/node_modules/**/*
 proxy/.env
 proxy/node_modules/**/*
 
-node_modules/**/*
+#website
+website/node_modules/**/*
 
 # macOS
 .DS_Store

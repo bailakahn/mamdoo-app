@@ -1,0 +1,44 @@
+{
+    "Home": {
+        "hello": "Bienvenue sur Next.js!",
+        "welcomeText": "Bienvenue sur Mamdoo!",
+        "description": "Deplacez vous vers toutes vos destinations avec votre Mamdoo. Gagner en temps et planifier vos courses.",
+        "why_choose_us": "Pourquoi nous choisir",
+        "why_choose_us_description": "Occupez-vous de l'essentiel, nous nous occuperons du reste. Aussi tôt que vous êtes prèt, un Mamdoo vous conduira ou vous voudrez.",
+        "why_choose_us_1": "Votre sécurité est notre priorité",
+        "why_choose_us_1_description": "Nous vous fournissons nos service où vous êtes, pas besoin de vous déplacer.",
+        "why_choose_us_2": "Nos standards de qualité",
+        "why_choose_us_2_description": "Des chauffeurs professionels, et la possibilité de controler vos deplacements",
+        "why_choose_us_3": "Toujours a temps",
+        "why_choose_us_3_description": "Fatigué d'attendre ? Reservez une course et soyez en route en juste quelques minutes",
+        "get_a_ride_in_minutes": "Obtenez une course en quelques minutes!",
+        "get_a_ride_in_minutes_description": "En un click deplacez vous partout! Vraiment ? Oui! Mamdoo est la pour vous faciliter la vie",
+        "advantage_1": "Gagnez en temps!",
+        "advantage_2": "Consultez vos anciennes courses! Restez en contact avec votre Mamdoo!",
+        "our_technology": "Quand nos chauffeurs sont contents, nos client le sont aussi.",
+        "our_technology_description": "Les Mamdoo font trois fois plus de revenu que les chauffeurs reguliers et ca en trois fois moins de temps. Et nous chargeons le taux le plus faible du marché.",
+        "connected_clients_and_drivers": "Des millions de clients et de chauffeurs connectés sur le même reseau.",
+        "connected_clients_and_drivers_description": "Nous analisons les données a notre disposition pour positioner les chauffeurs aux endroit les plus convoités par nos clients. Nos chauffeurs sont formés pour vous servir aux meilleurs de leur capacité et s'assurer que votre course se déroule le parfaitement possible.",
+        "other_services": "Autres services (Bientôt)",
+        "other_services_description": "Mamdoo offrira une game de service qui rendra votre vie un poco mas facile.",
+        "other_services_1": "Livraison",
+        "other_services_1_description": "Envoyez/recevez vos colis en quelques clicks avec notre service de livraison sans contact.",
+        "other_services_2": "Nourriture",
+        "other_services_2_description": "Commandez vos plats préférés et faites vous livrer vos courses au bas de votre porte.",
+        "other_services_3": "Paiement",
+        "other_services_3_description": "Payez toutes vos factures et celles de vos proches en un click.",
+        "contact_us": "CONTACTEZ NOUS MAINTENANT",
+        "any_question": "Avez vous des questions ? N'hésitez pas à nous contacter"
+    },
+    "Header": {
+        "home": "Accueil",
+        "whyUs": "Pourquoi Nous",
+        "aboutUs": "A propos",
+        "contact": "Contact"
+    },
+    "Footer": {
+        "term_of_use": "Condition d'utilisation",
+        "privacy": "Confidentialité",
+        "copyright": "Copyright 2021 par Mamdoo, Inc"
+    }
+}

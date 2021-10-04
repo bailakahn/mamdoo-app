@@ -23,7 +23,10 @@
         "NSLocationWhenInUseUsageDescription": "Mamdoo requires your location so that we can centre the map on you & show you where [x] is",
         "NSLocationAlwaysUsageDescription": "Mamdoo requires your location so that we can centre the map on you & show you where [x] is",
         "NSLocationAlwaysAndWhenInUseUsageDescription": "Mamdoo requires your location so that we can centre the map on you & show you where [x] is",
-        "NSLocationUsageDescription": "Mamdoo requires your location so that we can centre the map on you & show you where [x] is"
+        "NSLocationUsageDescription": "Mamdoo requires your location so that we can centre the map on you & show you where [x] is",
+        "UIBackgroundModes": [
+          "location"
+        ]
       },
       "bundleIdentifier": "com.mamdoo.app"
     },

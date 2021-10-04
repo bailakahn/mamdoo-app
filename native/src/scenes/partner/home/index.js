@@ -7,11 +7,10 @@ import { t2 } from "_utils/lang";
 import {
     usePartner,
     usePartnerProxy,
-    useLocation,
     useNotifications,
     useLanguage
 } from "_hooks";
-import { useRide } from "_hooks/partner";
+import { useRide, useLocation } from "_hooks/partner";
 import { RoundButton } from "_atoms";
 import { Info } from "_molecules";
 
