@@ -30,8 +30,8 @@ const styles = {
   wrapper: {
     position: "relative",
     zIndex: "10",
-    top: -9,
-    mb: -9,
+    // top: -9,
+    // mb: -9,
   },
   container: {
     px: [0, "0 !important", "30px !important"],
