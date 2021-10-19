@@ -32,8 +32,8 @@ export default function Feature() {
         id: 3,
         imgSrc: Award,
         altText: "Awards",
-        title: t("Home.why_choose_us_2"),
-        text: t("Home.why_choose_us_2_description"),
+        title: t("Home.why_choose_us_3"),
+        text: t("Home.why_choose_us_3_description"),
       },
     ],
     []
