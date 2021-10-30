@@ -3,13 +3,13 @@ const mainDirectory = "controllers";
 
 const endpointHandler = require("./endpointHandler");
 
-module.exports = async (app, producer) => {
+module.exports = (app, producer) => {
   // get all directories from `mainDirectory`
-  const directories = await getDirectories(mainDirectory);
+  const directories = getDirectories(mainDirectory);
 
   // for each directory get all the endpoints that are in there
   for (let dir of directories) {
-    const endpoints = await getDirectories(`${mainDirectory}/${dir}`);
+    const endpoints = getDirectories(`${mainDirectory}/${dir}`);
 
     for (let endpoint of endpoints) {
       // get the endpoint config
@@ -28,7 +28,13 @@ module.exports = async (app, producer) => {
           // get scopes from endpoints config
           req.producer = producer;
           // run endpoint handler
-          await endpointHandler(req, res, next, handler);
+          handler({ req, res, next })
+            .then((response) => {
+              res.status(200).send(response || { success: true });
+            })
+            .catch((err) => {
+              next(err);
+            });
         }
       );
 
@@ -44,7 +50,13 @@ module.exports = async (app, producer) => {
             async (req, res, next) => {
               // get scopes from endpoints config
               req.producer = producer;
-              await endpointHandler(req, res, next, handler);
+              handler({ req, res, next })
+                .then((response) => {
+                  res.status(200).send(response || { success: true });
+                })
+                .catch((err) => {
+                  next(err);
+                });
             }
           );
         }
