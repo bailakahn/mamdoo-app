@@ -1,11 +1,18 @@
 // In this file you can configure migrate-mongo
 require("dotenv").config();
-const { MONGO_DB_URL, MONGO_DB_NAME } = process.env;
+const { ENV_NAME } = process.env;
+const {
+  MONGO_DB_NAME,
+  MONGO_DB_CONNECTION_STRING,
+} = require(`./config/env.${ENV_NAME}.json`);
 
+console.log({ ENV_NAME });
 const config = {
   mongodb: {
-    url: `mongodb://${MONGO_DB_URL}`,
+    url: MONGO_DB_CONNECTION_STRING,
 
+    user: "mamdooUser",
+    pass: "tUng6EWyFbTzEmGa",
     databaseName: `${MONGO_DB_NAME}`,
 
     options: {

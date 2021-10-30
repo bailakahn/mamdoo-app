@@ -7,7 +7,13 @@ const app = express();
 const mongoose = require("mongoose");
 const kafkajs = require("_lib/kafka");
 var serverless = require("serverless-http");
-const { ENV_NAME, MONGO_DB_URL, MONGO_DB_NAME, ALLOW_ORIGIN } = process.env;
+const {
+  ENV_NAME,
+  MONGO_DB_URL,
+  MONGO_DB_NAME,
+  ALLOW_ORIGIN,
+  MONGO_DB_CONNECTION_STRING,
+} = process.env;
 
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());
@@ -31,7 +37,7 @@ app.get("/", (req, res) => {
 const registerEndpoints = require("./startup/endpoints");
 
 mongoose
-  .connect(`mongodb://${MONGO_DB_URL}/`, {
+  .connect(MONGO_DB_CONNECTION_STRING, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
@@ -42,9 +48,9 @@ mongoose
   })
   .then((err, res) => {
     console.log("MongoDB Connected Successfully");
-    // kafkajs.init().then(() => {
-    //   console.log("KafkaJS Producer Ready");
-    // });
+    kafkajs.init().then(() => {
+      console.log("KafkaJS Producer Ready");
+    });
   });
 
 registerEndpoints(app);

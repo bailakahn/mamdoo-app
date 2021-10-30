@@ -10,7 +10,9 @@
     "new:unit": "node cli/newUnit.js",
     "sync:topics": "node cli/syncTopics.js",
     "postinstall": "link-module-alias",
-    "preinstall": "command -v link-module-alias && link-module-alias clean || true"
+    "preinstall": "command -v link-module-alias && link-module-alias clean || true",
+    "migrate": "export ENV_NAME=dev && migrate-mongo up",
+    "migrate:prod": "export ENV_NAME=prod && migrate-mongo up"
   },
   "dependencies": {
     "argon2": "^0.27.2",

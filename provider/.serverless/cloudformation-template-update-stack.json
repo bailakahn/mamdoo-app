@@ -161,7 +161,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/express-app/prod/1635572126272-2021-10-30T05:35:26.272Z/express-app.zip"
+          "S3Key": "serverless/express-app/prod/1635588303085-2021-10-30T10:05:03.085Z/express-app.zip"
         },
         "Handler": "index.handler",
         "Runtime": "nodejs14.x",
@@ -173,9 +173,10 @@
             "PORT": "3005",
             "ENV_NAME": "prod",
             "MONGO_DB_URL": "mongodb+srv://cluster0.rrnco.mongodb.net",
+            "MONGO_DB_CONNECTION_STRING": "mongodb+srv://mamdooUser:tUng6EWyFbTzEmGa@cluster0.rrnco.mongodb.net",
             "MONGO_DB_NAME": "mamdoo",
             "ALLOW_ORIGIN": "http://localhost",
-            "KAFKA_HOST": "localhost:9092"
+            "KAFKA_HOST": "pkc-4nym6.us-east-1.aws.confluent.cloud:9092"
           }
         },
         "Role": {
@@ -189,14 +190,14 @@
         "AppLogGroup"
       ]
     },
-    "AppLambdaVersionCxDdUS3BcJZZtnZDQcPJF0Ie5haggyTvZu9qulGZKY": {
+    "AppLambdaVersionT3LSWd6Ebjlmv7KCJPu9e881iirtRaA3BCHQBfSoWTc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AppLambdaFunction"
         },
-        "CodeSha256": "dyFemooRu++qD9I+08T/sLowCM9vKAiADaDIe7Y1+4A="
+        "CodeSha256": "6Ua2Eo4X9+ZS+MPyShzgx8hQ+anE+tzoblgZzUfHm84="
       }
     },
     "ApiGatewayRestApi": {
@@ -414,7 +415,7 @@
         "AppLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1635572119839": {
+    "ApiGatewayDeployment1635588295878": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -479,7 +480,7 @@
     "AppLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AppLambdaVersionCxDdUS3BcJZZtnZDQcPJF0Ie5haggyTvZu9qulGZKY"
+        "Ref": "AppLambdaVersionT3LSWd6Ebjlmv7KCJPu9e881iirtRaA3BCHQBfSoWTc"
       },
       "Export": {
         "Name": "sls-express-app-prod-AppLambdaFunctionQualifiedArn"
