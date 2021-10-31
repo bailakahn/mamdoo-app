@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
 const consume = require("_app/consume");
 const userList = require("_lib/userList");
 
-const { PORT, MONGO_DB_CONNECTION_STRING, ENV_NAME } = process.env;
+const { PORT, MONGO_DB_CONNECTION_STRING } = process.env;
 const port = PORT || 3001;
 
 const server = app.listen(port, () => {
@@ -47,11 +47,7 @@ app.route("*").all(function (req, res, next) {
     message: "The route you are trying to get is not defined",
   });
 });
-console.log({
-  MONGO_DB_CONNECTION_STRING,
-  ENV_NAME,
-  PATH: `${__dirname}${process.env.ENV_NAME}.env`,
-});
+
 mongoose
   .connect(MONGO_DB_CONNECTION_STRING, {
     useNewUrlParser: true,
