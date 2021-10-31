@@ -17,8 +17,15 @@ const server = app.listen(port, () => {
 });
 
 // Parse JSON bodies (as sent by API clients)
-app.use(express.json());
+// app.use(express.json());
 
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+  next();
+});
 const io = require("socket.io")(server, {
   cors: {
     origin: "*",
@@ -37,16 +44,16 @@ io.on("connection", (socket) => {
   });
 });
 
-app.get("/", (req, res) => {
-  return res.send("Healthy");
-});
+// app.get("/", (req, res) => {
+//   return res.send("Healthy");
+// });
 
-app.route("*").all(function (req, res, next) {
-  next({
-    status: 404,
-    message: "The route you are trying to get is not defined",
-  });
-});
+// app.route("*").all(function (req, res, next) {
+//   next({
+//     status: 404,
+//     message: "The route you are trying to get is not defined",
+//   });
+// });
 
 mongoose
   .connect(MONGO_DB_CONNECTION_STRING, {
