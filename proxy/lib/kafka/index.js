@@ -6,6 +6,14 @@ module.exports = {
   async init() {
     if (!kafka)
       kafka = new Kafka({
+        ...(process.env.ENV_NAME === "prod" && {
+          sasl: {
+            username: await getSetting("kafka_username"),
+            password: await getSetting("kafka_password"),
+            mechanism: "plain",
+          },
+          ssl: true,
+        }),
         clientId: await getSetting("kafka_client_id"),
         brokers: await getSetting("kafka_brokers"),
         logLevel: logLevel.ERROR,

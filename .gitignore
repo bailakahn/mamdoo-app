@@ -18,6 +18,8 @@ provider/node_modules/**/*
 #proxy
 proxy/.env
 proxy/node_modules/**/*
+proxy/dev.env
+proxy/prod.env
 
 #website
 website/node_modules/**/*

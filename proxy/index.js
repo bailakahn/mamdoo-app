@@ -1,12 +1,15 @@
 require("module-alias/register");
+const path = require("path");
 const express = require("express");
-require("dotenv").config();
+require("dotenv").config({
+  path: path.resolve(__dirname, `${process.env.ENV_NAME}.env`),
+});
 const app = express();
 const mongoose = require("mongoose");
 const consume = require("_app/consume");
 const userList = require("_lib/userList");
 
-const { PORT, ENV_NAME, MONGO_DB_URL, MONGO_DB_NAME } = process.env;
+const { PORT, MONGO_DB_CONNECTION_STRING } = process.env;
 const port = PORT || 3001;
 
 const server = app.listen(port, () => {
@@ -46,12 +49,17 @@ app.route("*").all(function (req, res, next) {
 });
 
 mongoose
-  .connect(`mongodb://${MONGO_DB_URL}/${MONGO_DB_NAME}`, {
+  .connect(MONGO_DB_CONNECTION_STRING, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
+    ...(process.env.ENV_NAME === "prod" && {
+      user: "mamdooUser",
+      pass: "tUng6EWyFbTzEmGa",
+    }),
+    dbName: "mamdoo",
   })
-  .then((err, res) => {
+  .then((res) => {
     console.log("MongoDB Connected Successfully");
     consume(io);
   });

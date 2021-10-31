@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "export ENV_NAME=dev && nodemon index.js",
+    "start:prod": "export ENV_NAME=prod && nodemon index.js",
     "new:controller": "node cli/newController.js",
     "new:unit": "node cli/newUnit.js",
     "postinstall": "link-module-alias",

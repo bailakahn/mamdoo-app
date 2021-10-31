@@ -42,8 +42,10 @@ mongoose
     useUnifiedTopology: true,
     useCreateIndex: true,
     useFindAndModify: false,
-    user: "mamdooUser",
-    pass: "tUng6EWyFbTzEmGa",
+    ...(process.env.ENV_NAME === "prod" && {
+      user: "mamdooUser",
+      pass: "tUng6EWyFbTzEmGa",
+    }),
     dbName: "mamdoo",
   })
   .then((err, res) => {
