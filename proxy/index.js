@@ -47,7 +47,7 @@ app.route("*").all(function (req, res, next) {
     message: "The route you are trying to get is not defined",
   });
 });
-
+console.log({ MONGO_DB_CONNECTION_STRING });
 mongoose
   .connect(MONGO_DB_CONNECTION_STRING, {
     useNewUrlParser: true,
