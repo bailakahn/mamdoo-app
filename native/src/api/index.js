@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useStore } from "_store";
-const baseUrl = "http://192.168.2.133:3005/";
+// const baseUrl = "http://192.168.2.133:3005/";
+const baseUrl = "https://3u5ytlhfna.execute-api.us-east-1.amazonaws.com/prod/";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function useApi() {
@@ -40,6 +42,7 @@ export function useApi() {
             }))
             .then(({ status, data }) => {
                 if (status !== 200) {
+                    console.log({ status, data });
                     const error = new Error(`${data.type}: ${data.message}`);
                     error.code = data.code;
                     error.status = status;
