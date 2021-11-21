@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
-// import { api } from "_api";
-// const getRequest = api();
+import { useApi } from "_api";
 const TASK_FETCH_LOCATION = "TASK_FETCH_LOCATION";
-
+var request = null;
 export default function useLocation() {
+    const getRequest = useApi();
+    request = getRequest;
     const [location, setLocation] = useState(null);
     const [error, setError] = useState(null);
     const [grantStatus, setGrantStatus] = useState(null);
@@ -42,7 +43,7 @@ export default function useLocation() {
             if (isMounted)
                 Location.startLocationUpdatesAsync(TASK_FETCH_LOCATION, {
                     accuracy: Location.Accuracy.Highest,
-                    distanceInterval: 10, // minimum change (in meters) betweens updates
+                    distanceInterval: 1, // minimum change (in meters) betweens updates
                     timeInterval: 10000,
                     deferredUpdatesInterval: 1000, // minimum interval (in milliseconds) between updates
                     // foregroundService is how you get the task to be updated as often as would be if the app was open
@@ -93,17 +94,18 @@ TaskManager.defineTask(
         try {
             console.log("Update Loacation", location.coords);
 
-            // getRequest({
-            //     method: "POST",
-            //     endpoint: "user/updateDriverLocation",
-            //     params: location.coords
-            // })
-            //     .then((response) => {
-            //         console.log({ response });
-            //     })
-            //     .catch((err) => {
-            //         console.log(err);
-            //     });
+            if (request)
+                request({
+                    method: "POST",
+                    endpoint: "user/updateDriverLocation",
+                    params: {
+                        coordinates: [
+                            location.coords.longitude,
+                            location.coords.latitude
+                        ],
+                        type: "Point"
+                    }
+                });
             // await axios.post(url, { location }); // you should use post instead of get to persist data on the backend
         } catch (err) {
             console.error(err);

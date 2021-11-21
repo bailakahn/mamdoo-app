@@ -1,3 +1,4 @@
-module.exports = async () => {
-  return { success: true };
+const { Driver } = require("_db/models");
+module.exports = async (_id, currentLocation) => {
+  await Driver.findByIdAndUpdate(_id, { currentLocation });
 };

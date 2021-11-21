@@ -14,6 +14,7 @@ native/.env
 #provider
 provider/.env
 provider/node_modules/**/*
+provider/.serverless*
 
 #proxy
 proxy/.env

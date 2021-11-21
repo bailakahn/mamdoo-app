@@ -88,7 +88,7 @@
           "AppLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/express-app-prod-app"
+              "LogGroupName": "/aws/lambda/express-app-dev-app"
             }
           },
           "IamRoleLambdaExecution": {
@@ -117,7 +117,7 @@
                       "-",
                       [
                         "express-app",
-                        "prod",
+                        "dev",
                         "lambda"
                       ]
                     ]
@@ -133,7 +133,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/express-app-prod*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/express-app-dev*:*"
                           }
                         ]
                       },
@@ -144,7 +144,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/express-app-prod*:*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/express-app-dev*:*:*"
                           }
                         ]
                       }
@@ -158,7 +158,7 @@
                   "-",
                   [
                     "express-app",
-                    "prod",
+                    "dev",
                     {
                       "Ref": "AWS::Region"
                     },
@@ -175,22 +175,22 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/express-app/prod/1635589450326-2021-10-30T10:24:10.326Z/express-app.zip"
+                "S3Key": "serverless/express-app/dev/1637530958997-2021-11-21T21:42:38.997Z/express-app.zip"
               },
               "Handler": "index.handler",
               "Runtime": "nodejs14.x",
-              "FunctionName": "express-app-prod-app",
+              "FunctionName": "express-app-dev-app",
               "MemorySize": 128,
               "Timeout": 6,
               "Environment": {
                 "Variables": {
                   "PORT": "3005",
-                  "ENV_NAME": "prod",
-                  "MONGO_DB_URL": "mongodb+srv://cluster0.rrnco.mongodb.net",
-                  "MONGO_DB_CONNECTION_STRING": "mongodb+srv://mamdooUser:tUng6EWyFbTzEmGa@cluster0.rrnco.mongodb.net",
+                  "ENV_NAME": "development",
+                  "MONGO_DB_URL": "localhost:27017",
+                  "MONGO_DB_CONNECTION_STRING": "mongodb://localhost:27017",
                   "MONGO_DB_NAME": "mamdoo",
                   "ALLOW_ORIGIN": "http://localhost",
-                  "KAFKA_HOST": "pkc-4nym6.us-east-1.aws.confluent.cloud:9092"
+                  "KAFKA_HOST": "localhost:9092"
                 }
               },
               "Role": {
@@ -204,20 +204,20 @@
               "AppLogGroup"
             ]
           },
-          "AppLambdaVersiontKSAm8bL2n8NfNmKklquaybWLgnQvJCv48CmgECSVtM": {
+          "AppLambdaVersionGrZbMMtbuY89DKUg3hazQ1UkqDQPR94SG1A8Z4h4": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AppLambdaFunction"
               },
-              "CodeSha256": "YyeN8gDJiIqhxJEdxdCNf33OI55U3xuJPnkJBAAvIus="
+              "CodeSha256": "0YuxKE/mDeacc9Kl9S0RCnEIT51L78tV8e7PqDWo28g="
             }
           },
           "ApiGatewayRestApi": {
             "Type": "AWS::ApiGateway::RestApi",
             "Properties": {
-              "Name": "prod-express-app",
+              "Name": "dev-express-app",
               "EndpointConfiguration": {
                 "Types": [
                   "EDGE"
@@ -429,13 +429,13 @@
               "AppLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1635589443135": {
+          "ApiGatewayDeployment1637530949422": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               },
-              "StageName": "prod"
+              "StageName": "dev"
             },
             "DependsOn": [
               "ApiGatewayMethodOptions",
@@ -488,16 +488,16 @@
               "Ref": "ServerlessDeploymentBucket"
             },
             "Export": {
-              "Name": "sls-express-app-prod-ServerlessDeploymentBucketName"
+              "Name": "sls-express-app-dev-ServerlessDeploymentBucketName"
             }
           },
           "AppLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AppLambdaVersiontKSAm8bL2n8NfNmKklquaybWLgnQvJCv48CmgECSVtM"
+              "Ref": "AppLambdaVersionGrZbMMtbuY89DKUg3hazQ1UkqDQPR94SG1A8Z4h4"
             },
             "Export": {
-              "Name": "sls-express-app-prod-AppLambdaFunctionQualifiedArn"
+              "Name": "sls-express-app-dev-AppLambdaFunctionQualifiedArn"
             }
           },
           "ServiceEndpoint": {
@@ -518,12 +518,12 @@
                   {
                     "Ref": "AWS::URLSuffix"
                   },
-                  "/prod"
+                  "/dev"
                 ]
               ]
             },
             "Export": {
-              "Name": "sls-express-app-prod-ServiceEndpoint"
+              "Name": "sls-express-app-dev-ServiceEndpoint"
             }
           }
         }
@@ -635,12 +635,12 @@
         "handler": "index.handler",
         "environment": {
           "PORT": "3005",
-          "ENV_NAME": "prod",
-          "MONGO_DB_URL": "mongodb+srv://cluster0.rrnco.mongodb.net",
-          "MONGO_DB_CONNECTION_STRING": "mongodb+srv://mamdooUser:tUng6EWyFbTzEmGa@cluster0.rrnco.mongodb.net",
+          "ENV_NAME": "development",
+          "MONGO_DB_URL": "localhost:27017",
+          "MONGO_DB_CONNECTION_STRING": "mongodb://localhost:27017",
           "MONGO_DB_NAME": "mamdoo",
           "ALLOW_ORIGIN": "http://localhost",
-          "KAFKA_HOST": "pkc-4nym6.us-east-1.aws.confluent.cloud:9092"
+          "KAFKA_HOST": "localhost:9092"
         },
         "events": [
           {
@@ -690,13 +690,13 @@
             }
           }
         ],
-        "name": "express-app-prod-app",
+        "name": "express-app-dev-app",
         "package": {},
         "memory": 128,
         "timeout": 6,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "AppLambdaVersiontKSAm8bL2n8NfNmKklquaybWLgnQvJCv48CmgECSVtM"
+        "versionLogicalId": "AppLambdaVersionGrZbMMtbuY89DKUg3hazQ1UkqDQPR94SG1A8Z4h4"
       }
     },
     "configValidationMode": "warn",
@@ -717,10 +717,11 @@
       "custom": {
         "$ref": "$[\"service\"][\"custom\"]"
       },
-      "pre_build": {
-        "commands": [
-          "echo \"Baila\""
-        ]
+      "package": {
+        "individually": false,
+        "excludeDevDependencies": false,
+        "artifact": "/Users/bailakahn/Code/mamdoo/mamdoo/provider/.serverless/express-app.zip",
+        "artifactDirectoryName": "serverless/express-app/dev/1637530958997-2021-11-21T21:42:38.997Z"
       }
     },
     "layers": {},
@@ -728,7 +729,8 @@
     "artifact": "/Users/bailakahn/Code/mamdoo/mamdoo/provider/.serverless/express-app.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/express-app/prod/1635589450326-2021-10-30T10:24:10.326Z",
+    "individually": false,
+    "artifactDirectoryName": "serverless/express-app/dev/1637530958997-2021-11-21T21:42:38.997Z",
     "artifact": "express-app.zip"
   }
 }

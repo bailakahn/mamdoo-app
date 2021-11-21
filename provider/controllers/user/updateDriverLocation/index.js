@@ -1,5 +1,6 @@
 const { updateDriverLocation } = require("./units");
 const auth = require("_app/auth");
+const { getBody } = require("_lib/helpers");
 
 module.exports = async ({ req, res }) => {
   return await auth(
@@ -7,7 +8,9 @@ module.exports = async ({ req, res }) => {
       req,
     },
     async ({ userId, accessToken, app }) => {
-      return await updateDriverLocation();
+      const currentLocation = getBody(req);
+
+      return await updateDriverLocation(userId, currentLocation);
     }
   );
 };
