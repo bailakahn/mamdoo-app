@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useStore } from "_store";
-// const baseUrl = "http://192.168.2.133:3005/";
-const baseUrl = "https://3u5ytlhfna.execute-api.us-east-1.amazonaws.com/prod/";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { BACKEND_ENDPOINT } from "@env";
+import { useStore } from "_store";
 
 export function useApi() {
     const {
@@ -12,7 +10,7 @@ export function useApi() {
     } = useStore();
 
     const getRequest = ({ method = "GET", endpoint, params }) => {
-        let url = baseUrl + endpoint;
+        let url = BACKEND_ENDPOINT + endpoint;
 
         const options = {
             headers: {
@@ -64,7 +62,7 @@ export function api() {
         AsyncStorage.getItem("@mamdoo-partner").then((user) => {
             const partner = JSON.parse(user);
 
-            let url = baseUrl + endpoint;
+            let url = BACKEND_ENDPOINT + endpoint;
 
             const options = {
                 headers: {
