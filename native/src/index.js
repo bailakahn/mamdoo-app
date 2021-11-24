@@ -1,45 +1,84 @@
 import React from "react";
-import { SafeAreaView } from "react-native";
-import { PricingCard } from "react-native-elements";
-import { useTheme } from "react-native-paper";
+import { SafeAreaView, View, Image} from "react-native";
+import { PricingCard} from "react-native-elements";
+import { useTheme, Text } from "react-native-paper";
 import { useStore } from "_store";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { useApp } from "_hooks";
+import { Button} from "_atoms";
 const Main = () => {
     const { colors } = useTheme();
     const app = useApp();
 
     return (
         <SafeAreaView style={Classes.container(colors)}>
-            <PricingCard
-                color={colors.primary}
-                title={t("main.iAmAClient")}
-                info={[t("main.bookABike")]}
-                button={{ title: t("main.start") }}
-                onButtonPress={() => app.actions.setApp("client")}
-                containerStyle={{
-                    backgroundColor: colors.background,
-                    borderColor: colors.border
+            <View style={{ marginTop: -50 }}>
+                <Image
+                    source={require("_assets/logo.png")}
+                    style={Classes.formLogo(colors)}
+                />
+            </View>
+            <View
+                style={{
+                    alignItems: "flex-start",
+                    marginBottom: 10
                 }}
-                infoStyle={{
-                    color: colors.text
+            >
+                <Button
+                    mode="outlined"
+                   onPress={() => app.actions.setApp("client")}
+                    style={[
+                        Classes.splashButton(colors),
+                        {
+                            alignItems: "center",
+                            borderColor: colors.primary,
+                        }
+                    ]}
+                >
+                    <Text
+                        style={{
+                            fontSize: 20,
+                            textAlign: "center",
+                            fontWeight: "bold",
+                            paddingRight: 50,
+                            color: colors.primary
+                        }}
+                    >
+                        {t("main.iAmAClient")}
+                    </Text>
+                </Button>
+            </View>
+            <View
+                style={{
+                    alignItems: "flex-start",
+                    marginBottom: 10
                 }}
-            />
-            <PricingCard
-                color={colors.accent}
-                title={t("main.iAmAPartner")}
-                info={[t("main.iWantMoreClients")]}
-                button={{ title: t("main.start") }}
-                onButtonPress={() => app.actions.setApp("partner")}
-                containerStyle={{
-                    backgroundColor: colors.background,
-                    borderColor: colors.border
-                }}
-                infoStyle={{
-                    color: colors.text
-                }}
-            />
+            >
+                <Button
+                    mode="outlined"
+                    onPress={() => app.actions.setApp("partner")}
+                    style={[
+                        Classes.splashButton(colors),
+                        {
+                            alignItems: "center",
+                            borderColor: colors.accent,
+                        }
+                    ]}
+                >
+                    <Text
+                        style={{
+                            fontSize: 20,
+                            textAlign: "center",
+                            fontWeight: "bold",
+                            paddingRight: 50,
+                            color: colors.accent
+                        }}
+                    >
+                        {t("main.iAmAPartner")}
+                    </Text>
+                </Button>
+            </View>
         </SafeAreaView>
     );
 };

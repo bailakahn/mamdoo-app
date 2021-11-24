@@ -182,10 +182,20 @@ export const backButton = (colors) => ({
     backgroundColor: colors.accent
 });
 
+export const splashButton = (colors) => ({
+    marginTop: 20,
+    width: Mixins.width(0.6, true),
+    height: Mixins.height(40),
+    justifyContent: "center",
+    borderRadius: 15,
+    borderWidth:2
+});
+
 export const backButtonLabel = (colors) => ({
     width: Mixins.width(0.5, true),
     justifyContent: "center"
 });
+
 
 export const offlineContainer = {
     height: Mixins.scaleSize(30),
