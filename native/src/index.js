@@ -33,6 +33,7 @@ const Main = () => {
                         {
                             alignItems: "center",
                             borderColor: colors.primary,
+                             height: 50
                         }
                     ]}
                 >
@@ -63,6 +64,7 @@ const Main = () => {
                         {
                             alignItems: "center",
                             borderColor: colors.accent,
+                            height: 50
                         }
                     ]}
                 >

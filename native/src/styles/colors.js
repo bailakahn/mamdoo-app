@@ -15,7 +15,7 @@
 
 export const colors = {
     light: {
-        accent: "#E2087C",
+        accent: "#25C0D2",
         backdrop: "rgba(0, 0, 0, 0.5)",
         background: "#f6f6f6",
         border: "#D3D3D3",
@@ -25,7 +25,7 @@ export const colors = {
         onBackground: "#000000",
         onSurface: "#000000",
         placeholder: "rgba(0, 0, 0, 0.54)",
-        primary: "#67B032",
+        primary: "#25C0D2",
         surface: "#ffffff",
         text: "#000000",
         white: "#ffffff",
@@ -35,7 +35,7 @@ export const colors = {
         alert: "#cc4b37"
     },
     dark: {
-        accent: "#E2087C",
+        accent: "#25C0D2",
         backdrop: "rgba(0, 0, 0, 0.5)",
         background: "#181818",
         border: "#202020",
@@ -45,7 +45,7 @@ export const colors = {
         onBackground: "#FFFFFF",
         onSurface: "#FFFFFF",
         placeholder: "rgba(255, 255, 255, 0.54)",
-        primary: "#67B032",
+        primary: "#25C0D2",
         surface: "#181818",
         text: "#ffffff",
         white: "#ffffff",
