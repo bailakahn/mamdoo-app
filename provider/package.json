@@ -6,6 +6,7 @@
   "scripts": {
     "start-node": "nodemon server.js",
     "start": "sls offline start --skipCacheInvalidation",
+    "start:prod": "export ENV_NAME=prod && node server.js",
     "new:endpoint": "node cli/newEndpoint.js",
     "new:unit": "node cli/newUnit.js",
     "sync:topics": "node cli/syncTopics.js",
