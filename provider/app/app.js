@@ -6,14 +6,14 @@ require("dotenv").config();
 const app = express();
 const mongoose = require("mongoose");
 const kafkajs = require("_lib/kafka");
-var serverless = require("serverless-http");
+const { ENV_NAME } = process.env;
+
+console.log({ ENV_NAME });
+
 const {
-  ENV_NAME,
   MONGO_DB_URL,
   MONGO_DB_NAME,
-  ALLOW_ORIGIN,
-  MONGO_DB_CONNECTION_STRING,
-} = process.env;
+} = require(`../config/env.${ENV_NAME}.json`);
 
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());
@@ -35,9 +35,8 @@ app.get("/", (req, res) => {
 });
 
 const registerEndpoints = require("./startup/endpoints");
-
 mongoose
-  .connect(MONGO_DB_CONNECTION_STRING, {
+  .connect(`${MONGO_DB_URL}/${MONGO_DB_NAME}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
