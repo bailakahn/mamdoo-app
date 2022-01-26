@@ -2,7 +2,7 @@ const kafka = require("_lib/kafka");
 const { send } = require("_lib/expo");
 
 module.exports = async (rideData, driverId) => {
-  // send("client", 1001, [rideData.client._id]);
+  send("client", 1001, [rideData.client._id]);
 
   const producer = await kafka.producer();
 
