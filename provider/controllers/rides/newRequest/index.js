@@ -12,6 +12,7 @@ module.exports = async ({ req, res }) => {
       const { coordinates } = getBody(req);
       const nearByDrivers = await getDrivers(coordinates);
 
+      console.log({ nearByDrivers });
       send("partner", 1000, nearByDrivers);
       const requestId = await saveRequest({
         userId,
