@@ -3,7 +3,9 @@
     "native": "cd native && yarn start -c",
     "provider": "cd provider && yarn start",
     "proxy": "cd proxy && yarn start",
-    "start": "concurrently --kill-others  \"npm run provider\" \"npm run proxy\" \"npm run native\""
+    "start": "concurrently --kill-others  \"npm run provider\" \"npm run proxy\" \"npm run native\"",
+    "deploy:provider": "git subtree push --prefix provider heroku master",
+    "deploy:proxy": "git subtree push --prefix proxy heroku master"
   },
   "private": true,
   "devDependencies": {

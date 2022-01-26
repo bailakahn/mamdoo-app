@@ -9,7 +9,9 @@
     "new:controller": "node cli/newController.js",
     "new:unit": "node cli/newUnit.js",
     "postinstall": "link-module-alias",
-    "preinstall": "command -v link-module-alias && link-module-alias clean || true"
+    "preinstall": "command -v link-module-alias && link-module-alias clean || true",
+    "deploy:provider": "cd .. && git subtree push --prefix provider heroku master",
+    "deploy:proxy": "cd .. && git subtree push --prefix proxy heroku master"
   },
   "dependencies": {
     "aws-sdk": "^2.846.0",
