@@ -14,8 +14,8 @@
     "preinstall": "command -v link-module-alias && link-module-alias clean || true",
     "migrate": "export ENV_NAME=dev && migrate-mongo up",
     "migrate:prod": "export ENV_NAME=prod && migrate-mongo up",
-    "deploy:provider": "cd .. && git subtree push --prefix provider heroku master",
-    "deploy:proxy": "cd .. && git subtree push --prefix proxy heroku master"
+    "deploy:provider": "cd .. && heroku git:remote -a mamdoo-provider &&  git subtree push --prefix provider heroku master",
+    "deploy:proxy": "cd .. && heroku git:remote -a mamdoo &&  git subtree push --prefix proxy heroku master"
   },
   "dependencies": {
     "argon2": "^0.27.2",
