@@ -12,7 +12,7 @@ import MobileDrawer from "./mobile-drawer";
 import headerData from "./header.data";
 import theme from "theme";
 import LogoDark from "assets/logo-dark.svg";
-import MamdooLogo from "assets/mamdoo-logo.png";
+import MamdooLogo from "assets/logo-3.png";
 import Divider from "assets/divider.svg";
 
 export default function Header({ className }) {
@@ -24,7 +24,7 @@ export default function Header({ className }) {
     <DrawerProvider>
       <header sx={styles.header} className={className} id="header">
         <Container sx={styles.container}>
-          <Logo src={MamdooLogo} sx={{ width: 200, height: 45 }} />
+          <Logo src={MamdooLogo} sx={{ width: 300, marginLeft: "-85px" }} />
 
           <Flex as="nav" sx={styles.nav}>
             {menuItems.map(({ path, label }, i) => (
@@ -125,6 +125,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
+    height: 45,
   },
   nav: {
     ml: "auto",

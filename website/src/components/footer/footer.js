@@ -19,7 +19,7 @@ export default function Footer() {
         <Box sx={styles.footer.footerTopArea}>
           <Box sx={styles.copyrightArea}>
             <Box className="footer__logo">
-              <Logo src={MamdooFooterLogo} />
+              {/* <Logo src={MamdooFooterLogo} /> */}
             </Box>
             <nav className="footer__menu">
               <Link path="/" label={t("Footer.term_of_use")} />
@@ -62,6 +62,8 @@ const styles = {
     container: {
       width: "100%",
       alignItems: "stretch",
+      display: "flex",
+      justifyContent: "center",
     },
     footerTopArea: {
       display: "flex",
