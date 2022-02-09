@@ -17,7 +17,7 @@ module.exports = async (app, eventId, userIds) => {
     const user = await get(
       modelName,
       { _id },
-      { one: true, fields: ["_id", "expoPushToken"] }
+      { one: true, fields: ["_id", "expoPushToken", "lang"] }
     );
     if (!user) continue;
 
