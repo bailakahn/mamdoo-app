@@ -1,0 +1,40 @@
+service: express-app
+# variablesResolutionMode: 20210219
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+  region: us-east-1
+  memorySize: 128
+  lambdaHashingVersion: 20201221
+
+functions:
+  app:
+    handler: index.handler
+    environment: ${file(config/env.${opt:stage, self:provider.stage}.json)}
+    events:
+      - http:
+          path: /
+          method: ANY
+          cors: true
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    noPrependStageInUrl: true
+    httpPort: 3005
+  webpack:
+    includeModules: true
+    packagerOptions:
+      scripts:
+        - npm_config_platform=linux npm_config_arch=x64 npm i snappy
+
+package:
+  individually: false
+  excludeDevDependencies: false

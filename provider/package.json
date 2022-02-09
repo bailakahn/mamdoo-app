@@ -1,0 +1,62 @@
+{
+  "name": "dynamo-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start-node": "nodemon server.js",
+    "start": "sls offline start --skipCacheInvalidation",
+    "start:prod": "export ENV_NAME=prod && node server.js",
+    "new:endpoint": "node cli/newEndpoint.js",
+    "new:unit": "node cli/newUnit.js",
+    "sync:topics": "node cli/syncTopics.js",
+    "postinstall": "link-module-alias",
+    "preinstall": "command -v link-module-alias && link-module-alias clean || true",
+    "migrate": "export ENV_NAME=dev && migrate-mongo up",
+    "migrate:prod": "export ENV_NAME=prod && migrate-mongo up",
+    "deploy:provider": "cd .. && heroku git:remote -a mamdoo-provider &&  git subtree push --prefix provider heroku master",
+    "deploy:proxy": "cd .. && heroku git:remote -a mamdoo &&  git subtree push --prefix proxy heroku master",
+    "log:provider": "heroku git:remote -a mamdoo-provider && heroku logs --tail",
+    "log:proxy": "heroku git:remote -a mamdoo && heroku logs --tail"
+  },
+  "dependencies": {
+    "argon2": "^0.27.2",
+    "aws-sdk": "^2.846.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "expo-server-sdk": "^3.6.0",
+    "express": "^4.17.1",
+    "fs-extra": "^9.1.0",
+    "graceful-fs": "^4.2.8",
+    "js-beautify": "^1.13.5",
+    "jsonwebtoken": "^8.5.1",
+    "kafkajs": "^1.15.0",
+    "knex": "^0.95.2",
+    "link-module-alias": "^1.2.0",
+    "module-alias": "^2.2.2",
+    "mongoose": "^5.12.3",
+    "node-fetch": "^2.6.1",
+    "ora": "^5.4.0",
+    "postinstall": "^0.7.0",
+    "preinstall": "0.0.1-security",
+    "querystring": "^0.2.1",
+    "serverless-http": "^2.7.0",
+    "snappy": "^7.0.4",
+    "stack-trace": "^0.0.10",
+    "striptags": "^3.1.1",
+    "yargs": "^16.2.0"
+  },
+  "devDependencies": {
+    "concurrently": "^6.0.0",
+    "nodemon": "^2.0.14",
+    "serverless-offline": "^8.2.0"
+  },
+  "_moduleAliases": {
+    "_app": "app/",
+    "_controllers": "controllers/",
+    "_lib": "lib/",
+    "_constants": "constants/",
+    "_db": "db/"
+  }
+}
