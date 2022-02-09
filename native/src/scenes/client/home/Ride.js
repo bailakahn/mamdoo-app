@@ -140,7 +140,7 @@ export default function RideRequestScreen() {
                         <Button
                             style={[
                                 Classes.callButton(colors),
-                                { backgroundColor: colors.accent }
+                                { backgroundColor: colors.error }
                             ]}
                             mode="contained"
                             onPress={ride.actions.cancelRide}
@@ -152,10 +152,10 @@ export default function RideRequestScreen() {
                             style={{
                                 fontSize: 20,
                                 fontWeight: "bold",
-                                color: colors.accent
+                                color: colors.error
                             }}
                         >
-                            Call Mamdoo to cancel ride
+                            {t("ride.callToCancel")}
                         </Text>
                     )}
                 </View>

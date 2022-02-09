@@ -188,14 +188,13 @@ export const splashButton = (colors) => ({
     height: Mixins.height(40),
     justifyContent: "center",
     borderRadius: 15,
-    borderWidth:2
+    borderWidth: 2
 });
 
 export const backButtonLabel = (colors) => ({
     width: Mixins.width(0.5, true),
     justifyContent: "center"
 });
-
 
 export const offlineContainer = {
     height: Mixins.scaleSize(30),

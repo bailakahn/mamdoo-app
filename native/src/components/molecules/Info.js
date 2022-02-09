@@ -22,7 +22,7 @@ export default function Info({ onDismiss, visible, text, onClose }) {
                     <Button
                         mode="contained"
                         onPress={onClose}
-                        color={colors.accent}
+                        color={colors.error}
                     >
                         {t2("main.close")}
                     </Button>

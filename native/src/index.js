@@ -1,12 +1,12 @@
 import React from "react";
-import { SafeAreaView, View, Image} from "react-native";
-import { PricingCard} from "react-native-elements";
+import { SafeAreaView, View, Image } from "react-native";
+import { PricingCard } from "react-native-elements";
 import { useTheme, Text } from "react-native-paper";
 import { useStore } from "_store";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { useApp } from "_hooks";
-import { Button} from "_atoms";
+import { Button } from "_atoms";
 const Main = () => {
     const { colors } = useTheme();
     const app = useApp();
@@ -27,13 +27,12 @@ const Main = () => {
             >
                 <Button
                     mode="outlined"
-                   onPress={() => app.actions.setApp("client")}
+                    onPress={() => app.actions.setApp("client")}
                     style={[
                         Classes.splashButton(colors),
                         {
-                            alignItems: "center",
                             borderColor: colors.primary,
-                             height: 50
+                            height: 50
                         }
                     ]}
                 >
@@ -57,12 +56,11 @@ const Main = () => {
                 }}
             >
                 <Button
-                    mode="outlined"
+                    mode="contained"
                     onPress={() => app.actions.setApp("partner")}
                     style={[
                         Classes.splashButton(colors),
                         {
-                            alignItems: "center",
                             borderColor: colors.accent,
                             height: 50
                         }
@@ -74,7 +72,7 @@ const Main = () => {
                             textAlign: "center",
                             fontWeight: "bold",
                             paddingRight: 50,
-                            color: colors.accent
+                            color: colors.text
                         }}
                     >
                         {t("main.iAmAPartner")}

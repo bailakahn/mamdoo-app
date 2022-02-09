@@ -38,6 +38,7 @@ export default {
         phoneNumber: "Numéro",
         callDriver: "Appeler",
         cancelRide: "Annuler votre course",
+        callToCancel: "Appelez votre Mamdoo pour annuler la course",
         driverArrived: "est la!",
         meetHimOutside: "Rencontrer le dehors!",
         rideCanceled:

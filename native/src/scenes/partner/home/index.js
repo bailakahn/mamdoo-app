@@ -37,12 +37,9 @@ export default function AccountScene({}) {
                 >
                     <View>
                         <Headline style={Classes.text(colors)}>
-                            Nouvelle demande de course
+                            {t2("ride.newRide")}
                         </Headline>
-                        <Text>
-                            Un utilisateur vient d'effectuer une demande de
-                            course
-                        </Text>
+                        <Text>{t2("ride.newRideDescription")}</Text>
 
                         <View
                             style={{
@@ -55,8 +52,8 @@ export default function AccountScene({}) {
                             <View style={{ marginRight: 20 }}>
                                 <RoundButton
                                     size={0.25}
-                                    color="accent"
-                                    text="Refuser"
+                                    color="error"
+                                    text={t2("ride.denyRide")}
                                     onPress={ride.actions.resetRequest}
                                     shadow={{ size: 0.2 }}
                                 />
@@ -66,7 +63,7 @@ export default function AccountScene({}) {
                                 <RoundButton
                                     size={0.35}
                                     color="primary"
-                                    text="Accepter"
+                                    text={t2("ride.acceptRide")}
                                     onPress={ride.actions.acceptRequest}
                                     shadow={{ size: 0.3 }}
                                 />
@@ -116,7 +113,7 @@ export default function AccountScene({}) {
             <View style={[Classes.bottonView(colors)]}>
                 <RoundButton
                     size={0.35}
-                    color={!partner.partner.isOnline ? "primary" : "accent"}
+                    color={!partner.partner.isOnline ? "primary" : "error"}
                     text={
                         !partner.partner.isOnline
                             ? t2("home.go")

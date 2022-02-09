@@ -121,7 +121,7 @@ export default function DriverOnTheWayScene() {
                         <Button
                             style={[
                                 Classes.callButton(colors),
-                                { backgroundColor: colors.accent }
+                                { backgroundColor: colors.error }
                             ]}
                             mode="contained"
                             onPress={ride.actions.cancelRide}
@@ -133,10 +133,10 @@ export default function DriverOnTheWayScene() {
                             style={{
                                 fontSize: 20,
                                 fontWeight: "bold",
-                                color: colors.accent
+                                color: colors.error
                             }}
                         >
-                            Call Mamdoo to cancel ride
+                            {t2("ride.callToCancel")}
                         </Text>
                     )}
                 </View>
@@ -157,7 +157,7 @@ export default function DriverOnTheWayScene() {
                     <RoundButton
                         size={0.35}
                         shadow={{ size: 0.3 }}
-                        color="accent"
+                        color="error"
                         text={t2("ride.endRide")}
                         onPress={ride.actions.onEndRide}
                     />

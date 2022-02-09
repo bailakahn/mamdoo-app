@@ -46,10 +46,16 @@ export default {
     },
     ride: {
         mamdoo: "Mamdoo",
+        newRide: "Nouvelle demande de course",
+        newRideDescription:
+            "Un utilisateur vient d'effectuer une demande de course",
+        acceptRide: "Accepter",
+        denyRide: "Refuser",
         phoneNumber: "Numéro",
         callDriver: "Appeler",
         callRider: "Appeler",
         cancelRide: "Annuler votre course",
+        callToCancel: "Appelez pour annuler la course",
         openMap: "Ouvrir la carte",
         rideCanceled: "Le client a annulé la course.",
         endRide: "Terminer la course",

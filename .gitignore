@@ -10,6 +10,7 @@ native/*.mobileprovision
 native/*.orig.*
 native/web-build/
 native/.env
+native/.env.production
 
 #provider
 provider/.env

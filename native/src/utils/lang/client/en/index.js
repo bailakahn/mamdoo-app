@@ -42,6 +42,7 @@ export default {
         phoneNumber: "Phone Number",
         callDriver: "Call",
         cancelRide: "Cancel Ride",
+        callToCancel: "Call Mamdoo to cancel ride",
         driverArrived: "is here!",
         meetHimOutside: "Meet him outside!",
         rideCanceled:
