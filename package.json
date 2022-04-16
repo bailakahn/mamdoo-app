@@ -1,7 +1,7 @@
 {
   "scripts": {
     "native": "cd native && yarn start -c",
-    "provider": "cd provider && yarn start",
+    "provider": "cd provider && export ENV_NAME=dev && nodemon server.js",
     "proxy": "cd proxy && yarn start",
     "start": "concurrently --kill-others  \"npm run provider\" \"npm run proxy\" \"npm run native\"",
     "deploy:provider": "heroku git:remote -a mamdoo-provider && git subtree push --prefix provider heroku master",
@@ -11,7 +11,8 @@
   },
   "private": true,
   "devDependencies": {
-    "concurrently": "^6.0.0"
+    "concurrently": "^6.0.0",
+    "nodemon": "^2.0.15"
   },
   "dependencies": {
     "history": "^5.0.0"

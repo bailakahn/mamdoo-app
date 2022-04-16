@@ -1,5 +1,5 @@
 const { Driver, Client } = require("_db/models");
-const { get } = require("_lib/helpers");
+const { get, error } = require("_lib/helpers");
 module.exports = async (app, _id, token) => {
   const modelName = app === "client" ? "Client" : "Driver";
   const model = app === "client" ? Client : Driver;
