@@ -33,7 +33,7 @@
         ]
       },
       "bundleIdentifier": "com.mamdoo.app",
-      "buildNumber": "0.0.1"
+      "buildNumber": "0.0.2"
     },
     "android": {
       "adaptiveIcon": {
