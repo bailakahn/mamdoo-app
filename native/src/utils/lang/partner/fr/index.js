@@ -70,6 +70,7 @@ export default {
         phoneNumber: "Numéro de téléphone",
         cabModel: "Marque",
         licensePlate: "Plaque d'immatriculation",
+        licensePlatePlaceholder: "1111A ou 1111AB",
         password: "Mot de passe",
         start: "Commencer",
         next: "Suivant",

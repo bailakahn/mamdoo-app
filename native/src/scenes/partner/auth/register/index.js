@@ -157,7 +157,7 @@ export default function Register({ navigation }) {
                             style={Classes.formInput(colors)}
                             mode="outlined"
                             label={t2("form.licensePlate")}
-                            placeholder={t2("form.licensePlate")}
+                            placeholder={t2("form.licensePlatePlaceholder")}
                             value={partner.formPartner.cab.licensePlate}
                             onChangeText={(licensePlate) =>
                                 partner.actions.setFormPartner({

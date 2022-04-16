@@ -22,7 +22,7 @@ module.exports = async ({ phoneNumber, cab, password }) => {
   if (!cab.model.length)
     error("InvalidParam", "The cab model is not valid", "errors.cabModel");
 
-  if (!cab.licensePlate.length || !/^[A-Z]{1,2}\d{4}$/.test(cab.licensePlate))
+  if (!cab.licensePlate.length || !/^\d{4}[A-Z]{1,2}$/.test(cab.licensePlate))
     error(
       "InvalidParam",
       "The license plate is not valid",

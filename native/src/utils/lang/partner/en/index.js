@@ -73,6 +73,7 @@ export default {
         phoneNumber: "Phone Number",
         cabModel: "Cab Model",
         licensePlate: "License Plate",
+        licensePlatePlaceholder: "1111A or 1111AB",
         password: "Password",
         start: "Start",
         next: "Next",

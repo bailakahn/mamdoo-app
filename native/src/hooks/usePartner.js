@@ -62,7 +62,7 @@ export default function usePartner() {
             return;
         }
 
-        if (!/^[A-Z]{1,2}\d{4}$/.test(formPartner.cab.licensePlate)) {
+        if (!/^\d{4}[A-Z]{1,2}$/.test(formPartner.cab.licensePlate)) {
             setFormError(t2("errors.licensePlate"));
             return;
         }
