@@ -26,14 +26,14 @@ export default function AccountScene({ navigation }) {
                 onPress: () => {
                     app.actions.removeApp();
                 }
+            },
+            {
+                title: t("account.logout"),
+                icon: "exit-to-app",
+                onPress: () => {
+                    user.actions.logout();
+                }
             }
-            // {
-            //     title: t("account.logout"),
-            //     icon: "exit-to-app",
-            //     onPress: () => {
-            //         user.actions.logout();
-            //     }
-            // }
         ],
         []
     );

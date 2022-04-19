@@ -7,7 +7,7 @@ export default function useUser() {
 
     const {
         auth: { user, userLoaded },
-        actions: { getUser, setUser }
+        actions: { getUser, setUser, removeUser }
     } = useStore();
 
     useEffect(() => {
@@ -17,8 +17,11 @@ export default function useUser() {
     const [formUser, setFormUser] = useState({
         firstName: "",
         lastName: "",
-        phoneNumber: ""
+        phoneNumber: "",
+        pin: ""
     });
+
+    const [auth, setAuth] = useState({ phoneNumber: "", pin: "" });
 
     const [formError, setFormError] = useState(false);
     const [ridesHistory, setRidesHistory] = useState([]);
@@ -40,6 +43,11 @@ export default function useUser() {
             !formUser.phoneNumber.length
         ) {
             setFormError(t("errors.phoneNumber"));
+            return;
+        }
+
+        if (formUser.pin.length !== 4) {
+            setFormError(t("errors.pin"));
             return;
         }
 
@@ -92,12 +100,51 @@ export default function useUser() {
             });
     };
 
+    const loginUser = () => {
+        setFormError(false);
+
+        if (!/^\d+$/.test(auth.phoneNumber) || auth.phoneNumber.length !== 9) {
+            setFormError(t("errors.phoneNumber"));
+            return;
+        }
+
+        if (auth.pin.length !== 4) {
+            setFormError(t("errors.pin"));
+            return;
+        }
+
+        getRequest({
+            method: "POST",
+            endpoint: "auth/user/login",
+            params: auth
+        })
+            .then((user) => {
+                setUser(user);
+            })
+            .catch((err) => {
+                console.log(err);
+                setFormError(t(err.code));
+            });
+    };
+    const logout = () => {
+        removeUser();
+    };
+
     return {
         formUser,
         formError,
         user,
         userLoaded,
         ridesHistory,
-        actions: { saveUser, setFormUser, saveChanges, getRidesHistory }
+        auth,
+        actions: {
+            saveUser,
+            setFormUser,
+            saveChanges,
+            getRidesHistory,
+            logout,
+            setAuth,
+            loginUser
+        }
     };
 }

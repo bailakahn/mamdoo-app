@@ -9,6 +9,7 @@ const clientSchema = new Schema(
       type: String,
       required: true,
     },
+    pin: { type: String },
     lang: { type: String },
     expoPushToken: { type: String, required: false },
     deleted: { type: Boolean, default: false },

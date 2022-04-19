@@ -1,13 +1,12 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import { useTheme, TextInput } from "react-native-paper";
-import { useStore } from "_store";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { useUser, useApp } from "_hooks";
 import { Button, RoundButton } from "_atoms";
 
-export default function Form() {
+export default function Form({ navigation }) {
     const { colors } = useTheme();
     const app = useApp();
 
@@ -66,8 +65,24 @@ export default function Form() {
                     maxLength={9}
                     keyboardType="number-pad"
                 />
+
+                <TextInput
+                    style={Classes.formInput(colors)}
+                    mode="outlined"
+                    label={t("form.pin")}
+                    value={user.formUser.pin}
+                    onChangeText={(pin) =>
+                        user.actions.setFormUser({
+                            ...user.formUser,
+                            pin
+                        })
+                    }
+                    maxLength={4}
+                    keyboardType="number-pad"
+                />
             </View>
             <View>
+                <Text style={Classes.text(colors)}>{t("form.pinText")}</Text>
                 {user.formError && (
                     <Text style={Classes.errorText(colors)}>
                         {user.formError}
@@ -82,11 +97,32 @@ export default function Form() {
                     disabled={
                         !user.formUser.firstName ||
                         !user.formUser.lastName ||
-                        !user.formUser.phoneNumber
+                        !user.formUser.phoneNumber ||
+                        !user.formUser.pin
                     }
                 >
                     {t("form.start")}
                 </Button>
+            </View>
+
+            <View
+                style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    marginTop: 30
+                }}
+            >
+                <Text style={{ ...Classes.text(colors), fontSize: 20 }}>
+                    {t("form.alreadyHaveAccount")}
+                </Text>
+                <TouchableOpacity
+                    style={{ marginLeft: 10 }}
+                    onPress={() => navigation.navigate("Login")}
+                >
+                    <Text style={{ color: colors.accent, fontSize: 20 }}>
+                        {t("form.login")}
+                    </Text>
+                </TouchableOpacity>
             </View>
 
             <View style={{ marginTop: 50, alignItems: "center" }}>

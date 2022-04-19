@@ -22,7 +22,9 @@ export default {
         lastName: "Le nom de famille n'est pas valide",
         phoneNumber: "Le numéro de téléphone n'est pas valide",
         duplicateClient: "Ce numero de téléphone existe déjà",
-        unsuportedPhoneNumber: "Ce numéro de téléphone n'est pas supporté"
+        unsuportedPhoneNumber: "Ce numéro de téléphone n'est pas supporté",
+        pin: "Le code pin est invalide",
+        login: "Le numéro de téléphone ou le code pin est incorrecte"
     },
     home: {
         bookRide: "Commander une moto"
@@ -49,7 +51,14 @@ export default {
         firstName: "Prénom",
         lastName: "Nom de famille",
         phoneNumber: "Numéro de téléphone",
-        start: "Commencer"
+        pin: "Code pin",
+        start: "Commencer",
+        pinText:
+            "Le code pin vous permettra de vous reconnecter. Veuilles le mémoriser",
+        loginHeader: "Connexion",
+        register: "Créer un compte",
+        alreadyHaveAccount: "Vous avez déjà un compte ?",
+        notRegisteredYet: "Pas de compte ?"
     },
     account: {
         changeApp: "Changer d'application",

@@ -3,11 +3,12 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import HomeStack from "./stacks/Home";
 import AccountStack from "./stacks/Account";
+import AuthtStack from "./stacks/Auth";
 import { useTheme } from "@react-navigation/native";
 import { useUser } from "_hooks";
 import { Loading } from "_atoms";
 const Tab = createMaterialBottomTabNavigator();
-import { FormScene } from "_scenes/client";
+import { FormScene, LoginScene } from "_scenes/client";
 
 export default function MainTabs({ role }) {
     const { colors } = useTheme();
@@ -56,6 +57,6 @@ export default function MainTabs({ role }) {
             />
         </Tab.Navigator>
     ) : (
-        <FormScene />
+        <AuthtStack />
     );
 }

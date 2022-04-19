@@ -1,0 +1,6 @@
+{
+  "Method": "POST",
+  "Routes": [
+    "user/login"
+  ]
+}

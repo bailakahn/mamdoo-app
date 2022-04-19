@@ -26,7 +26,9 @@ export default {
         lastName: "The last name is not valid",
         phoneNumber: "The phone number is not valid",
         duplicateClient: "A client with this phone number already exists",
-        unsuportedPhoneNumber: "This phone number is not supported"
+        unsuportedPhoneNumber: "This phone number is not supported",
+        pin: "The pin code is not valid",
+        login: "The phone number or pin code is incorrect"
     },
     home: {
         bookRide: "Book a ride"
@@ -53,7 +55,16 @@ export default {
         firstName: "First Name",
         lastName: "Last Name",
         phoneNumber: "Phone Number",
-        start: "Start"
+        pin: "Pin Code",
+        pinText:
+            "This Pin Code will allow you to login later. Please save it somewhere",
+        start: "Start",
+        login: "Login",
+        register: "Register",
+        loginHeader: "Login",
+        registerHeader: "Register",
+        alreadyHaveAccount: "Already have an account ?",
+        notRegisteredYet: "Not Register Yet ?"
     },
     account: {
         changeApp: "Change App",

@@ -21,6 +21,11 @@ export default function authActions(state, dispatch) {
                 dispatch({ type: types.USER_LOADED });
             });
         },
+        removeUser: () => {
+            AsyncStorage.removeItem("@mamdoo-client").then(() => {
+                dispatch({ type: types.REMOVE_USER });
+            });
+        },
         setPartner: (partner) => {
             dispatch({
                 type: types.SET_PARTNER,

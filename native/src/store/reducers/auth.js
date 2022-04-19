@@ -28,6 +28,11 @@ export default (state = auth, action) => {
                 ...state,
                 partnerLoaded: true
             };
+        case types.REMOVE_USER:
+            return {
+                ...state,
+                user: null
+            };
         case types.REMOVE_PARTNER:
             return {
                 ...state,
