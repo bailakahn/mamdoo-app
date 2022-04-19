@@ -118,6 +118,8 @@ export default function usePartner() {
     };
 
     const changeStatus = () => {
+        setPartner({ ...partner, isOnline: !partner.isOnline });
+
         getRequest({
             method: "POST",
             endpoint: "drivers/status",
@@ -128,6 +130,7 @@ export default function usePartner() {
             })
             .catch((err) => {
                 console.log(err);
+                setPartner({ ...partner, isOnline: !partner.isOnline });
                 // setFormError(t(err.code));
             });
     };
