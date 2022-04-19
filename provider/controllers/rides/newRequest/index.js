@@ -12,7 +12,6 @@ module.exports = async ({ req, res }) => {
       const { coordinates } = getBody(req);
       const nearByDrivers = await getDrivers(coordinates);
 
-      console.log({ nearByDrivers });
       send("partner", 1000, nearByDrivers);
       const requestId = await saveRequest({
         userId,
@@ -20,26 +19,30 @@ module.exports = async ({ req, res }) => {
         nearByDrivers,
       });
 
-      const producer = await kafka.producer();
+      if (nearByDrivers.length) {
+        const producer = await kafka.producer();
 
-      let payload = {
-        topic: "requestCreated",
-        messages: [
-          {
-            value: JSON.stringify({
-              event: "NEW_REQUEST",
-              recipients: nearByDrivers,
-              data: {
-                requestId,
-                coordinates,
-                clientId: userId,
-                drivers: nearByDrivers,
-              },
-            }),
-          },
-        ],
-      };
-      await producer.send(payload).then(console.log);
+        let payload = {
+          topic: "requestCreated",
+          messages: [
+            {
+              value: JSON.stringify({
+                event: "NEW_REQUEST",
+                recipients: nearByDrivers,
+                data: {
+                  requestId,
+                  coordinates,
+                  clientId: userId,
+                  drivers: nearByDrivers,
+                },
+              }),
+            },
+          ],
+        };
+        await producer.send(payload).then(console.log);
+      }
+
+      return { success: true, foundDrivers: nearByDrivers.length };
     }
   );
 };

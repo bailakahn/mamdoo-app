@@ -31,7 +31,9 @@ export default {
         login: "The phone number or pin code is incorrect"
     },
     home: {
-        bookRide: "Book a ride"
+        bookRide: "Book a ride",
+        noDriver:
+            "We did not find any driver at the moment. Please retry again!"
     },
     ride: {
         hello: "Hello",

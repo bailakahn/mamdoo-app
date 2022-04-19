@@ -9,22 +9,39 @@ export default function useRequest() {
         ride,
         actions: { resetRide }
     } = useStore();
-    const makeRideRequest = async () => {
+
+    const makeRideRequest = async (navigation) => {
         resetRide();
         const {
             latitude,
             longitude
         } = await location.actions.getCurrentPosition();
 
-        getRequest({
-            method: "POST",
-            endpoint: "rides/newRequest",
-            params: {
-                coordinates: [longitude, latitude]
+        let retryCount = 0;
+        const maxRetries = 5;
+        let stop = false;
+
+        do {
+            if (retryCount > 0) {
+                console.log("Retry " + retryCount);
+                await new Promise((res) => setTimeout(res, 10000));
             }
-        }).catch((err) => {
-            console.log(err);
-        });
+
+            const { success, foundDrivers } = await getRequest({
+                method: "POST",
+                endpoint: "rides/newRequest",
+                params: {
+                    coordinates: [longitude, latitude]
+                }
+            }).catch((err) => {
+                console.log(err);
+            });
+
+            if (foundDrivers) stop = true;
+            retryCount++;
+        } while (retryCount <= maxRetries && !stop);
+
+        if (!stop) navigation.navigate("Home", { notFound: true });
     };
 
     return {

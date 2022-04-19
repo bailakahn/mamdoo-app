@@ -27,7 +27,9 @@ export default {
         login: "Le numéro de téléphone ou le code pin est incorrecte"
     },
     home: {
-        bookRide: "Commander une moto"
+        bookRide: "Commander une moto",
+        noDriver:
+            "Nous n'avons pas pu trouver de chauffeur. S'il vous plait veuillez reessayer encore!"
     },
     ride: {
         hello: "Salut",
