@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { Alert } from "react-native";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
 import { useApi } from "_api";
+import { t2 } from "_utils/lang";
+import { ENV_NAME } from "@env";
+
 const TASK_FETCH_LOCATION = "TASK_FETCH_LOCATION";
 var request = null;
 export default function useLocation() {
@@ -10,6 +14,7 @@ export default function useLocation() {
     const [location, setLocation] = useState(null);
     const [error, setError] = useState(null);
     const [grantStatus, setGrantStatus] = useState(null);
+    const [grantBackgroundStatus, setGrantBackgroundStatus] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -17,22 +22,28 @@ export default function useLocation() {
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
 
-            let {
-                status: backgroundStatus
-            } = await Location.requestBackgroundPermissionsAsync().catch(
+            let backgroundStatus;
+
+            let permissionResponse = await Location.requestBackgroundPermissionsAsync().catch(
                 (backgroundPermissionError) =>
                     console.log({ backgroundPermissionError })
             );
 
-            if (isMounted) setGrantStatus(status);
+            backgroundStatus = permissionResponse?.status;
 
-            if (status !== "granted" && backgroundStatus != "granted") {
+            if (isMounted) {
+                setGrantStatus(status);
+                setGrantBackgroundStatus(backgroundStatus);
+            }
+
+            if (status !== "granted" || backgroundStatus != "granted") {
                 if (isMounted) {
                     setIsLoading(false);
-                    Alert.alert(
-                        "Location Access Required",
-                        "App requires location even when the App is backgrounded."
-                    );
+                    ENV_NAME !== "localhost" &&
+                        Alert.alert(
+                            t2("errors.locationHeader"),
+                            t2("errors.locationBody")
+                        );
                     setError("Permission to access location was denied");
                 }
                 return;
@@ -40,7 +51,7 @@ export default function useLocation() {
 
             if (isMounted) setIsLoading(false);
 
-            if (isMounted)
+            if (isMounted && backgroundStatus === "granted")
                 Location.startLocationUpdatesAsync(TASK_FETCH_LOCATION, {
                     accuracy: Location.Accuracy.Highest,
                     distanceInterval: 1, // minimum change (in meters) betweens updates
@@ -77,6 +88,7 @@ export default function useLocation() {
     return {
         location,
         grantStatus,
+        grantBackgroundStatus,
         error,
         isLoading,
         actions: { getCurrentPosition }

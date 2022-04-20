@@ -6,16 +6,28 @@ import AccountStack from "./stacks/Account";
 import AuthStack from "./stacks/Auth";
 import { useTheme } from "@react-navigation/native";
 import { usePartner } from "_hooks";
+import { useLocation } from "_hooks/partner";
 import { Loading } from "_atoms";
 import { t2 } from "_utils/lang";
+import LocationDenied from "_components/organisms/LocationDenied";
+import { ENV_NAME } from "@env";
 
 const Tab = createMaterialBottomTabNavigator();
 
 export default function MainTabs({ role }) {
     const { colors } = useTheme();
     const partner = usePartner();
+    const { grantStatus, isLoading, grantBackgroundStatus } = useLocation();
 
-    if (!partner.partnerLoaded) return <Loading visible={true} size="large" />;
+    if (!partner.partnerLoaded || isLoading)
+        return <Loading visible={true} size="large" />;
+
+    // if user don't give location permission then don't allow access to app
+    if (
+        grantStatus !== "granted" ||
+        (ENV_NAME !== "localhost" && grantBackgroundStatus !== "granted")
+    )
+        return <LocationDenied />;
 
     return partner.partner ? (
         <Tab.Navigator

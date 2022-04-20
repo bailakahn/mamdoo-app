@@ -34,7 +34,9 @@ export default {
         duplicateClient: "A client with this phone number already exists",
         unsuportedPhoneNumber: "This phone number is not supported",
         login: "The phone number or password is incorrect",
-        alreadyTaken: "This ride was already taken by another driver."
+        alreadyTaken: "This ride was already taken by another driver.",
+        locationHader: "Location Access Required",
+        locationBody: "App requires location even when the App is backgrounded."
     },
     home: {
         go: "GO",

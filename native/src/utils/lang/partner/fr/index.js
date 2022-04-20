@@ -30,7 +30,10 @@ export default {
         duplicateClient: "Ce numero de téléphone existe déjà",
         unsuportedPhoneNumber: "Ce numéro de téléphone n'est pas supporté",
         login: "Le numéro de téléphone ou le mot de passe est incorrecte",
-        alreadyTaken: "Cette course a déjà été acceptée par un autre Mamdoo"
+        alreadyTaken: "Cette course a déjà été acceptée par un autre Mamdoo",
+        locationHeader: "L'accès à votre position est requise",
+        locationBody:
+            "Mamdoo a besoin d'avoir accès a votre position pour vous envoyer des courses."
     },
     home: {
         go: "COMMENCER",
