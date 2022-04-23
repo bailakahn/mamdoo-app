@@ -31,7 +31,7 @@ export default function Login({ navigation }) {
                         style={Classes.formInput(colors)}
                         mode="outlined"
                         label={t("form.phoneNumber")}
-                        placeholder={t("form.phoneNumber")}
+                        placeholder={t("form.phoneNumberPlaceholder")}
                         value={user.auth.phoneNumber}
                         onChangeText={(phoneNumber) =>
                             user.actions.setAuth({
@@ -56,7 +56,7 @@ export default function Login({ navigation }) {
                                 pin
                             })
                         }
-                        maxLength={9}
+                        maxLength={4}
                         keyboardType="number-pad"
                         returnKeyType="done"
                     />
@@ -79,6 +79,23 @@ export default function Login({ navigation }) {
                 >
                     {t("form.start")}
                 </Button>
+            </View>
+
+            <View
+                style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    marginTop: 30
+                }}
+            >
+                <TouchableOpacity
+                    style={{ marginLeft: 10 }}
+                    onPress={() => navigation.navigate("ForgotPassword")}
+                >
+                    <Text style={{ color: colors.accent, fontSize: 20 }}>
+                        {t("form.forgotPassword")}
+                    </Text>
+                </TouchableOpacity>
             </View>
 
             <View

@@ -2,6 +2,7 @@ export default {
     main: {
         app: null,
         appLoaded: false,
+        settings: {},
         isDarkMode: false,
         themeLoaded: false
     },

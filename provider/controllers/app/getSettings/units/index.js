@@ -1,0 +1,1 @@
+module.exports.getSettings = require("./getSettings.js")

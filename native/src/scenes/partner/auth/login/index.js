@@ -1,7 +1,6 @@
-import React from "react";
-import { View, Image, TouchableOpacity, SafeAreaView } from "react-native";
+import React, { useState } from "react";
+import { View, Image, TouchableOpacity } from "react-native";
 import { useTheme, Text, TextInput } from "react-native-paper";
-import { useStore } from "_store";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import { usePartner, useApp } from "_hooks";
@@ -10,7 +9,7 @@ import { Button, RoundButton } from "_atoms";
 export default function Login({ navigation }) {
     const { colors } = useTheme();
     const app = useApp();
-
+    const [hidePassword, setHidePassword] = useState(true);
     const partner = usePartner();
 
     return (
@@ -32,7 +31,7 @@ export default function Login({ navigation }) {
                         style={Classes.formInput(colors)}
                         mode="outlined"
                         label={t2("form.phoneNumber")}
-                        placeholder={t2("form.phoneNumber")}
+                        placeholder={t2("form.phoneNumberPlaceholder")}
                         value={partner.auth.phoneNumber}
                         onChangeText={(phoneNumber) =>
                             partner.actions.setAuth({
@@ -49,7 +48,7 @@ export default function Login({ navigation }) {
                         style={Classes.formInput(colors)}
                         mode="outlined"
                         label={t2("form.password")}
-                        placeholder={t2("form.password")}
+                        placeholder={t2("form.passwordPlaceholder")}
                         value={partner.auth.password}
                         onChangeText={(password) =>
                             partner.actions.setAuth({
@@ -57,7 +56,13 @@ export default function Login({ navigation }) {
                                 password
                             })
                         }
-                        secureTextEntry={true}
+                        secureTextEntry={hidePassword}
+                        right={
+                            <TextInput.Icon
+                                name="eye"
+                                onPress={() => setHidePassword(!hidePassword)}
+                            />
+                        }
                     />
                 </View>
             </>
@@ -82,6 +87,22 @@ export default function Login({ navigation }) {
                 </Button>
             </View>
 
+            <View
+                style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    marginTop: 30
+                }}
+            >
+                <TouchableOpacity
+                    style={{ marginLeft: 10 }}
+                    onPress={() => navigation.navigate("ForgotPassword")}
+                >
+                    <Text style={{ color: colors.accent, fontSize: 20 }}>
+                        {t2("form.forgotPassword")}
+                    </Text>
+                </TouchableOpacity>
+            </View>
             <View
                 style={{
                     flexDirection: "row",

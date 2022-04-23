@@ -36,8 +36,24 @@ export default function LocationDenied() {
                 </Text>
             </View>
 
+            <View style={{ padding: 10 }}>
+                <Text
+                    style={{
+                        fontSize: 25,
+                        textAlign: "center",
+                        color: colors.warning
+                    }}
+                >
+                    {t("main.restartApp")}
+                </Text>
+            </View>
+
             <View style={{ marginTop: 20 }}>
-                <Button mode="contained" onPress={openSettings}>
+                <Button
+                    style={Classes.authorizeButton(colors)}
+                    mode="contained"
+                    onPress={openSettings}
+                >
                     {t("main.givePermission")}
                 </Button>
             </View>

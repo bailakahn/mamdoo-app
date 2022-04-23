@@ -12,7 +12,12 @@ export default {
         givePermission: "Give Permission",
         close: "Close",
         darkMode: "Dark Mode",
-        enableDarkMode: "Enable Dark Mode"
+        enableDarkMode: "Enable Dark Mode",
+        forgotPassword: "Forgot Password",
+        forgotPasswordText:
+            "Call us at this number to change your password. Note that we will ask for ID verification before reseting your password",
+        call: "Call",
+        goBack: "Go Back"
     },
     errors: {
         crashErrorTitle: "Oops, Something Went Wrong",
@@ -73,10 +78,12 @@ export default {
         firstName: "First Name",
         lastName: "Last Name",
         phoneNumber: "Phone Number",
+        phoneNumberPlaceholder: "Ex: 622442233",
         cabModel: "Cab Model",
         licensePlate: "License Plate",
         licensePlatePlaceholder: "1111A or 1111AB",
         password: "Password",
+        passwordPlaceholder: "Minimum 8 characters with 1 digit",
         start: "Start",
         next: "Next",
         back: "Previous",
@@ -87,7 +94,8 @@ export default {
         loginHeader: "Login",
         registerHeader: "Register",
         alreadyHaveAccount: "Already have an account ?",
-        notRegisteredYet: "Not Register Yet ?"
+        notRegisteredYet: "Not Register Yet ?",
+        forgotPassword: "Forgot your password ?"
     },
     account: {
         changeApp: "Change App",

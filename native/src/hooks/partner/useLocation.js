@@ -18,7 +18,6 @@ export default function useLocation() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        let isMounted = true;
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
 
@@ -31,27 +30,23 @@ export default function useLocation() {
 
             backgroundStatus = permissionResponse?.status;
 
-            if (isMounted) {
-                setGrantStatus(status);
-                setGrantBackgroundStatus(backgroundStatus);
-            }
+            setGrantStatus(status);
+            setGrantBackgroundStatus(backgroundStatus);
 
             if (status !== "granted" || backgroundStatus != "granted") {
-                if (isMounted) {
-                    setIsLoading(false);
-                    ENV_NAME !== "localhost" &&
-                        Alert.alert(
-                            t2("errors.locationHeader"),
-                            t2("errors.locationBody")
-                        );
-                    setError("Permission to access location was denied");
-                }
+                setIsLoading(false);
+                ENV_NAME !== "localhost" &&
+                    Alert.alert(
+                        t2("errors.locationHeader"),
+                        t2("errors.locationBody")
+                    );
+                setError("Permission to access location was denied");
                 return;
             }
 
-            if (isMounted) setIsLoading(false);
+            setIsLoading(false);
 
-            if (isMounted && backgroundStatus === "granted")
+            if (backgroundStatus === "granted")
                 Location.startLocationUpdatesAsync(TASK_FETCH_LOCATION, {
                     accuracy: Location.Accuracy.Highest,
                     distanceInterval: 1, // minimum change (in meters) betweens updates
@@ -68,12 +63,10 @@ export default function useLocation() {
             let {
                 coords: { latitude, longitude }
             } = await Location.getCurrentPositionAsync({});
-            if (isMounted) setLocation({ latitude, longitude });
+            setLocation({ latitude, longitude });
         })();
 
-        return () => {
-            isMounted = false;
-        };
+        return () => {};
     }, []);
 
     const getCurrentPosition = async () => {

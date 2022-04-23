@@ -7,6 +7,7 @@ import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import { usePartner, useApp } from "_hooks";
 import { Button, RoundButton } from "_atoms";
+import { hide } from "expo-splash-screen";
 
 export default function Register({ navigation }) {
     const { colors } = useTheme();
@@ -15,6 +16,7 @@ export default function Register({ navigation }) {
     const partner = usePartner();
 
     const [step, setStep] = useState(1);
+    const [hidePassword, setHidePassword] = useState(true);
 
     return (
         <View style={Classes.container(colors)}>
@@ -66,7 +68,7 @@ export default function Register({ navigation }) {
                             style={Classes.formInput(colors)}
                             mode="outlined"
                             label={t2("form.phoneNumber")}
-                            placeholder={t2("form.phoneNumber")}
+                            placeholder={t2("form.phoneNumberPlaceholder")}
                             value={partner.formPartner.phoneNumber}
                             onChangeText={(phoneNumber) =>
                                 partner.actions.setFormPartner({
@@ -83,7 +85,7 @@ export default function Register({ navigation }) {
                             style={Classes.formInput(colors)}
                             mode="outlined"
                             label={t2("form.password")}
-                            placeholder={t2("form.password")}
+                            placeholder={t2("form.passwordPlaceholder")}
                             value={partner.formPartner.password}
                             onChangeText={(password) =>
                                 partner.actions.setFormPartner({
@@ -91,7 +93,15 @@ export default function Register({ navigation }) {
                                     password
                                 })
                             }
-                            secureTextEntry={true}
+                            secureTextEntry={hidePassword}
+                            right={
+                                <TextInput.Icon
+                                    name="eye"
+                                    onPress={() =>
+                                        setHidePassword(!hidePassword)
+                                    }
+                                />
+                            }
                         />
                     </View>
                 </>

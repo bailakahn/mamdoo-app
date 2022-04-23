@@ -25,7 +25,7 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Mamdoo requires your location so that we can centre the map on you & show you where [x] is",
-        "NSLocationAlwaysUsageDescription": "Mamdoo requires your location so that we can centre the map on you & show you where [x] is",
+        "NSLocationAlwaysUsageDescription": "Mamdoo a besoin de votre position pour pouvoir vous envoyez des course à proximité de vous",
         "NSLocationAlwaysAndWhenInUseUsageDescription": "Mamdoo requires your location so that we can centre the map on you & show you where [x] is",
         "NSLocationUsageDescription": "Mamdoo requires your location so that we can centre the map on you & show you where [x] is",
         "UIBackgroundModes": [
@@ -33,7 +33,7 @@
         ]
       },
       "bundleIdentifier": "com.mamdoo.app",
-      "buildNumber": "0.0.2"
+      "buildNumber": "0.0.3"
     },
     "android": {
       "adaptiveIcon": {

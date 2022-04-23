@@ -38,6 +38,12 @@ export default function authActions(state, dispatch) {
 
                 dispatch({ type: types.DARK_MODE_LOADED });
             });
+        },
+        setSettings: (settings) => {
+            dispatch({
+                type: types.SET_SETTINGS,
+                settings
+            });
         }
     };
 }

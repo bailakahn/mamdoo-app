@@ -12,7 +12,12 @@ export default {
         givePermission: "Autoriser",
         close: "Fermer",
         darkMode: "Mode sombre",
-        enableDarkMode: "Activer le mode sombre"
+        enableDarkMode: "Activer le mode sombre",
+        forgotPassword: "Mot de passe oublié",
+        forgotPasswordText:
+            "Appelez nous pour changer votre mot de passe. Veullez noter que nous aurons besoin de verifier votre identité avant de changer votre mot de passe.",
+        call: "Appeler",
+        goBack: "Retour"
     },
     errors: {
         crashErrorTitle: "Oops, Quelque chose s'est mal passé",
@@ -71,10 +76,12 @@ export default {
         firstName: "Prénom",
         lastName: "Nom de famille",
         phoneNumber: "Numéro de téléphone",
+        phoneNumberPlaceholder: "Exemple: 622442233",
         cabModel: "Marque",
         licensePlate: "Plaque d'immatriculation",
         licensePlatePlaceholder: "1111A ou 1111AB",
         password: "Mot de passe",
+        passwordPlaceholder: "Minimum 8 lettres avec 1 chiffre",
         start: "Commencer",
         next: "Suivant",
         back: "Précédent",
@@ -85,7 +92,8 @@ export default {
         loginHeader: "Connexion",
         registerHeader: "S'enregistrer",
         alreadyHaveAccount: "Vous avez déjà un compte ?",
-        notRegisteredYet: "Pas de compte ?"
+        notRegisteredYet: "Pas de compte ?",
+        forgotPassword: "Mot de passe oublié ?"
     },
     account: {
         changeApp: "Changer d'application",

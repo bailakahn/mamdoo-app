@@ -55,6 +55,7 @@ export default function Form({ navigation }) {
                     style={Classes.formInput(colors)}
                     mode="outlined"
                     label={t("form.phoneNumber")}
+                    placeholder={t("form.phoneNumberPlaceholder")}
                     value={user.formUser.phoneNumber}
                     onChangeText={(phoneNumber) =>
                         user.actions.setFormUser({
@@ -64,6 +65,7 @@ export default function Form({ navigation }) {
                     }
                     maxLength={9}
                     keyboardType="number-pad"
+                    returnKeyType="done"
                 />
 
                 <TextInput

@@ -9,9 +9,15 @@ export default {
         locationPermission: "Location Permission",
         locationNeeded:
             "We need to access your location to serve you better! Grant us permission to use your location to be able to use Mamdoo",
+        restartApp: "Restart the app once you give hte permission",
         givePermission: "Give Permission",
         darkMode: "Dark Mode",
-        enableDarkMode: "Enable Dark Mode"
+        enableDarkMode: "Enable Dark Mode",
+        forgotPassword: "Forgot Password",
+        forgotPasswordText:
+            "Call us at this number to change your password. Note that we will ask for ID verification before reseting your password",
+        call: "Call",
+        goBack: "Go Back"
     },
     errors: {
         crashErrorTitle: "Oops, Something Went Wrong",
@@ -57,6 +63,7 @@ export default {
         firstName: "First Name",
         lastName: "Last Name",
         phoneNumber: "Phone Number",
+        phoneNumberPlaceholder: "Ex: 622442233",
         pin: "Pin Code",
         pinText:
             "This Pin Code will allow you to login later. Please save it somewhere",
@@ -66,7 +73,8 @@ export default {
         loginHeader: "Login",
         registerHeader: "Register",
         alreadyHaveAccount: "Already have an account ?",
-        notRegisteredYet: "Not Register Yet ?"
+        notRegisteredYet: "Not Register Yet ?",
+        forgotPassword: "Forgot your password ?"
     },
     account: {
         changeApp: "Change App",

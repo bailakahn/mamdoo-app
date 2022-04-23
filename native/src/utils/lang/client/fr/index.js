@@ -9,9 +9,16 @@ export default {
         locationPermission: "Permission de localisation",
         locationNeeded:
             "Nous avons besoin de pouvoir vous localiser pour vous donner le meilleur service! Activez la localisation dans vos paramètres pour utiliser Mamdoo.",
+        restartApp:
+            "IMPORTANT!!! Redemarrez l'application après avoir donner l'autorisation",
         givePermission: "Autoriser",
         darkMode: "Mode sombre",
-        enableDarkMode: "Activer le mode sombre"
+        enableDarkMode: "Activer le mode sombre",
+        forgotPassword: "Mot de passe oublié",
+        forgotPasswordText:
+            "Appelez nous pour changer votre mot de passe. Veullez noter que nous aurons besoin de verifier votre identité avant de changer votre mot de passe.",
+        call: "Appeler",
+        goBack: "Retour"
     },
     errors: {
         crashErrorTitle: "Oops, Quelque chose s'est mal passé",
@@ -53,6 +60,7 @@ export default {
         firstName: "Prénom",
         lastName: "Nom de famille",
         phoneNumber: "Numéro de téléphone",
+        phoneNumberPlaceholder: "Exemple: 622442233",
         pin: "Code pin",
         start: "Commencer",
         pinText:
@@ -60,7 +68,8 @@ export default {
         loginHeader: "Connexion",
         register: "Créer un compte",
         alreadyHaveAccount: "Vous avez déjà un compte ?",
-        notRegisteredYet: "Pas de compte ?"
+        notRegisteredYet: "Pas de compte ?",
+        forgotPassword: "Mot de passe oublié ?"
     },
     account: {
         changeApp: "Changer d'application",

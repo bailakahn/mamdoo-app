@@ -233,6 +233,12 @@ export const callButton = (colors) => ({
     justifyContent: "center"
 });
 
+export const authorizeButton = (colors) => ({
+    width: Mixins.width(0.7, true),
+    height: 50,
+    justifyContent: "center"
+});
+
 export const openMapButton = (colors) => ({
     width: Mixins.width(0.7, true),
     height: 50,
@@ -241,4 +247,8 @@ export const openMapButton = (colors) => ({
 
 export const dataCell = (colors) => ({
     justifyContent: "center"
+});
+
+export const centeredText = (colors) => ({
+    width: Mixins.width(0.7, true)
 });

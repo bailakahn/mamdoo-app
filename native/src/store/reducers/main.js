@@ -9,6 +9,11 @@ export default (state = main, action) => {
                 ...state,
                 app: action.app
             };
+        case types.SET_SETTINGS:
+            return {
+                ...state,
+                settings: action.settings
+            };
         case types.APP_LOADED:
             return {
                 ...state,
