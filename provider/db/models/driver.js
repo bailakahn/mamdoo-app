@@ -24,6 +24,7 @@ const clientSchema = new Schema(
     password: { type: String, required: true },
     salt: { type: String, required: true },
     isOnline: { type: Boolean, default: false },
+    active: { type: Boolean, default: false },
     deleted: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
     lastSeenAt: { type: Date, default: Date.now },

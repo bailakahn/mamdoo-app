@@ -172,6 +172,19 @@ export default function usePartner() {
             });
     };
 
+    const refresh = () => {
+        getRequest({
+            method: "GET",
+            endpoint: "drivers/refresh"
+        })
+            .then((data) => {
+                setPartner({ ...partner, ...data });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     const logout = () => {
         getRequest({
             method: "POST",
@@ -201,7 +214,8 @@ export default function usePartner() {
             changeStatus,
             saveChanges,
             getRidesHistory,
-            logout
+            logout,
+            refresh
         }
     };
 }

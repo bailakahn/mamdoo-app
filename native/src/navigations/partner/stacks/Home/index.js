@@ -1,16 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+import { usePartner } from "_hooks";
 
 const Stack = createStackNavigator();
 
-import { HomeScene, Ride } from "_scenes/partner";
+import { HomeScene, Ride, NotActiveScene } from "_scenes/partner";
 
 export default function HomeStack({ role }) {
+    const partner = usePartner();
+
+    useEffect(() => {
+        partner.actions.refresh();
+    }, []);
+
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen
                 name="Home"
-                component={HomeScene}
+                component={
+                    partner?.partner?.active ? HomeScene : NotActiveScene
+                }
                 options={({ navigation }) => ({
                     headerStyle: {
                         borderBottomWidth: 1

@@ -38,7 +38,8 @@ export default {
         alreadyTaken: "Cette course a déjà été acceptée par un autre Mamdoo",
         locationHeader: "L'accès à votre position est requise",
         locationBody:
-            "Mamdoo a besoin d'avoir accès a votre position pour vous envoyer des courses."
+            "Mamdoo a besoin d'avoir accès a votre position pour vous envoyer des courses.",
+        noClient: "Nous n'avons pas pu trouver le client."
     },
     home: {
         go: "COMMENCER",
@@ -50,6 +51,20 @@ export default {
             "Vous êtes en ligne, Vous allez bientot recevoir des demandes de courses",
         offlineWelcomeText:
             "Vous n'êtes pas en ligne. appuyez sur `COMMENCER` pour recevoir des demande de course",
+        notActive: "Votre compte n'est pas activé",
+        notActiveText:
+            "Nous devons vérifier votre identité avant de commencer a vous envoyer des courses.",
+        listOfIds: "Pour vérifier votre identité, nous avons besoin de:",
+        driverLicence: "Votre permis de conduire",
+        licenceRegistration: "Votre carte grise",
+        timeToValidate:
+            "Votre compte sera activé au plutard 24 heures après avoir reçu vos documents.",
+        reloadText:
+            "Si vous avez envoyé vos documents, cliquez sur le boutton ci-dessous.",
+        reloadButton: "Recharger",
+        afterDelay:
+            "Si cela fait plus de 24 heures depuis que vous avez envoyer vos documents, ou si vous avez des questions, appelez nous.",
+        call: "Appeler",
         close: "Fermer"
     },
     ride: {

@@ -41,7 +41,9 @@ export default {
         login: "The phone number or password is incorrect",
         alreadyTaken: "This ride was already taken by another driver.",
         locationHader: "Location Access Required",
-        locationBody: "App requires location even when the App is backgrounded."
+        locationBody:
+            "App requires location even when the App is backgrounded.",
+        noClient: "We could not find the client"
     },
     home: {
         go: "GO",
@@ -53,6 +55,20 @@ export default {
             "You are online, You will be receiving ride requests soon",
         offlineWelcomeText:
             "You are offline, click on `GO` to start receiving ride requests",
+        notActive: "Your account is not active",
+        notActiveText:
+            "Your account is not active. We need to verify your account before you start receiving ride request.",
+        listOfIds: "To verify your identity we need:",
+        driverLicence: "Your driver licence",
+        licenceRegistration: "Your plate registration",
+        timeToValidate:
+            "Once we receive your documents, your account will be activated in less than 24 hours.",
+        reloadText:
+            "If you sent your documents already, click on the button bellow.",
+        reloadButton: "Reload",
+        afterDelay:
+            "If you sent your documents more than 24 hours ago, or if you have any other question, please call us",
+        call: "Call",
         close: "Close"
     },
     ride: {

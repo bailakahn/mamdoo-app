@@ -41,7 +41,7 @@ export default function useLocation() {
                         t2("errors.locationBody")
                     );
                 setError("Permission to access location was denied");
-                return;
+                // return;
             }
 
             setIsLoading(false);

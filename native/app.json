@@ -24,16 +24,16 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Mamdoo requires your location so that we can centre the map on you & show you where [x] is",
+        "NSLocationWhenInUseUsageDescription": "Mamdoo a besoin de votre position pour pouvoir vous offrir le meilleur des services",
         "NSLocationAlwaysUsageDescription": "Mamdoo a besoin de votre position pour pouvoir vous envoyez des course à proximité de vous",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "Mamdoo requires your location so that we can centre the map on you & show you where [x] is",
-        "NSLocationUsageDescription": "Mamdoo requires your location so that we can centre the map on you & show you where [x] is",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Mamdoo a besoin de votre position pour pouvoir vous envoyez des course à proximité de vous",
+        "NSLocationUsageDescription": "Mamdoo a besoin de votre position pour pouvoir vous offrir le meilleur des services",
         "UIBackgroundModes": [
           "location"
         ]
       },
       "bundleIdentifier": "com.mamdoo.app",
-      "buildNumber": "0.0.3"
+      "buildNumber": "0.0.5"
     },
     "android": {
       "adaptiveIcon": {

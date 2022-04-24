@@ -15,6 +15,7 @@ module.exports = async (coordinates) => {
             },
           },
           isOnline: true,
+          active: true,
         }).lean()
       ).map(async (driver) => ({
         ...driver,

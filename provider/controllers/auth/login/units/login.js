@@ -1,5 +1,4 @@
 const argon2 = require("argon2");
-const { Driver } = require("_db/models");
 const { error, get } = require("_lib/helpers");
 const authenticate = require("_app/auth/authenticate");
 module.exports = async ({ phoneNumber, password }) => {
@@ -14,6 +13,7 @@ module.exports = async ({ phoneNumber, password }) => {
         "lastName",
         "phoneNumber",
         "isOnline",
+        "active",
         "password",
         "salt",
         "cab",
