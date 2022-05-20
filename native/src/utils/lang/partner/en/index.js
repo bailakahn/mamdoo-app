@@ -40,7 +40,7 @@ export default {
         unsuportedPhoneNumber: "This phone number is not supported",
         login: "The phone number or password is incorrect",
         alreadyTaken: "This ride was already taken by another driver.",
-        locationHader: "Location Access Required",
+        locationHeader: "Location Access Required",
         locationBody:
             "App requires location even when the App is backgrounded.",
         noClient: "We could not find the client"
