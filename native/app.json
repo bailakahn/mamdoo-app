@@ -2,7 +2,6 @@
   "expo": {
     "name": "Mamdoo",
     "slug": "mamdoo",
-    "sdkVersion": "41.0.0",
     "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/mamdoo-icon-blank.png",
