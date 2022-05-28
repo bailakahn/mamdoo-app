@@ -18,7 +18,7 @@ export default function LocationDenied() {
                 : "host.exp.exponent";
 
             IntentLauncher.startActivityAsync(
-                IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS,
+                IntentLauncher.ActivityAction.LOCATION_SOURCE_SETTINGS,
                 { data: "package:" + pkg }
             );
         }

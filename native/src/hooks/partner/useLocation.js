@@ -8,9 +8,11 @@ import { ENV_NAME } from "@env";
 
 const TASK_FETCH_LOCATION = "TASK_FETCH_LOCATION";
 var request = null;
-export default function useLocation() {
+var partner = null;
+export default function useLocation(partner) {
     const getRequest = useApi();
     request = getRequest;
+    partner = partner;
     const [location, setLocation] = useState(null);
     const [error, setError] = useState(null);
     const [grantStatus, setGrantStatus] = useState(null);
@@ -97,9 +99,9 @@ TaskManager.defineTask(
         }
         const [location] = locations;
         try {
-            console.log("Update Loacation", location.coords);
+            // console.log("Update Loacation", location.coords);
 
-            if (request)
+            if (request && partner)
                 request({
                     method: "POST",
                     endpoint: "user/updateDriverLocation",

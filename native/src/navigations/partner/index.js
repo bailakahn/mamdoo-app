@@ -17,7 +17,9 @@ const Tab = createMaterialBottomTabNavigator();
 export default function MainTabs({ role }) {
     const { colors } = useTheme();
     const partner = usePartner();
-    const { grantStatus, isLoading, grantBackgroundStatus } = useLocation();
+    const { grantStatus, isLoading, grantBackgroundStatus } = useLocation(
+        partner.partner
+    );
 
     if (!partner.partnerLoaded || isLoading)
         return <Loading visible={true} size="large" />;

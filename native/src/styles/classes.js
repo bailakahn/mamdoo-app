@@ -166,7 +166,7 @@ export const profileFormButtonContent = (colors) => ({
 
 export const nextButton = (colors) => ({
     width: Mixins.width(0.85, true),
-    height: Mixins.height(40)
+    height: Mixins.height(50)
 });
 
 export const nextButtonLabel = (colors) => ({
@@ -177,7 +177,7 @@ export const nextButtonLabel = (colors) => ({
 export const backButton = (colors) => ({
     marginTop: 20,
     width: Mixins.width(0.5, true),
-    height: Mixins.height(40),
+    height: Mixins.height(50),
     justifyContent: "center",
     backgroundColor: colors.accent
 });
@@ -251,4 +251,8 @@ export const dataCell = (colors) => ({
 
 export const centeredText = (colors) => ({
     width: Mixins.width(0.7, true)
+});
+
+export const centeredView = (colors) => ({
+    width: Mixins.width(0.85, true)
 });

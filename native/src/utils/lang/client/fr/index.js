@@ -64,9 +64,10 @@ export default {
         pin: "Code pin",
         start: "Commencer",
         pinText:
-            "Le code pin vous permettra de vous reconnecter. Veuilles le mémoriser",
+            "Le code pin vous permettra de vous reconnecter. Veuillez le mémoriser",
         loginHeader: "Connexion",
         register: "Créer un compte",
+        registerHeader: "Créer un compte",
         alreadyHaveAccount: "Vous avez déjà un compte ?",
         notRegisteredYet: "Pas de compte ?",
         forgotPassword: "Mot de passe oublié ?"
