@@ -15,7 +15,7 @@ import LogoDark from "assets/logo-dark.svg";
 import MamdooLogo from "assets/logo-3.png";
 import Divider from "assets/divider.svg";
 
-export default function Header({ className }) {
+export default function Header({ className, hideHeader }) {
   const t = useTranslations();
   const { locale } = useRouter();
   const menuItems = useMemo(() => headerData(t), [t]);
@@ -26,31 +26,32 @@ export default function Header({ className }) {
         <Container sx={styles.container}>
           <Logo src={MamdooLogo} sx={{ width: 300, marginLeft: "-85px" }} />
 
-          <Flex as="nav" sx={styles.nav}>
-            {menuItems.map(({ path, label }, i) => (
-              <Link
-                activeClass="active"
-                to={path}
-                spy={true}
-                smooth={true}
-                offset={-70}
-                duration={500}
-                key={i}
-              >
-                {label}
-              </Link>
-            ))}
-            <ReloadLink
-              style={{
-                // color: theme.colors.primary,
-                border: `1px solid ${theme.colors.primary}`,
-                borderRadius: 5,
-              }}
-              path={locale.includes("fr") ? "/en" : "/fr"}
-              label={locale.includes("fr") ? "Anglais" : "French"}
-            />
-          </Flex>
-
+          {!hideHeader && (
+            <Flex as="nav" sx={styles.nav}>
+              {menuItems.map(({ path, label }, i) => (
+                <Link
+                  activeClass="active"
+                  to={path}
+                  spy={true}
+                  smooth={true}
+                  offset={-70}
+                  duration={500}
+                  key={i}
+                >
+                  {label}
+                </Link>
+              ))}
+              <ReloadLink
+                style={{
+                  // color: theme.colors.primary,
+                  border: `1px solid ${theme.colors.primary}`,
+                  borderRadius: 5,
+                }}
+                path={locale.includes("fr") ? "/en" : "/fr"}
+                label={locale.includes("fr") ? "Anglais" : "French"}
+              />
+            </Flex>
+          )}
           {/* <Button
             className="donate__btn"
             variant="secondary"

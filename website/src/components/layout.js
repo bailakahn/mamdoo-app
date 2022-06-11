@@ -1,10 +1,10 @@
 /** @jsx jsx */
-import { jsx } from 'theme-ui';
-import React, { useState } from 'react';
-import Sticky from 'react-stickynode';
-import Header from './header/header';
-import Footer from './footer/footer';
-export default function Layout({ children }) {
+import { jsx } from "theme-ui";
+import React, { useState } from "react";
+import Sticky from "react-stickynode";
+import Header from "./header/header";
+import Footer from "./footer/footer";
+export default function Layout({ children, hideHeader }) {
   const [isSticky, setIsSticky] = useState(false);
   const handleStateChange = (status) => {
     if (status.status === Sticky.STATUS_FIXED) {
@@ -16,11 +16,14 @@ export default function Layout({ children }) {
   return (
     <React.Fragment>
       <Sticky innerZ={1001} top={0} onStateChange={handleStateChange}>
-        <Header className={`${isSticky ? 'sticky' : 'unSticky'}`} />
+        <Header
+          className={`${isSticky ? "sticky" : "unSticky"}`}
+          hideHeader={hideHeader}
+        />
       </Sticky>
       <main
         sx={{
-          variant: 'layout.main',
+          variant: "layout.main",
         }}
       >
         {children}

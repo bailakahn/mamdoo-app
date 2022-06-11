@@ -1,0 +1,7 @@
+ol { counter-reset: item }
+ol {font-size: 20px; line-height: 2.1; font-family: 'DM Sans',sans-serif;}
+li{ display: block }
+ol > li:before { content: counters(item, ".") " "; counter-increment: item }
+ul {
+    list-style-type: disc;
+}

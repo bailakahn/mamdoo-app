@@ -2,6 +2,7 @@
 import { useTranslations } from "next-intl";
 import { jsx, Heading, Box, Text, Flex, Container } from "theme-ui";
 import { Link } from "components/link";
+import { useRouter } from "next/router";
 import Logo from "components/logo";
 import menuItems from "./footer.data";
 
@@ -11,6 +12,7 @@ import MamdooFooterLogo from "assets/mamdoo-footer.png";
 import CallToAction from "sections/call-to-action";
 export default function Footer() {
   const t = useTranslations();
+  const { locale } = useRouter();
 
   return (
     <footer sx={styles.footer}>
@@ -23,7 +25,10 @@ export default function Footer() {
             </Box>
             <nav className="footer__menu">
               <Link path="/" label={t("Footer.term_of_use")} />
-              <Link path="/" label={t("Footer.privacy")} />
+              <Link
+                path={`${locale.includes("fr") ? "fr" : "en"}/policy`}
+                label={t("Footer.privacy")}
+              />
             </nav>
             <Text as="p" sx={styles.copyrightArea.copyright}>
               {t("Footer.copyright")}
@@ -141,7 +146,7 @@ const styles = {
     },
   },
   copyrightArea: {
-    width: ["100%", null, null, null, "250px", "300px"],
+    width: ["100%", null, null, null],
     flexShrink: 0,
     order: [2, null, null, null, 0],
     textAlign: ["center", null, null, null, "left"],

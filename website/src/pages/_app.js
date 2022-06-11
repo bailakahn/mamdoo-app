@@ -10,6 +10,7 @@ import "typeface-roboto-slab";
 
 // Load other package css file
 import "rc-drawer/assets/index.css";
+import "theme/styles.css";
 
 export default function CustomApp({ Component, pageProps }) {
   useEffect(() => {
