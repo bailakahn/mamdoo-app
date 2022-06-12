@@ -37,33 +37,33 @@ export default function PolicyPage() {
               <Box>
                 <ol>
                   <li>
-                    {t("PrivacyPolicy.2-title")}
+                    <strong>{t("PrivacyPolicy.2-title")}</strong>
                     <ol>
-                      <li>{t("PrivacyPolicy.2-1-title")}</li>
+                      <li><strong>{t("PrivacyPolicy.2-1-title")}</strong></li>
                       <p>{t("PrivacyPolicy.2-1-paragraph")}</p>
-                      <li>{t("PrivacyPolicy.2-2-title")}</li>
+                      <li><strong>{t("PrivacyPolicy.2-2-title")}</strong></li>
                       <p>{t("PrivacyPolicy.2-2-1-paragraph")}</p>
-                      <p>{t("PrivacyPolicy.2-2-2-paragraph")}</p>
-                      <p>{t("PrivacyPolicy.2-2-3-paragraph")}</p>
-                      <p>{t("PrivacyPolicy.2-2-4-paragraph")}</p>
-                      <p>{t("PrivacyPolicy.2-2-5-paragraph")}</p>
-                      <p>{t("PrivacyPolicy.2-2-6-paragraph")}</p>
-                      <p>{t("PrivacyPolicy.2-2-7-paragraph")}</p>
-                      <p>{t("PrivacyPolicy.2-2-8-paragraph")}</p>
-                      <p>{t("PrivacyPolicy.2-2-9-paragraph")}</p>
-                      <p>{t("PrivacyPolicy.2-2-10-paragraph")}</p>
-                      <p>{t("PrivacyPolicy.2-2-11-paragraph")}</p>
+                      <p><strong>{t("PrivacyPolicy.2-2-2-start-of-paragraph")}</strong>{t("PrivacyPolicy.2-2-2-paragraph")}</p>
+                      <p><strong>{t("PrivacyPolicy.2-2-3-start-of-paragraph")}</strong>{t("PrivacyPolicy.2-2-3-paragraph")}</p>
+                      <p><strong>{t("PrivacyPolicy.2-2-4-start-of-paragraph")}</strong>{t("PrivacyPolicy.2-2-4-paragraph")}</p>
+                      <p><strong>{t("PrivacyPolicy.2-2-5-start-of-paragraph")}</strong>{t("PrivacyPolicy.2-2-5-paragraph")}</p>
+                      <p><strong>{t("PrivacyPolicy.2-2-6-start-of-paragraph")}</strong>{t("PrivacyPolicy.2-2-6-paragraph")}</p>
+                      <p><strong>{t("PrivacyPolicy.2-2-7-start-of-paragraph")}</strong>{t("PrivacyPolicy.2-2-7-paragraph")}</p>
+                      <p><strong>{t("PrivacyPolicy.2-2-8-start-of-paragraph")}</strong>{t("PrivacyPolicy.2-2-8-paragraph")}</p>
+                      <p><strong>{t("PrivacyPolicy.2-2-9-start-of-paragraph")}</strong>{t("PrivacyPolicy.2-2-9-paragraph")}</p>
+                      <p><strong>{t("PrivacyPolicy.2-2-10-start-of-paragraph")}</strong>{t("PrivacyPolicy.2-2-10-paragraph")}</p>
+                      <p><strong>{t("PrivacyPolicy.2-2-11-start-of-paragraph")}</strong>{t("PrivacyPolicy.2-2-11-paragraph")}</p>
                       <p>{t("PrivacyPolicy.2-2-12-paragraph")}</p>
                     </ol>
                   </li>
                   <li>
-                    {t("PrivacyPolicy.3-title")}
+                   <strong>{t("PrivacyPolicy.3-title")}</strong>
                     <ol>
                       <li>
-                        {t("PrivacyPolicy.3-1-title")}
+                        <strong>{t("PrivacyPolicy.3-1-title")}</strong>
                         <ol>
                           <li>
-                            {t("PrivacyPolicy.3-1-1-title")}
+                            <strong>{t("PrivacyPolicy.3-1-1-title")}</strong>
                             <p>{t("PrivacyPolicy.3-1-1-1-paragraph")}</p>
                             <ul>
                               <li>{t("PrivacyPolicy.3-1-1-1-list")}</li>
@@ -72,19 +72,19 @@ export default function PolicyPage() {
                             </ul>
                           </li>
                           <li>
-                            {t("PrivacyPolicy.3-1-2-title")}
+                            <strong>{t("PrivacyPolicy.3-1-2-title")}</strong>
                             <p>{t("PrivacyPolicy.3-1-2-1-paragraph")}</p>
                             <p>{t("PrivacyPolicy.3-1-2-2-paragraph")}</p>
                           </li>
                           <li>
-                            {t("PrivacyPolicy.3-1-3-title")}
+                            <strong>{t("PrivacyPolicy.3-1-3-title")}</strong>
                             <p>{t("PrivacyPolicy.3-1-3-1-paragraph")}</p>
                             <p>{t("PrivacyPolicy.3-1-3-2-paragraph")}</p>
                             <p>{t("PrivacyPolicy.3-1-3-3-paragraph")}</p>
                             <p>{t("PrivacyPolicy.3-1-3-4-paragraph")}</p>
                           </li>
                           <li>
-                            {t("PrivacyPolicy.3-1-4-title")}
+                            <strong>{t("PrivacyPolicy.3-1-4-title")}</strong>
                             <p>{t("PrivacyPolicy.3-1-4-1-paragraph")}</p>
                             <ul>
                               <li>{t("PrivacyPolicy.3-1-4-1-list")}</li>
@@ -104,12 +104,12 @@ export default function PolicyPage() {
                             </ul>
                           </li>
                           <li>
-                            {t("PrivacyPolicy.3-1-5-title")}
+                            <strong>{t("PrivacyPolicy.3-1-5-title")}</strong>
                             <p>{t("PrivacyPolicy.3-1-5-1-paragraph")}</p>
                             <p>{t("PrivacyPolicy.3-1-5-2-paragraph")}</p>
                           </li>
                           <li>
-                            {t("PrivacyPolicy.3-1-6-title")}
+                            <strong>{t("PrivacyPolicy.3-1-6-title")}</strong>
                             <p>{t("PrivacyPolicy.3-1-6-1-paragraph")}</p>
                             <p>{t("PrivacyPolicy.3-1-6-2-paragraph")}</p>
                             <p>{t("PrivacyPolicy.3-1-6-3-paragraph")}</p>
@@ -119,18 +119,18 @@ export default function PolicyPage() {
                     </ol>
                   </li>
                   <li>
-                    {t("PrivacyPolicy.4-title")}
+                   <strong> {t("PrivacyPolicy.4-title")} </strong>
                     <ol>
                       <li>
-                        {t("PrivacyPolicy.4-1-title")}
+                       <strong> {t("PrivacyPolicy.4-1-title")}</strong>
                         <p>{t("PrivacyPolicy.4-1-1-paragraph")}</p>
                       </li>
                       <li>
-                        {t("PrivacyPolicy.4-2-title")}
+                        <strong>{t("PrivacyPolicy.4-2-title")}</strong>
                         <p>{t("PrivacyPolicy.4-2-1-paragraph")}</p>
                       </li>
                       <li>
-                        {t("PrivacyPolicy.4-3-title")}
+                        <strong>{t("PrivacyPolicy.4-3-title")}</strong>
                         <p>{t("PrivacyPolicy.4-3-1-paragraph")}</p>
                         <ul>
                           <li>{t("PrivacyPolicy.4-3-1-list")}</li>
@@ -141,17 +141,17 @@ export default function PolicyPage() {
                         </ul>
                       </li>
                       <li>
-                        {t("PrivacyPolicy.4-4-title")}
+                        <strong>{t("PrivacyPolicy.4-4-title")}</strong>
                         <p>{t("PrivacyPolicy.4-4-1-paragraph")}</p>
                       </li>
                     </ol>
                   </li>
                   <li>
-                    {t("PrivacyPolicy.5-title")}
+                    <strong>{t("PrivacyPolicy.5-title")}</strong>
                     <p>{t("PrivacyPolicy.5-1-paragraph")}</p>
                     <ol>
                       <li>
-                        {t("PrivacyPolicy.5-1-title")}
+                       <strong> {t("PrivacyPolicy.5-1-title")} </strong>
                         <p>{t("PrivacyPolicy.5-1-1-paragraph")}</p>
                         <ul>
                           <li>{t("PrivacyPolicy.5-1-1-list")}</li>
@@ -164,24 +164,24 @@ export default function PolicyPage() {
                         </p>
                       </li>
                       <li>
-                        {t("PrivacyPolicy.5-2-title")}
+                       <strong> {t("PrivacyPolicy.5-2-title")} </strong>
                         <p>{t("PrivacyPolicy.5-2-1-paragraph")}</p>
                         <p>{t("PrivacyPolicy.5-2-2-paragraph")}</p>
                       </li>
                     </ol>
                   </li>
                   <li>
-                    {t("PrivacyPolicy.6-title")}
+                    <strong>{t("PrivacyPolicy.6-title")}</strong>
                     <p>{t("PrivacyPolicy.6-1-paragraph")}</p>
                   </li>
                   <li>
-                    {t("PrivacyPolicy.7-title")}
+                    <strong>{t("PrivacyPolicy.7-title")}</strong>
                     <p>{t("PrivacyPolicy.7-1-paragraph")}</p>
                     <p>{t("PrivacyPolicy.7-2-paragraph")}</p>
                     <p>{t("PrivacyPolicy.7-3-paragraph")}</p>
                   </li>
                   <li>
-                    {t("PrivacyPolicy.8-title")}
+                    <strong>{t("PrivacyPolicy.8-title")}</strong>
                     <p>{t("PrivacyPolicy.8-1-paragraph")}</p>
                     <p>
                       {t("PrivacyPolicy.8-2-paragraph")}
