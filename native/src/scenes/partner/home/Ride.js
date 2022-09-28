@@ -1,8 +1,7 @@
 import React, { useRef, useEffect } from "react";
-import { View, Image, Platform } from "react-native";
+import { View, Image, Platform, useColorScheme } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import LottieView from "lottie-react-native";
-import { useColorScheme } from "react-native-appearance";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
