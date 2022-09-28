@@ -40,7 +40,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.mamdoo.app",
-      "versionCode": 3
+      "versionCode": 4
     },
     "web": {
       "favicon": "./assets/favicon.png"
