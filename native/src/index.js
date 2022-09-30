@@ -1,8 +1,6 @@
 import React from "react";
 import { SafeAreaView, View, Image } from "react-native";
-import { PricingCard } from "react-native-elements";
 import { useTheme, Text } from "react-native-paper";
-import { useStore } from "_store";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { useApp } from "_hooks";

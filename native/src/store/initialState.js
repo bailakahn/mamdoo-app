@@ -4,7 +4,8 @@ export default {
         appLoaded: false,
         settings: {},
         isDarkMode: false,
-        themeLoaded: false
+        themeLoaded: false,
+        darkModeLoaded: false
     },
     auth: {
         user: null,

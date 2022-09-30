@@ -9,7 +9,7 @@ export default {
         locationPermission: "Location Permission",
         locationNeeded:
             "We need to access your location to serve you better! Grant us permission to use your location to be able to use Mamdoo",
-        restartApp: "Restart the app once you give hte permission",
+        restartApp: "Restart the app once you give the permission",
         givePermission: "Give Permission",
         darkMode: "Dark Mode",
         enableDarkMode: "Enable Dark Mode",
