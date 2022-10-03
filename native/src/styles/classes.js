@@ -236,7 +236,8 @@ export const callButton = (colors) => ({
 export const authorizeButton = (colors) => ({
     width: Mixins.width(0.7, true),
     height: 50,
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor: "#25C0D2"
 });
 
 export const openMapButton = (colors) => ({

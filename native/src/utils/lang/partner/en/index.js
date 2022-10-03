@@ -9,8 +9,12 @@ export default {
         locationPermission: "Location Permission",
         locationDisclosureTitle: "Location Disclosure",
         locationDisclosureText:
-            "Mamdoo collects your background location data to be able to send you rides in real time.",
-        understand: "I understand",
+            "Mamdoo collects your background location data even when the app is closed or not in use to enable real time rides.",
+        locationDisclosureTextDetails:
+            "When a client request a ride, Mamdoo needs your most up to date location to be able to send you clients that are close to you.",
+        locationDisclosureApprovalText:
+            'By clicking on "I Approve" you authorize Mamdoo to use your background location data.',
+        locationDisclosureApprovalButton: "I Approve",
         locationNeeded:
             "We need to access your location to serve you better! Grant us permission to use your location to be able to use Mamdoo",
         givePermission: "Give Permission",
