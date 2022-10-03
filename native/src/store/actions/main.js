@@ -44,6 +44,26 @@ export default function authActions(state, dispatch) {
                 type: types.SET_SETTINGS,
                 settings
             });
+        },
+        setBackgroundPermission: (status) => {
+            dispatch({
+                type: types.SET_BACKGROUND_PERMISSION,
+                status
+            });
+        },
+        getBackgroundPermission: () => {
+            AsyncStorage.getItem("@mamdoo-background-permission").then(
+                (status) => {
+                    status &&
+                        dispatch({
+                            type: types.SET_BACKGROUND_PERMISSION,
+                            status
+                        });
+                }
+            );
+        },
+        removeBackgroundPermission: () => {
+            dispatch({ type: types.REMOVE_BACKGROUND_PERMISSION });
         }
     };
 }

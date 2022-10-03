@@ -9,6 +9,15 @@ export default (state = main, action) => {
                 ...state,
                 app: action.app
             };
+        case types.SET_BACKGROUND_PERMISSION:
+            AsyncStorage.setItem(
+                "@mamdoo-background-permission",
+                action.status
+            );
+            return {
+                ...state,
+                backgroundPermission: action.status
+            };
         case types.SET_SETTINGS:
             return {
                 ...state,
@@ -39,6 +48,12 @@ export default (state = main, action) => {
             return {
                 ...state,
                 app: null
+            };
+        case types.REMOVE_BACKGROUND_PERMISSION:
+            AsyncStorage.removeItem("@mamdoo-background-permission");
+            return {
+                ...state,
+                backgroundPermission: "notLoaded"
             };
         default:
             return state;

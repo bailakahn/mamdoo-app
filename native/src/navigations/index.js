@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import {
     Provider as PaperProvider,
     DefaultTheme,
     DarkTheme
 } from "react-native-paper";
-// import { useColorScheme, AppearanceProvider } from "react-native-appearance";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as SplashScreen from "expo-splash-screen";
 import { useStore } from "_store";
 import { useApp, useTheme } from "_hooks";
 import { Colors } from "_styles";
@@ -16,12 +13,19 @@ import PartnerRoutes from "./partner";
 import AppEntry from "../";
 import { navigationRef } from "./RootNavigation";
 import { Loading } from "_atoms";
+import LocationDisclosure from "_components/organisms/LocationDisclosure";
 
 export default function NavigationRoot({ mode }) {
     const mamdooTheme = useTheme();
 
     const { app, appLoaded } = useApp();
 
+    const {
+        main: { backgroundPermission },
+        actions: { setBackgroundPermission, removeBackgroundPermission }
+    } = useStore();
+
+    // removeBackgroundPermission();
     // const colorScheme = useColorScheme();
 
     const themeMode = (mamdooTheme.isDarkMode && DarkTheme) || DefaultTheme;
@@ -32,6 +36,11 @@ export default function NavigationRoot({ mode }) {
         colors: Colors.colors[mamdooTheme.isDarkMode ? "dark" : "light"]
     };
 
+    useEffect(() => {
+        removeBackgroundPermission();
+    }, []);
+
+    console.log({ backgroundPermission, app });
     // const [ready, setIsReady] = useState(false);
 
     // useEffect(() => {
@@ -53,6 +62,13 @@ export default function NavigationRoot({ mode }) {
 
     if (!appLoaded || !mamdooTheme.darkModeLoaded)
         return <Loading visible={true} size="large" />;
+
+    if (backgroundPermission == "notLoaded" && app == "partner")
+        return (
+            <LocationDisclosure
+                setBackgroundPermission={setBackgroundPermission}
+            />
+        );
 
     return (
         <PaperProvider theme={theme}>

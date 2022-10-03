@@ -7,6 +7,10 @@ export default {
         iWantMoreClients: "I want more clients",
         noInternetConnection: "No Internet Connection",
         locationPermission: "Location Permission",
+        locationDisclosureTitle: "Location Disclosure",
+        locationDisclosureText:
+            "Mamdoo collects your background location data to be able to send you rides in real time.",
+        understand: "I understand",
         locationNeeded:
             "We need to access your location to serve you better! Grant us permission to use your location to be able to use Mamdoo",
         givePermission: "Give Permission",

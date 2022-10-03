@@ -7,6 +7,10 @@ export default {
         iWantMoreClients: "Je veux plus de clients",
         noInternetConnection: "Pas de connexion internet",
         locationPermission: "Permission de localisation",
+        locationDisclosureTitle: "Permission de localisation",
+        locationDisclosureText:
+            "Mamdoo collecte vos données de localisation meme lorsque l'application est fermée pour pouvoir vous envoyer des courses en temps réel.",
+        understand: "Je comprends",
         locationNeeded:
             "Nous avons besoin de pouvoir vous localiser pour vous donner le meilleur service! Activez la localisation dans vos paramètres pour utiliser Mamdoo.",
         givePermission: "Autoriser",
