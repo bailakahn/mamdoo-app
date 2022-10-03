@@ -25,10 +25,11 @@ export default function useLocation(partner) {
 
             let backgroundStatus;
 
-            let permissionResponse = await Location.requestBackgroundPermissionsAsync().catch(
-                (backgroundPermissionError) =>
-                    console.log({ backgroundPermissionError })
-            );
+            let permissionResponse =
+                await Location.requestBackgroundPermissionsAsync().catch(
+                    (backgroundPermissionError) =>
+                        console.log({ backgroundPermissionError })
+                );
 
             backgroundStatus = permissionResponse?.status;
 

@@ -22,7 +22,11 @@ export default function NavigationRoot({ mode }) {
 
     const {
         main: { backgroundPermission },
-        actions: { setBackgroundPermission, removeBackgroundPermission }
+        actions: {
+            setBackgroundPermission,
+            removeBackgroundPermission,
+            getBackgroundPermission
+        }
     } = useStore();
 
     // removeBackgroundPermission();
@@ -37,10 +41,11 @@ export default function NavigationRoot({ mode }) {
     };
 
     useEffect(() => {
-        removeBackgroundPermission();
+        getBackgroundPermission();
+        // removeBackgroundPermission();
     }, []);
 
-    console.log({ backgroundPermission, app });
+    // console.log({ backgroundPermission, app });
     // const [ready, setIsReady] = useState(false);
 
     // useEffect(() => {

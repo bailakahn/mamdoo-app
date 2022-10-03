@@ -25,6 +25,12 @@ export default function MainTabs({ role }) {
         return <Loading visible={true} size="large" />;
 
     // if user don't give location permission then don't allow access to app
+    // console.log({
+    //     grantStatus,
+    //     grantBackgroundStatus,
+    //     ENV_NAME,
+    //     cd: ENV_NAME !== "localhost" && grantBackgroundStatus !== "granted"
+    // });
     if (
         grantStatus !== "granted" ||
         (ENV_NAME !== "localhost" && grantBackgroundStatus !== "granted")
