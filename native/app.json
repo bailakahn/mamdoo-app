@@ -20,19 +20,23 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "locales":{
+      "en":"./locales/ios/en.json",
+      "fr":"./locales/ios/fr.json"
+    },
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Mamdoo a besoin de votre position pour pouvoir vous offrir le meilleur des services",
-        "NSLocationAlwaysUsageDescription": "Mamdoo a besoin de votre position pour pouvoir vous envoyez des course à proximité de vous",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "Mamdoo a besoin de votre position pour pouvoir vous envoyez des course à proximité de vous",
-        "NSLocationUsageDescription": "Mamdoo a besoin de votre position pour pouvoir vous offrir le meilleur des services",
+        "NSLocationWhenInUseUsageDescription": "Activer votre position nous permet de vous envoyer des chauffeurs qui sont à proximité.",
+        "NSLocationAlwaysUsageDescription": "Accéder à votre position lorsque l'application est fermée ou en arrière plan nous permet de vous trouver des courses à proximité lorsque vous êtes en mouvement.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Accéder à votre position lorsque l'application est fermée ou en arrière plan nous permet de vous trouver des courses lorsque vous êtes en mouvement.",
+        "NSLocationUsageDescription": "Activer votre position nous permet de vous envoyer des chauffeurs qui sont à proximité.",
         "UIBackgroundModes": [
           "location"
         ]
       },
       "bundleIdentifier": "com.mamdoo.app",
-      "buildNumber": "0.0.8"
+      "buildNumber": "0.0.9"
     },
     "android": {
       "adaptiveIcon": {

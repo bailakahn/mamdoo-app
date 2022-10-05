@@ -1,0 +1,6 @@
+{
+    "NSLocationWhenInUseUsageDescription": "Activer votre position nous permet de vous envoyer des chauffeurs qui sont à proximité.",
+    "NSLocationAlwaysUsageDescription": "Accéder à votre position lorsque l'application est fermée ou en arrière plan nous permet de vous trouver des courses à proximité lorsque vous êtes en mouvement.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Accéder à votre position lorsque l'application est fermée ou en arrière plan nous permet de vous trouver des courses lorsque vous êtes en mouvement.",
+    "NSLocationUsageDescription": "Activer votre position nous permet de vous envoyer des chauffeurs qui sont à proximité."
+}
