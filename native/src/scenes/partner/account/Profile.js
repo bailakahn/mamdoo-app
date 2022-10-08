@@ -103,7 +103,9 @@ export default function ProfileScene({ navigation }) {
                         onPress={() => setVisible(false)}
                         style={{ marginRight: 50 }}
                     >
-                        {t2("profile.cancel")}
+                        <Text style={{ color: colors.text }}>
+                            {t2("profile.cancel")}
+                        </Text>
                     </Button>
                     <Button
                         mode="text"
