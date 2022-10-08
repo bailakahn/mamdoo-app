@@ -100,6 +100,20 @@ export default function useUser() {
             });
     };
 
+    const refresh = () => {
+        getRequest({
+            method: "GET",
+            endpoint: "user/get"
+        })
+            .then((data) => {
+                setUser({ ...user, ...data });
+            })
+            .catch((err) => {
+                console.log(err);
+                logout();
+            });
+    };
+
     const loginUser = () => {
         setFormError(false);
 
@@ -162,7 +176,8 @@ export default function useUser() {
             logout,
             setAuth,
             loginUser,
-            deleteAccount
+            deleteAccount,
+            refresh
         }
     };
 }

@@ -182,6 +182,7 @@ export default function usePartner() {
             })
             .catch((err) => {
                 console.log(err);
+                logout();
             });
     };
 

@@ -68,7 +68,10 @@ export default function ProfileScene({ navigation }) {
                     </Button>
                     <Button
                         mode="text"
-                        onPress={() => user.actions.deleteAccount()}
+                        onPress={() => {
+                            setVisible(false);
+                            user.actions.deleteAccount();
+                        }}
                     >
                         <Text style={{ color: colors.error }}>
                             {t2("profile.delete")}
