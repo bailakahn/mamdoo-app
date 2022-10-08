@@ -185,6 +185,20 @@ export default function usePartner() {
             });
     };
 
+    const deleteAccount = () => {
+        setFormError(false);
+
+        logout();
+
+        getRequest({
+            method: "POST",
+            endpoint: "drivers/delete"
+        }).catch((err) => {
+            console.log(err);
+            setFormError(t2(err.code));
+        });
+    };
+
     const logout = () => {
         getRequest({
             method: "POST",
@@ -215,7 +229,8 @@ export default function usePartner() {
             saveChanges,
             getRidesHistory,
             logout,
-            refresh
+            refresh,
+            deleteAccount
         }
     };
 }

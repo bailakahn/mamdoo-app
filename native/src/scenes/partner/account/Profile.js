@@ -6,7 +6,10 @@ import {
     Divider,
     TextInput,
     Caption,
-    Text
+    Text,
+    Dialog,
+    Portal,
+    Paragraph
 } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Classes } from "_styles";
@@ -21,6 +24,7 @@ export default function ProfileScene({ navigation }) {
 
     const [editUser, setEditUser] = useState({});
     const [showSuccess, setShowSuccess] = useState(false);
+    const [visible, setVisible] = useState(false);
 
     useEffect(
         () =>
@@ -87,8 +91,36 @@ export default function ProfileScene({ navigation }) {
         });
     }, [navigation, isEdit]);
 
+    const DeleteConfirmation = () => (
+        <Portal>
+            <Dialog visible={visible} onDismiss={() => setVisible(false)}>
+                <Dialog.Title>{t2("profile.deleteConfirm")}</Dialog.Title>
+                <Dialog.Content>
+                    <Paragraph>{t2("profile.deleteWarning")}</Paragraph>
+                </Dialog.Content>
+                <Dialog.Actions>
+                    <Button
+                        onPress={() => setVisible(false)}
+                        style={{ marginRight: 50 }}
+                    >
+                        {t2("profile.cancel")}
+                    </Button>
+                    <Button
+                        mode="text"
+                        onPress={() => partner.actions.deleteAccount()}
+                    >
+                        <Text style={{ color: colors.error }}>
+                            {t2("profile.delete")}
+                        </Text>
+                    </Button>
+                </Dialog.Actions>
+            </Dialog>
+        </Portal>
+    );
+
     return (
         <ScrollView style={Classes.container2(colors)}>
+            <DeleteConfirmation />
             {!isEdit ? (
                 <View>
                     <View style={{ marginTop: 10 }}>
@@ -147,6 +179,21 @@ export default function ProfileScene({ navigation }) {
                                 <Divider />
                             </View>
                         ))}
+
+                        <View style={Classes.containerCenter(colors)}>
+                            <Button
+                                mode="contained"
+                                onPress={() => setVisible(true)}
+                                style={Classes.deleteAccountButton(colors)}
+                                contentStyle={{
+                                    height: 50
+                                }}
+                            >
+                                <Text style={{ color: colors.white }}>
+                                    {t2("profile.deleteAccount")}
+                                </Text>
+                            </Button>
+                        </View>
                     </View>
                 </View>
             ) : (
