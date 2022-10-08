@@ -140,7 +140,14 @@ export default {
         secureInfoInfo: "To edit the information above, contact us!",
         sucessfullySaved: "Successfully updated your information!",
         canceled: "Canceled",
-        completed: "Completed"
+        completed: "Completed",
+        deleteConfirm: "Delete Confirmation",
+        deleteAccount: "Delete Your Account",
+        deleteWarning:
+            "This action is not reversible. Once you delete your account all your rides and data on Mamdoo will be deleted forever.",
+        yes: "Yes",
+        no: "No",
+        delete: "Delete"
     },
     ridesHistory: {
         date: "Date",

@@ -137,7 +137,14 @@ export default {
             "Pour modifier les informations ci-dessus, contactez-nous!",
         sucessfullySaved: "Vos informations ont été mise à jour!",
         canceled: "Anulée",
-        completed: "Complétée"
+        completed: "Complétée",
+        deleteConfirm: "Confirmation de suppression",
+        deleteAccount: "Supprimer votre compte",
+        deleteWarning:
+            "Cette action est irreversible. Une fois que votre compte est supprimé, toutes vos données seront supprimées pour toujours.",
+        yes: "Oui",
+        no: "Non",
+        delete: "Supprimer"
     },
     ridesHistory: {
         date: "Date",

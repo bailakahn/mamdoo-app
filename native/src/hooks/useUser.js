@@ -126,6 +126,23 @@ export default function useUser() {
                 setFormError(t(err.code));
             });
     };
+
+    const deleteAccount = () => {
+        setFormError(false);
+
+        logout();
+
+        getRequest({
+            method: "POST",
+            endpoint: "user/delete"
+        })
+            .then(() => {})
+            .catch((err) => {
+                console.log(err);
+                setFormError(t(err.code));
+            });
+    };
+
     const logout = () => {
         removeUser();
     };
@@ -144,7 +161,8 @@ export default function useUser() {
             getRidesHistory,
             logout,
             setAuth,
-            loginUser
+            loginUser,
+            deleteAccount
         }
     };
 }

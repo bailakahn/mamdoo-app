@@ -15,6 +15,11 @@ export const container2 = (colors) => ({
     backgroundColor: colors.background
 });
 
+export const containerCenter = (colors) => ({
+    justifyContent: "center",
+    alignItems: "center"
+});
+
 export const bottonView = (colors) => ({
     flex: 1,
     justifyContent: "flex-end",
@@ -231,6 +236,13 @@ export const callButton = (colors) => ({
     width: Mixins.width(0.7, true),
     height: 50,
     justifyContent: "center"
+});
+
+export const deleteAccountButton = (colors) => ({
+    marginTop: 30,
+    width: Mixins.width(0.7, true),
+    justifyContent: "center",
+    backgroundColor: colors.error
 });
 
 export const authorizeButton = (colors) => ({
