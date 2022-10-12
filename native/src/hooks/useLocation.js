@@ -4,31 +4,27 @@ import * as Location from "expo-location";
 export default function useLocation() {
     const [location, setLocation] = useState(null);
     const [error, setError] = useState(null);
-    const [grantStatus, setGrantStatus] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const [status, requestPermission] = Location.useForegroundPermissions();
 
     useEffect(() => {
         let isMounted = true;
-        (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
+        requestPermission();
 
-            if (isMounted) setGrantStatus(status);
+        if (isMounted) setIsLoading(false);
 
-            if (status !== "granted") {
-                if (isMounted) {
-                    setIsLoading(false);
-                    setError("Permission to access location was denied");
-                }
-                return;
-            }
-
-            if (isMounted) setIsLoading(false);
-
-            let {
-                coords: { latitude, longitude }
-            } = await Location.getCurrentPositionAsync({});
-            if (isMounted) setLocation({ latitude, longitude });
-        })();
+        if (status && status.granted)
+            Location.getCurrentPositionAsync({})
+                .then(({ coords: { latitude, longitude } }) => {
+                    if (isMounted) setLocation({ latitude, longitude });
+                })
+                .catch((err) => {
+                    console.log(err);
+                    if (isMounted) {
+                        setIsLoading(false);
+                        setError("Permission to access location was denied");
+                    }
+                });
 
         return () => {
             isMounted = false;
@@ -46,7 +42,7 @@ export default function useLocation() {
 
     return {
         location,
-        grantStatus,
+        grantStatus: status?.status,
         error,
         isLoading,
         actions: { getCurrentPosition }

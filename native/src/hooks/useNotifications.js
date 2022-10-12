@@ -11,7 +11,7 @@ Notifications.setNotificationHandler({
     })
 });
 
-export default function useLocation() {
+export default function useNotification() {
     const getRequest = useApi();
     const [notification, setNotification] = useState(false);
     const notificationListener = useRef();
@@ -22,17 +22,17 @@ export default function useLocation() {
             saveNotificationToken(token);
         });
 
-        notificationListener.current = Notifications.addNotificationReceivedListener(
-            (notification) => {
+        notificationListener.current =
+            Notifications.addNotificationReceivedListener((notification) => {
                 setNotification(notification);
-            }
-        );
+            });
 
-        responseListener.current = Notifications.addNotificationResponseReceivedListener(
-            (response) => {
-                // console.log({ response });
-            }
-        );
+        responseListener.current =
+            Notifications.addNotificationResponseReceivedListener(
+                (response) => {
+                    // console.log({ response });
+                }
+            );
 
         return () => {
             Notifications.removeNotificationSubscription(
@@ -75,9 +75,8 @@ async function schedulePushNotification() {
 async function registerForPushNotificationsAsync() {
     let token;
     if (Constants.isDevice) {
-        const {
-            status: existingStatus
-        } = await Notifications.getPermissionsAsync();
+        const { status: existingStatus } =
+            await Notifications.getPermissionsAsync();
         let finalStatus = existingStatus;
         if (existingStatus !== "granted") {
             const { status } = await Notifications.requestPermissionsAsync();
