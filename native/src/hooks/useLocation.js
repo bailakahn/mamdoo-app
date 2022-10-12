@@ -4,14 +4,17 @@ import * as Location from "expo-location";
 export default function useLocation() {
     const [location, setLocation] = useState(null);
     const [error, setError] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [status, requestPermission] = Location.useForegroundPermissions();
+
+    useEffect(() => {
+        // if status is given or denied
+        if (status && status.status !== "undetermined") setIsLoading(false);
+    }, [status]);
 
     useEffect(() => {
         let isMounted = true;
         requestPermission();
-
-        if (isMounted) setIsLoading(false);
 
         if (status && status.granted)
             Location.getCurrentPositionAsync({})
