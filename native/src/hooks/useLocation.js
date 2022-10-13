@@ -24,7 +24,6 @@ export default function useLocation() {
                 .catch((err) => {
                     console.log(err);
                     if (isMounted) {
-                        setIsLoading(false);
                         setError("Permission to access location was denied");
                     }
                 });
