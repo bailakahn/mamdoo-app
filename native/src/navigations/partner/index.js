@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import * as Location from "expo-location";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import HomeStack from "./stacks/Home";
@@ -32,8 +33,9 @@ export default function MainTabs({ role }) {
     //     cd: ENV_NAME !== "localhost" && grantBackgroundStatus !== "granted"
     // });
     if (
-        grantStatus !== "granted" ||
-        (ENV_NAME !== "localhost" && grantBackgroundStatus !== "granted")
+        grantStatus === Location.PermissionStatus.DENIED ||
+        (ENV_NAME !== "localhost" &&
+            grantBackgroundStatus === Location.PermissionStatus.DENIED)
     )
         return <LocationDenied />;
 

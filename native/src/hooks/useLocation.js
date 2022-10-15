@@ -9,7 +9,8 @@ export default function useLocation() {
 
     useEffect(() => {
         // if status is given or denied
-        if (status && status.status !== "undetermined") setIsLoading(false);
+        if (status && status.status !== Location.PermissionStatus.UNDETERMINED)
+            setIsLoading(false);
     }, [status]);
 
     useEffect(() => {

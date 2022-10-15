@@ -36,7 +36,7 @@
         ]
       },
       "bundleIdentifier": "com.mamdoo.app",
-      "buildNumber": "0.0.12"
+      "buildNumber": "0.0.13"
     },
     "android": {
       "adaptiveIcon": {
@@ -44,7 +44,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.mamdoo.app",
-      "versionCode": 6
+      "versionCode": 7
     },
     "web": {
       "favicon": "./assets/favicon.png"

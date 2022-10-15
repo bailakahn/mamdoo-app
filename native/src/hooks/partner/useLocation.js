@@ -28,7 +28,7 @@ export default function useLocation(partner) {
 
     useEffect(() => {
         if (statusForeground) {
-            if (statusForeground.status === "granted") {
+            if (statusForeground.status === Location.PermissionStatus.GRANTED) {
                 if (ENV_NAME !== "localhost") requestBackgroundPermission();
 
                 Location.getCurrentPositionAsync({}).then(
@@ -36,14 +36,19 @@ export default function useLocation(partner) {
                         setLocation({ latitude, longitude });
                     }
                 );
-            } else if (statusForeground.status === "denied") {
+            } else if (
+                statusForeground.status === Location.PermissionStatus.DENIED
+            ) {
                 setIsLoading(false);
             }
         }
     }, [statusForeground]);
 
     useEffect(() => {
-        if (statusBackground && statusBackground.status === "granted")
+        if (
+            statusBackground &&
+            statusBackground.status === Location.PermissionStatus.GRANTED
+        )
             Location.startLocationUpdatesAsync(TASK_FETCH_LOCATION, {
                 accuracy: Location.Accuracy.Highest,
                 distanceInterval: 1, // minimum change (in meters) betweens updates
@@ -57,7 +62,10 @@ export default function useLocation(partner) {
                 }
             });
 
-        if (statusForeground && statusForeground.status !== "undetermined")
+        if (
+            statusForeground &&
+            statusForeground.status !== Location.PermissionStatus.UNDETERMINED
+        )
             setIsLoading(false);
     }, [statusBackground]);
 
@@ -65,7 +73,7 @@ export default function useLocation(partner) {
         if (
             ENV_NAME === "localhost" &&
             statusForeground &&
-            statusForeground.status !== "undetermined"
+            statusForeground.status !== Location.PermissionStatus.UNDETERMINED
         )
             setIsLoading(false);
     }, [statusForeground]);
