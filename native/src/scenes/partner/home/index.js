@@ -27,6 +27,10 @@ export default function AccountScene({}) {
         ride.actions.resetRide();
     }, []);
 
+    useEffect(() => {
+        if (partner) partner.actions.updateLocation();
+    }, []);
+
     return (
         <>
             <Portal>

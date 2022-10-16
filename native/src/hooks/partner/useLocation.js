@@ -23,6 +23,13 @@ export default function useLocation(partner) {
 
     useEffect(() => {
         requestForegroundPermission();
+
+        if (statusForeground?.status === Location.PermissionStatus.GRANTED)
+            Location.getCurrentPositionAsync({}).then(
+                ({ coords: { latitude, longitude } }) => {
+                    setLocation({ latitude, longitude });
+                }
+            );
         return () => {};
     }, []);
 
@@ -31,11 +38,7 @@ export default function useLocation(partner) {
             if (statusForeground.status === Location.PermissionStatus.GRANTED) {
                 if (ENV_NAME !== "localhost") requestBackgroundPermission();
 
-                Location.getCurrentPositionAsync({}).then(
-                    ({ coords: { latitude, longitude } }) => {
-                        setLocation({ latitude, longitude });
-                    }
-                );
+                getCurrentPosition();
             } else if (
                 statusForeground.status === Location.PermissionStatus.DENIED
             ) {

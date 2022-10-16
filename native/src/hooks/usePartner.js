@@ -2,19 +2,10 @@ import React, { useEffect, useState } from "react";
 import { t2 } from "_utils/lang";
 import { useApi } from "_api";
 import { useStore } from "_store";
-import useLocation from "./useLocation";
+import useLocation from "./partner/useLocation";
 export default function usePartner() {
     const getRequest = useApi();
     const location = useLocation();
-
-    const {
-        auth: { partner, partnerLoaded },
-        actions: { getPartner, setPartner, removePartner }
-    } = useStore();
-
-    useEffect(() => {
-        if (!partner) getPartner();
-    }, []);
 
     const [formPartner, setFormPartner] = useState({
         firstName: "",
@@ -25,9 +16,31 @@ export default function usePartner() {
     });
 
     const [auth, setAuth] = useState({ phoneNumber: "", password: "" });
-
     const [formError, setFormError] = useState(false);
     const [ridesHistory, setRidesHistory] = useState([]);
+
+    const {
+        auth: { partner, partnerLoaded },
+        actions: { getPartner, setPartner, removePartner }
+    } = useStore();
+
+    useEffect(() => {
+        if (!partner) getPartner();
+    }, []);
+
+    const updateLocation = async () => {
+        const { latitude, longitude } =
+            await location.actions.getCurrentPosition();
+
+        getRequest({
+            method: "POST",
+            endpoint: "user/updateDriverLocation",
+            params: {
+                coordinates: [longitude, latitude],
+                type: "Point"
+            }
+        });
+    };
 
     const savePartner = () => {
         setFormError(false);
@@ -75,8 +88,8 @@ export default function usePartner() {
                 currentLocation: {
                     type: "Point",
                     coordinates: [
-                        location.location.longitude,
-                        location.location.latitude
+                        location.location?.longitude || 0,
+                        location.location?.latitude || 0
                     ]
                 }
             }
@@ -231,7 +244,8 @@ export default function usePartner() {
             getRidesHistory,
             logout,
             refresh,
-            deleteAccount
+            deleteAccount,
+            updateLocation
         }
     };
 }
