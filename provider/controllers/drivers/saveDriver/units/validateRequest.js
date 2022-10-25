@@ -16,7 +16,12 @@ module.exports = async ({ phoneNumber, cab, password }) => {
       "errors.phoneNumber"
     );
 
-  if (!password.length || !/[a-zA-Z0-9]{8,}/.test(password))
+  if (
+    !password.length ||
+    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d[\]{};:=<>_+^#$@!%*?&]{8,30}$/.test(
+      password
+    )
+  )
     error("InvalidParam", "The password is not valid", "errors.passwordRegex");
 
   if (!cab.model.length)

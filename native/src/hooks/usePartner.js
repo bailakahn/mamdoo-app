@@ -63,7 +63,9 @@ export default function usePartner() {
         }
 
         if (
-            !/[a-zA-Z0-9]{8,}/.test(formPartner.password) ||
+            !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d[\]{};:=<>_+^#$@!%*?&]{8,30}$/.test(
+                formPartner.password
+            ) ||
             !formPartner.password.length
         ) {
             setFormError(t2("errors.passwordRegex"));
@@ -99,7 +101,7 @@ export default function usePartner() {
             })
             .catch((err) => {
                 console.log(err);
-                setFormError(t2(err.code));
+                setFormError(t2(err?.code || "errors.crashErrorTitle"));
             });
     };
 
