@@ -7,7 +7,8 @@ module.exports = async ({ req, res }) => {
       req,
     },
     async ({ userId, accessToken, app }) => {
-      await logout(userId);
+      console.log({ userId });
+      await logout(userId, app);
 
       await cancelPendingRides(userId);
     }
