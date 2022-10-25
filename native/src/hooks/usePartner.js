@@ -3,6 +3,8 @@ import { t2 } from "_utils/lang";
 import { useApi } from "_api";
 import { useStore } from "_store";
 import useLocation from "./partner/useLocation";
+import settings from "../constants/settings";
+
 export default function usePartner() {
     const getRequest = useApi();
     const location = useLocation();
@@ -63,9 +65,7 @@ export default function usePartner() {
         }
 
         if (
-            !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d[\]{};:=<>_+^#$@!%*?&]{8,30}$/.test(
-                formPartner.password
-            ) ||
+            !settings.REGEX.password.test(formPartner.password) ||
             !formPartner.password.length
         ) {
             setFormError(t2("errors.passwordRegex"));
@@ -77,7 +77,7 @@ export default function usePartner() {
             return;
         }
 
-        if (!/^\d{4}[A-Z]{1,2}$/.test(formPartner.cab.licensePlate)) {
+        if (!settings.REGEX.licencePlate.test(formPartner.cab.licensePlate)) {
             setFormError(t2("errors.licensePlate"));
             return;
         }

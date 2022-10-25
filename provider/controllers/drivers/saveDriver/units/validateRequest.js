@@ -1,5 +1,6 @@
 const { Driver } = require("_db/models");
 const { error } = require("_lib/helpers");
+const settings = require("_constants/settings");
 module.exports = async ({ phoneNumber, cab, password }) => {
   const driverExist = await Driver.findOne({ phoneNumber, deleted: false });
   if (driverExist)
@@ -16,18 +17,16 @@ module.exports = async ({ phoneNumber, cab, password }) => {
       "errors.phoneNumber"
     );
 
-  if (
-    !password.length ||
-    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d[\]{};:=<>_+^#$@!%*?&]{8,30}$/.test(
-      password
-    )
-  )
+  if (!password.length || !settings.REGEX.password.test(password))
     error("InvalidParam", "The password is not valid", "errors.passwordRegex");
 
   if (!cab.model.length)
     error("InvalidParam", "The cab model is not valid", "errors.cabModel");
 
-  if (!cab.licensePlate.length || !/^\d{4}[A-Z]{1,2}$/.test(cab.licensePlate))
+  if (
+    !cab.licensePlate.length ||
+    !settings.REGEX.licencePlate.test(cab.licensePlate)
+  )
     error(
       "InvalidParam",
       "The license plate is not valid",
