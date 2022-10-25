@@ -128,7 +128,7 @@ export default function usePartner() {
             })
             .catch((err) => {
                 console.log(err);
-                setFormError(t2(err.code));
+                setFormError(t2(err.code || "errors.crashErrorTitle"));
             });
     };
 
@@ -170,7 +170,7 @@ export default function usePartner() {
             })
             .catch((err) => {
                 console.log(err);
-                setFormError(t2(err.code));
+                setFormError(t2(err.code || "errors.crashErrorTitle"));
             });
     };
 
@@ -211,7 +211,7 @@ export default function usePartner() {
             endpoint: "drivers/delete"
         }).catch((err) => {
             console.log(err);
-            setFormError(t2(err.code));
+            setFormError(t2(err.code || "errors.crashErrorTitle"));
         });
     };
 
@@ -225,7 +225,7 @@ export default function usePartner() {
             })
             .catch((err) => {
                 console.log(err);
-                setFormError(t2(err.code));
+                setFormError(t2(err.code || "errors.crashErrorTitle"));
             });
     };
 

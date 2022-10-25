@@ -61,7 +61,7 @@ export default function useUser() {
             })
             .catch((err) => {
                 console.log(err);
-                setFormError(t(err.code));
+                setFormError(t(err.code || "errors.crashErrorTitle"));
             });
     };
 
@@ -83,7 +83,7 @@ export default function useUser() {
             })
             .catch((err) => {
                 console.log(err);
-                setFormError(t(err.code));
+                setFormError(t(err.code || "errors.crashErrorTitle"));
             });
     };
 
@@ -137,7 +137,7 @@ export default function useUser() {
             })
             .catch((err) => {
                 console.log(err);
-                setFormError(t(err.code));
+                setFormError(t(err.code || "errors.crashErrorTitle"));
             });
     };
 
@@ -153,7 +153,7 @@ export default function useUser() {
             .then(() => {})
             .catch((err) => {
                 console.log(err);
-                setFormError(t(err.code));
+                setFormError(t(err.code || "errors.crashErrorTitle"));
             });
     };
 
