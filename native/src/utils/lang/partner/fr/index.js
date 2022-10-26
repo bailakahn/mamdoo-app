@@ -138,6 +138,8 @@ export default {
         sucessfullySaved: "Vos informations ont été mise à jour!",
         canceled: "Anulée",
         completed: "Complétée",
+        ongoing: "En cours",
+        request: "Demandé",
         deleteConfirm: "Confirmation de suppression",
         deleteAccount: "Supprimer votre compte",
         deleteWarning:

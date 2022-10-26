@@ -14,6 +14,26 @@ export default function RidesHistoryScene() {
         partner.actions.getRidesHistory();
     }, []);
 
+    const getRideStatusColor = (status) => {
+        let color = "primary";
+        switch (status) {
+            case "canceled":
+                color = "error";
+                break;
+            case "ongoing":
+                color = "warning";
+                break;
+            case "completed":
+                color = "success";
+                break;
+            default:
+                color = "primary";
+                break;
+        }
+
+        return color;
+    };
+
     return (
         <ScrollView>
             <DataTable>
@@ -45,10 +65,9 @@ export default function RidesHistoryScene() {
                         <DataTable.Cell style={Classes.dataCell(colors)}>
                             <Text
                                 style={{
-                                    color:
-                                        ride.status == "canceled"
-                                            ? colors.accent
-                                            : colors.primary
+                                    color: colors[
+                                        getRideStatusColor(ride.status)
+                                    ]
                                 }}
                             >
                                 {t2(`profile.${ride.status}`)}

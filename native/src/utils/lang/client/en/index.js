@@ -96,6 +96,8 @@ export default {
         sucessfullySaved: "Successfully updated your information!",
         canceled: "Canceled",
         completed: "Completed",
+        ongoing: "Ongoing",
+        request: "Requested",
         deleteConfirm: "Delete Confirmation",
         deleteAccount: "Delete Your Account",
         deleteWarning:
