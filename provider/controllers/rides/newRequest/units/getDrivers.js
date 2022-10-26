@@ -1,13 +1,18 @@
 const { Driver, Ride } = require("_db/models");
 const rideStatuses = require("_constants/rideStatuses");
+const { getSetting } = require("_lib/helpers");
+const settings = require("_constants/settings");
 module.exports = async (coordinates) => {
+  const maxDistance = await getSetting("maxDistance");
+
   return (
     await Promise.all(
       (
         await Driver.find({
           currentLocation: {
             $near: {
-              $maxDistance: 25000,
+              $maxDistance:
+                Number(maxDistance) || settings.MAX_DISTANCE_DEFAULT,
               $geometry: {
                 type: "Point",
                 coordinates,

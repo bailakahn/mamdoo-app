@@ -12,7 +12,8 @@ module.exports = async ({ req, res }) => {
       const { coordinates } = getBody(req);
       const nearByDrivers = await getDrivers(coordinates);
 
-      send("partner", 1000, nearByDrivers);
+      console.log("[NewRequest] found drriver", nearByDrivers);
+
       const requestId = await saveRequest({
         userId,
         coordinates,
@@ -40,6 +41,7 @@ module.exports = async ({ req, res }) => {
           ],
         };
         await producer.send(payload).then(console.log);
+        await send("partner", 1000, nearByDrivers);
       }
 
       return { success: true, foundDrivers: nearByDrivers.length };
