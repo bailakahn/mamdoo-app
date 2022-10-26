@@ -7,7 +7,9 @@ module.exports = async ({ req, res }) => {
       req,
     },
     async ({ userId, accessToken, app }) => {
-      return await getClientsRidesHistory(userId);
+      const rides = await getClientsRidesHistory(userId);
+
+      return rides;
     }
   );
 };

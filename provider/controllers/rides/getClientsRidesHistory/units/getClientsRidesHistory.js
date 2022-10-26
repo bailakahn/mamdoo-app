@@ -15,6 +15,7 @@ module.exports = async (clientId) => {
         "endTime",
       ],
       joins: [{ path: "driver", select: "firstName lastName" }],
+      limit: 10,
     }
   );
 };
