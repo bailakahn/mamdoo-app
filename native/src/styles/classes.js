@@ -1,7 +1,4 @@
-import * as Spacing from "./spacing";
-import * as Typography from "./typography";
 import * as Mixins from "./mixins";
-import { Platform } from "react-native";
 
 export const container = (colors) => ({
     flex: 1,
@@ -18,6 +15,76 @@ export const container2 = (colors) => ({
 export const containerCenter = (colors) => ({
     justifyContent: "center",
     alignItems: "center"
+});
+
+export const buttonContainer = (colors) => ({
+    style: {
+        marginTop: 20,
+        width: Mixins.width(0.85, true),
+        height: Mixins.height(40),
+        justifyContent: "center"
+    },
+    contentStyle: {
+        height: Mixins.height(40)
+    }
+});
+
+export const callButtonContainer = (colors) => ({
+    style: {
+        width: Mixins.width(0.7, true),
+        height: Mixins.height(50),
+        justifyContent: "center"
+    },
+    contentStyle: {
+        height: Mixins.height(50)
+    }
+});
+
+export const backButtonContainer = (colors, type) => ({
+    style: {
+        marginTop: 20,
+        width: Mixins.width(0.5, true),
+        height: Mixins.height(50),
+        justifyContent: "center",
+        backgroundColor: colors[type]
+    },
+    contentStyle: {
+        height: Mixins.height(50)
+    }
+});
+
+export const dynamicButtonContainer = (colors, type) => ({
+    style: {
+        marginTop: 20,
+        width: Mixins.width(0.5, true),
+        height: Mixins.height(50),
+        justifyContent: "center",
+        backgroundColor: colors[type]
+    },
+    contentStyle: {
+        height: Mixins.height(50)
+    }
+});
+
+export const openMapButtoContainer = (colors) => ({
+    style: {
+        width: Mixins.width(0.7, true),
+        height: Mixins.height(50),
+        justifyContent: "center"
+    },
+    contentStyle: {
+        height: Mixins.height(50)
+    }
+});
+
+export const nextButtonContainer = (colors) => ({
+    style: {
+        width: Mixins.width(0.85, true),
+        height: Mixins.height(50)
+    },
+    contentStyle: {
+        height: Mixins.height(50)
+    }
 });
 
 export const bottonView = (colors) => ({

@@ -128,7 +128,8 @@ export default function Form({ navigation }) {
                         <Button
                             mode="contained"
                             onPress={user.actions.saveUser}
-                            style={Classes.formButton(colors)}
+                            // style={Classes.formButton(colors)}
+                            {...Classes.buttonContainer(colors)}
                             disabled={
                                 !user.formUser.firstName ||
                                 !user.formUser.lastName ||

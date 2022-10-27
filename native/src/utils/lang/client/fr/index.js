@@ -48,7 +48,7 @@ export default {
         isOnHisWay: "est en route vers votre position",
         phoneNumber: "Numéro",
         callDriver: "Appeler",
-        cancelRide: "Annuler votre course",
+        cancelRide: "Annuler",
         callToCancel: "Appelez votre Mamdoo pour annuler la course",
         driverArrived: "est la!",
         meetHimOutside: "Rencontrer le dehors!",

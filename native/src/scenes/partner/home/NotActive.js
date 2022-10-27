@@ -63,7 +63,8 @@ export default function ForgotPassword({ navigation }) {
                 </View>
                 <View style={{ marginTop: 30, marginBottom: 20 }}>
                     <Button
-                        style={Classes.callButton(colors)}
+                        // style={Classes.callButton(colors)}
+                        {...Classes.callButtonContainer(colors)}
                         mode="contained"
                         onPress={partner.actions.refresh}
                     >
@@ -79,7 +80,8 @@ export default function ForgotPassword({ navigation }) {
                 </View>
                 <View style={{ marginTop: 30, marginBottom: 20 }}>
                     <Button
-                        style={Classes.callButton(colors)}
+                        // style={Classes.callButton(colors)}
+                        {...Classes.callButtonContainer(colors)}
                         mode="contained"
                         onPress={app.actions.call}
                     >

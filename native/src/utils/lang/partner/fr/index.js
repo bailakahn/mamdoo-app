@@ -84,7 +84,7 @@ export default {
         phoneNumber: "Numéro",
         callDriver: "Appeler",
         callRider: "Appeler",
-        cancelRide: "Annuler votre course",
+        cancelRide: "Annuler",
         callToCancel: "Appelez pour annuler la course",
         openMap: "Ouvrir la carte",
         rideCanceled: "Le client a annulé la course.",

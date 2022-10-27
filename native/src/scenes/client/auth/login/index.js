@@ -90,8 +90,12 @@ export default function Login({ navigation }) {
                         <Button
                             mode="contained"
                             onPress={user.actions.loginUser}
-                            style={Classes.formButton(colors)}
+                            // style={Classes.formButton(colors)}
                             disabled={!user.auth.phoneNumber || !user.auth.pin}
+                            // contentStyle={{
+                            //     height: 50
+                            // }}
+                            {...Classes.buttonContainer(colors)}
                         >
                             {t("form.start")}
                         </Button>

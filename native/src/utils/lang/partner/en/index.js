@@ -88,7 +88,7 @@ export default {
         phoneNumber: "Phone Number",
         callDriver: "Call",
         callRider: "Call",
-        cancelRide: "Cancel Ride",
+        cancelRide: "Cancel",
         callToCancel: "Call Mamdoo to cancel ride",
         openMap: "Open Map",
         rideCanceled: "The client canceled the ride.",

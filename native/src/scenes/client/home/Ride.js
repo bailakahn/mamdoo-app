@@ -126,7 +126,8 @@ export default function RideRequestScreen() {
 
             <View style={{ marginTop: 30 }}>
                 <Button
-                    style={Classes.callButton(colors)}
+                    // style={Classes.callButton(colors)}
+                    {...Classes.callButtonContainer(colors)}
                     mode="contained"
                     onPress={ride.actions.callDriver}
                 >
@@ -138,10 +139,11 @@ export default function RideRequestScreen() {
                 <View style={{ marginTop: 30 }}>
                     {ride.canCancel ? (
                         <Button
-                            style={[
-                                Classes.callButton(colors),
-                                { backgroundColor: colors.error }
-                            ]}
+                            // style={[
+                            //     Classes.callButton(colors),
+                            //     { backgroundColor: colors.error }
+                            // ]}
+                            {...Classes.dynamicButtonContainer(colors, "error")}
                             mode="contained"
                             onPress={ride.actions.cancelRide}
                         >

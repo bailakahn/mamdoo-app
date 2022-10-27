@@ -97,7 +97,8 @@ export default function Login({ navigation }) {
                         <Button
                             mode="contained"
                             onPress={partner.actions.loginPartner}
-                            style={Classes.formButton(colors)}
+                            // style={Classes.formButton(colors)}
+                            {...Classes.buttonContainer(colors)}
                             disabled={
                                 !partner.auth.phoneNumber ||
                                 !partner.auth.password

@@ -51,7 +51,7 @@ export default {
         isOnHisWay: "is on his way",
         phoneNumber: "Phone Number",
         callDriver: "Call",
-        cancelRide: "Cancel Ride",
+        cancelRide: "Cancel",
         callToCancel: "Call Mamdoo to cancel ride",
         driverArrived: "is here!",
         meetHimOutside: "Meet him outside!",

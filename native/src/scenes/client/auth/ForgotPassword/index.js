@@ -30,7 +30,7 @@ export default function ForgotPassword({ navigation }) {
             </View>
             <View style={{ marginTop: 30 }}>
                 <Button
-                    style={Classes.callButton(colors)}
+                    {...Classes.callButtonContainer(colors)}
                     mode="contained"
                     onPress={app.actions.call}
                 >
@@ -39,10 +39,11 @@ export default function ForgotPassword({ navigation }) {
             </View>
             <View style={{ marginTop: 30 }}>
                 <Button
-                    style={{
-                        ...Classes.backButton(colors),
-                        backgroundColor: colors.error
-                    }}
+                    // style={{
+                    //     ...Classes.backButton(colors),
+                    //     backgroundColor: colors.error
+                    // }}
+                    {...Classes.backButtonContainer(colors, "error")}
                     mode="contained"
                     onPress={() => navigation.navigate("Login")}
                 >

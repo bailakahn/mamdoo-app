@@ -134,12 +134,16 @@ export default function Register({ navigation }) {
                                 <Button
                                     mode="contained"
                                     onPress={() => setStep((step) => step - 1)}
-                                    style={[
-                                        Classes.backButton(colors),
-                                        {
-                                            alignItems: "center"
-                                        }
-                                    ]}
+                                    // style={[
+                                    //     Classes.backButton(colors),
+                                    //     {
+                                    //         alignItems: "center"
+                                    //     }
+                                    // ]}
+                                    {...Classes.backButtonContainer(
+                                        colors,
+                                        "accent"
+                                    )}
                                     labelStyle={Classes.backButtonLabel(colors)}
                                 >
                                     <Text
@@ -202,7 +206,8 @@ export default function Register({ navigation }) {
                                             ...partner.formPartner,
                                             cab: {
                                                 ...partner.formPartner.cab,
-                                                licensePlate: licensePlate.toUpperCase()
+                                                licensePlate:
+                                                    licensePlate.toUpperCase()
                                             }
                                         })
                                     }
@@ -224,13 +229,14 @@ export default function Register({ navigation }) {
                                 <Button
                                     mode="contained"
                                     onPress={() => setStep((step) => step + 1)}
-                                    style={[
-                                        Classes.nextButton(colors),
-                                        {
-                                            alignItems: "center",
-                                            justifyContent: "center"
-                                        }
-                                    ]}
+                                    // style={[
+                                    //     Classes.nextButton(colors),
+                                    //     {
+                                    //         alignItems: "center",
+                                    //         justifyContent: "center"
+                                    //     }
+                                    // ]}
+                                    {...Classes.nextButtonContainer(colors)}
                                     labelStyle={Classes.nextButtonLabel(colors)}
                                 >
                                     <Text
@@ -252,7 +258,8 @@ export default function Register({ navigation }) {
                                 <Button
                                     mode="contained"
                                     onPress={partner.actions.savePartner}
-                                    style={Classes.formButton(colors)}
+                                    // style={Classes.formButton(colors)}
+                                    {...Classes.buttonContainer(colors)}
                                     disabled={
                                         !partner.formPartner.firstName ||
                                         !partner.formPartner.lastName ||
