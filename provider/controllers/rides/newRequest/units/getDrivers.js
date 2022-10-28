@@ -6,6 +6,7 @@ const subHours = require("date-fns/subHours");
 
 module.exports = async (coordinates) => {
   const maxDistance = await getSetting("maxDistance");
+  const driverLastSeen = await getSetting("driverLastSeen");
 
   return (
     await Promise.all(
@@ -24,7 +25,10 @@ module.exports = async (coordinates) => {
           isOnline: true,
           active: true,
           lastSeenAt: {
-            $gte: subHours(new Date(), 24),
+            $gte: subHours(
+              new Date(),
+              Number(driverLastSeen || settings.DRIVER_LAST_SEEN_DEFAULT)
+            ),
           },
         }).lean()
       ).map(async (driver) => ({
