@@ -20,7 +20,8 @@ export default {
         canCancel: false,
         driverArrived: false,
         request: null,
-        canceled: false
+        canceled: false,
+        onGoingRide: false
     }
 };
 

@@ -7,15 +7,14 @@ export default function useRequest() {
     const getRequest = useApi();
     const {
         ride,
-        actions: { resetRide }
+        actions: { resetRide, setOnGoingRide }
     } = useStore();
 
     const makeRideRequest = async (navigation) => {
         resetRide();
-        const {
-            latitude,
-            longitude
-        } = await location.actions.getCurrentPosition();
+        setOnGoingRide();
+        const { latitude, longitude } =
+            await location.actions.getCurrentPosition();
 
         let retryCount = 0;
         const maxRetries = 5;

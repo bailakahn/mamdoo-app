@@ -8,13 +8,17 @@ import { useTheme } from "@react-navigation/native";
 import { useUser, useLocation } from "_hooks";
 import { Loading } from "_atoms";
 import LocationDenied from "_components/organisms/LocationDenied";
-
+import { useStore } from "_store";
+import { t } from "_utils/lang";
 const Tab = createMaterialBottomTabNavigator();
 
 export default function MainTabs({ role }) {
     const { colors } = useTheme();
     const user = useUser();
     const { grantStatus, isLoading } = useLocation();
+    const {
+        ride: { onGoingRide }
+    } = useStore();
 
     if (!user.userLoaded || isLoading)
         return <Loading visible={true} size="large" />;
@@ -44,7 +48,13 @@ export default function MainTabs({ role }) {
                             color={color}
                             size={25}
                         />
-                    )
+                    ),
+                    tabBarLabel: t("screens.home")
+                }}
+                listeners={{
+                    tabPress: (e) => {
+                        if (onGoingRide) e.preventDefault();
+                    }
                 }}
             />
 
@@ -58,8 +68,14 @@ export default function MainTabs({ role }) {
                             color={color}
                             size={25}
                         />
-                    )
+                    ),
+                    tabBarLabel: t("screens.account")
                 })}
+                listeners={{
+                    tabPress: (e) => {
+                        if (onGoingRide) e.preventDefault();
+                    }
+                }}
             />
         </Tab.Navigator>
     ) : (
