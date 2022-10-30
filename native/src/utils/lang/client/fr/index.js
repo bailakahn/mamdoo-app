@@ -53,7 +53,11 @@ export default {
         driverArrived: "est la!",
         meetHimOutside: "Rencontrer le dehors!",
         rideCanceled:
-            "Votre Mamdoo a annulé la course, nous cherchons un autre Mamdoo"
+            "Votre Mamdoo a annulé la course, nous cherchons un autre Mamdoo",
+        cancelConfirmTitle: "Confirmer l'annulation",
+        canceConfirmContent: "êtes-vous sûre de vouloir annuler votre course ?",
+        cancelConfirmOk: "Oui",
+        cancelConfirmCancel: "Non"
     },
     form: {
         fullName: "Prénom Nom",

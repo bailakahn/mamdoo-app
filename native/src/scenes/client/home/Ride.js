@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useMemo } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { View, Image, Platform } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import LottieView from "lottie-react-native";
@@ -14,6 +14,7 @@ import LightReadyAmimation from "_assets/animation/light-ready.gif";
 import DarkReadyAmimation from "_assets/animation/dark-ready.gif";
 import { useRide, useTheme as useMamdooTheme } from "_hooks";
 import { Button } from "_atoms";
+import PopConfirm from "../../../components/organisms/PopConfirm";
 
 export default function RideRequestScreen() {
     const { colors } = useTheme();
@@ -29,6 +30,7 @@ export default function RideRequestScreen() {
         : LightReadyAmimation;
 
     const animation = useRef();
+    const [visible, setVisible] = useState(false);
 
     useEffect(() => {
         if (animation.current) animation.current.play();
@@ -38,6 +40,19 @@ export default function RideRequestScreen() {
 
     return (
         <View style={Classes.container(colors)}>
+            <PopConfirm
+                title={t("ride.cancelConfirmTitle")}
+                visible={visible}
+                setVisible={setVisible}
+                content={t("ride.canceConfirmContent")}
+                onCancel={() => setVisible(false)}
+                cancelText={t("ride.cancelConfirmCancel")}
+                onConfirm={() => {
+                    setVisible(false);
+                    ride.actions.cancelRide();
+                }}
+                okText={t("ride.cancelConfirmOk")}
+            />
             <Text style={{ fontSize: 30, fontWeight: "bold" }}>
                 {`${ride.driver.firstName} ${ride.driver.lastName}`}
                 {/* {t("ride.foundMamdoo")} */}
@@ -145,7 +160,7 @@ export default function RideRequestScreen() {
                             // ]}
                             {...Classes.dynamicButtonContainer(colors, "error")}
                             mode="contained"
-                            onPress={ride.actions.cancelRide}
+                            onPress={() => setVisible(true)}
                         >
                             {t("ride.cancelRide")}
                         </Button>

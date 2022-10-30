@@ -56,7 +56,11 @@ export default {
         driverArrived: "is here!",
         meetHimOutside: "Meet him outside!",
         rideCanceled:
-            "Your Mamdoo canceled the ride, we are looking for a new Mamdoo"
+            "Your Mamdoo canceled the ride, we are looking for a new Mamdoo",
+        cancelConfirmTitle: "Confirm cancelation",
+        canceConfirmContent: "Are you sure you want to cancel your ride ?",
+        cancelConfirmOk: "Yes",
+        cancelConfirmCancel: "No"
     },
     form: {
         fullName: "Full Name",

@@ -30,9 +30,9 @@ export default function useProxy() {
                     console.log({ data });
                     dispatch({ type: "SET_CAN_CANCEL" });
                     // TODO: set time out to 3 minutes
-                    setTimeout(() => {
-                        dispatch({ type: "SET_CAN_CANCEL" });
-                    }, 10000);
+                    // setTimeout(() => {
+                    //     dispatch({ type: "SET_CAN_CANCEL" });
+                    // }, 10000);
                 }
 
                 if (event == "CANCEL_REQUEST") {
