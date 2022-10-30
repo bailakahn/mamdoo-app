@@ -5,7 +5,7 @@ import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import LottieView from "lottie-react-native";
 import PinAnimation from "_assets/animation/location-pin-jumping-animation-11.json";
-import { useRide } from "_hooks";
+import { useRide, useRequest } from "_hooks";
 import { Info } from "_molecules";
 
 export default function RideRequestScreen({ navigation }) {
@@ -13,10 +13,15 @@ export default function RideRequestScreen({ navigation }) {
     const animation = useRef();
 
     const ride = useRide();
+    const request = useRequest();
 
     useEffect(() => {
         if (animation.current) animation.current.play();
     }, []);
+
+    useEffect(() => {
+        if (ride.canceled) request.actions.makeRideRequest(navigation);
+    }, [ride.canceled]);
 
     return (
         <View style={Classes.container(colors)}>
@@ -24,8 +29,8 @@ export default function RideRequestScreen({ navigation }) {
                 <Info
                     visible={ride.canceled}
                     text={t(`ride.rideCanceled`)}
-                    onDismiss={() => ride.actions.setCancelRide(false)}
-                    onClose={() => ride.actions.setCancelRide(false)}
+                    onDismiss={() => ride.actions.setRideCanceled(false)}
+                    onClose={() => ride.actions.setRideCanceled(false)}
                 />
             )}
             <Text style={{ fontSize: 30, fontWeight: "bold" }}>

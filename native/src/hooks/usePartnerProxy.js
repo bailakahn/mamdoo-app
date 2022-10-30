@@ -4,6 +4,7 @@ import socketIOClient from "socket.io-client";
 import { PROXY_URL } from "@env";
 import usePartner from "./usePartner";
 import { useStore } from "_store";
+import types from "_store/types";
 const socketEvents = ["NEW_REQUEST", "RESET_REQUEST", "CANCEL_REQUEST"];
 export default function usePartnerProxy() {
     const { dispatch } = useStore();
@@ -28,7 +29,9 @@ export default function usePartnerProxy() {
                 }
 
                 if (event == "CANCEL_REQUEST") {
-                    dispatch({ type: event, value: true });
+                    dispatch({ type: event });
+                    dispatch({ type: types.SET_RIDE_CANCELED, canceled: true });
+
                     navigation.navigate("Home");
                     return;
                 }

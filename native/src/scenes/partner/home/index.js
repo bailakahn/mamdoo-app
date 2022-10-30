@@ -89,8 +89,8 @@ export default function AccountScene({}) {
                     <Info
                         visible={ride.canceled}
                         text={t2(`ride.rideCanceled`)}
-                        onDismiss={() => ride.actions.setCancelRide(false)}
-                        onClose={() => ride.actions.setCancelRide(false)}
+                        onDismiss={() => ride.actions.setRideCanceled(false)}
+                        onClose={() => ride.actions.setRideCanceled(false)}
                     />
                 )}
             </Portal>

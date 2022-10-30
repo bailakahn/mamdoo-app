@@ -12,7 +12,7 @@ export default function useRide() {
 
     const {
         ride: { driver, requestId, canCancel, driverArrived, canceled },
-        actions: { resetRide, setCanCancel, setCancelRide }
+        actions: { resetRide, setCanCancel, setRideCanceled }
     } = useStore();
 
     useEffect(() => {
@@ -65,6 +65,6 @@ export default function useRide() {
         canCancel,
         driverArrived,
         canceled,
-        actions: { callDriver, cancelRide, setCancelRide, resetRide }
+        actions: { callDriver, cancelRide, setRideCanceled, resetRide }
     };
 }

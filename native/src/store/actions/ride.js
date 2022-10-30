@@ -21,8 +21,8 @@ export default function rideActions(state, dispatch) {
         setRide: (request) => {
             dispatch({ type: types.SET_RIDE, request });
         },
-        setCancelRide: (value) => {
-            dispatch({ type: types.CANCEL_REQUEST, value });
+        setRideCanceled: (value) => {
+            dispatch({ type: types.SET_RIDE_CANCELED, canceled: value });
         },
         setOnGoingRide: () => {
             dispatch({ type: types.SET_ONGOING_RIDE });

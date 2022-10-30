@@ -17,7 +17,7 @@ export default (state = ride, action) => {
                 canCancel: false,
                 driverArrived: false,
                 request: null,
-                canceled: false,
+                // canceled: false,
                 onGoingRide: false
             };
         case types.SET_CAN_CANCEL:
@@ -51,9 +51,14 @@ export default (state = ride, action) => {
             return {
                 ...state,
                 request: null,
-                canceled: action.value,
+                // canceled: action.value,
                 driver: null
                 // onGoingRide: false
+            };
+        case types.SET_RIDE_CANCELED:
+            return {
+                ...state,
+                canceled: action.canceled
             };
         case types.END_RIDE:
             RootNavigation.navigate("Home");

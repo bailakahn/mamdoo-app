@@ -22,7 +22,7 @@ export default function useRide() {
             setCanCancel,
             resetRequest,
             setRide,
-            setCancelRide,
+            setRideCanceled,
             setOnGoingRide
         },
         dispatch
@@ -188,7 +188,7 @@ export default function useRide() {
             callDriver,
             openMap,
             cancelRide,
-            setCancelRide,
+            setRideCanceled,
             onDriverArrived,
             setInfo,
             resetRide,
