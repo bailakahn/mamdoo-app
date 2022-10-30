@@ -6,15 +6,13 @@ import {
     Divider,
     TextInput,
     Caption,
-    Text,
-    Dialog,
-    Portal,
-    Paragraph
+    Text
 } from "react-native-paper";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import { useUser } from "_hooks";
 import { Button } from "_atoms";
+import PopConfirm from "../../../components/organisms/PopConfirm";
 
 export default function ProfileScene({ navigation }) {
     const { colors } = useTheme();
@@ -52,37 +50,6 @@ export default function ProfileScene({ navigation }) {
         ],
         []
     );
-    const DeleteConfirmation = () => (
-        <Portal>
-            <Dialog visible={visible} onDismiss={() => setVisible(false)}>
-                <Dialog.Title>{t2("profile.deleteConfirm")}</Dialog.Title>
-                <Dialog.Content>
-                    <Paragraph>{t2("profile.deleteWarning")}</Paragraph>
-                </Dialog.Content>
-                <Dialog.Actions>
-                    <Button
-                        onPress={() => setVisible(false)}
-                        style={{ marginRight: 50 }}
-                    >
-                        <Text style={{ color: colors.text }}>
-                            {t2("profile.cancel")}
-                        </Text>
-                    </Button>
-                    <Button
-                        mode="text"
-                        onPress={() => {
-                            setVisible(false);
-                            user.actions.deleteAccount();
-                        }}
-                    >
-                        <Text style={{ color: colors.error }}>
-                            {t2("profile.delete")}
-                        </Text>
-                    </Button>
-                </Dialog.Actions>
-            </Dialog>
-        </Portal>
-    );
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -105,7 +72,20 @@ export default function ProfileScene({ navigation }) {
 
     return (
         <ScrollView style={Classes.container2(colors)}>
-            <DeleteConfirmation />
+            <PopConfirm
+                title={t2("profile.deleteConfirm")}
+                visible={visible}
+                setVisible={setVisible}
+                content={t2("profile.deleteWarning")}
+                onCancel={() => setVisible(false)}
+                cancelText={t2("profile.cancel")}
+                onConfirm={() => {
+                    setVisible(false);
+                    user.actions.deleteAccount();
+                }}
+                okText={t2("profile.delete")}
+            />
+
             {!isEdit ? (
                 <View>
                     <View style={{ marginTop: 10 }}>

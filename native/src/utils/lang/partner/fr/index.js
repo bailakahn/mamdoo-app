@@ -24,7 +24,11 @@ export default {
         forgotPasswordText:
             "Appelez nous pour changer votre mot de passe. Veullez noter que nous aurons besoin de verifier votre identité avant de changer votre mot de passe.",
         call: "Appeler",
-        goBack: "Retour"
+        goBack: "Retour",
+        confirmTitle: "Veuillez confirmer votre action",
+        confirmWarning: "Voulez vous continuer ?",
+        cancel: "Annuler",
+        confirm: "Confirmer"
     },
     errors: {
         crashErrorTitle: "Oops, Quelque chose s'est mal passé",

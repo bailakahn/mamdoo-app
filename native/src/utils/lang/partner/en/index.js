@@ -25,7 +25,11 @@ export default {
         forgotPasswordText:
             "Call us at this number to change your password. Note that we will ask for ID verification before reseting your password",
         call: "Call",
-        goBack: "Go Back"
+        goBack: "Go Back",
+        confirmTitle: "Please confirm your action",
+        confirmWarning: "Are you sure ?",
+        cancel: "Cancel",
+        confirm: "Confirm"
     },
     errors: {
         crashErrorTitle: "Oops, Something Went Wrong",
