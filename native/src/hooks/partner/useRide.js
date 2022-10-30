@@ -22,7 +22,8 @@ export default function useRide() {
             setCanCancel,
             resetRequest,
             setRide,
-            setCancelRide
+            setCancelRide,
+            setOnGoingRide
         },
         dispatch
     } = useStore();
@@ -35,11 +36,13 @@ export default function useRide() {
         })
             .then((ride) => {
                 resetRequest();
+                setOnGoingRide();
                 setRide(ride);
                 setCanCancel();
-                setTimeout(() => {
-                    setCanCancel();
-                }, 10000);
+                // TODO: set time out to 3 minutes
+                // setTimeout(() => {
+                //     setCanCancel();
+                // }, 10000);
                 navigation.navigate("DriverOnTheWay");
             })
             .catch((err) => {

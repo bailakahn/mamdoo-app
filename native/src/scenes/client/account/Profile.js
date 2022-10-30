@@ -12,7 +12,7 @@ import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import { useUser } from "_hooks";
 import { Button } from "_atoms";
-import PopConfirm from "../../../components/organisms/PopConfirm";
+import PopConfirm from "_organisms/PopConfirm";
 
 export default function ProfileScene({ navigation }) {
     const { colors } = useTheme();

@@ -95,7 +95,17 @@ export default {
         endRide: "Terminer la course",
         arrived: "Je suis arrivé",
         clientOnHisWay:
-            "Le client arrive vers vous. S'il ne vient pas, appelez le."
+            "Le client arrive vers vous. S'il ne vient pas, appelez le.",
+        cancelConfirmTitle: "Confirmer l'annulation ?",
+        canceConfirmContent:
+            "Annuler trop de courses peut vous valoir une expulsion de l'application!!!",
+        cancelConfirmOk: "Oui",
+        cancelConfirmCancel: "Non",
+
+        endConfirmTitle: "Confirmer la fin de la course ?",
+        endConfirmContent: "Avez-vous terminer cette course ?",
+        endConfirmOk: "Oui",
+        endConfirmCancel: "Non"
     },
     form: {
         fullName: "Prénom Nom",

@@ -11,6 +11,7 @@ import { useLocation } from "_hooks/partner";
 import { Loading } from "_atoms";
 import { t2 } from "_utils/lang";
 import LocationDenied from "_components/organisms/LocationDenied";
+import { useStore } from "_store";
 import { ENV_NAME } from "@env";
 
 const Tab = createMaterialBottomTabNavigator();
@@ -21,6 +22,9 @@ export default function MainTabs({ role }) {
     const { grantStatus, isLoading, grantBackgroundStatus } = useLocation(
         partner.partner
     );
+    const {
+        ride: { onGoingRide }
+    } = useStore();
 
     if (!partner.partnerLoaded || isLoading)
         return <Loading visible={true} size="large" />;
@@ -64,6 +68,11 @@ export default function MainTabs({ role }) {
                     ),
                     title: t2("screens.home")
                 }}
+                listeners={{
+                    tabPress: (e) => {
+                        if (onGoingRide) e.preventDefault();
+                    }
+                }}
             />
 
             <Tab.Screen
@@ -79,6 +88,11 @@ export default function MainTabs({ role }) {
                     ),
                     title: t2("screens.account")
                 })}
+                listeners={{
+                    tabPress: (e) => {
+                        if (onGoingRide) e.preventDefault();
+                    }
+                }}
             />
         </Tab.Navigator>
     ) : (

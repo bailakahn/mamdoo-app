@@ -14,7 +14,7 @@ import LightReadyAmimation from "_assets/animation/light-ready.gif";
 import DarkReadyAmimation from "_assets/animation/dark-ready.gif";
 import { useRide, useTheme as useMamdooTheme } from "_hooks";
 import { Button } from "_atoms";
-import PopConfirm from "../../../components/organisms/PopConfirm";
+import PopConfirm from "_organisms/PopConfirm";
 
 export default function RideRequestScreen() {
     const { colors } = useTheme();

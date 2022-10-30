@@ -52,8 +52,8 @@ export default (state = ride, action) => {
                 ...state,
                 request: null,
                 canceled: action.value,
-                driver: null,
-                onGoingRide: false
+                driver: null
+                // onGoingRide: false
             };
         case types.END_RIDE:
             RootNavigation.navigate("Home");

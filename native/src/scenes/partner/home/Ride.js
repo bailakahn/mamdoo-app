@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { View, Image, Platform, useColorScheme } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import LottieView from "lottie-react-native";
@@ -15,6 +15,7 @@ import DarkReadyAmimation from "_assets/animation/dark-ready.gif";
 import { useRide } from "_hooks/partner";
 import { RoundButton, Button } from "_atoms";
 import { Info } from "_molecules";
+import PopConfirm from "_organisms/PopConfirm";
 
 export default function DriverOnTheWayScene() {
     const { colors } = useTheme();
@@ -29,6 +30,9 @@ export default function DriverOnTheWayScene() {
         colorScheme === "dark" ? DarkReadyAmimation : LightReadyAmimation;
 
     const animation = useRef();
+    const [visible, setVisible] = useState(false);
+    const [endRidePopConfirmVisible, setEndRidePopConfirmVisible] =
+        useState(false);
 
     useEffect(() => {
         if (animation.current) animation.current.play();
@@ -38,6 +42,37 @@ export default function DriverOnTheWayScene() {
 
     return (
         <View style={Classes.container(colors)}>
+            {visible && (
+                <PopConfirm
+                    title={t2("ride.cancelConfirmTitle")}
+                    visible={visible}
+                    setVisible={setVisible}
+                    content={t2("ride.canceConfirmContent")}
+                    onCancel={() => setVisible(false)}
+                    cancelText={t2("ride.cancelConfirmCancel")}
+                    onConfirm={() => {
+                        setVisible(false);
+                        ride.actions.cancelRide();
+                    }}
+                    okText={t2("ride.cancelConfirmOk")}
+                />
+            )}
+            {endRidePopConfirmVisible && (
+                <PopConfirm
+                    title={t2("ride.endConfirmTitle")}
+                    visible={endRidePopConfirmVisible}
+                    setVisible={setEndRidePopConfirmVisible}
+                    content={t2("ride.endConfirmContent")}
+                    onCancel={() => setEndRidePopConfirmVisible(false)}
+                    cancelText={t2("ride.endConfirmCancel")}
+                    onConfirm={() => {
+                        setEndRidePopConfirmVisible(false);
+                        ride.actions.onEndRide();
+                    }}
+                    okText={t2("ride.endConfirmOk")}
+                />
+            )}
+
             <Text style={{ fontSize: 30, fontWeight: "bold" }}>
                 {`${ride.request.client.firstName} ${ride.request.client.lastName}`}
                 {/* {t("ride.foundMamdoo")} */}
@@ -126,7 +161,7 @@ export default function DriverOnTheWayScene() {
                             // ]}
                             {...Classes.dynamicButtonContainer(colors, "error")}
                             mode="contained"
-                            onPress={ride.actions.cancelRide}
+                            onPress={() => setVisible(true)}
                         >
                             {t2("ride.cancelRide")}
                         </Button>
@@ -161,7 +196,7 @@ export default function DriverOnTheWayScene() {
                         shadow={{ size: 0.3 }}
                         color="error"
                         text={t2("ride.endRide")}
-                        onPress={ride.actions.onEndRide}
+                        onPress={() => setEndRidePopConfirmVisible(true)}
                     />
                 </View>
             )}

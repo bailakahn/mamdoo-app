@@ -54,8 +54,9 @@ export default {
         meetHimOutside: "Rencontrer le dehors!",
         rideCanceled:
             "Votre Mamdoo a annulé la course, nous cherchons un autre Mamdoo",
-        cancelConfirmTitle: "Confirmer l'annulation",
-        canceConfirmContent: "êtes-vous sûre de vouloir annuler votre course ?",
+        cancelConfirmTitle: "Confirmer l'annulation ?",
+        canceConfirmContent:
+            "Annuler trop de courses peut vous valoir une expulsion de l'application!!!",
         cancelConfirmOk: "Oui",
         cancelConfirmCancel: "Non"
     },

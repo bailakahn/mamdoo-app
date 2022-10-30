@@ -99,7 +99,17 @@ export default {
         endRide: "End Ride",
         arrived: "I arrived",
         clientOnHisWay:
-            "The client is coming to you. If he does not come call him."
+            "The client is coming to you. If he does not come call him.",
+        cancelConfirmTitle: "Confirm cancellation ?",
+        canceConfirmContent:
+            "Cancelling too many rides will have you blocked from using Mamdoo!!",
+        cancelConfirmOk: "Yes",
+        cancelConfirmCancel: "No",
+
+        endConfirmTitle: "Confirm ride end ?",
+        endConfirmContent: "Is this ride completed ?",
+        endConfirmOk: "Yes",
+        endConfirmCancel: "No"
     },
     form: {
         fullName: "Full Name",
