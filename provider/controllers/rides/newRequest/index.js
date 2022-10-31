@@ -9,8 +9,8 @@ module.exports = async ({ req, res }) => {
       req,
     },
     async ({ userId, accessToken, app }) => {
-      const { coordinates } = getBody(req);
-      const nearByDrivers = await getDrivers(coordinates);
+      const { coordinates, excludedDriver } = getBody(req);
+      const nearByDrivers = await getDrivers(coordinates, excludedDriver);
 
       console.log("[NewRequest] found drriver", nearByDrivers);
 

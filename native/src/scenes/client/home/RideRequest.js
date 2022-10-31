@@ -8,7 +8,7 @@ import PinAnimation from "_assets/animation/location-pin-jumping-animation-11.js
 import { useRide, useRequest } from "_hooks";
 import { Info } from "_molecules";
 
-export default function RideRequestScreen({ navigation }) {
+export default function RideRequestScreen({ navigation, route }) {
     const { colors } = useTheme();
     const animation = useRef();
 
@@ -20,8 +20,12 @@ export default function RideRequestScreen({ navigation }) {
     }, []);
 
     useEffect(() => {
-        if (ride.canceled) request.actions.makeRideRequest(navigation);
-    }, [ride.canceled]);
+        if (ride.canceled && route?.params?.driverId)
+            request.actions.makeRideRequest(
+                navigation,
+                route?.params?.driverId
+            );
+    }, [ride.canceled, route]);
 
     return (
         <View style={Classes.container(colors)}>

@@ -10,7 +10,7 @@ export default function useRequest() {
         actions: { resetRide, setOnGoingRide }
     } = useStore();
 
-    const makeRideRequest = async (navigation) => {
+    const makeRideRequest = async (navigation, driverId) => {
         resetRide();
         setOnGoingRide();
         const { latitude, longitude } =
@@ -30,7 +30,8 @@ export default function useRequest() {
                 method: "POST",
                 endpoint: "rides/newRequest",
                 params: {
-                    coordinates: [longitude, latitude]
+                    coordinates: [longitude, latitude],
+                    excludedDriver: driverId
                 }
             }).catch((err) => {
                 console.log(err);

@@ -38,7 +38,9 @@ export default function useProxy() {
                 if (event == "CANCEL_REQUEST") {
                     dispatch({ type: event });
                     dispatch({ type: types.SET_RIDE_CANCELED, canceled: true });
-                    navigation.navigate("RideRequest");
+                    navigation.navigate("RideRequest", {
+                        driverId: data.driverId
+                    });
                     return;
                 }
 

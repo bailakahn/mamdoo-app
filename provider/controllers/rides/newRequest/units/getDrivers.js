@@ -4,7 +4,7 @@ const { getSetting } = require("_lib/helpers");
 const settings = require("_constants/settings");
 const subHours = require("date-fns/subHours");
 
-module.exports = async (coordinates) => {
+module.exports = async (coordinates, excludedDriver) => {
   const maxDistance = await getSetting("maxDistance");
   const driverLastSeen = await getSetting("driverLastSeen");
 
@@ -12,6 +12,7 @@ module.exports = async (coordinates) => {
     await Promise.all(
       (
         await Driver.find({
+          _id: { $ne: excludedDriver },
           currentLocation: {
             $near: {
               $maxDistance:
