@@ -1,6 +1,8 @@
 import React from "react";
+import { View } from "react-native";
 import { Text, Portal, Dialog, useTheme, Paragraph } from "react-native-paper";
 import Button from "../atoms/Button";
+import RoundButton from "../atoms/RoundButton";
 import { t2 } from "_utils/lang";
 
 export default function PopConfirm({
@@ -14,7 +16,8 @@ export default function PopConfirm({
     cancelButtonProps = {},
     okButtonProps = {},
     okText,
-    onConfirm
+    onConfirm,
+    isRounded = false
 }) {
     const { colors } = useTheme();
 
@@ -31,29 +34,65 @@ export default function PopConfirm({
                     </Paragraph>
                 </Dialog.Content>
                 <Dialog.Actions>
-                    <Button
-                        onPress={onCancel ? onCancel : () => setVisible(false)}
-                        style={{ marginRight: 50 }}
-                    >
-                        <Text
+                    {isRounded ? (
+                        <View
                             style={{
-                                color: colors[
-                                    cancelButtonProps?.color || "text"
-                                ]
+                                flexDirection: "row"
                             }}
                         >
-                            {cancelText || t2("main.cancel")}
-                        </Text>
-                    </Button>
-                    <Button mode="text" onPress={onConfirm}>
-                        <Text
-                            style={{
-                                color: colors[okButtonProps?.color || "error"]
-                            }}
-                        >
-                            {okText || t2("main.confirm")}
-                        </Text>
-                    </Button>
+                            <RoundButton
+                                size={0.35}
+                                shadow={{ size: 0.3 }}
+                                color={cancelButtonProps?.color || "primary"}
+                                text={cancelText || t2("main.cancel")}
+                                onPress={
+                                    onCancel
+                                        ? onCancel
+                                        : () => setVisible(false)
+                                }
+                            />
+                            <View style={{ marginRight: 50 }} />
+                            <RoundButton
+                                size={0.35}
+                                shadow={{ size: 0.3 }}
+                                color={okButtonProps?.color || "error"}
+                                text={okText || t2("main.confirm")}
+                                onPress={onConfirm}
+                            />
+                        </View>
+                    ) : (
+                        <>
+                            <Button
+                                onPress={
+                                    onCancel
+                                        ? onCancel
+                                        : () => setVisible(false)
+                                }
+                                style={{ marginRight: 50 }}
+                            >
+                                <Text
+                                    style={{
+                                        color: colors[
+                                            cancelButtonProps?.color || "text"
+                                        ]
+                                    }}
+                                >
+                                    {cancelText || t2("main.cancel")}
+                                </Text>
+                            </Button>
+                            <Button mode="text" onPress={onConfirm}>
+                                <Text
+                                    style={{
+                                        color: colors[
+                                            okButtonProps?.color || "error"
+                                        ]
+                                    }}
+                                >
+                                    {okText || t2("main.confirm")}
+                                </Text>
+                            </Button>
+                        </>
+                    )}
                 </Dialog.Actions>
             </Dialog>
         </Portal>

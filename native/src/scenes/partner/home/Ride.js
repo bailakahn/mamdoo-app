@@ -55,6 +55,7 @@ export default function DriverOnTheWayScene() {
                         ride.actions.cancelRide();
                     }}
                     okText={t2("ride.cancelConfirmOk")}
+                    isRounded={true}
                 />
             )}
             {endRidePopConfirmVisible && (
@@ -70,6 +71,9 @@ export default function DriverOnTheWayScene() {
                         ride.actions.onEndRide();
                     }}
                     okText={t2("ride.endConfirmOk")}
+                    isRounded={true}
+                    okButtonProps={{ color: "success" }}
+                    cancelButtonProps={{ color: "error" }}
                 />
             )}
 
@@ -127,79 +131,55 @@ export default function DriverOnTheWayScene() {
             </View>
 
             {!ride.driverArrived && (
-                <View style={{ marginTop: 30 }}>
-                    <Button
-                        // style={Classes.openMapButton(colors)}
-                        {...Classes.openMapButtoContainer(colors)}
-                        mode="contained"
-                        onPress={ride.actions.openMap}
-                        color="#04009A"
-                    >
-                        {t2("ride.openMap")}
-                    </Button>
-                </View>
-            )}
-
-            <View style={{ marginTop: 30 }}>
-                <Button
-                    // style={Classes.callButton(colors)}
-                    {...Classes.callButtonContainer(colors)}
-                    mode="contained"
-                    onPress={ride.actions.callDriver}
-                >
-                    {t2("ride.callRider")} {ride.request.client.firstName}
-                </Button>
-            </View>
-
-            {!ride.driverArrived && (
-                <View style={{ marginTop: 30 }}>
-                    {ride.canCancel ? (
-                        <Button
-                            // style={[
-                            //     Classes.callButton(colors),
-                            //     { backgroundColor: colors.error }
-                            // ]}
-                            {...Classes.dynamicButtonContainer(colors, "error")}
-                            mode="contained"
-                            onPress={() => setVisible(true)}
-                        >
-                            {t2("ride.cancelRide")}
-                        </Button>
-                    ) : (
-                        <Text
-                            style={{
-                                fontSize: 20,
-                                fontWeight: "bold",
-                                color: colors.error
-                            }}
-                        >
-                            {t2("ride.callToCancel")}
-                        </Text>
-                    )}
-                </View>
-            )}
-
-            {!ride.driverArrived ? (
-                <View style={{ marginTop: 30 }}>
-                    <RoundButton
-                        size={0.35}
-                        shadow={{ size: 0.3 }}
-                        color="grey"
-                        text={t2("ride.arrived")}
-                        onPress={ride.actions.onDriverArrived}
-                    />
-                </View>
-            ) : (
-                <View style={{ marginTop: 30 }}>
+                <View style={{ marginTop: 30, flexDirection: "row" }}>
                     <RoundButton
                         size={0.35}
                         shadow={{ size: 0.3 }}
                         color="error"
-                        text={t2("ride.endRide")}
-                        onPress={() => setEndRidePopConfirmVisible(true)}
+                        text={t2("ride.cancelRide")}
+                        onPress={() => setVisible(true)}
+                    />
+                    <View style={{ marginRight: 50 }} />
+                    <RoundButton
+                        size={0.35}
+                        shadow={{ size: 0.3 }}
+                        color="grey"
+                        text={t2("ride.openMap")}
+                        onPress={ride.actions.openMap}
                     />
                 </View>
             )}
+
+            <View style={{ marginTop: 30, flexDirection: "row" }}>
+                <RoundButton
+                    size={0.35}
+                    shadow={{ size: 0.3 }}
+                    color="primary"
+                    text={`${t2("ride.callRider")} ${
+                        ride.request.client.firstName
+                    }`}
+                    onPress={ride.actions.callDriver}
+                />
+                <View style={{ marginRight: 50 }} />
+
+                {!ride.driverArrived ? (
+                    <RoundButton
+                        size={0.35}
+                        shadow={{ size: 0.3 }}
+                        color="success"
+                        text={t2("ride.arrived")}
+                        onPress={ride.actions.onDriverArrived}
+                    />
+                ) : (
+                    <RoundButton
+                        size={0.35}
+                        shadow={{ size: 0.3 }}
+                        color="success"
+                        text={t2("ride.endRide")}
+                        onPress={() => setEndRidePopConfirmVisible(true)}
+                    />
+                )}
+            </View>
 
             <View style={{ marginTop: 30 }}>
                 <Info
