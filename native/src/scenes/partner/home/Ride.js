@@ -13,7 +13,7 @@ import ReadyAmimation from "_assets/animation/ready.json";
 import LightReadyAmimation from "_assets/animation/light-ready.gif";
 import DarkReadyAmimation from "_assets/animation/dark-ready.gif";
 import { useRide } from "_hooks/partner";
-import { RoundButton, Button } from "_atoms";
+import { RoundButton } from "_atoms";
 import { Info } from "_molecules";
 import PopConfirm from "_organisms/PopConfirm";
 

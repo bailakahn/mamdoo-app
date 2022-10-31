@@ -13,7 +13,7 @@ import ReadyAmimation from "_assets/animation/ready.json";
 import LightReadyAmimation from "_assets/animation/light-ready.gif";
 import DarkReadyAmimation from "_assets/animation/dark-ready.gif";
 import { useRide, useTheme as useMamdooTheme } from "_hooks";
-import { Button } from "_atoms";
+import { RoundButton } from "_atoms";
 import PopConfirm from "_organisms/PopConfirm";
 
 export default function RideRequestScreen() {
@@ -52,6 +52,7 @@ export default function RideRequestScreen() {
                     ride.actions.cancelRide();
                 }}
                 okText={t("ride.cancelConfirmOk")}
+                isRounded={true}
             />
             <Text style={{ fontSize: 30, fontWeight: "bold" }}>
                 {`${ride.driver.firstName} ${ride.driver.lastName}`}
@@ -139,44 +140,28 @@ export default function RideRequestScreen() {
                 </Text>
             </View>
 
-            <View style={{ marginTop: 30 }}>
-                <Button
-                    // style={Classes.callButton(colors)}
-                    {...Classes.callButtonContainer(colors)}
-                    mode="contained"
-                    onPress={ride.actions.callDriver}
-                >
-                    {t("ride.callDriver")} {ride.driver.firstName}
-                </Button>
-            </View>
-
-            {!ride.driverArrived && (
-                <View style={{ marginTop: 30 }}>
-                    {ride.canCancel ? (
-                        <Button
-                            // style={[
-                            //     Classes.callButton(colors),
-                            //     { backgroundColor: colors.error }
-                            // ]}
-                            {...Classes.dynamicButtonContainer(colors, "error")}
-                            mode="contained"
+            <View style={{ marginTop: 30, flexDirection: "row" }}>
+                {!ride.driverArrived && (
+                    <>
+                        <RoundButton
+                            size={0.35}
+                            shadow={{ size: 0.3 }}
+                            color="error"
+                            text={t("ride.cancelRide")}
                             onPress={() => setVisible(true)}
-                        >
-                            {t("ride.cancelRide")}
-                        </Button>
-                    ) : (
-                        <Text
-                            style={{
-                                fontSize: 20,
-                                fontWeight: "bold",
-                                color: colors.error
-                            }}
-                        >
-                            {t("ride.callToCancel")}
-                        </Text>
-                    )}
-                </View>
-            )}
+                        />
+                        <View style={{ marginRight: 50 }} />
+                    </>
+                )}
+
+                <RoundButton
+                    size={0.35}
+                    shadow={{ size: 0.3 }}
+                    color="primary"
+                    text={`${t("ride.callDriver")} ${ride.driver.firstName}`}
+                    onPress={ride.actions.callDriver}
+                />
+            </View>
         </View>
     );
 }
