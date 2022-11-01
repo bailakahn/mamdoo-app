@@ -1,6 +1,7 @@
 const argon2 = require("argon2");
 const { error, get } = require("_lib/helpers");
 const authenticate = require("_app/auth/authenticate");
+const { Driver } = require("_db/models");
 module.exports = async ({ phoneNumber, password }) => {
   const user = await get(
     "Driver",
@@ -17,6 +18,7 @@ module.exports = async ({ phoneNumber, password }) => {
         "password",
         "salt",
         "cab",
+        "expoPushToken",
       ],
     }
   );
@@ -33,6 +35,10 @@ module.exports = async ({ phoneNumber, password }) => {
   );
 
   if (!isValid) error("AuthError", "This user does not exist", "errors.login");
+
+  // remove expo push token
+  if (user.expoPushToken)
+    await Driver.findByIdAndUpdate(user._id, { expoPushToken: null });
 
   delete user.password;
   delete user.salt;
