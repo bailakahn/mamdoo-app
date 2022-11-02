@@ -18,9 +18,14 @@ export default function useLocation() {
         requestPermission();
 
         if (status && status.granted)
-            Location.getCurrentPositionAsync({})
+            Location.getCurrentPositionAsync({
+                accuracy: Location.LocationAccuracy.Balanced,
+                distanceInterval: 100
+            })
                 .then(({ coords: { latitude, longitude } }) => {
-                    if (isMounted) setLocation({ latitude, longitude });
+                    if (isMounted) {
+                        setLocation({ latitude, longitude });
+                    }
                 })
                 .catch((err) => {
                     console.log(err);
@@ -37,7 +42,10 @@ export default function useLocation() {
     const getCurrentPosition = async () => {
         let {
             coords: { latitude, longitude }
-        } = await Location.getCurrentPositionAsync({});
+        } = await Location.getCurrentPositionAsync({
+            accuracy: Location.LocationAccuracy.Balanced,
+            distanceInterval: 100
+        });
         setLocation({ latitude, longitude });
 
         return { latitude, longitude };
