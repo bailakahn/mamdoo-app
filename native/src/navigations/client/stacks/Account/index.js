@@ -8,7 +8,7 @@ import { AccountScene, ProfileScene, RidesHistoryScene } from "_scenes/client";
 import { t } from "_utils/lang";
 export default function AccountStack({ role }) {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName="Account">
             <Stack.Screen
                 name="Account"
                 component={AccountScene}

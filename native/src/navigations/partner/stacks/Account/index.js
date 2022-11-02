@@ -7,7 +7,7 @@ const Stack = createStackNavigator();
 
 export default function AccountStack({ role }) {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName="Account">
             <Stack.Screen
                 name="Account"
                 component={AccountScene}

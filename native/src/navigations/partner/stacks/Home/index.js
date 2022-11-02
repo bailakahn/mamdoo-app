@@ -14,7 +14,10 @@ export default function HomeStack({ role }) {
     }, []);
 
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator
+            initialRouteName="Home"
+            screenOptions={{ headerShown: false }}
+        >
             <Stack.Screen
                 name="Home"
                 component={

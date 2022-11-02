@@ -7,7 +7,10 @@ import { FormScene, LoginScene, ForgotPasswordScene } from "_scenes/client";
 
 export default function AuthStack({}) {
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator
+            initialRouteName="Login"
+            screenOptions={{ headerShown: false }}
+        >
             <Stack.Screen
                 name="Login"
                 component={LoginScene}
