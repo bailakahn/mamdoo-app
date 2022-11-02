@@ -173,6 +173,20 @@ export default function useRide() {
         );
     };
 
+    const denyRequest = () => {
+        const currentRequestId = requestId;
+        resetRequest();
+        getRequest({
+            method: "POST",
+            endpoint: "rides/denyRequest",
+            params: {
+                requestId: currentRequestId
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
+    };
+
     return {
         requestId,
         request,
@@ -184,6 +198,7 @@ export default function useRide() {
         actions: {
             resetRequest,
             acceptRequest,
+            denyRequest,
             setError,
             callDriver,
             openMap,

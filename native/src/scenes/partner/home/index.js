@@ -55,11 +55,11 @@ export default function AccountScene({}) {
                         >
                             <View style={{ marginRight: 20 }}>
                                 <RoundButton
-                                    size={0.25}
+                                    size={0.35}
                                     color="error"
                                     text={t2("ride.denyRide")}
-                                    onPress={ride.actions.resetRequest}
-                                    shadow={{ size: 0.2 }}
+                                    onPress={ride.actions.denyRequest}
+                                    shadow={{ size: 0.3 }}
                                 />
                             </View>
 

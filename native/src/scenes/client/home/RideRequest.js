@@ -20,12 +20,12 @@ export default function RideRequestScreen({ navigation, route }) {
     }, []);
 
     useEffect(() => {
-        if (ride.canceled && route?.params?.driverId)
+        if ((ride.canceled && route?.params?.driverId) || ride.denied)
             request.actions.makeRideRequest(
                 navigation,
                 route?.params?.driverId
             );
-    }, [ride.canceled, route]);
+    }, [ride.canceled, ride.denied, route]);
 
     return (
         <View style={Classes.container(colors)}>
@@ -35,6 +35,14 @@ export default function RideRequestScreen({ navigation, route }) {
                     text={t(`ride.rideCanceled`)}
                     onDismiss={() => ride.actions.setRideCanceled(false)}
                     onClose={() => ride.actions.setRideCanceled(false)}
+                />
+            )}
+            {ride.denied && (
+                <Info
+                    visible={ride.denied}
+                    text={t(`ride.rideDenied`)}
+                    onDismiss={() => ride.actions.setRideDenied(false)}
+                    onClose={() => ride.actions.setRideDenied(false)}
                 />
             )}
             <Text style={{ fontSize: 30, fontWeight: "bold" }}>

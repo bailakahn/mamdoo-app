@@ -25,6 +25,7 @@ export default {
     FOUND_DRIVER: "FOUND_DRIVER",
     DRIVER_ARRIVED: "DRIVER_ARRIVED",
     END_RIDE: "END_RIDE",
+    REQUEST_DENIED: "REQUEST_DENIED",
 
     // Partner socket events
     NEW_REQUEST: "NEW_REQUEST",

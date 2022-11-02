@@ -5,4 +5,5 @@ module.exports = [
   { topic: "requestCanceled", partition: 0 },
   { topic: "rideEnded", partition: 0 },
   { topic: "clearRides", partition: 0 },
+  { topic: "requestDenied", partition: 0 },
 ];

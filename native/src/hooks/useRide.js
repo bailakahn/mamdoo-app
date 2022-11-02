@@ -11,8 +11,8 @@ export default function useRide() {
     const navigation = useNavigation();
 
     const {
-        ride: { driver, requestId, canCancel, driverArrived, canceled },
-        actions: { resetRide, setCanCancel, setRideCanceled }
+        ride: { driver, requestId, canCancel, driverArrived, canceled, denied },
+        actions: { resetRide, setRideDenied, setRideCanceled }
     } = useStore();
 
     useEffect(() => {
@@ -65,6 +65,13 @@ export default function useRide() {
         canCancel,
         driverArrived,
         canceled,
-        actions: { callDriver, cancelRide, setRideCanceled, resetRide }
+        denied,
+        actions: {
+            callDriver,
+            cancelRide,
+            setRideCanceled,
+            setRideDenied,
+            resetRide
+        }
     };
 }

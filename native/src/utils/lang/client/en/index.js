@@ -57,6 +57,7 @@ export default {
         meetHimOutside: "Meet him outside!",
         rideCanceled:
             "Your Mamdoo canceled the ride, we are looking for a new Mamdoo",
+        rideDenied: "We are looking for a Mamdoo, please be patient.",
         cancelConfirmTitle: "Confirm cancellation ?",
         canceConfirmContent:
             "Cancelling too many rides will have you blocked from using Mamdoo!!",

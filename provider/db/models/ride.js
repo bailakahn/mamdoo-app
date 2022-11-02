@@ -12,7 +12,7 @@ const rideSchema = new Schema(
     driverId: { type: Schema.Types.ObjectId, ref: "Driver" },
     status: {
       type: String,
-      enum: ["request", "ongoing", "completed", "canceled"],
+      enum: ["request", "ongoing", "completed", "canceled", "void"],
       default: "request",
     },
     pickUp: {

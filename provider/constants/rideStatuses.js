@@ -3,4 +3,5 @@ module.exports = {
   ONGOING: "ongoing",
   COMPLETED: "completed",
   CANCELED: "canceled",
+  VOID: "void",
 };

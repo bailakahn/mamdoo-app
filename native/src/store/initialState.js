@@ -21,6 +21,7 @@ export default {
         driverArrived: false,
         request: null,
         canceled: false,
+        denied: false,
         onGoingRide: false
     }
 };

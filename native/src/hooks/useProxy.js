@@ -9,7 +9,8 @@ const socketEvents = [
     "FOUND_DRIVER",
     "DRIVER_ARRIVED",
     "CANCEL_REQUEST",
-    "END_RIDE"
+    "END_RIDE",
+    "REQUEST_DENIED"
 ];
 export default function useProxy() {
     const { dispatch } = useStore();
@@ -46,7 +47,13 @@ export default function useProxy() {
 
                 if (event == "END_RIDE") {
                     dispatch({ type: types.RESET_RIDE });
+                    dispatch({ type: types.REQUEST_DENIED, denied: false });
                     navigation.navigate("Home");
+                    return;
+                }
+
+                if (event == "REQUEST_DENIED") {
+                    dispatch({ type: types.REQUEST_DENIED, denied: true });
                     return;
                 }
 

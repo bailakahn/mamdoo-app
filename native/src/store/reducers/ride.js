@@ -60,6 +60,11 @@ export default (state = ride, action) => {
                 ...state,
                 canceled: action.canceled
             };
+        case types.REQUEST_DENIED:
+            return {
+                ...state,
+                denied: action.denied
+            };
         case types.END_RIDE:
             RootNavigation.navigate("Home");
             return {
@@ -70,6 +75,7 @@ export default (state = ride, action) => {
                 driverArrived: false,
                 request: null,
                 canceled: false,
+                denied: false,
                 onGoingRide: false
             };
         case types.SET_ONGOING_RIDE:
