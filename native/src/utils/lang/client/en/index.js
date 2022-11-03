@@ -17,6 +17,7 @@ export default {
         forgotPasswordText:
             "Call us at this number to change your password. Note that we will ask for ID verification before reseting your password",
         call: "Call",
+        callUs: "Call Us",
         goBack: "Go Back"
     },
     errors: {
@@ -37,9 +38,12 @@ export default {
         login: "The phone number or pin code is incorrect"
     },
     home: {
-        bookRide: "Book a ride",
+        welcome: "Welcome On Mamdoo",
+        bookRide: "Book a Mamdoo",
         noDriver:
-            "We did not find any driver at the moment. Please retry again!"
+            "We did not find any driver at the moment. Please retry again!",
+        accountBlocked:
+            "Your account has been blocked, This is probably a result of too many rides canceled."
     },
     ride: {
         hello: "Hello",

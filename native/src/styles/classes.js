@@ -166,6 +166,16 @@ export const driverWelcomeNoticeView = (colors, isOnline) => ({
     padding: 20,
     marginTop: 50
 });
+
+export const notice = (colors, color) => ({
+    width: Mixins.width(0.85, true),
+    borderWidth: 1,
+    borderColor: colors[color],
+    borderRadius: 10,
+    padding: 20,
+    marginTop: 50
+});
+
 export const stopButton = (colors) => ({
     borderRadius: Mixins.width(0.35, true),
     width: Mixins.width(0.35, true),
@@ -286,12 +296,12 @@ export const spinner = (colors) => ({
 });
 
 export const roundedButton = (colors) => ({
-    width: Mixins.width(200),
-    height: Mixins.height(200),
+    width: Mixins.width(150),
+    height: Mixins.height(150),
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
-    borderRadius: 100,
+    borderRadius: 75,
     backgroundColor: colors.primary
 });
 

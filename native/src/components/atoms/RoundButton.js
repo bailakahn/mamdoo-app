@@ -3,13 +3,24 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { useTheme, DefaultTheme } from "react-native-paper";
 import { Classes } from "_styles";
 
-export default function RoundButton({ size, text, color, onPress, shadow }) {
+export default function RoundButton({
+    size,
+    text,
+    color,
+    onPress,
+    shadow,
+    disabled
+}) {
     const { colors } = useTheme();
 
     return (
         <TouchableOpacity
+            disabled={disabled}
             onPress={onPress}
-            style={Classes.roundButton(colors, size, color)}
+            style={{
+                ...Classes.roundButton(colors, size, color),
+                ...(disabled && { backgroundColor: "lightgray" })
+            }}
         >
             {shadow ? (
                 <View style={Classes.buttonShadow(colors, shadow.size)}>

@@ -25,6 +25,7 @@ export default {
         forgotPasswordText:
             "Call us at this number to change your password. Note that we will ask for ID verification before reseting your password",
         call: "Call",
+        callUs: "Call Us",
         goBack: "Go Back",
         confirmTitle: "Please confirm your action",
         confirmWarning: "Are you sure ?",
@@ -81,7 +82,10 @@ export default {
         afterDelay:
             "If you sent your documents more than 24 hours ago, or if you have any other question, please call us",
         call: "Call",
-        close: "Close"
+        callUs: "Call Us",
+        close: "Close",
+        accountBlocked:
+            "Your account has been blocked, This is probably a result of too many rides canceled."
     },
     ride: {
         mamdoo: "Mamdoo",

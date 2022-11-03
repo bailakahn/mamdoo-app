@@ -24,6 +24,7 @@ export default {
         forgotPasswordText:
             "Appelez nous pour changer votre mot de passe. Veullez noter que nous aurons besoin de verifier votre identité avant de changer votre mot de passe.",
         call: "Appeler",
+        callUs: "Appeler nous",
         goBack: "Retour",
         confirmTitle: "Veuillez confirmer votre action",
         confirmWarning: "Voulez vous continuer ?",
@@ -76,7 +77,10 @@ export default {
         afterDelay:
             "Si cela fait plus de 24 heures depuis que vous avez envoyer vos documents, ou si vous avez des questions, appelez nous.",
         call: "Appeler",
-        close: "Fermer"
+        callUs: "Appeler nous",
+        close: "Fermer",
+        accountBlocked:
+            "Votre compte a été bloqué, Surement parceque vous avez annulé beaucoup de courses."
     },
     ride: {
         mamdoo: "Mamdoo",

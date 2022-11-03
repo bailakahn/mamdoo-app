@@ -18,6 +18,7 @@ export default {
         forgotPasswordText:
             "Appelez nous pour changer votre mot de passe. Veullez noter que nous aurons besoin de verifier votre identité avant de changer votre mot de passe.",
         call: "Appeler",
+        callUs: "Appeler nous",
         goBack: "Retour"
     },
     errors: {
@@ -34,9 +35,12 @@ export default {
         login: "Le numéro de téléphone ou le code pin est incorrecte"
     },
     home: {
-        bookRide: "Commander une moto",
+        welcome: "Bienvenue sur Mamdoo",
+        bookRide: "Commander un Mamdoo",
         noDriver:
-            "Nous n'avons pas pu trouver de chauffeur. S'il vous plait veuillez reessayer encore!"
+            "Nous n'avons pas pu trouver de chauffeur. S'il vous plait veuillez reessayer encore!",
+        accountBlocked:
+            "Votre compte a été bloqué, Surement parceque vous avez annulé beaucoup de courses."
     },
     ride: {
         hello: "Salut",

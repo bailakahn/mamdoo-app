@@ -5,7 +5,7 @@ module.exports = async (_id) => {
     { _id, deleted: false },
     {
       one: true,
-      fields: ["_id", "firstName", "lastName", "phoneNumber"],
+      fields: ["_id", "firstName", "lastName", "phoneNumber", "isBlocked"],
     }
   );
 

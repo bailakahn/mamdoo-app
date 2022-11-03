@@ -13,6 +13,7 @@ module.exports = async (_id) => {
         "isOnline",
         "active",
         "cab",
+        "isBlocked",
       ],
     }
   );

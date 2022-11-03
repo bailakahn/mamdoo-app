@@ -8,10 +8,11 @@ import {
     usePartner,
     usePartnerProxy,
     useNotifications,
-    useLanguage
+    useLanguage,
+    useApp
 } from "_hooks";
 import { useRide, useLocation } from "_hooks/partner";
-import { RoundButton } from "_atoms";
+import { RoundButton, Button } from "_atoms";
 import { Info } from "_molecules";
 
 export default function AccountScene({}) {
@@ -21,7 +22,8 @@ export default function AccountScene({}) {
     useLanguage();
     const ride = useRide();
     const partner = usePartner();
-    const location = useLocation();
+    useLocation();
+    const app = useApp();
 
     useEffect(() => {
         ride.actions.resetRide();
@@ -114,8 +116,34 @@ export default function AccountScene({}) {
                     </Text>
                 </View>
             </View>
+            {partner.partner?.isBlocked && (
+                <View
+                    style={{
+                        ...Classes.notice(colors, "error"),
+                        justifyContent: "center",
+                        alignItems: "center",
+                        alignSelf: "center"
+                    }}
+                >
+                    <View>
+                        <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                            {t2("home.accountBlocked")}
+                        </Text>
+                    </View>
+                    <View style={{ marginTop: 30 }}>
+                        <Button
+                            {...Classes.callButtonContainer(colors)}
+                            mode="contained"
+                            onPress={app.actions.call}
+                        >
+                            {`${t2("main.callUs")}`}
+                        </Button>
+                    </View>
+                </View>
+            )}
             <View style={[Classes.bottonView(colors)]}>
                 <RoundButton
+                    disabled={partner.partner?.isBlocked}
                     size={0.35}
                     color={!partner.partner.isOnline ? "primary" : "error"}
                     text={

@@ -12,6 +12,7 @@ const clientSchema = new Schema(
     pin: { type: String },
     lang: { type: String },
     expoPushToken: { type: String, required: false },
+    isBlocked: { type: Boolean, default: false },
     deleted: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
     lastSeenAt: { type: Date, default: Date.now },
