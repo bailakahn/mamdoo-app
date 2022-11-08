@@ -1,8 +1,10 @@
 const { get, error } = require("_lib/helpers");
+const rideStatuses = require("_constants/rideStatuses");
+
 module.exports = async (driverId) => {
   return await get(
     "Ride",
-    { driverId },
+    { driverId, status: rideStatuses.COMPLETED },
     {
       fields: [
         "_id",
