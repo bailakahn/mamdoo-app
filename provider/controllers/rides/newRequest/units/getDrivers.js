@@ -23,6 +23,7 @@ module.exports = async (coordinates, excludedDriver) => {
               },
             },
           },
+          isBlocked: { $ne: true },
           isOnline: true,
           active: true,
           lastSeenAt: {

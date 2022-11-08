@@ -1,6 +1,6 @@
 const { get } = require("_lib/helpers");
 const { Expo } = require("expo-server-sdk");
-module.exports = async (app, eventId, userIds) => {
+module.exports = async (app, eventId, userIds, data) => {
   const modelName = app === "client" ? "Client" : "Driver";
 
   const notification = await get(
@@ -33,6 +33,7 @@ module.exports = async (app, eventId, userIds) => {
       sound: "default",
       body: notification.message[(user.lang && user.lang) || "fr"],
       title: "Mamdoo",
+      data,
     });
   }
 

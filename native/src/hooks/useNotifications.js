@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import { useApi } from "_api";
+const acceptedEvents = ["NEW_REQUEST"];
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -16,7 +17,27 @@ export default function useNotification() {
     const [notification, setNotification] = useState(false);
     const notificationListener = useRef();
     const responseListener = useRef();
-
+    const lastNotificationResponse =
+        Notifications.useLastNotificationResponse();
+    useEffect(() => {
+        if (
+            lastNotificationResponse &&
+            lastNotificationResponse.notification?.request?.content?.data &&
+            lastNotificationResponse.actionIdentifier ===
+                Notifications.DEFAULT_ACTION_IDENTIFIER &&
+            acceptedEvents.includes(
+                lastNotificationResponse?.notification?.request?.content?.data
+                    ?.event
+            )
+        ) {
+            getRequest({
+                method: "POST",
+                endpoint: "notifications/handleNotifications",
+                params: lastNotificationResponse?.notification?.request?.content
+                    ?.data
+            });
+        }
+    }, [lastNotificationResponse]);
     useEffect(() => {
         registerForPushNotificationsAsync().then((token) => {
             saveNotificationToken(token);
@@ -29,9 +50,7 @@ export default function useNotification() {
 
         responseListener.current =
             Notifications.addNotificationResponseReceivedListener(
-                (response) => {
-                    // console.log({ response });
-                }
+                handleNotificationResponse
             );
 
         return () => {
@@ -60,6 +79,12 @@ export default function useNotification() {
         schedulePushNotification
     };
 }
+
+const handleNotificationResponse = (response) => {
+    console.log({
+        notification: response?.notification?.request?.content?.data
+    });
+};
 
 async function schedulePushNotification() {
     await Notifications.scheduleNotificationAsync({
