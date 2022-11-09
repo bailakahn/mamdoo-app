@@ -35,6 +35,7 @@ export default function useRide() {
             params: { requestId }
         })
             .then((ride) => {
+                console.log({ ride });
                 resetRequest();
                 setOnGoingRide();
                 setRide(ride);

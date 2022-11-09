@@ -9,39 +9,41 @@ module.exports = async (coordinates, excludedDriver) => {
   const driverLastSeen = await getSetting("driverLastSeen");
 
   return (
-    await Promise.all(
-      (
-        await Driver.find({
-          _id: { $ne: excludedDriver },
-          currentLocation: {
-            $near: {
-              $maxDistance:
-                Number(maxDistance) || settings.MAX_DISTANCE_DEFAULT,
-              $geometry: {
-                type: "Point",
-                coordinates,
+    (
+      await Promise.all(
+        (
+          await Driver.find({
+            _id: { $ne: excludedDriver },
+            currentLocation: {
+              $near: {
+                $maxDistance:
+                  Number(maxDistance) || settings.MAX_DISTANCE_DEFAULT,
+                $geometry: {
+                  type: "Point",
+                  coordinates,
+                },
               },
             },
-          },
-          isBlocked: { $ne: true },
-          isOnline: true,
-          active: true,
-          lastSeenAt: {
-            $gte: subHours(
-              new Date(),
-              Number(driverLastSeen || settings.DRIVER_LAST_SEEN_DEFAULT)
-            ),
-          },
-        }).lean()
-      ).map(async (driver) => ({
-        ...driver,
-        onGoingRide: await Ride.findOne({
-          driverId: driver._id,
-          status: rideStatuses.ONGOING,
-        }),
-      }))
+            isBlocked: { $ne: true },
+            isOnline: true,
+            active: true,
+            lastSeenAt: {
+              $gte: subHours(
+                new Date(),
+                Number(driverLastSeen || settings.DRIVER_LAST_SEEN_DEFAULT)
+              ),
+            },
+          }).lean()
+        ).map(async (driver) => ({
+          ...driver,
+          onGoingRide: await Ride.findOne({
+            driverId: driver._id,
+            status: rideStatuses.ONGOING,
+          }),
+        }))
+      )
     )
-  )
-    .filter(({ onGoingRide }) => !onGoingRide)
-    .map(({ _id }) => `${_id}`);
+      // .filter(({ onGoingRide }) => !onGoingRide)
+      .map(({ _id }) => `${_id}`)
+  );
 };

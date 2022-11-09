@@ -34,7 +34,7 @@ export default (state = ride, action) => {
             if (state.request) return state;
             return {
                 ...state,
-                requestId: action.data.requestId
+                ...(!state.request?._id && { requestId: action.data.requestId })
             };
         case types.RESET_REQUEST:
             return {

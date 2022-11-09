@@ -1,1 +1,1 @@
-module.exports.handleNotifications = require("./handleNotifications.js")
+module.exports.handleNotifications = require("./handleNotifications.js");
