@@ -4,6 +4,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import HomeStack from "./stacks/Home";
 import AccountStack from "./stacks/Account";
 import AuthtStack from "./stacks/Auth";
+import VerificationStack from "./stacks/Verification";
 import { useTheme } from "@react-navigation/native";
 import { useUser, useLocation } from "_hooks";
 import { Loading } from "_atoms";
@@ -27,57 +28,61 @@ export default function MainTabs({ role }) {
     if (grantStatus !== "granted") return <LocationDenied />;
 
     return user.user ? (
-        <Tab.Navigator
-            initialRouteName="Home"
-            // shifting={true}
-            sceneAnimationEnabled={false}
-            activeColor={colors.primary}
-            barStyle={{
-                backgroundColor: colors.background,
-                borderTopColor: colors.border,
-                borderTopWidth: 1
-            }}
-        >
-            <Tab.Screen
-                name="Home"
-                children={() => <HomeStack role={role} />}
-                options={{
-                    tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons
-                            name="home"
-                            color={color}
-                            size={25}
-                        />
-                    ),
-                    tabBarLabel: t("screens.home")
+        user.user?.verified ? (
+            <Tab.Navigator
+                initialRouteName="Home"
+                // shifting={true}
+                sceneAnimationEnabled={false}
+                activeColor={colors.primary}
+                barStyle={{
+                    backgroundColor: colors.background,
+                    borderTopColor: colors.border,
+                    borderTopWidth: 1
                 }}
-                listeners={{
-                    tabPress: (e) => {
-                        if (onGoingRide) e.preventDefault();
-                    }
-                }}
-            />
+            >
+                <Tab.Screen
+                    name="Home"
+                    children={() => <HomeStack role={role} />}
+                    options={{
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons
+                                name="home"
+                                color={color}
+                                size={25}
+                            />
+                        ),
+                        tabBarLabel: t("screens.home")
+                    }}
+                    listeners={{
+                        tabPress: (e) => {
+                            if (onGoingRide) e.preventDefault();
+                        }
+                    }}
+                />
 
-            <Tab.Screen
-                name="Account"
-                children={({}) => <AccountStack />}
-                options={({ navigation }) => ({
-                    tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons
-                            name="account-settings"
-                            color={color}
-                            size={25}
-                        />
-                    ),
-                    tabBarLabel: t("screens.account")
-                })}
-                listeners={{
-                    tabPress: (e) => {
-                        if (onGoingRide) e.preventDefault();
-                    }
-                }}
-            />
-        </Tab.Navigator>
+                <Tab.Screen
+                    name="Account"
+                    children={({}) => <AccountStack />}
+                    options={({ navigation }) => ({
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons
+                                name="account-settings"
+                                color={color}
+                                size={25}
+                            />
+                        ),
+                        tabBarLabel: t("screens.account")
+                    })}
+                    listeners={{
+                        tabPress: (e) => {
+                            if (onGoingRide) e.preventDefault();
+                        }
+                    }}
+                />
+            </Tab.Navigator>
+        ) : (
+            <VerificationStack />
+        )
     ) : (
         <AuthtStack />
     );

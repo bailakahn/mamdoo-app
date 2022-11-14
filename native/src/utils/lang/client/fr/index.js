@@ -19,7 +19,16 @@ export default {
             "Appelez nous pour changer votre mot de passe. Veullez noter que nous aurons besoin de verifier votre identité avant de changer votre mot de passe.",
         call: "Appeler",
         callUs: "Appeler nous",
-        goBack: "Retour"
+        goBack: "Retour",
+        verification: "Vérification",
+        verificationSent: "Nous avons envoyé un code de vérification par SMS.",
+        accountNotVerified: "Votre compte n'est pas encore vérifié.",
+        verificationPlaceholder: "Code",
+        phoneNumber: "",
+        verify: "Verifier",
+        verificationNotReceived: "Vous n'avez pas reçu de code ? ",
+        sendVerificationAgain: "Renvoyer",
+        editPhoneNumber: "Modifier le numéro de téléphone"
     },
     errors: {
         crashErrorTitle: "Oops, Quelque chose s'est mal passé",
@@ -32,7 +41,12 @@ export default {
         duplicateClient: "Ce numero de téléphone existe déjà",
         unsuportedPhoneNumber: "Ce numéro de téléphone n'est pas supporté",
         pin: "Le code pin est invalide",
-        login: "Le numéro de téléphone ou le code pin est incorrecte"
+        login: "Le numéro de téléphone ou le code pin est incorrecte",
+        empty: "Veuillez entrer une valeur",
+        isUsed: "Ce code a été utilisé",
+        expired: "Ce code a expiré",
+        notFound: "Code introuvable",
+        invalidCode: "La vérification a échouée"
     },
     home: {
         welcome: "Bienvenue sur Mamdoo",

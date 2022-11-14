@@ -1,0 +1,1 @@
+module.exports.verify = require("./verify.js")

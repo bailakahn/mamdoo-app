@@ -18,7 +18,16 @@ export default {
             "Call us at this number to change your password. Note that we will ask for ID verification before reseting your password",
         call: "Call",
         callUs: "Call Us",
-        goBack: "Go Back"
+        goBack: "Go Back",
+        verification: "Verification",
+        verificationPlaceholder: "Code",
+        accountNotVerified: "Your account is not verified yet.",
+        verificationSent: "We sent you a one time verification code via SMS.",
+        phoneNumber: "",
+        verify: "Verify",
+        verificationNotReceived: "Didn't receive the verification code ? ",
+        sendVerificationAgain: "Resend",
+        editPhoneNumber: "Edit your phone number"
     },
     errors: {
         crashErrorTitle: "Oops, Something Went Wrong",
@@ -35,7 +44,12 @@ export default {
         duplicateClient: "A client with this phone number already exists",
         unsuportedPhoneNumber: "This phone number is not supported",
         pin: "The pin code is not valid",
-        login: "The phone number or pin code is incorrect"
+        login: "The phone number or pin code is incorrect",
+        empty: "Please enter a value",
+        isUsed: "This code has been used",
+        expired: "This code is expired",
+        notFound: "We could not find this code",
+        invalidCode: "We could not verify this code"
     },
     home: {
         welcome: "Welcome On Mamdoo",

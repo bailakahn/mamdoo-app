@@ -19,6 +19,7 @@ module.exports = async ({ phoneNumber, password }) => {
         "salt",
         "cab",
         "expoPushToken",
+        "verified",
       ],
     }
   );

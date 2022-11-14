@@ -40,6 +40,17 @@ export const callButtonContainer = (colors) => ({
     }
 });
 
+export const verifyButtonContainer = (colors) => ({
+    style: {
+        width: Mixins.width(0.85, true),
+        height: Mixins.height(50),
+        justifyContent: "center"
+    },
+    contentStyle: {
+        height: Mixins.height(50)
+    }
+});
+
 export const backButtonContainer = (colors, type) => ({
     style: {
         marginTop: 20,

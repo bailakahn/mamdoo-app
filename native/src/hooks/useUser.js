@@ -21,6 +21,9 @@ export default function useUser() {
         pin: ""
     });
 
+    const [verificationCode, setVerificationCode] = useState("");
+    const [verificationError, setVerificationError] = useState(false);
+
     const [auth, setAuth] = useState({ phoneNumber: "", pin: "" });
 
     const [formError, setFormError] = useState(false);
@@ -161,6 +164,43 @@ export default function useUser() {
         removeUser();
     };
 
+    const verify = () => {
+        if (!verificationCode) setVerificationError(t("errors.empty"));
+
+        getRequest({
+            method: "POST",
+            endpoint: "auth/verify",
+            params: {
+                code: verificationCode
+            }
+        })
+            .then((res) => {
+                if (res.success) setUser({ ...user, verified: true });
+                else {
+                    if (res?.isUsed) setVerificationError(t("errors.isUsed"));
+                    else if (res?.expired)
+                        setVerificationError(t("errors.expired"));
+                    else if (res?.notFound)
+                        setVerificationError(t("errors.notFound"));
+                    else setVerificationError(t("errors.invalidCode"));
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                setVerificationError(t("errors.invalidCode"));
+            });
+    };
+
+    const resend = () => {
+        getRequest({
+            method: "POST",
+            endpoint: "auth/resend"
+        }).catch((err) => {
+            console.log(err);
+            setVerificationError(t("errors.crashErrorTitle"));
+        });
+    };
+
     return {
         formUser,
         formError,
@@ -168,6 +208,8 @@ export default function useUser() {
         userLoaded,
         ridesHistory,
         auth,
+        verificationCode,
+        verificationError,
         actions: {
             saveUser,
             setFormUser,
@@ -177,7 +219,10 @@ export default function useUser() {
             setAuth,
             loginUser,
             deleteAccount,
-            refresh
+            refresh,
+            setVerificationCode,
+            verify,
+            resend
         }
     };
 }

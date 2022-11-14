@@ -5,4 +5,6 @@ module.exports = {
   Driver: require("./driver"),
   RideCancelation: require("./rideCancelation"),
   Notification: require("./notification"),
+  SMSReceipt: require("./smsReceipt"),
+  SMSVerification: require("./smsVerification"),
 };
