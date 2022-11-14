@@ -14,20 +14,25 @@ export default {
         darkMode: "Dark Mode",
         enableDarkMode: "Enable Dark Mode",
         forgotPassword: "Forgot Password",
-        forgotPasswordText:
-            "Call us at this number to change your password. Note that we will ask for ID verification before reseting your password",
+        forgotPasswordText: "You will receive a code to reset your password",
         call: "Call",
         callUs: "Call Us",
         goBack: "Go Back",
         verification: "Verification",
-        verificationPlaceholder: "Code",
+        verificationPlaceholder: "Verification Code",
         accountNotVerified: "Your account is not verified yet.",
         verificationSent: "We sent you a one time verification code via SMS.",
         phoneNumber: "",
         verify: "Verify",
         verificationNotReceived: "Didn't receive the verification code ? ",
         sendVerificationAgain: "Resend",
-        editPhoneNumber: "Edit your phone number"
+        editPhoneNumber: "Edit your phone number",
+        enterForgotPasswordNumber: "Enter your phone number",
+        resetPassword: "Reset Pin",
+        resetPin: "Reset your pin code",
+        enterNewPin: "Enter you new pin code",
+        pinVerificationNotice:
+            "Then enter your new pin code. Do not use the same code as the one we sent by SMS."
     },
     errors: {
         crashErrorTitle: "Oops, Something Went Wrong",
@@ -89,6 +94,7 @@ export default {
         phoneNumber: "Phone Number",
         phoneNumberPlaceholder: "Ex: 622442233",
         pin: "Pin Code",
+        pinValidation: "Pin Validation",
         pinText:
             "This Pin Code will allow you to login later. Please save it somewhere",
         start: "Start",

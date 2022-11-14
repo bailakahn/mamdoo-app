@@ -26,6 +26,15 @@ export default function useUser() {
 
     const [auth, setAuth] = useState({ phoneNumber: "", pin: "" });
 
+    const [forgotPasswordUser, setForgotPasswordUser] = useState({
+        phoneNumber: "",
+        pin: "",
+        pinValidation: "",
+        code: ""
+    });
+
+    const [forgotPasswordError, setForgotPasswordError] = useState(false);
+
     const [formError, setFormError] = useState(false);
     const [ridesHistory, setRidesHistory] = useState([]);
 
@@ -164,12 +173,12 @@ export default function useUser() {
         removeUser();
     };
 
-    const verify = () => {
+    const verifyAccount = () => {
         if (!verificationCode) setVerificationError(t("errors.empty"));
 
         getRequest({
             method: "POST",
-            endpoint: "auth/verify",
+            endpoint: "auth/verifyAccount",
             params: {
                 code: verificationCode
             }
@@ -191,6 +200,29 @@ export default function useUser() {
             });
     };
 
+    const resetPin = () => {
+        if (
+            !forgotPasswordUser.phoneNumber ||
+            !forgotPasswordUser.code ||
+            !forgotPasswordUser.pin ||
+            !forgotPasswordUser.pinValidation
+        )
+            setVerificationError(t("errors.empty"));
+
+        getRequest({
+            method: "POST",
+            endpoint: "auth/resetpin",
+            params: { ...forgotPasswordUser, phoneNumber: user?.phoneNumber }
+        })
+            .then((user) => {
+                setUser(user);
+            })
+            .catch((err) => {
+                console.log(err);
+                setVerificationError(t("errors.invalidCode"));
+            });
+    };
+
     const resend = () => {
         getRequest({
             method: "POST",
@@ -199,6 +231,25 @@ export default function useUser() {
             console.log(err);
             setVerificationError(t("errors.crashErrorTitle"));
         });
+    };
+
+    const sendForgotPinVerification = (navigation) => {
+        setUser({ phoneNumber: forgotPasswordUser.phoneNumber });
+        getRequest({
+            method: "POST",
+            endpoint: "auth/forgotPin",
+            params: {
+                phoneNumber: forgotPasswordUser.phoneNumber
+            }
+        })
+            .then(({ success }) => {
+                if (success) navigation.navigate("ResetPin");
+                else setForgotPasswordError(t("errors.phoneNumber"));
+            })
+            .catch((err) => {
+                console.log(err);
+                setForgotPasswordError(t("errors.crashErrorTitle"));
+            });
     };
 
     return {
@@ -210,6 +261,8 @@ export default function useUser() {
         auth,
         verificationCode,
         verificationError,
+        forgotPasswordUser,
+        forgotPasswordError,
         actions: {
             saveUser,
             setFormUser,
@@ -221,8 +274,11 @@ export default function useUser() {
             deleteAccount,
             refresh,
             setVerificationCode,
-            verify,
-            resend
+            verifyAccount,
+            resetPin,
+            resend,
+            setForgotPasswordUser,
+            sendForgotPinVerification
         }
     };
 }

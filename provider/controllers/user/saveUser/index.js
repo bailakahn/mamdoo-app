@@ -7,7 +7,7 @@ module.exports = async ({ req, res }) => {
 
   const userId = await saveUser(newUser);
 
-  await sendVerification({ app: "client", userId });
+  await sendVerification({ app: "client", userId, messageId: 1006 });
 
   const accessToken = await authenticate(userId);
 

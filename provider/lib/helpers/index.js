@@ -6,3 +6,4 @@ module.exports.get = require("./get");
 module.exports.randomString = require("./randomString");
 module.exports.randomNumber = require("./randomNumber");
 module.exports.sendVerification = require("./sendVerification");
+module.exports.verify = require("./verify");

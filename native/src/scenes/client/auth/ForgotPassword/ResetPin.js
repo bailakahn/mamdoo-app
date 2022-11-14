@@ -6,7 +6,7 @@ import { t } from "_utils/lang";
 import { Button } from "_atoms";
 import { useApp, useUser } from "_hooks";
 
-export default function Verification({ navigation }) {
+export default function PinVerification({ navigation }) {
     const { colors } = useTheme();
     const app = useApp();
     const user = useUser();
@@ -18,16 +18,6 @@ export default function Verification({ navigation }) {
                     source={require("_assets/logo.png")}
                     style={Classes.formLogo(colors)}
                 />
-            </View>
-            {/* <View style={{ marginBottom: 25 }}>
-                <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-                    {t("main.verification")}
-                </Text>
-            </View> */}
-            <View style={{ marginBottom: 25 }}>
-                <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                    {t("main.accountNotVerified")}
-                </Text>
             </View>
 
             <View style={Classes.centeredText(colors)}>
@@ -47,15 +37,57 @@ export default function Verification({ navigation }) {
                     {user.user?.phoneNumber}
                 </Text>
             </View>
-            <View style={{ marginTop: 30 }}>
+            <View style={{ marginTop: 10 }}>
                 <TextInput
                     style={Classes.formInput(colors)}
                     mode="outlined"
                     label={t("main.verificationPlaceholder")}
                     placeholder={t("main.verificationPlaceholder")}
-                    value={user.verificationCode}
+                    value={user.forgotPasswordUser.code}
                     onChangeText={(code) =>
-                        user.actions.setVerificationCode(code)
+                        user.actions.setForgotPasswordUser({
+                            ...user.forgotPasswordUser,
+                            code
+                        })
+                    }
+                    maxLength={4}
+                    keyboardType="number-pad"
+                    returnKeyType="done"
+                />
+            </View>
+            <View style={Classes.centeredText(colors)}>
+                <Text style={{ textAlign: "center" }}>
+                    {t("main.pinVerificationNotice")}
+                </Text>
+            </View>
+            <View style={{ marginTop: 10 }}>
+                <TextInput
+                    style={Classes.formInput(colors)}
+                    mode="outlined"
+                    label={t("form.pin")}
+                    placeholder={t("form.pin")}
+                    value={user.forgotPasswordUser.pin}
+                    onChangeText={(pin) =>
+                        user.actions.setForgotPasswordUser({
+                            ...user.forgotPasswordUser,
+                            pin
+                        })
+                    }
+                    maxLength={4}
+                    keyboardType="number-pad"
+                    returnKeyType="done"
+                />
+                <TextInput
+                    style={Classes.formInput(colors)}
+                    mode="outlined"
+                    label={t("form.pinValidation")}
+                    placeholder={t("form.pinValidation")}
+                    value={user.forgotPasswordUser.pinValidation}
+                    onChangeText={(pinValidation) =>
+                        user.actions.setForgotPasswordUser({
+                            ...user.forgotPasswordUser,
+                            pinValidation
+                        })
                     }
                     maxLength={4}
                     keyboardType="number-pad"
@@ -73,10 +105,16 @@ export default function Verification({ navigation }) {
                 <Button
                     {...Classes.verifyButtonContainer(colors)}
                     mode="contained"
-                    onPress={user.actions.verifyAccount}
-                    disabled={!user.verificationCode}
+                    onPress={() => {
+                        user.actions.resetPin();
+                    }}
+                    disabled={
+                        !user.forgotPasswordUser.code ||
+                        !user.forgotPasswordUser.pin ||
+                        !user.forgotPasswordUser.pinValidation
+                    }
                 >
-                    {`${t("main.verify")}`}
+                    {`${t("main.resetPassword")}`}
                 </Button>
             </View>
 
@@ -109,7 +147,7 @@ export default function Verification({ navigation }) {
             >
                 <TouchableOpacity
                     style={{ marginLeft: 10 }}
-                    onPress={user.actions.logout}
+                    onPress={() => navigation.navigate("ForgotPassword")}
                 >
                     <Text style={{ color: colors.accent, fontSize: 20 }}>
                         {t("main.editPhoneNumber")}

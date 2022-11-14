@@ -1,6 +1,6 @@
-const { get } = require("_lib/helpers");
+const get = require("./get");
 const compareAsc = require("date-fns/compareAsc");
-const { SMSVerification, Client, Driver } = require("_db/models");
+const { SMSVerification } = require("_db/models");
 module.exports = async ({ app, userId, code }) => {
   const query = app === "client" ? { clientId: userId } : { driverId: userId };
 
@@ -26,12 +26,6 @@ module.exports = async ({ app, userId, code }) => {
     isUsed: true,
     modifiedAt: Date.now(),
   });
-
-  if (app === "client") {
-    await Client.findByIdAndUpdate(userId, { verified: true });
-  } else {
-    await Driver.findByIdAndUpdate(userId, { verified: true });
-  }
 
   return { success: true };
 };

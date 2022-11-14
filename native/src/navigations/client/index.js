@@ -27,7 +27,7 @@ export default function MainTabs({ role }) {
     // if user don't give location permission then don't allow access to app
     if (grantStatus !== "granted") return <LocationDenied />;
 
-    return user.user ? (
+    return user.user?.accessToken ? (
         user.user?.verified ? (
             <Tab.Navigator
                 initialRouteName="Home"

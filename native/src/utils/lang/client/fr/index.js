@@ -15,20 +15,25 @@ export default {
         darkMode: "Mode sombre",
         enableDarkMode: "Activer le mode sombre",
         forgotPassword: "Mot de passe oublié",
-        forgotPasswordText:
-            "Appelez nous pour changer votre mot de passe. Veullez noter que nous aurons besoin de verifier votre identité avant de changer votre mot de passe.",
+        forgotPasswordText: "Vous allez recevoir un code de changement de pin.",
         call: "Appeler",
         callUs: "Appeler nous",
         goBack: "Retour",
         verification: "Vérification",
         verificationSent: "Nous avons envoyé un code de vérification par SMS.",
         accountNotVerified: "Votre compte n'est pas encore vérifié.",
-        verificationPlaceholder: "Code",
+        verificationPlaceholder: "Code de vérification",
         phoneNumber: "",
         verify: "Verifier",
         verificationNotReceived: "Vous n'avez pas reçu de code ? ",
         sendVerificationAgain: "Renvoyer",
-        editPhoneNumber: "Modifier le numéro de téléphone"
+        editPhoneNumber: "Modifier le numéro de téléphone",
+        enterForgotPasswordNumber: "Entrer votre numéro",
+        resetPassword: "Changer Pin",
+        resetPin: "Changer votre code pin",
+        enterNewPin: "Entrer votre code pin",
+        pinVerificationNotice:
+            "Ensuite entrez votre nouveau code pin. N'utilisez pas le même code que celui que vous avez reçu par SMS."
     },
     errors: {
         crashErrorTitle: "Oops, Quelque chose s'est mal passé",
@@ -86,6 +91,7 @@ export default {
         phoneNumber: "Numéro de téléphone",
         phoneNumberPlaceholder: "Exemple: 622442233",
         pin: "Code pin",
+        pinValidation: "Validation code pin",
         start: "Commencer",
         pinText:
             "Le code pin vous permettra de vous reconnecter. Veuillez le mémoriser",
