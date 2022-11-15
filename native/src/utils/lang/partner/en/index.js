@@ -22,15 +22,17 @@ export default {
         darkMode: "Dark Mode",
         enableDarkMode: "Enable Dark Mode",
         forgotPassword: "Forgot Password",
-        forgotPasswordText:
-            "Call us at this number to change your password. Note that we will ask for ID verification before reseting your password",
+        forgotPasswordText: "You will receive a code to reset your password",
         call: "Call",
         callUs: "Call Us",
         goBack: "Go Back",
         confirmTitle: "Please confirm your action",
         confirmWarning: "Are you sure ?",
         cancel: "Cancel",
-        confirm: "Confirm"
+        confirm: "Confirm",
+        passwordVerificationNotice:
+            "Then enter your new password . Please use a strong password.",
+        resetPassword: "Reset Password"
     },
     errors: {
         crashErrorTitle: "Oops, Something Went Wrong",
@@ -125,6 +127,7 @@ export default {
         licensePlate: "License Plate",
         licensePlatePlaceholder: "1111A or 1111AB",
         password: "Password",
+        passwordValidation: "Password Validation",
         passwordPlaceholder: "Minimum 8 characters with 1 digit",
         start: "Start",
         next: "Next",

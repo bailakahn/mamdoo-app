@@ -44,7 +44,7 @@ export default function MainTabs({ role }) {
     )
         return <LocationDenied />;
 
-    return partner.partner ? (
+    return partner.partner?.accessToken ? (
         partner.partner?.verified ? (
             <Tab.Navigator
                 initialRouteName="Home"

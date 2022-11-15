@@ -24,6 +24,15 @@ export default function usePartner() {
     const [verificationCode, setVerificationCode] = useState("");
     const [verificationError, setVerificationError] = useState(false);
 
+    const [forgotPasswordUser, setForgotPasswordUser] = useState({
+        phoneNumber: "",
+        password: "",
+        passwordValidation: "",
+        code: ""
+    });
+
+    const [forgotPasswordError, setForgotPasswordError] = useState(false);
+
     const {
         auth: { partner, partnerLoaded },
         actions: { getPartner, setPartner, removePartner }
@@ -270,6 +279,49 @@ export default function usePartner() {
         });
     };
 
+    const sendForgotPasswordVerification = (navigation) => {
+        setPartner({ phoneNumber: forgotPasswordUser.phoneNumber });
+        getRequest({
+            method: "POST",
+            endpoint: "drivers/forgotPassword",
+            params: {
+                phoneNumber: forgotPasswordUser.phoneNumber
+            }
+        })
+            .then(({ success }) => {
+                if (success) navigation.navigate("ResetPassword");
+                else setForgotPasswordError(t("errors.phoneNumber"));
+            })
+            .catch((err) => {
+                console.log(err);
+                setForgotPasswordError(t("errors.crashErrorTitle"));
+            });
+    };
+
+    const resetPassword = () => {
+        if (
+            !partner.phoneNumber ||
+            !forgotPasswordUser.password ||
+            !forgotPasswordUser.passwordValidation ||
+            forgotPasswordUser.password !==
+                forgotPasswordUser.passwordValidation
+        )
+            setVerificationError(t("errors.empty"));
+
+        getRequest({
+            method: "POST",
+            endpoint: "drivers/resetpassword",
+            params: { ...forgotPasswordUser, phoneNumber: partner?.phoneNumber }
+        })
+            .then((user) => {
+                setPartner(user);
+            })
+            .catch((err) => {
+                console.log(err);
+                setVerificationError(t("errors.invalidCode"));
+            });
+    };
+
     return {
         formPartner,
         formError,
@@ -279,6 +331,8 @@ export default function usePartner() {
         partnerLoaded,
         verificationCode,
         verificationError,
+        forgotPasswordUser,
+        forgotPasswordError,
         actions: {
             savePartner,
             setFormPartner,
@@ -293,7 +347,10 @@ export default function usePartner() {
             updateLocation,
             verifyAccount,
             resend,
-            setVerificationCode
+            setVerificationCode,
+            setForgotPasswordUser,
+            sendForgotPasswordVerification,
+            resetPassword
         }
     };
 }

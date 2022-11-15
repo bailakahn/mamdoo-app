@@ -202,10 +202,11 @@ export default function useUser() {
 
     const resetPin = () => {
         if (
-            !forgotPasswordUser.phoneNumber ||
+            !user.phoneNumber ||
             !forgotPasswordUser.code ||
             !forgotPasswordUser.pin ||
-            !forgotPasswordUser.pinValidation
+            !forgotPasswordUser.pinValidation ||
+            forgotPasswordUser.pin !== forgotPasswordUser.pinValidation
         )
             setVerificationError(t("errors.empty"));
 

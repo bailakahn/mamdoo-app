@@ -5,7 +5,7 @@ const { Client } = require("_db/models");
 module.exports = async (phoneNumber) => {
   const user = await get(
     "Client",
-    { phoneNumber, isBlocked: false, deleted: false },
+    { phoneNumber, deleted: false },
     {
       one: true,
       fields: [

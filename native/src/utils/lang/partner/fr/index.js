@@ -22,14 +22,17 @@ export default {
         enableDarkMode: "Activer le mode sombre",
         forgotPassword: "Mot de passe oublié",
         forgotPasswordText:
-            "Appelez nous pour changer votre mot de passe. Veullez noter que nous aurons besoin de verifier votre identité avant de changer votre mot de passe.",
+            "Vous allez recevoir un code de changement de mot de passe.",
         call: "Appeler",
         callUs: "Appeler nous",
         goBack: "Retour",
         confirmTitle: "Veuillez confirmer votre action",
         confirmWarning: "Voulez vous continuer ?",
         cancel: "Annuler",
-        confirm: "Confirmer"
+        confirm: "Confirmer",
+        passwordVerificationNotice:
+            "Ensuite entrez votre nouveau mot de passe.",
+        resetPassword: "Changer de mot de passe"
     },
     errors: {
         crashErrorTitle: "Oops, Quelque chose s'est mal passé",
@@ -121,6 +124,7 @@ export default {
         licensePlate: "Plaque d'immatriculation",
         licensePlatePlaceholder: "1111A ou 1111AB",
         password: "Mot de passe",
+        passwordValidation: "Vérification du mot de passe",
         passwordPlaceholder: "Minimum 8 lettres avec 1 chiffre",
         start: "Commencer",
         next: "Suivant",

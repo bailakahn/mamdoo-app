@@ -6,7 +6,8 @@ const Stack = createStackNavigator();
 import {
     RegisterScene,
     LoginScene,
-    ForgotPasswordScene
+    ForgotPasswordScene,
+    ResetPasswordScene
 } from "_scenes/partner/auth";
 
 export default function AuthStack({}) {
@@ -44,6 +45,19 @@ export default function AuthStack({}) {
             <Stack.Screen
                 name="ForgotPassword"
                 component={ForgotPasswordScene}
+                options={({ navigation }) => ({
+                    headerStyle: {
+                        borderBottomWidth: 1
+                    },
+                    headerTitleStyle: {
+                        // color: "#000"
+                    }
+                })}
+            />
+
+            <Stack.Screen
+                name="ResetPassword"
+                component={ResetPasswordScene}
                 options={({ navigation }) => ({
                     headerStyle: {
                         borderBottomWidth: 1

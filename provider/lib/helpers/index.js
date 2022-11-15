@@ -7,3 +7,4 @@ module.exports.randomString = require("./randomString");
 module.exports.randomNumber = require("./randomNumber");
 module.exports.sendVerification = require("./sendVerification");
 module.exports.verify = require("./verify");
+module.exports.generatePassword = require("./generatePassword");
