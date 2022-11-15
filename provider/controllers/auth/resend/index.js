@@ -8,7 +8,7 @@ module.exports = async ({ req, res }) => {
       req,
     },
     async ({ userId, accessToken, app }) => {
-      await sendVerification({ app: "client", userId });
+      await sendVerification({ app, userId, messageId: 1006 });
     }
   );
 };

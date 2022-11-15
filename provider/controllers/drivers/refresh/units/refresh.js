@@ -14,6 +14,7 @@ module.exports = async (_id) => {
         "active",
         "cab",
         "isBlocked",
+        "verified",
       ],
     }
   );

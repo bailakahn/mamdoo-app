@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { useUser } from "_hooks";
+import { usePartner } from "_hooks";
 
 const Stack = createStackNavigator();
 
-import { VerificationScene } from "_scenes/client";
+import { VerificationScene } from "_scenes/partner/auth";
 
 export default function VerificationStack({}) {
-    const user = useUser();
+    const partner = usePartner();
     useEffect(() => {
-        user.actions.refresh();
+        partner.actions.refresh();
     }, []);
 
     return (

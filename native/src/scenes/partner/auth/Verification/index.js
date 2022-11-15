@@ -4,11 +4,11 @@ import { useTheme, Text, TextInput } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { Button } from "_atoms";
-import { useUser } from "_hooks";
+import { usePartner } from "_hooks";
 
 export default function Verification({ navigation }) {
     const { colors } = useTheme();
-    const user = useUser();
+    const partner = usePartner();
 
     return (
         <View style={Classes.container(colors)}>
@@ -43,7 +43,7 @@ export default function Verification({ navigation }) {
                         color: colors.primary
                     }}
                 >
-                    {user.user?.phoneNumber}
+                    {partner.partner?.phoneNumber}
                 </Text>
             </View>
             <View style={{ marginTop: 30 }}>
@@ -52,9 +52,9 @@ export default function Verification({ navigation }) {
                     mode="outlined"
                     label={t("main.verificationPlaceholder")}
                     placeholder={t("main.verificationPlaceholder")}
-                    value={user.verificationCode}
+                    value={partner.verificationCode}
                     onChangeText={(code) =>
-                        user.actions.setVerificationCode(code)
+                        partner.actions.setVerificationCode(code)
                     }
                     maxLength={4}
                     keyboardType="number-pad"
@@ -62,9 +62,9 @@ export default function Verification({ navigation }) {
                 />
             </View>
             <View style={Classes.error(colors)}>
-                {user.verificationError && (
+                {partner.verificationError && (
                     <Text style={Classes.errorText(colors)}>
-                        {user.verificationError}
+                        {partner.verificationError}
                     </Text>
                 )}
             </View>
@@ -72,8 +72,8 @@ export default function Verification({ navigation }) {
                 <Button
                     {...Classes.verifyButtonContainer(colors)}
                     mode="contained"
-                    onPress={user.actions.verifyAccount}
-                    disabled={!user.verificationCode}
+                    onPress={partner.actions.verifyAccount}
+                    disabled={!partner.verificationCode}
                 >
                     {`${t("main.verify")}`}
                 </Button>
@@ -91,7 +91,7 @@ export default function Verification({ navigation }) {
                 </Text>
                 <TouchableOpacity
                     style={{ marginLeft: 10 }}
-                    onPress={user.actions.resend}
+                    onPress={partner.actions.resend}
                 >
                     <Text style={{ color: colors.accent, fontSize: 20 }}>
                         {t("main.sendVerificationAgain")}
@@ -108,7 +108,7 @@ export default function Verification({ navigation }) {
             >
                 <TouchableOpacity
                     style={{ marginLeft: 10 }}
-                    onPress={user.actions.logout}
+                    onPress={partner.actions.logout}
                 >
                     <Text style={{ color: colors.accent, fontSize: 20 }}>
                         {t("main.editPhoneNumber")}

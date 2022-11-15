@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { t2 } from "_utils/lang";
+import { t2, t } from "_utils/lang";
 import { useApi } from "_api";
 import { useStore } from "_store";
 import useLocation from "./partner/useLocation";
@@ -20,6 +20,9 @@ export default function usePartner() {
     const [auth, setAuth] = useState({ phoneNumber: "", password: "" });
     const [formError, setFormError] = useState(false);
     const [ridesHistory, setRidesHistory] = useState([]);
+
+    const [verificationCode, setVerificationCode] = useState("");
+    const [verificationError, setVerificationError] = useState(false);
 
     const {
         auth: { partner, partnerLoaded },
@@ -229,6 +232,44 @@ export default function usePartner() {
             });
     };
 
+    const verifyAccount = () => {
+        if (!verificationCode) setVerificationError(t("errors.empty"));
+
+        getRequest({
+            method: "POST",
+            endpoint: "auth/verifyAccount",
+            params: {
+                code: verificationCode
+            }
+        })
+            .then((res) => {
+                console.log({ res });
+                if (res.success) setPartner({ ...partner, verified: true });
+                else {
+                    if (res?.isUsed) setVerificationError(t("errors.isUsed"));
+                    else if (res?.expired)
+                        setVerificationError(t("errors.expired"));
+                    else if (res?.notFound)
+                        setVerificationError(t("errors.notFound"));
+                    else setVerificationError(t("errors.invalidCode"));
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                setVerificationError(t("errors.invalidCode"));
+            });
+    };
+
+    const resend = () => {
+        getRequest({
+            method: "POST",
+            endpoint: "auth/resend"
+        }).catch((err) => {
+            console.log(err);
+            setVerificationError(t("errors.crashErrorTitle"));
+        });
+    };
+
     return {
         formPartner,
         formError,
@@ -236,6 +277,8 @@ export default function usePartner() {
         auth,
         ridesHistory,
         partnerLoaded,
+        verificationCode,
+        verificationError,
         actions: {
             savePartner,
             setFormPartner,
@@ -247,7 +290,10 @@ export default function usePartner() {
             logout,
             refresh,
             deleteAccount,
-            updateLocation
+            updateLocation,
+            verifyAccount,
+            resend,
+            setVerificationCode
         }
     };
 }
