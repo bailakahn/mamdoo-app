@@ -12,7 +12,7 @@ import { useTheme, TextInput } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { useUser, useApp } from "_hooks";
-import { Button, RoundButton } from "_atoms";
+import { Button, RoundButton, LoadingV2 } from "_atoms";
 
 export default function Form({ navigation }) {
     const { colors } = useTheme();
@@ -20,7 +20,9 @@ export default function Form({ navigation }) {
 
     const user = useUser();
 
-    return (
+    return user.isLoading ? (
+        <LoadingV2 />
+    ) : (
         <KeyboardAvoidingView
             {...(Platform.OS === "ios"
                 ? {

@@ -11,7 +11,7 @@ import {
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import { useUser } from "_hooks";
-import { Button } from "_atoms";
+import { Button, LoadingV2 } from "_atoms";
 import PopConfirm from "_organisms/PopConfirm";
 
 export default function ProfileScene({ navigation }) {
@@ -70,7 +70,9 @@ export default function ProfileScene({ navigation }) {
         });
     }, [navigation, isEdit]);
 
-    return (
+    return user.isLoading ? (
+        <LoadingV2 />
+    ) : (
         <ScrollView style={Classes.container2(colors)}>
             <PopConfirm
                 title={t2("profile.deleteConfirm")}

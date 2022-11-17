@@ -26,16 +26,17 @@ export default function useRequest() {
                 await new Promise((res) => setTimeout(res, 10000));
             }
 
-            const { success, foundDrivers } = await getRequest({
-                method: "POST",
-                endpoint: "rides/newRequest",
-                params: {
-                    coordinates: [longitude, latitude],
-                    excludedDriver: driverId
-                }
-            }).catch((err) => {
-                console.log(err);
-            });
+            const { success, foundDrivers } =
+                (await getRequest({
+                    method: "POST",
+                    endpoint: "rides/newRequest",
+                    params: {
+                        coordinates: [longitude, latitude],
+                        excludedDriver: driverId
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                })) || {};
 
             if (foundDrivers) stop = true;
             retryCount++;

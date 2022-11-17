@@ -12,7 +12,7 @@ import ClientRoutes from "./client";
 import PartnerRoutes from "./partner";
 import AppEntry from "../";
 import { navigationRef } from "./RootNavigation";
-import { Loading } from "_atoms";
+import { Loading, LoadingV2 } from "_atoms";
 import LocationDisclosure from "_components/organisms/LocationDisclosure";
 
 export default function NavigationRoot({ mode }) {
@@ -66,7 +66,7 @@ export default function NavigationRoot({ mode }) {
     // }, [app]);
 
     if (!appLoaded || !mamdooTheme.darkModeLoaded)
-        return <Loading visible={true} size="large" />;
+        return <LoadingV2 color={"#25C0D2"} />;
 
     if (backgroundPermission == "notLoaded" && app == "partner")
         return (

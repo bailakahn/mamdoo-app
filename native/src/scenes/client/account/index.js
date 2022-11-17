@@ -4,6 +4,7 @@ import { useTheme, List, Divider, Avatar, Switch } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { useApp, useUser, useTheme as useMamdooTheme } from "_hooks";
+import { LoadingV2 } from "_atoms";
 
 export default function AccountScene({ navigation }) {
     const { colors } = useTheme();
@@ -38,7 +39,9 @@ export default function AccountScene({ navigation }) {
         []
     );
 
-    return (
+    return user.isLoading ? (
+        <LoadingV2 />
+    ) : (
         <ScrollView style={Classes.container2(colors)}>
             <View>
                 <List.Item

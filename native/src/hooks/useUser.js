@@ -21,6 +21,7 @@ export default function useUser() {
         pin: ""
     });
 
+    const [isLoading, setIsLoading] = useState(false);
     const [verificationCode, setVerificationCode] = useState("");
     const [verificationError, setVerificationError] = useState(false);
 
@@ -40,13 +41,16 @@ export default function useUser() {
 
     const saveUser = () => {
         setFormError(false);
+        setIsLoading(true);
         if (/\d/.test(formUser.firstName) || !formUser.firstName.length) {
             setFormError(t("errors.firstName"));
+            setIsLoading(false);
             return;
         }
 
         if (/\d/.test(formUser.lastName) || !formUser.lastName.length) {
             setFormError(t("errors.lastName"));
+            setIsLoading(false);
             return;
         }
 
@@ -55,11 +59,13 @@ export default function useUser() {
             !formUser.phoneNumber.length
         ) {
             setFormError(t("errors.phoneNumber"));
+            setIsLoading(false);
             return;
         }
 
         if (formUser.pin.length !== 4) {
             setFormError(t("errors.pin"));
+            setIsLoading(false);
             return;
         }
 
@@ -74,10 +80,14 @@ export default function useUser() {
             .catch((err) => {
                 console.log(err);
                 setFormError(t(err.code || "errors.crashErrorTitle"));
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
     const saveChanges = (editUser, setShowSuccess) => {
+        setIsLoading(true);
         getRequest({
             method: "POST",
             endpoint: "user/edit",
@@ -96,10 +106,14 @@ export default function useUser() {
             .catch((err) => {
                 console.log(err);
                 setFormError(t(err.code || "errors.crashErrorTitle"));
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
     const getRidesHistory = () => {
+        setIsLoading(true);
         getRequest({
             method: "GET",
             endpoint: "rides/clients/history"
@@ -109,10 +123,14 @@ export default function useUser() {
             })
             .catch((err) => {
                 console.log(err);
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
     const refresh = () => {
+        setIsLoading(true);
         getRequest({
             method: "GET",
             endpoint: "user/get"
@@ -123,19 +141,26 @@ export default function useUser() {
             .catch((err) => {
                 console.log(err);
                 logout();
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
     const loginUser = () => {
         setFormError(false);
-
+        setIsLoading(true);
         if (!/^\d+$/.test(auth.phoneNumber) || auth.phoneNumber.length !== 9) {
             setFormError(t("errors.phoneNumber"));
+            setIsLoading(false);
+
             return;
         }
 
         if (auth.pin.length !== 4) {
             setFormError(t("errors.pin"));
+            setIsLoading(false);
+
             return;
         }
 
@@ -150,22 +175,27 @@ export default function useUser() {
             .catch((err) => {
                 console.log(err);
                 setFormError(t(err.code || "errors.crashErrorTitle"));
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
     const deleteAccount = () => {
         setFormError(false);
-
-        logout();
+        setIsLoading(true);
 
         getRequest({
             method: "POST",
             endpoint: "user/delete"
         })
-            .then(() => {})
             .catch((err) => {
                 console.log(err);
                 setFormError(t(err.code || "errors.crashErrorTitle"));
+            })
+            .finally(() => {
+                logout();
+                setIsLoading(false);
             });
     };
 
@@ -174,6 +204,8 @@ export default function useUser() {
     };
 
     const verifyAccount = () => {
+        setIsLoading(true);
+
         if (!verificationCode) setVerificationError(t("errors.empty"));
 
         getRequest({
@@ -197,18 +229,25 @@ export default function useUser() {
             .catch((err) => {
                 console.log(err);
                 setVerificationError(t("errors.invalidCode"));
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
     const resetPin = () => {
+        setIsLoading(true);
+
         if (
             !user.phoneNumber ||
             !forgotPasswordUser.code ||
             !forgotPasswordUser.pin ||
             !forgotPasswordUser.pinValidation ||
             forgotPasswordUser.pin !== forgotPasswordUser.pinValidation
-        )
+        ) {
             setVerificationError(t("errors.empty"));
+            setIsLoading(false);
+        }
 
         getRequest({
             method: "POST",
@@ -221,20 +260,29 @@ export default function useUser() {
             .catch((err) => {
                 console.log(err);
                 setVerificationError(t("errors.invalidCode"));
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
     const resend = () => {
+        setIsLoading(true);
         getRequest({
             method: "POST",
             endpoint: "auth/resend"
-        }).catch((err) => {
-            console.log(err);
-            setVerificationError(t("errors.crashErrorTitle"));
-        });
+        })
+            .catch((err) => {
+                console.log(err);
+                setVerificationError(t("errors.crashErrorTitle"));
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     };
 
     const sendForgotPinVerification = (navigation) => {
+        setIsLoading(true);
         setUser({ phoneNumber: forgotPasswordUser.phoneNumber });
         getRequest({
             method: "POST",
@@ -250,6 +298,9 @@ export default function useUser() {
             .catch((err) => {
                 console.log(err);
                 setForgotPasswordError(t("errors.crashErrorTitle"));
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
@@ -264,6 +315,7 @@ export default function useUser() {
         verificationError,
         forgotPasswordUser,
         forgotPasswordError,
+        isLoading,
         actions: {
             saveUser,
             setFormUser,
@@ -279,7 +331,8 @@ export default function useUser() {
             resetPin,
             resend,
             setForgotPasswordUser,
-            sendForgotPinVerification
+            sendForgotPinVerification,
+            setIsLoading
         }
     };
 }

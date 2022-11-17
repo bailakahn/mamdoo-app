@@ -3,15 +3,16 @@ import { View, Image, TouchableOpacity } from "react-native";
 import { useTheme, Text, TextInput } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
-import { Button } from "_atoms";
-import { useApp, useUser } from "_hooks";
+import { Button, LoadingV2 } from "_atoms";
+import { useUser } from "_hooks";
 
 export default function PinVerification({ navigation }) {
     const { colors } = useTheme();
-    const app = useApp();
     const user = useUser();
 
-    return (
+    return user.isLoading ? (
+        <LoadingV2 />
+    ) : (
         <View style={Classes.container(colors)}>
             <View style={{ marginTop: -100 }}>
                 <Image

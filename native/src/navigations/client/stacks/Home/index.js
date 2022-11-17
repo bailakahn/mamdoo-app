@@ -16,7 +16,7 @@ export default function HomeStack({ role }) {
     return (
         <Stack.Navigator
             initialRouteName="Home"
-            screenOptions={{ headerShown: false }}
+            screenOptions={{ headerShown: false, gestureEnabled: false }}
         >
             <Stack.Screen
                 name="Home"

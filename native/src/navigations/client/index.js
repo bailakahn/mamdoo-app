@@ -7,7 +7,7 @@ import AuthtStack from "./stacks/Auth";
 import VerificationStack from "./stacks/Verification";
 import { useTheme } from "@react-navigation/native";
 import { useUser, useLocation } from "_hooks";
-import { Loading } from "_atoms";
+import { LoadingV2 } from "_atoms";
 import LocationDenied from "_components/organisms/LocationDenied";
 import { useStore } from "_store";
 import { t } from "_utils/lang";
@@ -21,8 +21,7 @@ export default function MainTabs({ role }) {
         ride: { onGoingRide }
     } = useStore();
 
-    if (!user.userLoaded || isLoading)
-        return <Loading visible={true} size="large" />;
+    if (!user.userLoaded || isLoading) return <LoadingV2 />;
 
     // if user don't give location permission then don't allow access to app
     if (grantStatus !== "granted") return <LocationDenied />;
