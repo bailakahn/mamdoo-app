@@ -8,9 +8,10 @@ module.exports = async ({ req, res }) => {
     },
     async ({ userId, app }) => {
       await validateRequest(app);
-      const result = await deleteUser(userId);
 
-      return { success: true, result };
+      await deleteUser(userId);
+
+      return { success: true };
     }
   );
 };

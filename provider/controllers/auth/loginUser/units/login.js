@@ -16,6 +16,7 @@ module.exports = async ({ phoneNumber, pin }) => {
         "phoneNumber",
         "pin",
         "expoPushToken",
+        "verified",
       ],
     }
   );
