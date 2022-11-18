@@ -21,7 +21,7 @@ export default function NavigationRoot({ mode }) {
     const { app, appLoaded } = useApp();
 
     const {
-        main: { backgroundPermission },
+        main: { backgroundPermission, backgroundPermissionReady },
         actions: {
             setBackgroundPermission,
             removeBackgroundPermission,
@@ -65,7 +65,7 @@ export default function NavigationRoot({ mode }) {
     //     bootStrapAsync();
     // }, [app]);
 
-    if (!appLoaded || !mamdooTheme.darkModeLoaded)
+    if (!appLoaded || !mamdooTheme.darkModeLoaded || !backgroundPermissionReady)
         return <LoadingV2 color={"#25C0D2"} />;
 
     if (backgroundPermission == "notLoaded" && app == "partner")

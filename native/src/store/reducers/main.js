@@ -16,7 +16,8 @@ export default (state = main, action) => {
             );
             return {
                 ...state,
-                backgroundPermission: action.status
+                backgroundPermission: action.status,
+                backgroundPermissionReady: true
             };
         case types.SET_SETTINGS:
             return {

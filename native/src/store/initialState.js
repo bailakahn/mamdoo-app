@@ -6,7 +6,8 @@ export default {
         isDarkMode: false,
         themeLoaded: false,
         darkModeLoaded: false,
-        backgroundPermission: "notLoaded"
+        backgroundPermission: "notLoaded",
+        backgroundPermissionReady: false
     },
     auth: {
         user: null,
