@@ -21,6 +21,7 @@ export default function usePartner() {
     const [formError, setFormError] = useState(false);
     const [ridesHistory, setRidesHistory] = useState([]);
 
+    const [isLoading, setIsLoading] = useState(false);
     const [verificationCode, setVerificationCode] = useState("");
     const [verificationError, setVerificationError] = useState(false);
 
@@ -57,14 +58,17 @@ export default function usePartner() {
     };
 
     const savePartner = () => {
+        setIsLoading(true);
         setFormError(false);
         if (/\d/.test(formPartner.firstName) || !formPartner.firstName.length) {
             setFormError(t2("errors.firstName"));
+            setIsLoading(false);
             return;
         }
 
         if (/\d/.test(formPartner.lastName) || !formPartner.lastName.length) {
             setFormError(t2("errors.lastName"));
+            setIsLoading(false);
             return;
         }
 
@@ -72,6 +76,7 @@ export default function usePartner() {
             !/^\d+$/.test(formPartner.phoneNumber) ||
             !formPartner.phoneNumber.length
         ) {
+            setIsLoading(false);
             setFormError(t2("errors.phoneNumber"));
             return;
         }
@@ -80,16 +85,19 @@ export default function usePartner() {
             !settings.REGEX.password.test(formPartner.password) ||
             !formPartner.password.length
         ) {
+            setIsLoading(false);
             setFormError(t2("errors.passwordRegex"));
             return;
         }
 
         if (/\d/.test(formPartner.cab.model) || !formPartner.cab.model.length) {
+            setIsLoading(false);
             setFormError(t2("errors.cabModel"));
             return;
         }
 
         if (!settings.REGEX.licencePlate.test(formPartner.cab.licensePlate)) {
+            setIsLoading(false);
             setFormError(t2("errors.licensePlate"));
             return;
         }
@@ -114,18 +122,24 @@ export default function usePartner() {
             .catch((err) => {
                 console.log(err);
                 setFormError(t2(err?.code || "errors.crashErrorTitle"));
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
     const loginPartner = () => {
+        setIsLoading(true);
         setFormError(false);
 
         if (!/^\d+$/.test(auth.phoneNumber) || !auth.phoneNumber.length) {
+            setIsLoading(false);
             setFormError(t2("errors.phoneNumber"));
             return;
         }
 
         if (!/[a-zA-Z0-9]{8,}/.test(auth.password) || !auth.password.length) {
+            setIsLoading(false);
             setFormError(t2("errors.passwordRegex"));
             return;
         }
@@ -141,10 +155,14 @@ export default function usePartner() {
             .catch((err) => {
                 console.log(err);
                 setFormError(t2(err.code || "errors.crashErrorTitle"));
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
     const changeStatus = () => {
+        setIsLoading(true);
         setPartner({ ...partner, isOnline: !partner.isOnline });
 
         getRequest({
@@ -159,10 +177,14 @@ export default function usePartner() {
                 console.log(err);
                 setPartner({ ...partner, isOnline: !partner.isOnline });
                 // setFormError(t(err.code));
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
     const saveChanges = (editPartner, setShowSuccess) => {
+        setIsLoading(true);
         getRequest({
             method: "POST",
             endpoint: "drivers/edit",
@@ -183,10 +205,14 @@ export default function usePartner() {
             .catch((err) => {
                 console.log(err);
                 setFormError(t2(err.code || "errors.crashErrorTitle"));
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
     const getRidesHistory = () => {
+        setIsLoading(true);
         getRequest({
             method: "GET",
             endpoint: "rides/drivers/history"
@@ -196,10 +222,14 @@ export default function usePartner() {
             })
             .catch((err) => {
                 console.log(err);
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
     const refresh = () => {
+        setIsLoading(true);
         getRequest({
             method: "GET",
             endpoint: "drivers/refresh"
@@ -210,10 +240,14 @@ export default function usePartner() {
             .catch((err) => {
                 console.log(err);
                 logout();
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
     const deleteAccount = () => {
+        setIsLoading(true);
         setFormError(false);
 
         logout();
@@ -221,13 +255,18 @@ export default function usePartner() {
         getRequest({
             method: "POST",
             endpoint: "drivers/delete"
-        }).catch((err) => {
-            console.log(err);
-            setFormError(t2(err.code || "errors.crashErrorTitle"));
-        });
+        })
+            .catch((err) => {
+                console.log(err);
+                setFormError(t2(err.code || "errors.crashErrorTitle"));
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     };
 
     const logout = () => {
+        setIsLoading(true);
         getRequest({
             method: "POST",
             endpoint: "auth/logout"
@@ -238,11 +277,18 @@ export default function usePartner() {
             .catch((err) => {
                 console.log(err);
                 setFormError(t2(err.code || "errors.crashErrorTitle"));
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
     const verifyAccount = () => {
-        if (!verificationCode) setVerificationError(t("errors.empty"));
+        setIsLoading(true);
+        if (!verificationCode) {
+            setIsLoading(false);
+            setVerificationError(t("errors.empty"));
+        }
 
         getRequest({
             method: "POST",
@@ -266,20 +312,33 @@ export default function usePartner() {
             .catch((err) => {
                 console.log(err);
                 setVerificationError(t("errors.invalidCode"));
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
     const resend = () => {
+        setIsLoading(true);
         getRequest({
             method: "POST",
-            endpoint: "auth/resend"
-        }).catch((err) => {
-            console.log(err);
-            setVerificationError(t("errors.crashErrorTitle"));
-        });
+            endpoint: "auth/resend-no-auth",
+            params: {
+                phoneNumber: partner?.phoneNumber,
+                app: "partner"
+            }
+        })
+            .catch((err) => {
+                console.log(err);
+                setVerificationError(t("errors.crashErrorTitle"));
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     };
 
     const sendForgotPasswordVerification = (navigation) => {
+        setIsLoading(true);
         setPartner({ phoneNumber: forgotPasswordUser.phoneNumber });
         getRequest({
             method: "POST",
@@ -295,18 +354,24 @@ export default function usePartner() {
             .catch((err) => {
                 console.log(err);
                 setForgotPasswordError(t("errors.crashErrorTitle"));
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
     const resetPassword = () => {
+        setIsLoading(true);
         if (
             !partner.phoneNumber ||
             !forgotPasswordUser.password ||
             !forgotPasswordUser.passwordValidation ||
             forgotPasswordUser.password !==
                 forgotPasswordUser.passwordValidation
-        )
+        ) {
+            setIsLoading(false);
             setVerificationError(t("errors.empty"));
+        }
 
         getRequest({
             method: "POST",
@@ -319,6 +384,9 @@ export default function usePartner() {
             .catch((err) => {
                 console.log(err);
                 setVerificationError(t("errors.invalidCode"));
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
@@ -333,6 +401,7 @@ export default function usePartner() {
         verificationError,
         forgotPasswordUser,
         forgotPasswordError,
+        isLoading,
         actions: {
             savePartner,
             setFormPartner,
@@ -350,7 +419,8 @@ export default function usePartner() {
             setVerificationCode,
             setForgotPasswordUser,
             sendForgotPasswordVerification,
-            resetPassword
+            resetPassword,
+            setIsLoading
         }
     };
 }

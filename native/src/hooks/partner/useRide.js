@@ -12,6 +12,7 @@ export default function useRide() {
     const getRequest = useApi();
     const navigation = useNavigation();
 
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
     const [info, setInfo] = useState(false);
     const {
@@ -29,6 +30,7 @@ export default function useRide() {
     } = useStore();
 
     const acceptRequest = () => {
+        setIsLoading(true);
         getRequest({
             method: "POST",
             endpoint: "rides/acceptRequest",
@@ -49,6 +51,9 @@ export default function useRide() {
             .catch((err) => {
                 setError(err.code);
                 resetRequest();
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
@@ -106,6 +111,7 @@ export default function useRide() {
     };
 
     const cancelRide = () => {
+        setIsLoading(true);
         getRequest({
             method: "POST",
             endpoint: "rides/cancelRequest",
@@ -120,10 +126,14 @@ export default function useRide() {
             })
             .catch((err) => {
                 console.log(err);
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
     const onDriverArrived = () => {
+        setIsLoading(true);
         getRequest({
             method: "POST",
             endpoint: "rides/driverArrived",
@@ -138,10 +148,14 @@ export default function useRide() {
             })
             .catch((err) => {
                 console.log(err);
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
     const onEndRide = () => {
+        setIsLoading(true);
         getRequest({
             method: "POST",
             endpoint: "rides/endRide",
@@ -156,6 +170,9 @@ export default function useRide() {
             })
             .catch((err) => {
                 console.log(err);
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
 
         Location.getCurrentPositionAsync({}).then(
@@ -175,6 +192,7 @@ export default function useRide() {
     };
 
     const denyRequest = () => {
+        setIsLoading(true);
         const currentRequestId = requestId;
         resetRequest();
         getRequest({
@@ -183,9 +201,13 @@ export default function useRide() {
             params: {
                 requestId: currentRequestId
             }
-        }).catch((err) => {
-            console.log(err);
-        });
+        })
+            .catch((err) => {
+                console.log(err);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     };
 
     return {
@@ -196,6 +218,7 @@ export default function useRide() {
         canceled,
         error,
         info,
+        isLoading,
         actions: {
             resetRequest,
             acceptRequest,

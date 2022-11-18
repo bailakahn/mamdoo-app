@@ -3,7 +3,7 @@ import { View, Image, TouchableOpacity } from "react-native";
 import { useTheme, Text, TextInput } from "react-native-paper";
 import { Classes } from "_styles";
 import { t, t2 } from "_utils/lang";
-import { Button } from "_atoms";
+import { Button, LoadingV2 } from "_atoms";
 import { usePartner } from "_hooks";
 
 export default function PasswordVerification({ navigation }) {
@@ -11,7 +11,9 @@ export default function PasswordVerification({ navigation }) {
     const partner = usePartner();
     const [hidePassword, setHidePassword] = useState(true);
 
-    return (
+    return partner.isLoading ? (
+        <LoadingV2 />
+    ) : (
         <View style={Classes.container(colors)}>
             <View style={{ marginTop: -100 }}>
                 <Image

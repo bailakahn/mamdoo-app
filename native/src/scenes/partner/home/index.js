@@ -12,7 +12,7 @@ import {
     useApp
 } from "_hooks";
 import { useRide, useLocation } from "_hooks/partner";
-import { RoundButton, Button } from "_atoms";
+import { RoundButton, Button, LoadingV2 } from "_atoms";
 import { Info } from "_molecules";
 
 export default function AccountScene({}) {
@@ -33,7 +33,9 @@ export default function AccountScene({}) {
         if (partner) partner.actions.updateLocation();
     }, []);
 
-    return (
+    return ride.isLoading ? (
+        <LoadingV2 />
+    ) : (
         <>
             <Portal>
                 <Modal

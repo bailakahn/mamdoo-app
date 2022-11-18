@@ -3,14 +3,16 @@ import { View, Image, TouchableOpacity } from "react-native";
 import { useTheme, Text, TextInput } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
-import { Button } from "_atoms";
+import { Button, LoadingV2 } from "_atoms";
 import { usePartner } from "_hooks";
 
 export default function Verification({ navigation }) {
     const { colors } = useTheme();
     const partner = usePartner();
 
-    return (
+    return partner.isLoading ? (
+        <LoadingV2 />
+    ) : (
         <View style={Classes.container(colors)}>
             <View style={{ marginTop: -100 }}>
                 <Image

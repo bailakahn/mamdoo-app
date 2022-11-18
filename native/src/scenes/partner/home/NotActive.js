@@ -3,7 +3,7 @@ import { View, Image, ScrollView } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
-import { Button } from "_atoms";
+import { Button, LoadingV2 } from "_atoms";
 import { useApp, usePartner } from "_hooks";
 
 export default function ForgotPassword({ navigation }) {
@@ -11,7 +11,9 @@ export default function ForgotPassword({ navigation }) {
     const app = useApp();
     const partner = usePartner();
 
-    return (
+    return partner.isLoading ? (
+        <LoadingV2 />
+    ) : (
         <ScrollView>
             <View style={Classes.container(colors)}>
                 <View style={{ marginTop: 20 }}>

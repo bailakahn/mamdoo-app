@@ -11,7 +11,7 @@ import { useTheme, Text, TextInput } from "react-native-paper";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import { usePartner, useApp } from "_hooks";
-import { Button, RoundButton } from "_atoms";
+import { Button, RoundButton, LoadingV2 } from "_atoms";
 
 export default function Login({ navigation }) {
     const { colors } = useTheme();
@@ -19,7 +19,9 @@ export default function Login({ navigation }) {
     const [hidePassword, setHidePassword] = useState(true);
     const partner = usePartner();
 
-    return (
+    return partner.isLoading ? (
+        <LoadingV2 />
+    ) : (
         <KeyboardAvoidingView
             {...(Platform.OS === "ios"
                 ? {

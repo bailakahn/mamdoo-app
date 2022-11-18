@@ -5,6 +5,7 @@ import { Classes } from "_styles";
 import { usePartner } from "_hooks";
 import date from "../../../utils/helpers/date";
 import { t2, lang } from "_utils/lang"; // without this line it didn't work
+import { LoadingV2 } from "_atoms";
 
 export default function RidesHistoryScene() {
     const { colors } = useTheme();
@@ -34,7 +35,9 @@ export default function RidesHistoryScene() {
         return color;
     };
 
-    return (
+    return partner.isLoading ? (
+        <LoadingV2 />
+    ) : (
         <ScrollView>
             <DataTable>
                 <DataTable.Header>

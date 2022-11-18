@@ -13,7 +13,7 @@ import ReadyAmimation from "_assets/animation/ready.json";
 import LightReadyAmimation from "_assets/animation/light-ready.gif";
 import DarkReadyAmimation from "_assets/animation/dark-ready.gif";
 import { useRide } from "_hooks/partner";
-import { RoundButton } from "_atoms";
+import { RoundButton, LoadingV2 } from "_atoms";
 import { Info } from "_molecules";
 import PopConfirm from "_organisms/PopConfirm";
 
@@ -40,7 +40,10 @@ export default function DriverOnTheWayScene() {
 
     if (!ride.request) return null;
 
-    return (
+    console.log({ isLoading: ride.isLoading });
+    return ride.isLoading ? (
+        <LoadingV2 />
+    ) : (
         <View style={Classes.container(colors)}>
             {visible && (
                 <PopConfirm

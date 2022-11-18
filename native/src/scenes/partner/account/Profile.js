@@ -15,7 +15,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import { usePartner } from "_hooks";
-import { Button } from "_atoms";
+import { Button, LoadingV2 } from "_atoms";
 
 export default function ProfileScene({ navigation }) {
     const { colors } = useTheme();
@@ -123,7 +123,9 @@ export default function ProfileScene({ navigation }) {
         </Portal>
     );
 
-    return (
+    return partner.isLoading ? (
+        <LoadingV2 />
+    ) : (
         <ScrollView style={Classes.container2(colors)}>
             <DeleteConfirmation />
             {!isEdit ? (
