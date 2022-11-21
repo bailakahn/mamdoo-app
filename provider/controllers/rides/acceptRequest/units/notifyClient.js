@@ -1,7 +1,7 @@
 const kafka = require("_lib/kafka");
 const { send } = require("_lib/expo");
 
-module.exports = async (rideData, driverId) => {
+module.exports = async (rideData, driverId, distanceMatrix) => {
   send("client", 1001, [rideData.client._id]);
 
   const producer = await kafka.producer();
@@ -16,7 +16,7 @@ module.exports = async (rideData, driverId) => {
           toClearDrivers: rideData.drivers.filter(
             (driver) => driver != !`${driverId}`
           ),
-          data: { driverId, ...rideData },
+          data: { driverId, ...rideData, distanceMatrix },
         }),
       },
     ],

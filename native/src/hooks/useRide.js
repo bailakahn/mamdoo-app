@@ -11,7 +11,15 @@ export default function useRide() {
     const navigation = useNavigation();
 
     const {
-        ride: { driver, requestId, canCancel, driverArrived, canceled, denied },
+        ride: {
+            driver,
+            requestId,
+            canCancel,
+            driverArrived,
+            canceled,
+            denied,
+            distanceMatrix
+        },
         actions: { resetRide, setRideDenied, setRideCanceled }
     } = useStore();
 
@@ -66,6 +74,7 @@ export default function useRide() {
         driverArrived,
         canceled,
         denied,
+        distanceMatrix,
         actions: {
             callDriver,
             cancelRide,

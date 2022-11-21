@@ -7,7 +7,8 @@ export default (state = ride, action) => {
             return {
                 ...state,
                 driver: action.data.driver,
-                requestId: action.data.requestId
+                requestId: action.data.requestId,
+                distanceMatrix: action.data.distanceMatrix
             };
         case types.RESET_RIDE:
             return {

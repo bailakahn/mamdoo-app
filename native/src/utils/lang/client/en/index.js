@@ -72,6 +72,7 @@ export default {
         foundMamdoo: "Mamdoo Found",
         driver: "Mamdoo",
         isOnHisWay: "is on his way",
+        arrivesIn: "He will arrive in",
         phoneNumber: "Phone Number",
         callDriver: "Call",
         cancelRide: "Cancel",

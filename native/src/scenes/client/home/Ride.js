@@ -100,14 +100,34 @@ export default function RideRequestScreen() {
             )}
 
             {!ride.driverArrived && (
-                <Text
-                    style={{
-                        fontSize: 15,
-                        fontWeight: "bold"
-                    }}
-                >
-                    {t("ride.isOnHisWay")}
-                </Text>
+                <View>
+                    <Text
+                        style={{
+                            fontSize: 15,
+                            fontWeight: "bold"
+                        }}
+                    >
+                        {t("ride.isOnHisWay")}
+                    </Text>
+                    {ride.distanceMatrix && (
+                        <View style={{ alignItems: "center" }}>
+                            <Text
+                                style={{
+                                    marginTop: 20,
+                                    marginBottom: 20,
+                                    fontSize: 20,
+                                    fontWeight: "bold",
+                                    color: colors.primary
+                                }}
+                            >
+                                {`${t("ride.arrivesIn")} ${
+                                    ride.distanceMatrix?.duration?.text ||
+                                    "10 mins"
+                                }`}
+                            </Text>
+                        </View>
+                    )}
+                </View>
             )}
 
             <View>

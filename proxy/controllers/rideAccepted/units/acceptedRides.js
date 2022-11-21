@@ -16,6 +16,7 @@ module.exports = async (io, message) => {
         io.to(userList.userList[user].socketId).emit(event, {
           driver,
           requestId: data._id,
+          distanceMatrix: data.distanceMatrix,
         });
     });
   }
