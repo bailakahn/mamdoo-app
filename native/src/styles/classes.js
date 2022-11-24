@@ -357,3 +357,7 @@ export const centeredText = (colors) => ({
 export const centeredView = (colors) => ({
     width: Mixins.width(0.85, true)
 });
+
+export const uploadInstructions = (colors) => ({
+    height: Mixins.height(0.4, true)
+});

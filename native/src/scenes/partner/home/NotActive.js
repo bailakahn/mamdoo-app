@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, ScrollView } from "react-native";
+import { View, Image, ScrollView, TouchableOpacity } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
@@ -63,14 +63,32 @@ export default function ForgotPassword({ navigation }) {
                         {t2("home.reloadText")}
                     </Text>
                 </View>
+                <View
+                    style={{
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        marginTop: 30
+                    }}
+                >
+                    <TouchableOpacity
+                        style={{ marginLeft: 10 }}
+                        onPress={partner.actions.refresh}
+                    >
+                        <Text style={{ color: colors.accent, fontSize: 20 }}>
+                            {t2("home.reloadButton")}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
                 <View style={{ marginTop: 30, marginBottom: 20 }}>
                     <Button
                         // style={Classes.callButton(colors)}
                         {...Classes.callButtonContainer(colors)}
                         mode="contained"
-                        onPress={partner.actions.refresh}
+                        onPress={() =>
+                            navigation.navigate("UploadInstructions")
+                        }
                     >
-                        {`${t2("home.reloadButton")}`}
+                        {`${t2("main.addDocuments")}`}
                     </Button>
                 </View>
                 <View

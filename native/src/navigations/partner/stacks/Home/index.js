@@ -4,7 +4,13 @@ import { usePartner } from "_hooks";
 
 const Stack = createStackNavigator();
 
-import { HomeScene, Ride, NotActiveScene } from "_scenes/partner";
+import {
+    HomeScene,
+    Ride,
+    NotActiveScene,
+    UploadScene,
+    UploadInstructionsScene
+} from "_scenes/partner";
 
 export default function HomeStack({ role }) {
     const partner = usePartner();
@@ -36,6 +42,32 @@ export default function HomeStack({ role }) {
             <Stack.Screen
                 name="DriverOnTheWay"
                 component={Ride}
+                options={({ navigation }) => ({
+                    headerStyle: {
+                        borderBottomWidth: 1
+                    },
+                    headerTitleStyle: {
+                        // color: "#000"
+                    }
+                })}
+            />
+
+            <Stack.Screen
+                name="UploadInstructions"
+                component={UploadInstructionsScene}
+                options={({ navigation }) => ({
+                    headerStyle: {
+                        borderBottomWidth: 1
+                    },
+                    headerTitleStyle: {
+                        // color: "#000"
+                    }
+                })}
+            />
+
+            <Stack.Screen
+                name="Upload"
+                component={UploadScene}
                 options={({ navigation }) => ({
                     headerStyle: {
                         borderBottomWidth: 1

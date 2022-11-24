@@ -32,7 +32,25 @@ export default {
         confirm: "Confirm",
         passwordVerificationNotice:
             "Then enter your new password . Please use a strong password.",
-        resetPassword: "Reset Password"
+        resetPassword: "Reset Password",
+        upload: "Upload",
+        addDocuments: "Add Documents",
+        uploadDocumentsTipsTitle: "Tips for uploading your documents",
+        uploadDocumentsTipsDescription:
+            "Follow these tips to ensure that you successfully upload your documents the first time.",
+        tipOneTitle: "Use original documents",
+        tipOneDescription:
+            "Please take photos of your original documents; photocopied documents are not accepted.",
+        tipTwoTitle: "Capture the whole document",
+        tipTwoDescription:
+            "That means including all 4 edges. If any are cut off, try moving the camera farther away.",
+        tipThreeTitle: "Take sharp, clear images",
+        tipThreeDescription:
+            "Take photos in a well-lit room and allow your camera to focus first. Avoid blur, glare, and reflections, and make sure text is easy to read.",
+        tipFourTitle: "Upload your driver's licence first",
+        tipFourDescription:
+            "This will speed up the approval process when we need to cross-check your licence with other documents.",
+        understood: "Understood"
     },
     errors: {
         crashErrorTitle: "Oops, Something Went Wrong",

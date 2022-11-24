@@ -32,7 +32,25 @@ export default {
         confirm: "Confirmer",
         passwordVerificationNotice:
             "Ensuite entrez votre nouveau mot de passe.",
-        resetPassword: "Changer de mot de passe"
+        resetPassword: "Changer de mot de passe",
+        upload: "Télécharger",
+        addDocuments: "Ajouter vos documents",
+        uploadDocumentsTipsTitle: "Conseils pour télécharger vos documents",
+        uploadDocumentsTipsDescription:
+            "Suivez ces conseils pour vous assurer que vous téléchargez vos documents avec succès dès la première fois.",
+        tipOneTitle: "Utiliser des documents originaux",
+        tipOneDescription:
+            "Veuillez prendre des photos de vos documents originaux ; les documents photocopiés ne sont pas acceptés.",
+        tipTwoTitle: "Capturez l'intégralité du document",
+        tipTwoDescription:
+            "Cela signifie inclure les 4 bords. Si certains sont coupés, essayez d'éloigner davantage la caméra.",
+        tipThreeTitle: "Prenez des images nettes et claires",
+        tipThreeDescription:
+            "Prenez des photos dans une pièce bien éclairée et laissez votre appareil photo faire la mise au point en premier. Évitez le flou, l'éblouissement et les reflets, et assurez-vous que le texte est facile à lire.",
+        tipFourTitle: "Téléchargez d'abord votre permis de conduire",
+        tipFourDescription:
+            "Cela accélérera le processus d'approbation lorsque nous aurons besoin de recouper votre licence avec d'autres documents.",
+        understood: "J'ai Compris"
     },
     errors: {
         crashErrorTitle: "Oops, Quelque chose s'est mal passé",

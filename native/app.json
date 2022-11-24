@@ -24,6 +24,15 @@
       "en": "./locales/ios/en.json",
       "fr": "./locales/ios/fr.json"
     },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Mamdoo a besoin d'accéder a vos photos pour pouvoir ajouter vos pièces d'identité.",
+          "cameraPermission": "Mamdoo a besoin d'accéder a votre caméra pour pouvoir ajouter vos pièces d'identité."
+        }
+      ]
+    ],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {

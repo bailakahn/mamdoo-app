@@ -2,5 +2,7 @@
     "NSLocationWhenInUseUsageDescription": "Activer votre position nous permet de vous envoyer des chauffeurs qui sont à proximité.",
     "NSLocationAlwaysUsageDescription": "Accéder à votre position lorsque l'application est fermée ou en arrière plan nous permet de vous trouver des courses à proximité lorsque vous êtes en mouvement.",
     "NSLocationAlwaysAndWhenInUseUsageDescription": "Accéder à votre position lorsque l'application est fermée ou en arrière plan nous permet de vous trouver des courses lorsque vous êtes en mouvement.",
-    "NSLocationUsageDescription": "Activer votre position nous permet de vous envoyer des chauffeurs qui sont à proximité."
+    "NSLocationUsageDescription": "Activer votre position nous permet de vous envoyer des chauffeurs qui sont à proximité.",
+    "photosPermission": "Mamdoo a besoin d'accéder a vos photos pour pouvoir ajouter vos pièces d'identité.",
+    "cameraPermission": "Mamdoo a besoin d'accéder a votre caméra pour pouvoir ajouter vos pièces d'identité."
 }

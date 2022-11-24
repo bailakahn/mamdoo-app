@@ -2,5 +2,7 @@
     "NSLocationWhenInUseUsageDescription": "Turning on location services will allow us to send you drivers that are nearby when you request a ride.",
     "NSLocationAlwaysUsageDescription": "We use background location to send you nearby ride requests when you are in movement.",
     "NSLocationAlwaysAndWhenInUseUsageDescription": "We use background location to send you nearby ride requests when you are in movement.",
-    "NSLocationUsageDescription": "Turning on location services will allow us to send you drivers that are nearby when you request a ride."
+    "NSLocationUsageDescription": "Turning on location services will allow us to send you drivers that are nearby when you request a ride.",
+    "photosPermission": "Allow Mamdoo to access your photos to be able to upload your IDs.",
+    "cameraPermission": "Mamdoo needs to acces your camera to be able to upload your IDs."
 }
