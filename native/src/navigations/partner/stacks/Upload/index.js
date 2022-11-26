@@ -4,7 +4,12 @@ import { usePartner } from "_hooks";
 
 const Stack = createStackNavigator();
 
-import { HomeScene, Ride } from "_scenes/partner";
+import {
+    NotActiveScene,
+    UploadScene,
+    UploadInstructionsScene,
+    ProfilePictureScene
+} from "_scenes/partner";
 
 export default function HomeStack({ role }) {
     const partner = usePartner();
@@ -15,12 +20,12 @@ export default function HomeStack({ role }) {
 
     return (
         <Stack.Navigator
-            initialRouteName="Home"
+            initialRouteName="NotActive"
             screenOptions={{ headerShown: false, gestureEnabled: false }}
         >
             <Stack.Screen
-                name="Home"
-                component={HomeScene}
+                name="NotActive"
+                component={NotActiveScene}
                 options={({ navigation }) => ({
                     headerStyle: {
                         borderBottomWidth: 1
@@ -32,8 +37,34 @@ export default function HomeStack({ role }) {
             />
 
             <Stack.Screen
-                name="DriverOnTheWay"
-                component={Ride}
+                name="UploadInstructions"
+                component={UploadInstructionsScene}
+                options={({ navigation }) => ({
+                    headerStyle: {
+                        borderBottomWidth: 1
+                    },
+                    headerTitleStyle: {
+                        // color: "#000"
+                    }
+                })}
+            />
+
+            <Stack.Screen
+                name="Upload"
+                component={UploadScene}
+                options={({ navigation }) => ({
+                    headerStyle: {
+                        borderBottomWidth: 1
+                    },
+                    headerTitleStyle: {
+                        // color: "#000"
+                    }
+                })}
+            />
+
+            <Stack.Screen
+                name="ProfilePicture"
+                component={ProfilePictureScene}
                 options={({ navigation }) => ({
                     headerStyle: {
                         borderBottomWidth: 1

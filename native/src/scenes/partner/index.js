@@ -5,6 +5,9 @@ export { default as NotActiveScene } from "./home/NotActive";
 export { default as UploadScene } from "./home/Upload";
 export { default as UploadInstructionsScene } from "./home/UploadInstructions";
 
+// UPLOAD
+export { default as ProfilePictureScene } from "./home/Documents/ProfilePicture";
+
 // ACCOUNT
 export { default as AccountScene } from "./account";
 export { default as ProfileScene } from "./account/Profile";

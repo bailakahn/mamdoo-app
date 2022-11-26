@@ -50,7 +50,25 @@ export default {
         tipFourTitle: "Upload your driver's licence first",
         tipFourDescription:
             "This will speed up the approval process when we need to cross-check your licence with other documents.",
-        understood: "Understood"
+        understood: "Understood",
+        mandatoyStepsTitle: "Mandatory Steps",
+        mandatoyStepsDescription:
+            "This is what you need to do to complete your account configuration",
+        profilePicture: "Profile Picture",
+        profilePictureTitle: "Take a picture of yourself",
+        profilePictureDescription:
+            "Your profile picture helps people to recognize you. Note that once you submit your profile picture, you can no longer edit it.",
+        profilePictureTipOne:
+            "Place yourself directly in front of the camera so that your eyes and mouth shows well",
+        profilePictureTipTwo:
+            "Make sure that the picture is clear, well lit and has no reflections",
+        profilePictureTipThree:
+            "Do not take a photo of a photo, do not use a filter or amke any changes to the picture",
+        profilePictureTake: "Take a picture",
+        driverLicense: "Driver License",
+        trainingCertificate: "Traning Certificate",
+        cabInsurance: "Cab Insurance",
+        cabLicense: "Cab License"
     },
     errors: {
         crashErrorTitle: "Oops, Something Went Wrong",

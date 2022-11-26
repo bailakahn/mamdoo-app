@@ -50,7 +50,25 @@ export default {
         tipFourTitle: "Téléchargez d'abord votre permis de conduire",
         tipFourDescription:
             "Cela accélérera le processus d'approbation lorsque nous aurons besoin de recouper votre licence avec d'autres documents.",
-        understood: "J'ai Compris"
+        understood: "J'ai Compris",
+        mandatoyStepsTitle: "Étapes obligatoires",
+        mandatoyStepsDescription:
+            "Voici ce que vous devez faire pour configurer votre compte",
+        profilePicture: "Photo de profil",
+        profilePictureTitle: "Prenez-vous en photo pour illustrer votre profil",
+        profilePictureDescription:
+            "Votre photo de profil aide les gens à vous reconnaître. Veuillez noter qu'une fois votre photo de profil envoyée, vous ne pouvez plus la modifier.",
+        profilePictureTipOne:
+            "Placez-vous directement face à l'appareil photo de façon a ce que vos yeux et votre bouche soient bien visibles",
+        profilePictureTipTwo:
+            "Assurez-vous que l'image est nette, bien éclairée et ne présente pas de reflets",
+        profilePictureTipThree:
+            "Ne prenez pas une photo d'une photo, n'utilisez pas de filte et n'effectuez aucune modification á la photo prise",
+        profilePictureTake: "Prende une photo",
+        driverLicense: "Permis de conduire",
+        trainingCertificate: "Attestation de formation",
+        cabInsurance: "Assurance",
+        cabLicense: "Immatriculation / Carte grise"
     },
     errors: {
         crashErrorTitle: "Oops, Quelque chose s'est mal passé",
