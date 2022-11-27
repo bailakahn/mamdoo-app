@@ -29,7 +29,7 @@ export default function ForgotPassword({ navigation }) {
                         fontWeight: "bold"
                     }}
                 >
-                    {t2("main.uploadDocumentsTipsTitle")}
+                    {t2("upload.uploadDocumentsTipsTitle")}
                 </Text>
 
                 <Text
@@ -38,7 +38,7 @@ export default function ForgotPassword({ navigation }) {
                         marginTop: 10
                     }}
                 >
-                    {t2("main.uploadDocumentsTipsDescription")}
+                    {t2("upload.uploadDocumentsTipsDescription")}
                 </Text>
             </View>
             <View
@@ -49,8 +49,8 @@ export default function ForgotPassword({ navigation }) {
             >
                 <ScrollView style={Classes.uploadInstructions(colors)}>
                     <List.Item
-                        title={t2("main.tipOneTitle")}
-                        description={t2("main.tipOneDescription")}
+                        title={t2("upload.tipOneTitle")}
+                        description={t2("upload.tipOneDescription")}
                         titleNumberOfLines={5}
                         descriptionNumberOfLines={15}
                         descriptionStyle={{ marginTop: 5 }}
@@ -63,8 +63,8 @@ export default function ForgotPassword({ navigation }) {
                         )}
                     />
                     <List.Item
-                        title={t2("main.tipTwoTitle")}
-                        description={t2("main.tipTwoDescription")}
+                        title={t2("upload.tipTwoTitle")}
+                        description={t2("upload.tipTwoDescription")}
                         titleNumberOfLines={5}
                         descriptionNumberOfLines={15}
                         descriptionStyle={{ marginTop: 5 }}
@@ -77,8 +77,8 @@ export default function ForgotPassword({ navigation }) {
                         )}
                     />
                     <List.Item
-                        title={t2("main.tipThreeTitle")}
-                        description={t2("main.tipThreeDescription")}
+                        title={t2("upload.tipThreeTitle")}
+                        description={t2("upload.tipThreeDescription")}
                         titleNumberOfLines={5}
                         descriptionNumberOfLines={15}
                         descriptionStyle={{ marginTop: 5 }}
@@ -91,8 +91,8 @@ export default function ForgotPassword({ navigation }) {
                         )}
                     />
                     <List.Item
-                        title={t2("main.tipFourTitle")}
-                        description={t2("main.tipFourDescription")}
+                        title={t2("upload.tipFourTitle")}
+                        description={t2("upload.tipFourDescription")}
                         titleNumberOfLines={5}
                         descriptionNumberOfLines={15}
                         descriptionStyle={{ marginTop: 5 }}
@@ -119,7 +119,7 @@ export default function ForgotPassword({ navigation }) {
                         color={colors.primary}
                         {...Classes.callButtonContainer(colors)}
                     >
-                        {t2("main.understood")}
+                        {t2("upload.understood")}
                     </Button>
                 </View>
             </View>

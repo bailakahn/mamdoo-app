@@ -22,10 +22,10 @@ export default function Upload({ navigation }) {
     const UploadConfirmation = () => (
         <Portal>
             <Dialog visible={visible} onDismiss={() => setVisible(false)}>
-                <Dialog.Title>{t2("main.uploadDocuments")}</Dialog.Title>
+                <Dialog.Title>{t2("upload.uploadDocuments")}</Dialog.Title>
                 <Dialog.Content>
                     <Paragraph>
-                        {t2("main.uploadDocumentsConfirmation")}
+                        {t2("upload.uploadDocumentsConfirmation")}
                     </Paragraph>
                 </Dialog.Content>
                 <Dialog.Actions>
@@ -34,7 +34,7 @@ export default function Upload({ navigation }) {
                         style={{ marginRight: 50 }}
                     >
                         <Text style={{ color: colors.text }}>
-                            {t2("main.cancel")}
+                            {t2("upload.cancel")}
                         </Text>
                     </Button>
                     <Button
@@ -44,7 +44,7 @@ export default function Upload({ navigation }) {
                         }}
                     >
                         <Text style={{ color: colors.primary }}>
-                            {t2("main.upload")}
+                            {t2("upload.upload")}
                         </Text>
                     </Button>
                 </Dialog.Actions>
@@ -76,7 +76,7 @@ export default function Upload({ navigation }) {
                         fontWeight: "bold"
                     }}
                 >
-                    {t2("main.mandatoyStepsTitle")}
+                    {t2("upload.mandatoyStepsTitle")}
                 </Text>
 
                 <Text
@@ -85,7 +85,7 @@ export default function Upload({ navigation }) {
                         marginTop: 10
                     }}
                 >
-                    {t2("main.mandatoyStepsDescription")}
+                    {t2("upload.mandatoyStepsDescription")}
                 </Text>
             </View>
 
@@ -98,7 +98,7 @@ export default function Upload({ navigation }) {
                 <View style={Classes.uploadDocuments(colors)}>
                     <View style={{ marginBottom: 20 }}>
                         <List.Item
-                            title={t2("main.profilePicture")}
+                            title={t2("upload.profilePicture")}
                             titleNumberOfLines={5}
                             left={(props) => (
                                 <List.Icon
@@ -126,7 +126,7 @@ export default function Upload({ navigation }) {
                     </View>
                     <View style={{ marginBottom: 20 }}>
                         <List.Item
-                            title={t2("main.driverLicense")}
+                            title={t2("upload.driverLicense")}
                             titleNumberOfLines={5}
                             left={(props) => (
                                 <List.Icon
@@ -156,7 +156,7 @@ export default function Upload({ navigation }) {
 
                     <View style={{ marginBottom: 20 }}>
                         <List.Item
-                            title={t2("main.cabLicense")}
+                            title={t2("upload.cabLicense")}
                             titleNumberOfLines={5}
                             left={(props) => (
                                 <List.Icon
@@ -194,7 +194,7 @@ export default function Upload({ navigation }) {
                         !partner.uploadDocuments?.cabLicense
                     }
                 >
-                    {`${t2("main.uploadDocuments")}`}
+                    {`${t2("upload.uploadDocuments")}`}
                 </Button>
             </View>
         </SafeAreaView>

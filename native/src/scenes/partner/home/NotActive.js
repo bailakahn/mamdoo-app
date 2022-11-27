@@ -24,43 +24,43 @@ export default function ForgotPassword({ navigation }) {
                 </View>
                 <View style={{ marginBottom: 25 }}>
                     <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-                        {t2("home.notActive")}
+                        {t2("upload.notActive")}
                     </Text>
                 </View>
                 <View style={Classes.centeredText(colors)}>
                     <Text style={{ textAlign: "left" }}>
-                        {t2("home.notActiveText")}
+                        {t2("upload.notActiveText")}
                     </Text>
                 </View>
                 <View
                     style={{ ...Classes.centeredText(colors), marginTop: 10 }}
                 >
                     <Text style={{ textAlign: "left" }}>
-                        {t2("home.listOfIds")}
+                        {t2("upload.listOfIds")}
                     </Text>
                 </View>
                 <View
                     style={{ ...Classes.centeredText(colors), marginTop: 10 }}
                 >
                     <Text style={{ textAlign: "left" }}>
-                        {`\u2022 ${t2("home.driverLicence")}`}
+                        {`\u2022 ${t2("upload.driverLicence")}`}
                     </Text>
                     <Text style={{ textAlign: "left" }}>
-                        {`\u2022 ${t2("home.licenceRegistration")}`}
-                    </Text>
-                </View>
-                <View
-                    style={{ ...Classes.centeredText(colors), marginTop: 10 }}
-                >
-                    <Text style={{ textAlign: "left" }}>
-                        {t2("home.timeToValidate")}
+                        {`\u2022 ${t2("upload.licenceRegistration")}`}
                     </Text>
                 </View>
                 <View
                     style={{ ...Classes.centeredText(colors), marginTop: 10 }}
                 >
                     <Text style={{ textAlign: "left" }}>
-                        {t2("home.reloadText")}
+                        {t2("upload.timeToValidate")}
+                    </Text>
+                </View>
+                <View
+                    style={{ ...Classes.centeredText(colors), marginTop: 10 }}
+                >
+                    <Text style={{ textAlign: "left" }}>
+                        {t2("upload.reloadText")}
                     </Text>
                 </View>
                 <View
@@ -75,7 +75,7 @@ export default function ForgotPassword({ navigation }) {
                         onPress={partner.actions.refresh}
                     >
                         <Text style={{ color: colors.accent, fontSize: 20 }}>
-                            {t2("home.reloadButton")}
+                            {t2("upload.reloadButton")}
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -88,14 +88,14 @@ export default function ForgotPassword({ navigation }) {
                             navigation.navigate("UploadInstructions")
                         }
                     >
-                        {`${t2("main.addDocuments")}`}
+                        {`${t2("upload.addDocuments")}`}
                     </Button>
                 </View>
                 <View
                     style={{ ...Classes.centeredText(colors), marginTop: 10 }}
                 >
                     <Text style={{ textAlign: "left" }}>
-                        {t2("home.afterDelay")}
+                        {t2("upload.afterDelay")}
                     </Text>
                 </View>
                 <View style={{ marginTop: 30, marginBottom: 20 }}>
@@ -105,7 +105,7 @@ export default function ForgotPassword({ navigation }) {
                         mode="contained"
                         onPress={app.actions.call}
                     >
-                        {`${t2("home.call")} ${app.settings.phone}`}
+                        {`${t2("upload.call")} ${app.settings.phone}`}
                     </Button>
                 </View>
             </View>

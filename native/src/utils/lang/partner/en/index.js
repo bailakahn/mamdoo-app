@@ -32,7 +32,23 @@ export default {
         confirm: "Confirm",
         passwordVerificationNotice:
             "Then enter your new password . Please use a strong password.",
-        resetPassword: "Reset Password",
+        resetPassword: "Reset Password"
+    },
+    upload: {
+        notActive: "Your account is not active",
+        notActiveText:
+            "Your account is not active. We need to verify your account before you start receiving ride request.",
+        listOfIds: "To verify your identity we need:",
+        driverLicence: "Your driver licence",
+        licenceRegistration: "Your plate registration",
+        timeToValidate:
+            "Once we receive your documents, your account will be activated in less than 24 hours.",
+        reloadText:
+            "If you sent your documents already, click on the button bellow.",
+        reloadButton: "Reload",
+        afterDelay:
+            "If you sent your documents more than 24 hours ago, or if you have any other question, please call us",
+        call: "Call",
         upload: "Upload",
         addDocuments: "Add Documents",
         uploadDocumentsTipsTitle: "Tips for uploading your documents",
@@ -85,8 +101,8 @@ export default {
         uploadDocuments: "Upload Documents",
         uploadDocumentsConfirmation:
             "Please make sure you uploaded the right documents. Once you upload your documents, you will not be able to modify them.",
-        upload: "Upload",
-        cancel: "Cancel"
+        cancel: "Cancel",
+        send: "Upload"
     },
     errors: {
         crashErrorTitle: "Oops, Something Went Wrong",
@@ -124,19 +140,7 @@ export default {
             "You are online, You will be receiving ride requests soon",
         offlineWelcomeText:
             "You are offline, click on `GO` to start receiving ride requests",
-        notActive: "Your account is not active",
-        notActiveText:
-            "Your account is not active. We need to verify your account before you start receiving ride request.",
-        listOfIds: "To verify your identity we need:",
-        driverLicence: "Your driver licence",
-        licenceRegistration: "Your plate registration",
-        timeToValidate:
-            "Once we receive your documents, your account will be activated in less than 24 hours.",
-        reloadText:
-            "If you sent your documents already, click on the button bellow.",
         reloadButton: "Reload",
-        afterDelay:
-            "If you sent your documents more than 24 hours ago, or if you have any other question, please call us",
         call: "Call",
         callUs: "Call Us",
         close: "Close",

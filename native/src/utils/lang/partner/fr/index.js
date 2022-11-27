@@ -32,7 +32,23 @@ export default {
         confirm: "Confirmer",
         passwordVerificationNotice:
             "Ensuite entrez votre nouveau mot de passe.",
-        resetPassword: "Changer de mot de passe",
+        resetPassword: "Changer de mot de passe"
+    },
+    upload: {
+        notActive: "Votre compte n'est pas activé",
+        notActiveText:
+            "Nous devons vérifier votre identité avant de commencer a vous envoyer des courses.",
+        listOfIds: "Pour vérifier votre identité, nous avons besoin de:",
+        driverLicence: "Votre permis de conduire",
+        licenceRegistration: "Votre carte grise",
+        timeToValidate:
+            "Votre compte sera activé au plutard 24 heures après avoir reçu vos documents.",
+        reloadText:
+            "Si vous avez envoyé vos documents, cliquez sur le boutton ci-dessous.",
+        reloadButton: "Recharger",
+        afterDelay:
+            "Si cela fait plus de 24 heures depuis que vous avez envoyer vos documents, ou si vous avez des questions, appelez nous.",
+        call: "Appeler",
         upload: "Télécharger",
         addDocuments: "Ajouter vos documents",
         uploadDocumentsTipsTitle: "Conseils pour télécharger vos documents",
@@ -87,7 +103,7 @@ export default {
         uploadDocuments: "Envoyer mes documents",
         uploadDocumentsConfirmation:
             "Assurez vous que vous avez envoyer les bons documents. Vous ne pourrez pas modifier vos documents une fois envoyés.",
-        upload: "Envoyer",
+        send: "Envoyer",
         cancel: "Annuler"
     },
     errors: {
@@ -122,19 +138,7 @@ export default {
             "Vous êtes en ligne, Vous allez bientot recevoir des demandes de courses",
         offlineWelcomeText:
             "Vous n'êtes pas en ligne. appuyez sur `COMMENCER` pour recevoir des demande de course",
-        notActive: "Votre compte n'est pas activé",
-        notActiveText:
-            "Nous devons vérifier votre identité avant de commencer a vous envoyer des courses.",
-        listOfIds: "Pour vérifier votre identité, nous avons besoin de:",
-        driverLicence: "Votre permis de conduire",
-        licenceRegistration: "Votre carte grise",
-        timeToValidate:
-            "Votre compte sera activé au plutard 24 heures après avoir reçu vos documents.",
-        reloadText:
-            "Si vous avez envoyé vos documents, cliquez sur le boutton ci-dessous.",
         reloadButton: "Recharger",
-        afterDelay:
-            "Si cela fait plus de 24 heures depuis que vous avez envoyer vos documents, ou si vous avez des questions, appelez nous.",
         call: "Appeler",
         callUs: "Appeler nous",
         close: "Fermer",
