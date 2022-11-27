@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useCallback, useMemo } from "react";
 import {
     View,
     Image,
@@ -7,6 +7,11 @@ import {
     TouchableOpacity
 } from "react-native";
 import { useTheme, Text } from "react-native-paper";
+import {
+    BottomSheetModal,
+    BottomSheetModalProvider,
+    BottomSheetBackdrop
+} from "@gorhom/bottom-sheet";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import { Button } from "_atoms";
@@ -18,6 +23,76 @@ export default function CabLicense({ navigation }) {
     const { colors } = useTheme();
     const partner = usePartner();
     const upload = useUpload();
+    // ref
+    const bottomSheetModalRef = useRef(null);
+
+    // variables
+    const snapPoints = useMemo(() => ["25%", "25%"], []);
+
+    // callbacks
+    const handlePresentModalPress = useCallback(() => {
+        bottomSheetModalRef.current?.present();
+    }, []);
+
+    const handleSheetChanges = useCallback((index) => {
+        console.log("handleSheetChanges", index);
+    }, []);
+
+    const BottomView = () => (
+        <BottomSheetModalProvider>
+            <BottomSheetModal
+                ref={bottomSheetModalRef}
+                index={1}
+                snapPoints={snapPoints}
+                onChange={handleSheetChanges}
+                handleStyle={{ backgroundColor: colors.overlap }}
+                handleIndicatorStyle={{ backgroundColor: colors.text }}
+                backdropComponent={BottomSheetBackdrop}
+            >
+                <View
+                    style={{
+                        flex: 1,
+                        backgroundColor: colors.overlap,
+                        width: Mixins.width(1, true),
+                        alignItems: "center"
+                    }}
+                >
+                    <View style={{ marginTop: 10 }}>
+                        <Button
+                            {...Classes.callButtonContainer(colors)}
+                            mode="contained"
+                            onPress={() =>
+                                upload.actions.takePhoto((result) => {
+                                    partner.actions.setUploadDocuments({
+                                        ...partner.uploadDocuments,
+                                        cabLicense: result.uri
+                                    });
+                                })
+                            }
+                        >
+                            {`${t2("upload.fromCamera")}`}
+                        </Button>
+                    </View>
+                    <View style={{ marginTop: 10 }}>
+                        <Button
+                            {...Classes.callButtonContainer(colors)}
+                            mode="contained"
+                            onPress={() =>
+                                upload.actions.pickImage((result) => {
+                                    partner.actions.setUploadDocuments({
+                                        ...partner.uploadDocuments,
+                                        cabLicense: result.uri
+                                    });
+                                })
+                            }
+                        >
+                            {`${t2("upload.fromGallery")}`}
+                        </Button>
+                    </View>
+                </View>
+            </BottomSheetModal>
+        </BottomSheetModalProvider>
+    );
 
     return (
         <SafeAreaView
@@ -120,20 +195,14 @@ export default function CabLicense({ navigation }) {
                         <Button
                             {...Classes.callButtonContainer(colors)}
                             mode="contained"
-                            onPress={() =>
-                                upload.actions.pickImage((result) => {
-                                    partner.actions.setUploadDocuments({
-                                        ...partner.uploadDocuments,
-                                        cabLicense: result.uri
-                                    });
-                                })
-                            }
+                            onPress={handlePresentModalPress}
                         >
                             <Text>{`${t2("upload.profilePictureTake")}`}</Text>
                         </Button>
                     </View>
                 </View>
             )}
+            <BottomView />
         </SafeAreaView>
     );
 }

@@ -104,7 +104,9 @@ export default {
         uploadDocumentsConfirmation:
             "Assurez vous que vous avez envoyer les bons documents. Vous ne pourrez pas modifier vos documents une fois envoyés.",
         send: "Envoyer",
-        cancel: "Annuler"
+        cancel: "Annuler",
+        fromCamera: "A partir de la caméra",
+        fromGallery: "A partir de la galérie"
     },
     errors: {
         crashErrorTitle: "Oops, Quelque chose s'est mal passé",

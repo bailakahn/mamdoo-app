@@ -102,7 +102,9 @@ export default {
         uploadDocumentsConfirmation:
             "Please make sure you uploaded the right documents. Once you upload your documents, you will not be able to modify them.",
         cancel: "Cancel",
-        send: "Upload"
+        send: "Upload",
+        fromCamera: "From Camera",
+        fromGallery: "From Gallery"
     },
     errors: {
         crashErrorTitle: "Oops, Something Went Wrong",
