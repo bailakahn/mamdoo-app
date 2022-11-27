@@ -35,8 +35,8 @@ export default function usePartner() {
     const [forgotPasswordError, setForgotPasswordError] = useState(false);
 
     const {
-        auth: { partner, partnerLoaded },
-        actions: { getPartner, setPartner, removePartner }
+        auth: { partner, partnerLoaded, uploadDocuments },
+        actions: { getPartner, setPartner, removePartner, setUploadDocuments }
     } = useStore();
 
     useEffect(() => {
@@ -402,6 +402,7 @@ export default function usePartner() {
         forgotPasswordUser,
         forgotPasswordError,
         isLoading,
+        uploadDocuments,
         actions: {
             savePartner,
             setFormPartner,
@@ -420,7 +421,8 @@ export default function usePartner() {
             setForgotPasswordUser,
             sendForgotPasswordVerification,
             resetPassword,
-            setIsLoading
+            setIsLoading,
+            setUploadDocuments
         }
     };
 }

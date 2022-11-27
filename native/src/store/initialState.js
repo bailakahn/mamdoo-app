@@ -13,7 +13,8 @@ export default {
         user: null,
         userLoaded: false,
         partner: null,
-        partnerLoaded: false
+        partnerLoaded: false,
+        uploadDocuments: {}
     },
     ride: {
         driver: null,

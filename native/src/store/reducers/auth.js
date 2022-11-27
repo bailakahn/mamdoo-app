@@ -38,6 +38,11 @@ export default (state = auth, action) => {
                 ...state,
                 partner: null
             };
+        case types.SET_UPLOAD_DOCUMENTS:
+            return {
+                ...state,
+                uploadDocuments: action.documents
+            };
         default:
             return state;
     }

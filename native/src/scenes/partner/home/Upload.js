@@ -1,15 +1,56 @@
-import React from "react";
-import { View, Image, ScrollView, SafeAreaView } from "react-native";
-import { useTheme, Text, List } from "react-native-paper";
+import React, { useState } from "react";
+import { View, SafeAreaView } from "react-native";
+import {
+    useTheme,
+    Text,
+    List,
+    Divider,
+    Dialog,
+    Portal,
+    Paragraph
+} from "react-native-paper";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import { Button, LoadingV2 } from "_atoms";
-import { useApp, usePartner } from "_hooks";
+import { usePartner } from "_hooks";
 
-export default function ForgotPassword({ navigation }) {
+export default function Upload({ navigation }) {
     const { colors } = useTheme();
-    const app = useApp();
     const partner = usePartner();
+    const [visible, setVisible] = useState(false);
+
+    const UploadConfirmation = () => (
+        <Portal>
+            <Dialog visible={visible} onDismiss={() => setVisible(false)}>
+                <Dialog.Title>{t2("main.uploadDocuments")}</Dialog.Title>
+                <Dialog.Content>
+                    <Paragraph>
+                        {t2("main.uploadDocumentsConfirmation")}
+                    </Paragraph>
+                </Dialog.Content>
+                <Dialog.Actions>
+                    <Button
+                        onPress={() => setVisible(false)}
+                        style={{ marginRight: 50 }}
+                    >
+                        <Text style={{ color: colors.text }}>
+                            {t2("main.cancel")}
+                        </Text>
+                    </Button>
+                    <Button
+                        mode="text"
+                        onPress={() => {
+                            setVisible(false);
+                        }}
+                    >
+                        <Text style={{ color: colors.primary }}>
+                            {t2("main.upload")}
+                        </Text>
+                    </Button>
+                </Dialog.Actions>
+            </Dialog>
+        </Portal>
+    );
 
     return partner.isLoading ? (
         <LoadingV2 />
@@ -22,8 +63,7 @@ export default function ForgotPassword({ navigation }) {
                 justifyContent: "center"
             }}
         >
-            {/* <ScrollView> */}
-            {/* <View style={Classes.container(colors)}> */}
+            <UploadConfirmation />
             <View
                 style={{
                     ...Classes.centeredView(colors),
@@ -56,25 +96,107 @@ export default function ForgotPassword({ navigation }) {
                 }}
             >
                 <View style={Classes.uploadDocuments(colors)}>
-                    <List.Item
-                        title={t2("main.profilePicture")}
-                        titleNumberOfLines={5}
-                        left={(props) => (
-                            <List.Icon
-                                {...props}
-                                icon={"camera"}
-                                color={colors.primary}
-                            />
-                        )}
-                        right={(props) => (
-                            <List.Icon {...props} icon={"chevron-right"} />
-                        )}
-                        onPress={() => navigation.navigate("ProfilePicture")}
-                    />
+                    <View style={{ marginBottom: 20 }}>
+                        <List.Item
+                            title={t2("main.profilePicture")}
+                            titleNumberOfLines={5}
+                            left={(props) => (
+                                <List.Icon
+                                    {...props}
+                                    icon={"camera"}
+                                    color={colors.primary}
+                                />
+                            )}
+                            right={(props) => (
+                                <List.Icon
+                                    {...props}
+                                    icon={
+                                        partner?.uploadDocuments?.profilePicture
+                                            ? "checkbox-marked-circle"
+                                            : "chevron-right"
+                                    }
+                                    color={colors.primary}
+                                />
+                            )}
+                            onPress={() =>
+                                navigation.navigate("ProfilePicture")
+                            }
+                        />
+                        <Divider />
+                    </View>
+                    <View style={{ marginBottom: 20 }}>
+                        <List.Item
+                            title={t2("main.driverLicense")}
+                            titleNumberOfLines={5}
+                            left={(props) => (
+                                <List.Icon
+                                    {...props}
+                                    icon={"card-account-details"}
+                                    color={colors.primary}
+                                />
+                            )}
+                            right={(props) => (
+                                <List.Icon
+                                    {...props}
+                                    icon={
+                                        partner?.uploadDocuments
+                                            ?.driverLicenseFront &&
+                                        partner?.uploadDocuments
+                                            ?.driverLicenseBack
+                                            ? "checkbox-marked-circle"
+                                            : "chevron-right"
+                                    }
+                                    color={colors.primary}
+                                />
+                            )}
+                            onPress={() => navigation.navigate("DriverLicense")}
+                        />
+                        <Divider />
+                    </View>
+
+                    <View style={{ marginBottom: 20 }}>
+                        <List.Item
+                            title={t2("main.cabLicense")}
+                            titleNumberOfLines={5}
+                            left={(props) => (
+                                <List.Icon
+                                    {...props}
+                                    icon={"file-document"}
+                                    color={colors.primary}
+                                />
+                            )}
+                            right={(props) => (
+                                <List.Icon
+                                    {...props}
+                                    icon={
+                                        partner?.uploadDocuments?.cabLicense
+                                            ? "checkbox-marked-circle"
+                                            : "chevron-right"
+                                    }
+                                    color={colors.primary}
+                                />
+                            )}
+                            onPress={() => navigation.navigate("CabLicense")}
+                        />
+                        <Divider />
+                    </View>
                 </View>
             </View>
-            {/* </View> */}
-            {/* </ScrollView> */}
+            <View style={{ marginTop: 30 }}>
+                <Button
+                    {...Classes.callButtonContainer(colors)}
+                    mode="contained"
+                    onPress={() => setVisible(true)}
+                    disabled={
+                        !partner.uploadDocuments?.profilePicture ||
+                        !partner.uploadDocuments?.driverLicenseFront ||
+                        !partner.uploadDocuments?.driverLicenseBack ||
+                        !partner.uploadDocuments?.cabLicense
+                    }
+                >
+                    {`${t2("main.uploadDocuments")}`}
+                </Button>
+            </View>
         </SafeAreaView>
     );
 }

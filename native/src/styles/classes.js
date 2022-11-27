@@ -369,3 +369,8 @@ export const uploadInstructions = (colors) => ({
 export const uploadDocuments = (colors) => ({
     height: Mixins.height(0.4, true)
 });
+
+export const profilePicture = (colors) => ({
+    width: Mixins.width(0.7, true),
+    height: Mixins.height(0.3, true)
+});

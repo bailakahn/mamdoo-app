@@ -14,7 +14,7 @@ import { usePartner } from "_hooks";
 import useUpload from "../../../../hooks/partner/useUpload";
 import * as Mixins from "../../../../styles/mixins";
 
-export default function ProfilePicture({ navigation }) {
+export default function DriverLicense({ navigation }) {
     const { colors } = useTheme();
     const partner = usePartner();
     const upload = useUpload();
@@ -28,23 +28,40 @@ export default function ProfilePicture({ navigation }) {
             justifyContent: "center"
         }}
     >
-        {partner.uploadDocuments.profilePicture ? (
+        {partner.uploadDocuments.driverLicenseFront &&
+        partner.uploadDocuments.driverLicenseBack ? (
             <View style={{ alignItems: "center" }}>
                 <View style={{ alignItems: "center", marginTop: 20 }}>
                     <Image
                         source={{
-                            uri: partner.uploadDocuments?.profilePicture
+                            uri: partner.uploadDocuments?.driverLicenseFront
                         }}
-                        style={Classes.profilePicture(colors)}
+                        style={{
+                            width: Mixins.width(0.6, true),
+                            height: Mixins.height(0.2, true)
+                        }}
+                        resizeMode="contain"
+                    />
+                    <Image
+                        source={{
+                            uri: partner.uploadDocuments?.driverLicenseBack
+                        }}
+                        style={{
+                            width: Mixins.width(0.6, true),
+                            height: Mixins.height(0.2, true),
+                            marginTop: 20
+                        }}
+                        resizeMode="contain"
                     />
                 </View>
+
                 <View style={{ marginTop: 30 }}>
                     <Button
                         {...Classes.callButtonContainer(colors)}
                         mode="contained"
                         onPress={() => navigation.navigate("Upload")}
                     >
-                        {`${t2("main.profilePictureUse")}`}
+                        {`${t2("main.useThisPicture")}`}
                     </Button>
                 </View>
                 <View
@@ -59,7 +76,8 @@ export default function ProfilePicture({ navigation }) {
                         onPress={() => {
                             partner.actions.setUploadDocuments({
                                 ...partner.uploadDocuments,
-                                profilePicture: null
+                                driverLicenseFront: null,
+                                driverLicenseBack: null
                             });
                         }}
                     >
@@ -84,7 +102,7 @@ export default function ProfilePicture({ navigation }) {
                             fontWeight: "bold"
                         }}
                     >
-                        {t2("main.profilePictureTitle")}
+                        {t2("main.driverLicenceTitle")}
                     </Text>
                     <Text
                         style={{
@@ -92,41 +110,31 @@ export default function ProfilePicture({ navigation }) {
                             marginTop: 20
                         }}
                     >
-                        {t2("main.profilePictureDescription")}
+                        {t2("main.driverLicenceDescription")}
                     </Text>
                     <ScrollView style={Classes.uploadInstructions(colors)}>
-                        <Text
+                        <View
                             style={{
-                                fontSize: 15,
-                                marginTop: 10
+                                flexDirection: "column",
+                                alignItems: "center",
+                                marginTop: 30
                             }}
                         >
-                            {`1. ${t2("main.profilePictureTipOne")}`}
-                        </Text>
-                        <Text
-                            style={{
-                                fontSize: 15,
-                                marginTop: 10
-                            }}
-                        >
-                            {`2. ${t2("main.profilePictureTipTwo")}`}
-                        </Text>
-                        <Text
-                            style={{
-                                fontSize: 15,
-                                marginTop: 10
-                            }}
-                        >
-                            {`3. ${t2("main.profilePictureTipThree")}`}
-                        </Text>
-                        <View style={{ alignItems: "center", marginTop: 30 }}>
-                            <Text>Example</Text>
                             <Image
-                                source={require("_assets/avatar.png")}
+                                source={require("_assets/driver-license-front.png")}
                                 style={{
-                                    width: Mixins.width(0.4, true),
+                                    width: Mixins.width(0.6, true),
                                     height: Mixins.height(0.2, true)
                                 }}
+                                resizeMode="contain"
+                            />
+                            <Image
+                                source={require("_assets/driver-license-back.png")}
+                                style={{
+                                    width: Mixins.width(0.6, true),
+                                    height: Mixins.height(0.2, true)
+                                }}
+                                resizeMode="contain"
                             />
                         </View>
                     </ScrollView>
@@ -135,7 +143,6 @@ export default function ProfilePicture({ navigation }) {
                 <View
                     style={{
                         marginTop: 30,
-                        marginBottom: 20,
                         alignItems: "center"
                     }}
                 >
@@ -146,12 +153,33 @@ export default function ProfilePicture({ navigation }) {
                             upload.actions.pickImage((result) => {
                                 partner.actions.setUploadDocuments({
                                     ...partner.uploadDocuments,
-                                    profilePicture: result.uri
+                                    driverLicenseFront: result.uri
                                 });
                             })
                         }
                     >
-                        <Text>{`${t2("main.profilePictureTake")}`}</Text>
+                        <Text>{`${t2("main.driverLicenceFront")}`}</Text>
+                    </Button>
+                </View>
+                <View
+                    style={{
+                        marginTop: 30,
+                        alignItems: "center"
+                    }}
+                >
+                    <Button
+                        {...Classes.callButtonContainer(colors)}
+                        mode="contained"
+                        onPress={() =>
+                            upload.actions.pickImage((result) => {
+                                partner.actions.setUploadDocuments({
+                                    ...partner.uploadDocuments,
+                                    driverLicenseBack: result.uri
+                                });
+                            })
+                        }
+                    >
+                        <Text>{`${t2("main.driverLicenceBack")}`}</Text>
                     </Button>
                 </View>
             </View>

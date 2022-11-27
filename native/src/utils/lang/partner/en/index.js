@@ -64,11 +64,29 @@ export default {
             "Make sure that the picture is clear, well lit and has no reflections",
         profilePictureTipThree:
             "Do not take a photo of a photo, do not use a filter or amke any changes to the picture",
-        profilePictureTake: "Take a picture",
+        profilePictureTake: "Take A Picture",
+        profilePictureUse: "Use this picture",
         driverLicense: "Driver License",
+        driverLicenceTitle: "Take a picture of your Class A driver license",
+        driverLicenceDescription:
+            "Make sure your driver license is valid and avoid using the flash to make sure your informations are clear and easy to read. You need to have a Class A driver license. If you hold an old driver licence, please take both front and back pictures",
+        driverLicenceFront: "Front Picture",
+        driverLicenceBack: "Back Picture",
         trainingCertificate: "Traning Certificate",
         cabInsurance: "Cab Insurance",
-        cabLicense: "Cab License"
+        cabLicense: "Cab License",
+        cabLicenseTitle: "Take a picture of your car registration license",
+        cabLicenseDescription:
+            "Make sure your cab registration is signed and not folded, and that the vehicle's make, model, year and license plate, as well the identification number and expiry date are clear and visible.",
+        cabLicenseTake: "Take A Picture",
+        back: "Go Back",
+        useThisPicture: "Use This Picture",
+        takeAgain: "Take Again",
+        uploadDocuments: "Upload Documents",
+        uploadDocumentsConfirmation:
+            "Please make sure you uploaded the right documents. Once you upload your documents, you will not be able to modify them.",
+        upload: "Upload",
+        cancel: "Cancel"
     },
     errors: {
         crashErrorTitle: "Oops, Something Went Wrong",
@@ -188,7 +206,11 @@ export default {
         home: "Home",
         account: "Account",
         profile: "Profile",
-        ridesHistory: "Rides History"
+        ridesHistory: "Rides History",
+        activation: "Activation",
+        insctructions: "Instructions",
+        upload: "",
+        profilePicture: "Profile Picture"
     },
     profile: {
         edit: "Edit",

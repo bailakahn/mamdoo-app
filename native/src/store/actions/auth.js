@@ -47,6 +47,9 @@ export default function authActions(state, dispatch) {
             AsyncStorage.removeItem("@mamdoo-partner").then(() => {
                 dispatch({ type: types.REMOVE_PARTNER });
             });
+        },
+        setUploadDocuments: (documents) => {
+            dispatch({ type: types.SET_UPLOAD_DOCUMENTS, documents });
         }
     };
 }

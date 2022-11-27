@@ -65,10 +65,30 @@ export default {
         profilePictureTipThree:
             "Ne prenez pas une photo d'une photo, n'utilisez pas de filte et n'effectuez aucune modification á la photo prise",
         profilePictureTake: "Prende une photo",
+        profilePictureUse: "Utiliser cette photo",
         driverLicense: "Permis de conduire",
+        driverLicenceTitle:
+            "Prenez une photo de votre permis de conduire de classe A",
+        driverLicenceDescription:
+            "Assurez-vous que votre permis de conduire est valide et évitez d'utiliser le flash pour que vos renseignements soient claires. Vous devez avoir un permis de class A. Nous acceptons temporairement les anciens permis. Si vous avez un ancien permis, assurez-vous de prendre l'arrire du permis aussi.",
+        driverLicenceFront: "Prendre la photo Avant",
+        driverLicenceBack: "Prendre la photo Arrière",
         trainingCertificate: "Attestation de formation",
         cabInsurance: "Assurance",
-        cabLicense: "Immatriculation / Carte grise"
+        cabLicense: "Immatriculation / Carte grise",
+        cabLicenseTitle:
+            "Prenez une photo de  l'immatriculation de votre véhicule ou moto",
+        cabLicenseDescription:
+            "Assurez-vous que votrs immatriculaton est signée et n'est pas pliée, et que la marque, le modèle, l'année et la plaque d'immatriculation du véhicule, ainsi que le numéro de série sont clairs et visibles.",
+        cabLicenseTake: "Take A Picture",
+        back: "Précédent",
+        useThisPicture: "Utiliser cette photo",
+        takeAgain: "Recommencer",
+        uploadDocuments: "Envoyer mes documents",
+        uploadDocumentsConfirmation:
+            "Assurez vous que vous avez envoyer les bons documents. Vous ne pourrez pas modifier vos documents une fois envoyés.",
+        upload: "Envoyer",
+        cancel: "Annuler"
     },
     errors: {
         crashErrorTitle: "Oops, Quelque chose s'est mal passé",
@@ -185,7 +205,11 @@ export default {
         home: "Accueil",
         account: "Compte",
         profile: "Profil",
-        ridesHistory: "Historique de courses"
+        ridesHistory: "Historique de courses",
+        activation: "Activation",
+        insctructions: "Instructions",
+        upload: "",
+        profilePicture: "Photo de profil"
     },
     profile: {
         edit: "Modifier",

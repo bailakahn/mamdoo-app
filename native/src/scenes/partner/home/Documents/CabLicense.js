@@ -14,7 +14,7 @@ import { usePartner } from "_hooks";
 import useUpload from "../../../../hooks/partner/useUpload";
 import * as Mixins from "../../../../styles/mixins";
 
-export default function ProfilePicture({ navigation }) {
+export default function CabLicense({ navigation }) {
     const { colors } = useTheme();
     const partner = usePartner();
     const upload = useUpload();
@@ -28,12 +28,12 @@ export default function ProfilePicture({ navigation }) {
             justifyContent: "center"
         }}
     >
-        {partner.uploadDocuments.profilePicture ? (
+        {partner.uploadDocuments.cabLicense ? (
             <View style={{ alignItems: "center" }}>
                 <View style={{ alignItems: "center", marginTop: 20 }}>
                     <Image
                         source={{
-                            uri: partner.uploadDocuments?.profilePicture
+                            uri: partner.uploadDocuments?.cabLicense
                         }}
                         style={Classes.profilePicture(colors)}
                     />
@@ -44,7 +44,7 @@ export default function ProfilePicture({ navigation }) {
                         mode="contained"
                         onPress={() => navigation.navigate("Upload")}
                     >
-                        {`${t2("main.profilePictureUse")}`}
+                        {`${t2("main.useThisPicture")}`}
                     </Button>
                 </View>
                 <View
@@ -59,7 +59,7 @@ export default function ProfilePicture({ navigation }) {
                         onPress={() => {
                             partner.actions.setUploadDocuments({
                                 ...partner.uploadDocuments,
-                                profilePicture: null
+                                cabLicense: null
                             });
                         }}
                     >
@@ -84,7 +84,7 @@ export default function ProfilePicture({ navigation }) {
                             fontWeight: "bold"
                         }}
                     >
-                        {t2("main.profilePictureTitle")}
+                        {t2("main.cabLicenseTitle")}
                     </Text>
                     <Text
                         style={{
@@ -92,41 +92,17 @@ export default function ProfilePicture({ navigation }) {
                             marginTop: 20
                         }}
                     >
-                        {t2("main.profilePictureDescription")}
+                        {t2("main.cabLicenseDescription")}
                     </Text>
                     <ScrollView style={Classes.uploadInstructions(colors)}>
-                        <Text
-                            style={{
-                                fontSize: 15,
-                                marginTop: 10
-                            }}
-                        >
-                            {`1. ${t2("main.profilePictureTipOne")}`}
-                        </Text>
-                        <Text
-                            style={{
-                                fontSize: 15,
-                                marginTop: 10
-                            }}
-                        >
-                            {`2. ${t2("main.profilePictureTipTwo")}`}
-                        </Text>
-                        <Text
-                            style={{
-                                fontSize: 15,
-                                marginTop: 10
-                            }}
-                        >
-                            {`3. ${t2("main.profilePictureTipThree")}`}
-                        </Text>
                         <View style={{ alignItems: "center", marginTop: 30 }}>
-                            <Text>Example</Text>
                             <Image
-                                source={require("_assets/avatar.png")}
+                                source={require("_assets/registration.png")}
                                 style={{
-                                    width: Mixins.width(0.4, true),
+                                    width: Mixins.width(0.6, true),
                                     height: Mixins.height(0.2, true)
                                 }}
+                                resizeMode="contain"
                             />
                         </View>
                     </ScrollView>
@@ -146,7 +122,7 @@ export default function ProfilePicture({ navigation }) {
                             upload.actions.pickImage((result) => {
                                 partner.actions.setUploadDocuments({
                                     ...partner.uploadDocuments,
-                                    profilePicture: result.uri
+                                    cabLicense: result.uri
                                 });
                             })
                         }
