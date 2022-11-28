@@ -34,6 +34,7 @@ export default function ProfilePicture({ navigation }) {
                         <Image
                             source={{
                                 uri: partner.uploadDocuments?.profilePicture
+                                    ?.uri
                             }}
                             style={Classes.profilePicture(colors)}
                         />
@@ -145,10 +146,13 @@ export default function ProfilePicture({ navigation }) {
                             {...Classes.callButtonContainer(colors)}
                             mode="contained"
                             onPress={() =>
-                                upload.actions.pickImage((result) => {
+                                upload.actions.takePhoto((result) => {
                                     partner.actions.setUploadDocuments({
                                         ...partner.uploadDocuments,
-                                        profilePicture: result.uri
+                                        profilePicture: {
+                                            uri: result.uri,
+                                            base64: result.base64
+                                        }
                                     });
                                 })
                             }

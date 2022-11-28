@@ -390,6 +390,29 @@ export default function usePartner() {
             });
     };
 
+    const uploadDocumentsToS3 = () => {
+        setIsLoading(true);
+        getRequest({
+            method: "POST",
+            endpoint: "drivers/uploadDocuments",
+            params: Object.keys(uploadDocuments).reduce((acc, key) => {
+                acc[key] =
+                    "data:image/jpeg;base64," + uploadDocuments[key]?.base64;
+                return acc;
+            }, {})
+        })
+            .then((data) => {
+                setPartner({ ...partner, ...data });
+            })
+            .catch((err) => {
+                console.log(err);
+                // setVerificationError(t("errors.invalidCode"));
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    };
+
     return {
         formPartner,
         formError,
@@ -422,7 +445,8 @@ export default function usePartner() {
             sendForgotPasswordVerification,
             resetPassword,
             setIsLoading,
-            setUploadDocuments
+            setUploadDocuments,
+            uploadDocumentsToS3
         }
     };
 }

@@ -16,7 +16,7 @@ const {
 } = require(`../config/env.${ENV_NAME}.json`);
 
 // Parse JSON bodies (as sent by API clients)
-app.use(express.json());
+app.use(express.json({ limit: "1gb" }));
 
 // Add cors
 // app.use(cors());

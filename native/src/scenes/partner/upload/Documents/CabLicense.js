@@ -65,7 +65,10 @@ export default function CabLicense({ navigation }) {
                                 upload.actions.takePhoto((result) => {
                                     partner.actions.setUploadDocuments({
                                         ...partner.uploadDocuments,
-                                        cabLicense: result.uri
+                                        cabLicense: {
+                                            uri: result.uri,
+                                            base64: result.base64
+                                        }
                                     });
                                 })
                             }
@@ -81,7 +84,10 @@ export default function CabLicense({ navigation }) {
                                 upload.actions.pickImage((result) => {
                                     partner.actions.setUploadDocuments({
                                         ...partner.uploadDocuments,
-                                        cabLicense: result.uri
+                                        cabLicense: {
+                                            uri: result.uri,
+                                            base64: result.base64
+                                        }
                                     });
                                 })
                             }
@@ -108,7 +114,7 @@ export default function CabLicense({ navigation }) {
                     <View style={{ alignItems: "center", marginTop: 20 }}>
                         <Image
                             source={{
-                                uri: partner.uploadDocuments?.cabLicense
+                                uri: partner.uploadDocuments?.cabLicense?.uri
                             }}
                             style={Classes.profilePicture(colors)}
                         />

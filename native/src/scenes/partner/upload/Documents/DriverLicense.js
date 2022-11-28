@@ -64,7 +64,10 @@ export default function DriverLicense({ navigation }) {
                                 upload.actions.takePhoto((result) => {
                                     partner.actions.setUploadDocuments({
                                         ...partner.uploadDocuments,
-                                        [name]: result.uri
+                                        [name]: {
+                                            uri: result.uri,
+                                            base64: result.base64
+                                        }
                                     });
                                 })
                             }
@@ -80,7 +83,10 @@ export default function DriverLicense({ navigation }) {
                                 upload.actions.pickImage((result) => {
                                     partner.actions.setUploadDocuments({
                                         ...partner.uploadDocuments,
-                                        [name]: result.uri
+                                        [name]: {
+                                            uri: result.uri,
+                                            base64: result.base64
+                                        }
                                     });
                                 })
                             }
@@ -108,6 +114,7 @@ export default function DriverLicense({ navigation }) {
                         <Image
                             source={{
                                 uri: partner.uploadDocuments?.driverLicenseFront
+                                    ?.uri
                             }}
                             style={{
                                 width: Mixins.width(0.6, true),
@@ -118,6 +125,7 @@ export default function DriverLicense({ navigation }) {
                         <Image
                             source={{
                                 uri: partner.uploadDocuments?.driverLicenseBack
+                                    ?.uri
                             }}
                             style={{
                                 width: Mixins.width(0.6, true),

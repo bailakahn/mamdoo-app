@@ -34,6 +34,10 @@ const clientSchema = new Schema(
       type: locationSchema,
     },
     cab: { type: cabSchema },
+    profilePicture: { type: String },
+    cabLicense: { type: String },
+    driverLicenseFront: { type: String },
+    driverLicenseBack: { type: String },
   },
   { collection: "drivers" }
 );

@@ -24,7 +24,8 @@ export default function useUpload() {
         let result = await ImagePicker.launchCameraAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            aspect: [4, 3]
+            aspect: [4, 3],
+            base64: true
         });
 
         if (!result.cancelled) {
@@ -38,7 +39,8 @@ export default function useUpload() {
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4, 3],
-            quality: 1
+            quality: 1,
+            base64: true
         });
 
         if (!result.cancelled) {

@@ -1,8 +1,24 @@
 const { test } = require("./units");
-const { getDistanceMatrix } = require("_lib/google");
+const { putObject, putObjects } = require("_lib/aws/s3Client");
+
 module.exports = async ({ req, res }) => {
-  return await getDistanceMatrix({
-    origins: [{ lat: "45.55414762300733", lng: "-73.59968792733397" }],
-    destinations: [{ lat: "45.53195235757218", lng: "-73.62746320130509" }],
+  console.log({ ENV_NAME: process.env.ENV_NAME });
+  // const data = await putObjects([
+  //   {
+  //     Bucket: `mamdoo-${process.env.ENV_NAME}-drivers-documents-bucket`,
+  //     ContentType: "application/json",
+  //     Key: `documents/11111/baila.json`,
+  //     Body: JSON.stringify({ baila: true }),
+  //   },
+  // ]);
+  const data = await putObject({
+    Bucket: `mamdoo-${process.env.ENV_NAME}-bucket`,
+    ContentType: "application/json",
+    Key: `documents/11111/baila.json`,
+    Body: JSON.stringify({ baila: true }),
   });
+
+  return data;
 };
+// AccessKey: AKIAZOPFYC2HCXBGAX7P
+// Secret: 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
