@@ -13,26 +13,21 @@ module.exports = async ({ req, res }) => {
       req,
     },
     async ({ userId, accessToken, app }) => {
-      const {
-        profilePicture,
-        driverLicenseFront,
-        driverLicenseBack,
-        cabLicense,
-      } = getBody(req);
+      const images = getBody(req);
 
-      profilePicture && (await uploadProfilePictures(userId, profilePicture));
+      // profilePicture && (await uploadProfilePictures(userId, profilePicture));
 
-      driverLicenseFront &&
-        driverLicenseBack &&
-        (await uploadDriverLicenses(
-          userId,
-          driverLicenseFront,
-          driverLicenseBack
-        ));
+      // driverLicenseFront &&
+      //   driverLicenseBack &&
+      //   (await uploadDriverLicenses(
+      //     userId,
+      //     driverLicenseFront,
+      //     driverLicenseBack
+      //   ));
 
-      cabLicense && (await uploadCabLicenses(userId, cabLicense));
+      // cabLicense && (await uploadCabLicenses(userId, cabLicense));
 
-      return await uploadDocuments(userId);
+      return await uploadDocuments(userId, images);
     }
   );
 };

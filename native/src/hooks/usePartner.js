@@ -24,6 +24,7 @@ export default function usePartner() {
     const [isLoading, setIsLoading] = useState(false);
     const [verificationCode, setVerificationCode] = useState("");
     const [verificationError, setVerificationError] = useState(false);
+    const [uploadError, setUploadError] = useState(false);
 
     const [forgotPasswordUser, setForgotPasswordUser] = useState({
         phoneNumber: "",
@@ -406,7 +407,7 @@ export default function usePartner() {
             })
             .catch((err) => {
                 console.log(err);
-                // setVerificationError(t("errors.invalidCode"));
+                setUploadError(t("errors.crashErrorTitle"));
             })
             .finally(() => {
                 setIsLoading(false);
@@ -426,6 +427,7 @@ export default function usePartner() {
         forgotPasswordError,
         isLoading,
         uploadDocuments,
+        uploadError,
         actions: {
             savePartner,
             setFormPartner,

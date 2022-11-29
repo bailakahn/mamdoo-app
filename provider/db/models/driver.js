@@ -25,6 +25,11 @@ const clientSchema = new Schema(
     salt: { type: String, required: true },
     isOnline: { type: Boolean, default: false },
     active: { type: Boolean, default: false },
+    status: {
+      type: String,
+      enum: ["new", "pending", "active", "suspended"],
+      default: "new",
+    },
     verified: { type: Boolean, default: false },
     isBlocked: { type: Boolean, default: false },
     deleted: { type: Boolean, default: false },
