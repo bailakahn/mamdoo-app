@@ -3,7 +3,6 @@ import types from "../types";
 
 export default function rideActions(state, dispatch) {
     return {
-        // TODO: remove this and just use dispatch
         resetRide: () => {
             dispatch({
                 type: types.RESET_RIDE

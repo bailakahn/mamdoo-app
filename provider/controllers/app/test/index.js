@@ -1,24 +1,14 @@
 const { test } = require("./units");
-const { putObject, putObjects } = require("_lib/aws/s3Client");
+const { zonedTimeToUtc } = require("date-fns-tz");
+const subHours = require("date-fns/subHours");
+const format = require("date-fns/format");
 
 module.exports = async ({ req, res }) => {
-  console.log({ ENV_NAME: process.env.ENV_NAME });
-  // const data = await putObjects([
-  //   {
-  //     Bucket: `mamdoo-${process.env.ENV_NAME}-drivers-documents-bucket`,
-  //     ContentType: "application/json",
-  //     Key: `documents/11111/baila.json`,
-  //     Body: JSON.stringify({ baila: true }),
-  //   },
-  // ]);
-  const data = await putObject({
-    Bucket: `mamdoo-${process.env.ENV_NAME}-bucket`,
-    ContentType: "application/json",
-    Key: `documents/11111/baila.json`,
-    Body: JSON.stringify({ baila: true }),
-  });
-
-  return data;
+  return {
+    nowGuinea: zonedTimeToUtc(Date.now()),
+    nowCanada: format(Date.now(), "yyyy-MM-dd HH:mm:ss"),
+    tz: process.env.TZ,
+    aDayAgoCanada: subHours(new Date(), 24),
+    // aDayAgoGuinee: zonedTimeToUtc(subHours(new Date(), 24)),
+  };
 };
-// AccessKey: AKIAZOPFYC2HCXBGAX7P
-// Secret: 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

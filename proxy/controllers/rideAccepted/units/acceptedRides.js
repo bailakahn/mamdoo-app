@@ -3,7 +3,6 @@ const userList = require("_lib/userList");
 module.exports = async (io, message) => {
   const { event = "", recipients = [], data, toClearDrivers } = message;
 
-  // TODO: remove hardcoded driver id
   const driver = await get(
     "Driver",
     { _id: data.driverId, deleted: false },

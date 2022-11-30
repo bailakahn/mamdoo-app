@@ -5,8 +5,6 @@ module.exports = async (_id) => {
     "Ride",
     {
       _id,
-      // TODO: decide if we check request status
-      // status: rideStatuses.REQUEST
     },
     {
       one: true,
