@@ -9,6 +9,7 @@ export { default as ProfilePictureScene } from "./upload/Documents/ProfilePictur
 export { default as DriverLicenseScene } from "./upload/Documents/DriverLicense";
 export { default as CabLicenseScene } from "./upload/Documents/CabLicense";
 export { default as UploadInstructionsScene } from "./upload/UploadInstructions";
+export { default as ConfirmationScene } from "./upload/Confirmation";
 
 // ACCOUNT
 export { default as AccountScene } from "./account";

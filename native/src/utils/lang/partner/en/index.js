@@ -104,7 +104,9 @@ export default {
         cancel: "Cancel",
         send: "Upload",
         fromCamera: "From Camera",
-        fromGallery: "From Gallery"
+        fromGallery: "From Gallery",
+        uploadConfirmation: "Documents Uploaded!",
+        continue: "Continue"
     },
     errors: {
         crashErrorTitle: "Oops, Something Went Wrong",

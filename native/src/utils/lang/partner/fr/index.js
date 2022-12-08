@@ -106,7 +106,9 @@ export default {
         send: "Envoyer",
         cancel: "Annuler",
         fromCamera: "A partir de la caméra",
-        fromGallery: "A partir de la galérie"
+        fromGallery: "A partir de la galérie",
+        uploadConfirmation: "Documents Téléchargés!",
+        continue: "Continuer"
     },
     errors: {
         crashErrorTitle: "Oops, Quelque chose s'est mal passé",

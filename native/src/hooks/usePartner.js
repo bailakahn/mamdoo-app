@@ -391,7 +391,7 @@ export default function usePartner() {
             });
     };
 
-    const uploadDocumentsToS3 = () => {
+    const uploadDocumentsToS3 = (navigation) => {
         setIsLoading(true);
         getRequest({
             method: "POST",
@@ -403,7 +403,8 @@ export default function usePartner() {
             }, {})
         })
             .then((data) => {
-                setPartner({ ...partner, ...data });
+                // setPartner({ ...partner, ...data });
+                navigation.navigate("Confirmation");
             })
             .catch((err) => {
                 console.log(err);
@@ -448,7 +449,8 @@ export default function usePartner() {
             resetPassword,
             setIsLoading,
             setUploadDocuments,
-            uploadDocumentsToS3
+            uploadDocumentsToS3,
+            setPartner
         }
     };
 }

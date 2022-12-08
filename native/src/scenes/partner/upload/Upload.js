@@ -41,7 +41,7 @@ export default function Upload({ navigation }) {
                         mode="text"
                         onPress={() => {
                             setVisible(false);
-                            partner.actions.uploadDocumentsToS3();
+                            partner.actions.uploadDocumentsToS3(navigation);
                         }}
                     >
                         <Text style={{ color: colors.primary }}>

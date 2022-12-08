@@ -12,7 +12,8 @@ import {
     UploadInstructionsScene,
     ProfilePictureScene,
     DriverLicenseScene,
-    CabLicenseScene
+    CabLicenseScene,
+    ConfirmationScene
 } from "_scenes/partner";
 
 export default function HomeStack({ role }) {
@@ -121,6 +122,22 @@ export default function HomeStack({ role }) {
                     },
                     title: "",
                     headerBackTitle: t2("main.back")
+                })}
+            />
+
+            <Stack.Screen
+                name="Confirmation"
+                component={ConfirmationScene}
+                options={({ navigation }) => ({
+                    headerStyle: {
+                        borderBottomWidth: 1,
+                        backgroundColor: colors.background
+                    },
+                    headerTitleStyle: {
+                        // color: "#000"
+                    },
+                    headerShown: false,
+                    title: ""
                 })}
             />
         </Stack.Navigator>
