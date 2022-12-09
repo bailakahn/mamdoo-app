@@ -1,5 +1,5 @@
 const { putObject } = require("_lib/aws/s3Client");
-const { validateImage } = require("_LIB/helpers");
+const { validateImage } = require("_lib/helpers");
 const { Driver } = require("_db/models");
 
 module.exports = async (userId, profilePicture) => {
