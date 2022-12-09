@@ -5,7 +5,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "build": "eas build -p ios --profile staging"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4",
@@ -17,6 +18,7 @@
     "@react-navigation/native": "^5.9.3",
     "@react-navigation/stack": "^5.14.3",
     "deepmerge": "^4.2.2",
+    "dotenv": "^16.0.3",
     "expo": "^46.0.0",
     "expo-constants": "~13.2.4",
     "expo-image-picker": "~13.3.1",

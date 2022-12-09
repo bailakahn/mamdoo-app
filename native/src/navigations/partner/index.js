@@ -14,7 +14,9 @@ import { LoadingV2 } from "_atoms";
 import { t2 } from "_utils/lang";
 import LocationDenied from "_components/organisms/LocationDenied";
 import { useStore } from "_store";
-import { ENV_NAME } from "@env";
+// import { ENV_NAME } from "@env";
+import Constants from "expo-constants";
+const ENV_NAME = Constants.expoConfig.extra.envName;
 
 const Tab = createMaterialBottomTabNavigator();
 

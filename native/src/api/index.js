@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { BACKEND_ENDPOINT } from "@env";
+// import { BACKEND_ENDPOINT } from "@env";
+import Constants from "expo-constants";
 import { useStore } from "_store";
+const PROVIDER_URL = Constants.expoConfig.extra.providerUrl;
 
 export function useApi() {
     const {
@@ -10,7 +12,7 @@ export function useApi() {
     } = useStore();
 
     const getRequest = ({ method = "GET", endpoint, params }) => {
-        let url = BACKEND_ENDPOINT + endpoint;
+        let url = PROVIDER_URL + endpoint;
 
         const options = {
             headers: {
@@ -62,7 +64,7 @@ export function api() {
         AsyncStorage.getItem("@mamdoo-partner").then((user) => {
             const partner = JSON.parse(user);
 
-            let url = BACKEND_ENDPOINT + endpoint;
+            let url = PROVIDER_URL + endpoint;
 
             const options = {
                 headers: {

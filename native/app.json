@@ -2,7 +2,7 @@
   "expo": {
     "name": "Mamdoo",
     "slug": "mamdoo",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "orientation": "portrait",
     "icon": "./assets/mamdoo-icon-blank.png",
     "notification": {
@@ -45,7 +45,7 @@
         ]
       },
       "bundleIdentifier": "com.mamdoo.app",
-      "buildNumber": "0.0.1"
+      "buildNumber": "0.0.2"
     },
     "android": {
       "adaptiveIcon": {

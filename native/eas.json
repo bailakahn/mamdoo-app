@@ -1,16 +1,36 @@
 {
   "cli": {
-    "version": ">= 2.4.0"
+    "version": ">= 3.0.0"
   },
   "build": {
+    "base": {
+      "node": "16.0.0",
+      "yarn": "1.22.10"
+    },
     "development": {
       "developmentClient": true,
       "distribution": "internal"
     },
-    "preview": {
-      "distribution": "internal"
+    "staging": {
+      "extends": "base",
+      "env": {
+        "ENV_NAME": "staging",
+        "PROXY_URL": "https://mamdoo.herokuapp.com",
+        "PROVIDER_URL": "https://mamdoo-provider.herokuapp.com/"
+      },
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
     },
-    "production": {}
+    "production": {
+      "extends": "base",
+      "env": {
+        "ENV_NAME": "production",
+        "PROXY_URL": "https://mamdoo.herokuapp.com",
+        "PROVIDER_URL": "https://mamdoo-provider.herokuapp.com/"
+      }
+    }
   },
   "submit": {
     "production": {}

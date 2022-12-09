@@ -1,4 +1,4 @@
-const { validateImage } = require("_LIB/helpers");
+const { validateImage } = require("_lib/helpers");
 const { putObjects } = require("_lib/aws/s3Client");
 const { Driver } = require("_db/models");
 const Bucket = `mamdoo-${process.env.ENV_NAME}-bucket`;

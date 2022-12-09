@@ -4,7 +4,9 @@ import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
 import { useApi } from "_api";
 import { t2 } from "_utils/lang";
-import { ENV_NAME } from "@env";
+// import { ENV_NAME } from "@env";
+import Constants from "expo-constants";
+const ENV_NAME = Constants.expoConfig.extra.envName;
 
 const TASK_FETCH_LOCATION = "TASK_FETCH_LOCATION";
 var request = null;

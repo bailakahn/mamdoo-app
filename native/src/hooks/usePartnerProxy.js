@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import socketIOClient from "socket.io-client";
-import { PROXY_URL } from "@env";
+// import { PROXY_URL } from "@env";
+import Constants from "expo-constants";
 import usePartner from "./usePartner";
 import { useStore } from "_store";
 import types from "_store/types";
+const PROXY_URL = Constants.expoConfig.extra.proxyUrl;
 const socketEvents = ["NEW_REQUEST", "RESET_REQUEST", "CANCEL_REQUEST"];
 export default function usePartnerProxy() {
     const { dispatch } = useStore();
