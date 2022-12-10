@@ -4,20 +4,18 @@
   "main": "server.js",
   "license": "MIT",
   "scripts": {
-    "start-node": "export ENV_NAME=dev && nodemon server.js",
-    "start": "sls offline start --skipCacheInvalidation",
-    "start:prod": "export ENV_NAME=prod && node server.js",
+    "start-node": "nodemon server.js",
+    "start": "node server.js",
     "new:endpoint": "node cli/newEndpoint.js",
     "new:unit": "node cli/newUnit.js",
     "sync:topics": "node cli/syncTopics.js",
     "postinstall": "link-module-alias",
     "preinstall": "command -v link-module-alias && link-module-alias clean || true",
-    "migrate": "export ENV_NAME=dev && migrate-mongo up",
-    "migrate:prod": "export ENV_NAME=prod && migrate-mongo up",
-    "deploy:provider": "cd .. && heroku git:remote -a mamdoo-provider &&  git subtree push --prefix provider heroku master",
-    "deploy:proxy": "cd .. && heroku git:remote -a mamdoo &&  git subtree push --prefix proxy heroku master",
-    "log:provider": "heroku git:remote -a mamdoo-provider && heroku logs --tail",
-    "log:proxy": "heroku git:remote -a mamdoo && heroku logs --tail"
+    "migrate": "migrate-mongo up",
+    "deploy:provider": "cd .. && heroku git:remote -a staging-mamdoo-provider &&  git subtree push --prefix provider heroku master",
+    "deploy:proxy": "cd .. && heroku git:remote -a staging-mamdoo-proxy &&  git subtree push --prefix proxy heroku master",
+    "log:provider": "heroku git:remote -a staging-mamdoo-provider && heroku logs --tail",
+    "log:proxy": "heroku git:remote -a staging-mamdoo-proxy && heroku logs --tail"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.216.0",

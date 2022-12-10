@@ -15,8 +15,8 @@
       "extends": "base",
       "env": {
         "ENV_NAME": "staging",
-        "PROXY_URL": "https://mamdoo.herokuapp.com",
-        "PROVIDER_URL": "https://mamdoo-provider.herokuapp.com/"
+        "PROXY_URL": "https://staging-mamdoo-proxy.herokuapp.com",
+        "PROVIDER_URL": "https://staging-mamdoo-provider.herokuapp.com/"
       },
       "distribution": "internal",
       "android": {
@@ -27,8 +27,8 @@
       "extends": "base",
       "env": {
         "ENV_NAME": "production",
-        "PROXY_URL": "https://mamdoo.herokuapp.com",
-        "PROVIDER_URL": "https://mamdoo-provider.herokuapp.com/"
+        "PROXY_URL": "https://staging-mamdoo-proxy.herokuapp.com",
+        "PROVIDER_URL": "https://staging-mamdoo-provider.herokuapp.com/"
       }
     }
   },

@@ -65,6 +65,12 @@ export default function NavigationRoot({ mode }) {
     //     bootStrapAsync();
     // }, [app]);
 
+    console.log({
+        appLoaded,
+        darkModeLoaded: mamdooTheme.darkModeLoaded,
+        backgroundPermissionReady
+    });
+
     if (!appLoaded || !mamdooTheme.darkModeLoaded || !backgroundPermissionReady)
         return <LoadingV2 color={"#25C0D2"} />;
 

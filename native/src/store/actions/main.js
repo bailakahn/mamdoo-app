@@ -54,11 +54,10 @@ export default function authActions(state, dispatch) {
         getBackgroundPermission: () => {
             AsyncStorage.getItem("@mamdoo-background-permission").then(
                 (status) => {
-                    status &&
-                        dispatch({
-                            type: types.SET_BACKGROUND_PERMISSION,
-                            status
-                        });
+                    dispatch({
+                        type: types.SET_BACKGROUND_PERMISSION,
+                        status: status || "notLoaded"
+                    });
                 }
             );
         },

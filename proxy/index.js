@@ -1,9 +1,6 @@
 require("module-alias/register");
-const path = require("path");
+require("dotenv").config();
 const express = require("express");
-require("dotenv").config({
-  path: path.resolve(__dirname, `${process.env.ENV_NAME}.env`),
-});
 const app = express();
 const mongoose = require("mongoose");
 const consume = require("_app/consume");

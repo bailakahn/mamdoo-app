@@ -6,14 +6,15 @@ require("dotenv").config();
 const app = express();
 const mongoose = require("mongoose");
 const kafkajs = require("_lib/kafka");
-const { ENV_NAME } = process.env;
-
-console.log({ ENV_NAME });
-
 const {
+  ENV_NAME,
   MONGO_DB_URL,
   MONGO_DB_NAME,
-} = require(`../config/env.${ENV_NAME}.json`);
+  MONGO_DB_USER,
+  MONGO_DB_PASSWORD,
+} = process.env;
+
+console.log({ ENV_NAME });
 
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json({ limit: "1gb" }));
@@ -41,9 +42,9 @@ mongoose
     useUnifiedTopology: true,
     useCreateIndex: true,
     useFindAndModify: false,
-    ...(process.env.ENV_NAME === "prod" && {
-      user: "mamdooUser",
-      pass: "tUng6EWyFbTzEmGa",
+    ...(ENV_NAME !== "dev" && {
+      user: MONGO_DB_USER,
+      pass: MONGO_DB_PASSWORD,
     }),
     dbName: "mamdoo",
   })

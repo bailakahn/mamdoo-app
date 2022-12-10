@@ -1,8 +1,8 @@
 {
   "scripts": {
     "native": "cd native && yarn start -c",
-    "provider": "cd provider && export ENV_NAME=dev && nodemon server.js",
-    "proxy": "cd proxy && yarn start",
+    "provider": "cd provider && nodemon server.js",
+    "proxy": "cd proxy && yarn start-node",
     "start": "concurrently --kill-others  \"npm run provider\" \"npm run proxy\" \"npm run native\"",
     "deploy:provider": "heroku git:remote -a mamdoo-provider && git subtree push --prefix provider heroku master",
     "deploy:proxy": "heroku git:remote -a mamdoo && git subtree push --prefix proxy heroku master",
