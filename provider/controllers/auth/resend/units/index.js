@@ -1,1 +1,0 @@
-module.exports.resend = require("./resend.js")

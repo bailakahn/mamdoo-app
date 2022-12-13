@@ -1,1 +1,0 @@
-module.exports.acceptedRides = require("./acceptedRides.js")
