@@ -13,6 +13,7 @@
     },
     "staging": {
       "extends": "base",
+      "channel": "staging",
       "env": {
         "ENV_NAME": "staging",
         "PROXY_URL": "https://staging-mamdoo-proxy.herokuapp.com",
@@ -25,6 +26,7 @@
     },
     "production": {
       "extends": "base",
+      "channel": "production",
       "env": {
         "ENV_NAME": "production",
         "PROXY_URL": "https://staging-mamdoo-proxy.herokuapp.com",
