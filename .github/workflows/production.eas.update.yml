@@ -1,5 +1,9 @@
 name: update
-on: push
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   update:
@@ -26,7 +30,7 @@ jobs:
         uses: expo/expo-github-action@v7
         with:
           expo-version: 6.x
-          eas-version: 3.0.0
+          eas-version: 3.x
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Find yarn cache
@@ -44,4 +48,4 @@ jobs:
         run: yarn install --immutable
 
       - name: Publish update
-        run: eas update --auto
+        run: eas update --branch production
