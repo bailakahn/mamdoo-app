@@ -8,62 +8,66 @@ import { useStore } from "_store";
 import types from "_store/types";
 const PROXY_URL = Constants.expoConfig.extra.proxyUrl;
 const socketEvents = [
-    "FOUND_DRIVER",
-    "DRIVER_ARRIVED",
-    "CANCEL_REQUEST",
-    "END_RIDE",
-    "REQUEST_DENIED"
+  "FOUND_DRIVER",
+  "DRIVER_ARRIVED",
+  "CANCEL_REQUEST",
+  "END_RIDE",
+  "REQUEST_DENIED",
 ];
 export default function useProxy() {
-    const { dispatch } = useStore();
-    const navigation = useNavigation();
+  const { dispatch } = useStore();
+  const navigation = useNavigation();
 
-    const user = useUser();
+  const user = useUser();
 
-    useEffect(() => {
-        const socket = socketIOClient(PROXY_URL);
+  useEffect(() => {
+    const socket = socketIOClient(PROXY_URL);
 
-        socket.on("connect", () => {
-            socket.emit("join", `${user.user.userId}`);
-        });
+    socket.on("connect", () => {
+      socket.emit("join", `${user.user.userId}`);
+    });
 
-        socketEvents.forEach((event) => {
-            socket.on(event, (data) => {
-                if (event === "FOUND_DRIVER") {
-                    console.log({ data });
-                    dispatch({ type: "SET_CAN_CANCEL" });
-                    // TODO: set time out to 3 minutes
-                    // setTimeout(() => {
-                    //     dispatch({ type: "SET_CAN_CANCEL" });
-                    // }, 10000);
-                }
+    socketEvents.forEach((event) => {
+      socket.on(event, (data) => {
+        if (event === "FOUND_DRIVER") {
+          console.log({ foundDriver: data });
+          dispatch({ type: "SET_CAN_CANCEL" });
+        }
 
-                if (event == "CANCEL_REQUEST") {
-                    dispatch({ type: event });
-                    dispatch({ type: types.SET_RIDE_CANCELED, canceled: true });
-                    navigation.navigate("RideRequest", {
-                        driverId: data.driverId
-                    });
-                    return;
-                }
+        if (event == "CANCEL_REQUEST") {
+          dispatch({ type: event });
+          dispatch({ type: types.SET_RIDE_CANCELED, canceled: true });
+          navigation.navigate("RideRequest", {
+            driverId: data.driverId,
+          });
+          return;
+        }
 
-                if (event == "END_RIDE") {
-                    dispatch({ type: types.RESET_RIDE });
-                    dispatch({ type: types.REQUEST_DENIED, denied: false });
-                    navigation.navigate("Home");
-                    return;
-                }
+        if (event == "END_RIDE") {
+          dispatch({ type: types.RESET_RIDE });
+          dispatch({ type: types.REQUEST_DENIED, denied: false });
+          dispatch({
+            type: types.SHOW_RIDE_REVIEW,
+            reviewRequestId: data.requestId,
+          });
 
-                if (event == "REQUEST_DENIED") {
-                    dispatch({ type: types.REQUEST_DENIED, denied: true });
-                    return;
-                }
+          navigation.navigate("Review");
+          return;
+        }
 
-                dispatch({ type: event, data });
-            });
-        });
+        if (event == "REQUEST_DENIED") {
+          dispatch({ type: types.REQUEST_DENIED, denied: true });
+          return;
+        }
 
-        // CLEAN UP THE EFFECT
-        return () => socket.disconnect();
-    }, []);
+        dispatch({ type: event, data });
+      });
+    });
+
+    // CLEAN UP THE EFFECT
+    // return () => {
+    //   console.log("Disconnected");
+    //   socket.disconnect();
+    // };
+  }, []);
 }

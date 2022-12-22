@@ -65,6 +65,19 @@ export default {
     accountBlocked:
       "Your account has been blocked, This is probably a result of too many rides canceled.",
   },
+  rating: {
+    rateDriver: "Rate your Mamdoo",
+    rateText: "How was your ride",
+    done: "Done",
+    terrible: "Terrible",
+    bad: "Bad",
+    okay: "Okay",
+    good: "Good",
+    great: "Great",
+    notePlaceHolder: "Tell us about your ride",
+    ridePrice: "Ride Price",
+    ridePricePlaceholder: "How much did your ride cost ?",
+  },
   ride: {
     hello: "Hello",
     driverSearch: "Searching a",

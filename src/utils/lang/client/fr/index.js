@@ -64,6 +64,19 @@ export default {
     accountBlocked:
       "Votre compte a été bloqué, Surement parceque vous avez annulé beaucoup de courses.",
   },
+  rating: {
+    rateDriver: "Notez votre Mamdoo",
+    rateText: "Comment s'est passé votre course",
+    done: "Terminer",
+    terrible: "Terrible",
+    bad: "Mauvais",
+    okay: "Acceptable",
+    good: "Bien",
+    great: "Excéllent",
+    notePlaceHolder: "Dites nous plus sur votre course",
+    ridePrice: "Prix de la course",
+    ridePricePlaceholder: "Combien vous a coutée votre course ?",
+  },
   ride: {
     hello: "Salut",
     driverSearch: "Recherche de votre",

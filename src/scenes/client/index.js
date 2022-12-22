@@ -2,6 +2,7 @@
 export { default as HomeScene } from "./home";
 export { default as RideRequestScene } from "./home/RideRequest";
 export { default as RideScene } from "./home/Ride";
+export { default as ReviewScene } from "./home/Review";
 
 // FORM
 export { default as FormScene } from "./form";
