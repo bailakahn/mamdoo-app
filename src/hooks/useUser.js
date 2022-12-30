@@ -242,6 +242,7 @@ export default function useUser() {
     ) {
       setVerificationError(t("errors.empty"));
       setIsLoading(false);
+      return;
     }
 
     getRequest({
