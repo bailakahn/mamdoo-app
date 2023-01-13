@@ -10,4 +10,5 @@ npm-debug.*
 web-build/
 .env
 node_modules
+credentials
 .expo
