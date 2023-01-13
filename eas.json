@@ -29,8 +29,8 @@
       "channel": "production",
       "env": {
         "ENV_NAME": "production",
-        "PROXY_URL": "https://staging-mamdoo-proxy.herokuapp.com",
-        "PROVIDER_URL": "https://staging-mamdoo-provider.herokuapp.com/"
+        "PROXY_URL": "https://prod-mamdoo-proxy.herokuapp.com",
+        "PROVIDER_URL": "https://prod-mamdoo-provider.herokuapp.com/"
       }
     }
   },
