@@ -37,7 +37,7 @@
   "submit": {
     "production": {
       "android": {
-        "serviceAccountKeyPath": "credentials/pc-api-9163301236357873262-307-506cf917af29.json"
+        "serviceAccountKeyPath": "$SERVICE_ACCOUNT_KEY"
       }
     }
   }
