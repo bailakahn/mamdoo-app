@@ -53,7 +53,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.mamdoo.app",
-      "versionCode": 10
+      "versionCode": 11
     },
     "web": {
       "favicon": "./assets/favicon.png"
