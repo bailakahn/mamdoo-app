@@ -12,10 +12,9 @@ import { t, t2 } from "_utils/lang";
 import { Button, LoadingV2 } from "_atoms";
 import { usePartner } from "_hooks";
 
-export default function PasswordVerification({ navigation }) {
+export default function PinVerification({ navigation }) {
   const { colors } = useTheme();
   const partner = usePartner();
-  const [hidePassword, setHidePassword] = useState(true);
 
   return partner.isLoading ? (
     <LoadingV2 />
@@ -60,10 +59,10 @@ export default function PasswordVerification({ navigation }) {
               mode="outlined"
               label={t("main.verificationPlaceholder")}
               placeholder={t("main.verificationPlaceholder")}
-              value={partner.forgotPasswordUser.code}
+              value={partner.forgotPinUser.code}
               onChangeText={(code) =>
-                partner.actions.setForgotPasswordUser({
-                  ...partner.forgotPasswordUser,
+                partner.actions.setForgotPinUser({
+                  ...partner.forgotPinUser,
                   code,
                 })
               }
@@ -74,49 +73,41 @@ export default function PasswordVerification({ navigation }) {
           </View>
           <View style={Classes.centeredText(colors)}>
             <Text style={{ textAlign: "center" }}>
-              {t2("main.passwordVerificationNotice")}
+              {t2("main.pinVerificationNotice")}
             </Text>
           </View>
           <View style={{ marginTop: 10 }}>
             <TextInput
               style={Classes.formInput(colors)}
               mode="outlined"
-              label={t2("form.password")}
-              placeholder={t2("form.passwordPlaceholder")}
-              value={partner.forgotPasswordUser.password}
-              onChangeText={(password) =>
-                partner.actions.setForgotPasswordUser({
-                  ...partner.forgotPasswordUser,
-                  password,
+              label={t2("form.pin")}
+              placeholder={t2("form.pin")}
+              value={partner.forgotPinUser.pin}
+              onChangeText={(pin) =>
+                partner.actions.setForgotPinUser({
+                  ...partner.forgotPinUser,
+                  pin,
                 })
               }
-              secureTextEntry={hidePassword}
-              right={
-                <TextInput.Icon
-                  name="eye"
-                  onPress={() => setHidePassword(!hidePassword)}
-                />
-              }
+              maxLength={4}
+              keyboardType="number-pad"
+              returnKeyType="done"
             />
             <TextInput
               style={Classes.formInput(colors)}
               mode="outlined"
-              label={t2("form.passwordValidation")}
-              placeholder={t2("form.passwordPlaceholder")}
-              value={partner.forgotPasswordUser.passwordValidation}
-              onChangeText={(passwordValidation) =>
-                partner.actions.setForgotPasswordUser({
-                  ...partner.forgotPasswordUser,
-                  passwordValidation,
+              label={t2("form.pinValidation")}
+              placeholder={t2("form.pinValidation")}
+              value={partner.forgotPinUser.pinValidation}
+              onChangeText={(pinValidation) =>
+                partner.actions.setForgotPinUser({
+                  ...partner.forgotPinUser,
+                  pinValidation,
                 })
               }
-              secureTextEntry={hidePassword}
-              right={
-                <TextInput.Icon
-                  name="eye"
-                  onPress={() => setHidePassword(!hidePassword)}
-                />
-              }
+              maxLength={4}
+              keyboardType="number-pad"
+              returnKeyType="done"
             />
           </View>
           <View style={Classes.error(colors)}>
@@ -131,12 +122,12 @@ export default function PasswordVerification({ navigation }) {
               {...Classes.verifyButtonContainer(colors)}
               mode="contained"
               onPress={() => {
-                partner.actions.resetPassword();
+                partner.actions.resetPin();
               }}
               disabled={
-                !partner.forgotPasswordUser.code ||
-                !partner.forgotPasswordUser.password ||
-                !partner.forgotPasswordUser.passwordValidation
+                !partner.forgotPinUser.code ||
+                !partner.forgotPinUser.pin ||
+                !partner.forgotPinUser.pinValidation
               }
             >
               {`${t2("main.resetPassword")}`}

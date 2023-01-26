@@ -4,48 +4,48 @@ import { useTheme, DefaultTheme } from "react-native-paper";
 import { Classes } from "_styles";
 
 export default function RoundButton({
-    size,
-    text,
-    color,
-    onPress,
-    shadow,
-    disabled
+  size,
+  text,
+  color,
+  onPress,
+  shadow,
+  disabled,
 }) {
-    const { colors } = useTheme();
+  const { colors } = useTheme();
 
-    return (
-        <TouchableOpacity
-            disabled={disabled}
-            onPress={onPress}
+  return (
+    <TouchableOpacity
+      disabled={disabled}
+      onPress={onPress}
+      style={{
+        ...Classes.roundButton(colors, size, color),
+        ...(disabled && { backgroundColor: "lightgray" }),
+      }}
+    >
+      {shadow ? (
+        <View style={Classes.buttonShadow(colors, shadow.size)}>
+          <Text
             style={{
-                ...Classes.roundButton(colors, size, color),
-                ...(disabled && { backgroundColor: "lightgray" })
+              color: "#ffffff",
+              fontWeight: "bold",
+              fontSize: 15,
+              textAlign: "center",
             }}
+          >
+            {text}
+          </Text>
+        </View>
+      ) : (
+        <Text
+          style={{
+            color: colors.background,
+            fontWeight: "bold",
+            fontSize: 15,
+          }}
         >
-            {shadow ? (
-                <View style={Classes.buttonShadow(colors, shadow.size)}>
-                    <Text
-                        style={{
-                            color: "#ffffff",
-                            fontWeight: "bold",
-                            fontSize: 15,
-                            textAlign: "center"
-                        }}
-                    >
-                        {text}
-                    </Text>
-                </View>
-            ) : (
-                <Text
-                    style={{
-                        color: colors.background,
-                        fontWeight: "bold",
-                        fontSize: 15
-                    }}
-                >
-                    {text}
-                </Text>
-            )}
-        </TouchableOpacity>
-    );
+          {text}
+        </Text>
+      )}
+    </TouchableOpacity>
+  );
 }

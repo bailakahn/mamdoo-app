@@ -11,6 +11,7 @@ import {
 import { useTheme, Text } from "react-native-paper";
 import LottieView from "lottie-react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import LightAvatar from "_assets/animation/light-avatar.json";
@@ -72,12 +73,14 @@ export default function DriverOnTheWayScene() {
               setVisible={setVisible}
               content={t2("ride.canceConfirmContent")}
               onCancel={() => setVisible(false)}
-              cancelText={t2("ride.cancelConfirmCancel")}
+              cancelText={
+                <MaterialCommunityIcons size={40} name="arrow-left" />
+              }
               onConfirm={() => {
                 setVisible(false);
                 ride.actions.cancelRide();
               }}
-              okText={t2("ride.cancelConfirmOk")}
+              okText={<Icon size={40} name="clear" />}
               isRounded={true}
             />
           )}
@@ -88,12 +91,12 @@ export default function DriverOnTheWayScene() {
               setVisible={setEndRidePopConfirmVisible}
               content={t2("ride.endConfirmContent")}
               onCancel={() => setEndRidePopConfirmVisible(false)}
-              cancelText={t2("ride.endConfirmCancel")}
+              cancelText={<Icon size={40} name="clear" />}
               onConfirm={() => {
                 setEndRidePopConfirmVisible(false);
                 ride.actions.onEndRide();
               }}
-              okText={t2("ride.endConfirmOk")}
+              okText={<Icon size={40} name="check" />}
               isRounded={true}
               okButtonProps={{ color: "success" }}
               cancelButtonProps={{ color: "error" }}
@@ -144,7 +147,7 @@ export default function DriverOnTheWayScene() {
                 size={0.35}
                 shadow={{ size: 0.3 }}
                 color="error"
-                text={t2("ride.cancelRide")}
+                text={<Icon size={40} name="clear" />}
                 onPress={() => setVisible(true)}
               />
               <View style={{ marginRight: 50 }} />
@@ -152,7 +155,12 @@ export default function DriverOnTheWayScene() {
                 size={0.35}
                 shadow={{ size: 0.3 }}
                 color="grey"
-                text={t2("ride.openMap")}
+                text={
+                  <>
+                    <MaterialCommunityIcons size={40} name="motorbike" />{" "}
+                    <MaterialCommunityIcons size={40} name="google-maps" />
+                  </>
+                }
                 onPress={ride.actions.openMap}
               />
             </View>
@@ -163,7 +171,7 @@ export default function DriverOnTheWayScene() {
               size={0.35}
               shadow={{ size: 0.3 }}
               color="primary"
-              text={`${t2("ride.callRider")} ${ride.request.client.firstName}`}
+              text={<Icon size={40} name="phone" />}
               onPress={ride.actions.callDriver}
             />
             <View style={{ marginRight: 50 }} />
@@ -173,7 +181,9 @@ export default function DriverOnTheWayScene() {
                 size={0.35}
                 shadow={{ size: 0.3 }}
                 color="success"
-                text={t2("ride.arrived")}
+                text={
+                  <MaterialCommunityIcons size={40} name="map-marker-check" />
+                }
                 onPress={ride.actions.onDriverArrived}
               />
             ) : (
@@ -181,7 +191,9 @@ export default function DriverOnTheWayScene() {
                 size={0.35}
                 shadow={{ size: 0.3 }}
                 color="success"
-                text={t2("ride.endRide")}
+                text={
+                  <MaterialCommunityIcons size={40} name="map-marker-check" />
+                }
                 onPress={() => setEndRidePopConfirmVisible(true)}
               />
             )}
