@@ -1,9 +1,9 @@
 export default {
   main: {
-    iAmAClient: "I am a client",
+    iAmAClient: "Client",
     bookABike: "Book a bike",
     start: "Start",
-    iAmAPartner: "Partner",
+    iAmAPartner: "Driver",
     iWantMoreClients: "I want more clients",
     noInternetConnection: "No Internet Connection",
     locationPermission: "Location Permission",
@@ -13,8 +13,8 @@ export default {
     givePermission: "Give Permission",
     darkMode: "Dark Mode",
     enableDarkMode: "Enable Dark Mode",
-    forgotPassword: "Forgot Password",
-    forgotPasswordText: "You will receive a code to reset your password",
+    forgotPassword: "Forgot Pin",
+    forgotPasswordText: "You will receive a code to reset your pin code",
     call: "Call",
     callUs: "Call Us",
     goBack: "Go Back",
@@ -119,7 +119,7 @@ export default {
     registerHeader: "Register",
     alreadyHaveAccount: "Already have an account ?",
     notRegisteredYet: "Not Register Yet ?",
-    forgotPassword: "Forgot your password ?",
+    forgotPassword: "Forgot your code pin ?",
   },
   account: {
     changeApp: "Change App",

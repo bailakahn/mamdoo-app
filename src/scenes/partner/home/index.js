@@ -61,7 +61,7 @@ export default function AccountScene({}) {
                 <RoundButton
                   size={0.35}
                   color="error"
-                  text={t2("ride.denyRide")}
+                  text={<Icon size={40} name="clear" />}
                   onPress={ride.actions.denyRequest}
                   shadow={{ size: 0.3 }}
                 />
@@ -71,7 +71,7 @@ export default function AccountScene({}) {
                 <RoundButton
                   size={0.35}
                   color="primary"
-                  text={t2("ride.acceptRide")}
+                  text={<Icon size={40} name="check" />}
                   onPress={ride.actions.acceptRequest}
                   shadow={{ size: 0.3 }}
                 />
@@ -148,7 +148,12 @@ export default function AccountScene({}) {
           disabled={partner.partner?.isBlocked}
           size={0.35}
           color={!partner.partner.isOnline ? "primary" : "error"}
-          text={!partner.partner.isOnline ? t2("home.go") : t2("home.stop")}
+          text={
+            <Icon
+              size={40}
+              name={!partner.partner.isOnline ? "check" : "clear"}
+            />
+          }
           onPress={partner.actions.changeStatus}
           shadow={{ size: 0.3 }}
         />

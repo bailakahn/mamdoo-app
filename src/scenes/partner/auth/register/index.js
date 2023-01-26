@@ -8,7 +8,7 @@ import {
   KeyboardAvoidingView,
   Linking,
 } from "react-native";
-import { useTheme, Text, TextInput } from "react-native-paper";
+import { useTheme, Text, TextInput, Switch } from "react-native-paper";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import { usePartner, useApp } from "_hooks";
@@ -21,7 +21,6 @@ export default function Register({ navigation }) {
   const partner = usePartner();
 
   const [step, setStep] = useState(1);
-  const [hidePassword, setHidePassword] = useState(true);
 
   return partner.isLoading ? (
     <LoadingV2 />
@@ -101,22 +100,17 @@ export default function Register({ navigation }) {
                 <TextInput
                   style={Classes.formInput(colors)}
                   mode="outlined"
-                  label={t2("form.password")}
-                  placeholder={t2("form.passwordPlaceholder")}
-                  value={partner.formPartner.password}
-                  onChangeText={(password) =>
+                  label={t2("form.pin")}
+                  value={partner.formPartner.pin}
+                  onChangeText={(pin) =>
                     partner.actions.setFormPartner({
                       ...partner.formPartner,
-                      password,
+                      pin,
                     })
                   }
-                  secureTextEntry={hidePassword}
-                  right={
-                    <TextInput.Icon
-                      name="eye"
-                      onPress={() => setHidePassword(!hidePassword)}
-                    />
-                  }
+                  maxLength={4}
+                  keyboardType="number-pad"
+                  returnKeyType="done"
                 />
               </View>
             </>
@@ -204,6 +198,31 @@ export default function Register({ navigation }) {
                   }
                   maxLength={6}
                 />
+
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginTop: 10,
+                  }}
+                >
+                  <Text style={{ fontSize: 18 }}>
+                    {t2("form.vehicleOwner")}
+                  </Text>
+                  <Switch
+                    value={partner.formPartner?.cab?.owner}
+                    onValueChange={() => {
+                      partner.actions.setFormPartner({
+                        ...partner.formPartner,
+                        cab: {
+                          ...partner.formPartner.cab,
+                          owner: !partner.formPartner.cab.owner,
+                        },
+                      });
+                    }}
+                  />
+                </View>
               </View>
             </View>
           )}
