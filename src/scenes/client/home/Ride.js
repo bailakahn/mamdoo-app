@@ -160,7 +160,7 @@ export default function RideRequestScreen() {
                   size={0.35}
                   shadow={{ size: 0.3 }}
                   color="error"
-                  text={t("ride.cancelRide")}
+                  text={<Icon size={40} name="clear" />}
                   onPress={() => setVisible(true)}
                 />
                 <View style={{ marginRight: 50 }} />
@@ -171,7 +171,7 @@ export default function RideRequestScreen() {
               size={0.35}
               shadow={{ size: 0.3 }}
               color="primary"
-              text={`${t("ride.callDriver")} ${ride.driver.firstName}`}
+              text={<Icon size={40} name="phone" />}
               onPress={ride.actions.callDriver}
             />
           </View>

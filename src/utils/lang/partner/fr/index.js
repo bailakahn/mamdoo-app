@@ -3,7 +3,7 @@ export default {
     iAmAClient: "Client",
     bookABike: "Commander une moto",
     start: "Commencer",
-    iAmAPartner: "Partenaire",
+    iAmAPartner: "Chauffeur",
     iWantMoreClients: "Je veux plus de clients",
     noInternetConnection: "Pas de connexion internet",
     locationPermission: "Permission de localisation",
@@ -20,9 +20,8 @@ export default {
     close: "Fermer",
     darkMode: "Mode sombre",
     enableDarkMode: "Activer le mode sombre",
-    forgotPassword: "Mot de passe oublié",
-    forgotPasswordText:
-      "Vous allez recevoir un code de changement de mot de passe.",
+    forgotPassword: "Code pin oublié",
+    forgotPasswordText: "Vous allez recevoir un code de changement de pin.",
     call: "Appeler",
     callUs: "Appeler nous",
     goBack: "Retour",
@@ -35,6 +34,11 @@ export default {
     privacyPolicyText: "En créant un compte vous acceptez nos",
     privacyPolicyLink:
       "Conditions d'utilisation et notre politique de confidentialité",
+    resetPassword: "Changer Pin",
+    resetPin: "Changer votre code pin",
+    enterNewPin: "Entrer votre code pin",
+    pinVerificationNotice:
+      "Ensuite entrez votre nouveau code pin. N'utilisez pas le même code que celui que vous avez reçu par SMS.",
   },
   upload: {
     notActive: "Votre compte n'est pas activé",
@@ -111,6 +115,8 @@ export default {
     fromGallery: "A partir de la galérie",
     uploadConfirmation: "Documents Téléchargés!",
     continue: "Continuer",
+    logout: "Se déconnecter",
+    optional: "Optionnel",
   },
   errors: {
     crashErrorTitle: "Oops, Quelque chose s'est mal passé",
@@ -133,6 +139,9 @@ export default {
     locationBody:
       "Mamdoo a besoin d'avoir accès a votre position pour vous envoyer des courses.",
     noClient: "Nous n'avons pas pu trouver le client.",
+    pin: "Le code pin est invalide",
+    login: "Le numéro de téléphone ou le code pin est incorrecte",
+    pinValidation: "Verifiez que vos deux codes pin son identiques",
   },
   home: {
     go: "COMMENCER",
@@ -203,7 +212,13 @@ export default {
     registerHeader: "S'enregistrer",
     alreadyHaveAccount: "Vous avez déjà un compte ?",
     notRegisteredYet: "Pas de compte ?",
-    forgotPassword: "Mot de passe oublié ?",
+    forgotPassword: "Code pin oublié ?",
+    pin: "Code pin",
+    pinValidation: "Validation code pin",
+    start: "Commencer",
+    pinText:
+      "Le code pin vous permettra de vous reconnecter. Veuillez le mémoriser",
+    vehicleOwner: "Êtes-vous propriétaire ?",
   },
   account: {
     changeApp: "Changer d'application",

@@ -336,6 +336,18 @@ export const deleteAccountButton = (colors) => ({
   backgroundColor: colors.error,
 });
 
+export const logoutButton = (colors) => ({
+  style: {
+    width: Mixins.width(0.7, true),
+    height: Mixins.height(50),
+    justifyContent: "center",
+    backgroundColor: colors.error,
+  },
+  contentStyle: {
+    height: Mixins.height(50),
+  },
+});
+
 export const authorizeButton = (colors) => ({
   width: Mixins.width(0.7, true),
   height: 50,

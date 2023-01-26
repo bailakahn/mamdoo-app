@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {
   useProxy,
   useRequest,
@@ -76,7 +77,11 @@ export default function HomeScreen({ navigation, route }) {
           disabled={user.user?.isBlocked}
           size={0.35}
           color={user.user?.isBlocked ? "lightgray" : "primary"}
-          text={t("home.bookRide")}
+          text={
+            <>
+              <MaterialCommunityIcons size={40} name="motorbike" />
+            </>
+          }
           onPress={() => {
             request.actions.makeRideRequest(navigation);
             navigation.navigate("RideRequest");
