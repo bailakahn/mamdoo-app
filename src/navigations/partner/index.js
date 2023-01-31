@@ -12,6 +12,8 @@ import { usePartner } from "_hooks";
 import { useLocation } from "_hooks/partner";
 import { LoadingV2 } from "_atoms";
 import { t2 } from "_utils/lang";
+import { useApp } from "_hooks";
+import MaintenanceMode from "_organisms/MaintenanceMode";
 import LocationDenied from "_components/organisms/LocationDenied";
 import { useStore } from "_store";
 // import { ENV_NAME } from "@env";
@@ -29,6 +31,7 @@ export default function MainTabs({ role }) {
   const {
     ride: { onGoingRide },
   } = useStore();
+  const app = useApp();
 
   if (!partner.partnerLoaded || isLoading) return <LoadingV2 />;
 
@@ -49,53 +52,57 @@ export default function MainTabs({ role }) {
   return partner.partner?.accessToken ? (
     partner.partner?.verified ? (
       partner.partner.active ? (
-        <Tab.Navigator
-          initialRouteName="Home"
-          // shifting={true}
-          sceneAnimationEnabled={false}
-          activeColor={colors.primary}
-          barStyle={{
-            backgroundColor: colors.background,
-            borderTopColor: colors.border,
-            borderTopWidth: 1,
-          }}
-        >
-          <Tab.Screen
-            name="Home"
-            children={() => <HomeStack role={role} />}
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons name="home" color={color} size={25} />
-              ),
-              title: t2("screens.home"),
+        app?.settings?.prelaunchMode?.active ? (
+          <MaintenanceMode message={app.settings.prelaunchMode.message} />
+        ) : (
+          <Tab.Navigator
+            initialRouteName="Home"
+            // shifting={true}
+            sceneAnimationEnabled={false}
+            activeColor={colors.primary}
+            barStyle={{
+              backgroundColor: colors.background,
+              borderTopColor: colors.border,
+              borderTopWidth: 1,
             }}
-            listeners={{
-              tabPress: (e) => {
-                if (onGoingRide) e.preventDefault();
-              },
-            }}
-          />
+          >
+            <Tab.Screen
+              name="Home"
+              children={() => <HomeStack role={role} />}
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <MaterialCommunityIcons name="home" color={color} size={25} />
+                ),
+                title: t2("screens.home"),
+              }}
+              listeners={{
+                tabPress: (e) => {
+                  if (onGoingRide) e.preventDefault();
+                },
+              }}
+            />
 
-          <Tab.Screen
-            name="Account"
-            children={({}) => <AccountStack />}
-            options={({ navigation }) => ({
-              tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons
-                  name="account-settings"
-                  color={color}
-                  size={25}
-                />
-              ),
-              title: t2("screens.account"),
-            })}
-            listeners={{
-              tabPress: (e) => {
-                if (onGoingRide) e.preventDefault();
-              },
-            }}
-          />
-        </Tab.Navigator>
+            <Tab.Screen
+              name="Account"
+              children={({}) => <AccountStack />}
+              options={({ navigation }) => ({
+                tabBarIcon: ({ color, size }) => (
+                  <MaterialCommunityIcons
+                    name="account-settings"
+                    color={color}
+                    size={25}
+                  />
+                ),
+                title: t2("screens.account"),
+              })}
+              listeners={{
+                tabPress: (e) => {
+                  if (onGoingRide) e.preventDefault();
+                },
+              }}
+            />
+          </Tab.Navigator>
+        )
       ) : (
         <UploadStack />
       )

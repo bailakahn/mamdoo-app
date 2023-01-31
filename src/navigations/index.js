@@ -18,7 +18,7 @@ import LocationDisclosure from "_components/organisms/LocationDisclosure";
 export default function NavigationRoot({ mode }) {
   const mamdooTheme = useTheme();
 
-  const { app, appLoaded } = useApp();
+  const { app, appLoaded, settings } = useApp();
 
   const {
     main: { backgroundPermission, backgroundPermissionReady },
