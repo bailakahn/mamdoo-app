@@ -1,18 +1,15 @@
 import React from "react";
 import { SafeAreaView, View, Image } from "react-native";
 import { useTheme, Text } from "react-native-paper";
+import _ from "lodash";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { useApp } from "_hooks";
 import { Button } from "_atoms";
-import MaintenanceMode from "_organisms/MaintenanceMode";
 
 const Main = () => {
   const { colors } = useTheme();
   const app = useApp();
-
-  if (app?.settings?.maintenanceMode?.active)
-    return <MaintenanceMode message={app.settings.maintenanceMode.message} />;
 
   return (
     <SafeAreaView style={Classes.container(colors)}>
