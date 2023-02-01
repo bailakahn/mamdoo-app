@@ -15,7 +15,7 @@ module.exports = ({ config }) => ({
     package: IS_PROD
       ? "com.mamdoo.app"
       : `com.mamdoo.app_${process.env.ENV_NAME}`,
-    serviceAccountKeyPath: process.env.SERVICE_ACCOUNT_KEY,
+    // serviceAccountKeyPath: process.env.SERVICE_ACCOUNT_KEY,
     googleServicesFile: process.env.SERVICE_ACCOUNT_KEY,
   },
   extra: {
