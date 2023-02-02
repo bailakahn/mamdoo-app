@@ -78,9 +78,21 @@ export default function HomeScreen({ navigation, route }) {
           size={0.35}
           color={user.user?.isBlocked ? "lightgray" : "primary"}
           text={
-            <>
-              <MaterialCommunityIcons size={40} name="motorbike" />
-            </>
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <MaterialCommunityIcons
+                size={40}
+                name="motorbike"
+                color={"#fff"}
+              />
+
+              <Text style={{ color: "#fff" }}>{t("home.bookRide")}</Text>
+            </View>
           }
           onPress={() => {
             request.actions.makeRideRequest(navigation);

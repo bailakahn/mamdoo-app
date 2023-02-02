@@ -58,7 +58,7 @@ export default {
   },
   home: {
     welcome: "Bienvenue sur Mamdoo",
-    bookRide: "Commander un Mamdoo",
+    bookRide: "Commander",
     noDriver:
       "Nous n'avons pas pu trouver de chauffeur. S'il vous plait veuillez reessayer encore!",
     accountBlocked:
