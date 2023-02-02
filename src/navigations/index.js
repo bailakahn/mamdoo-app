@@ -20,7 +20,7 @@ import MaintenanceMode from "_organisms/MaintenanceMode";
 export default function NavigationRoot({ mode }) {
   const mamdooTheme = useTheme();
 
-  const { app, appLoaded, settings } = useApp();
+  const { app, appLoaded, settings, actions } = useApp();
 
   const {
     main: { backgroundPermission, backgroundPermissionReady },
@@ -76,7 +76,12 @@ export default function NavigationRoot({ mode }) {
     return <LoadingV2 color={"#25C0D2"} />;
 
   if (settings?.maintenanceMode?.active)
-    return <MaintenanceMode message={settings.maintenanceMode.message} />;
+    return (
+      <MaintenanceMode
+        message={settings.maintenanceMode.message}
+        onReload={actions?.getSettings}
+      />
+    );
 
   if (backgroundPermission == "notLoaded" && app == "partner")
     return (

@@ -40,6 +40,7 @@ export default {
     enterNewPin: "Enter you new pin code",
     pinVerificationNotice:
       "Then enter your new pin code. Do not use the same code as the one we sent by SMS.",
+    reload: "Reload",
   },
   upload: {
     notActive: "Your account is not active",

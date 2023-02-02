@@ -39,6 +39,7 @@ export default {
     enterNewPin: "Entrer votre code pin",
     pinVerificationNotice:
       "Ensuite entrez votre nouveau code pin. N'utilisez pas le même code que celui que vous avez reçu par SMS.",
+    reload: "Recharger",
   },
   upload: {
     notActive: "Votre compte n'est pas activé",

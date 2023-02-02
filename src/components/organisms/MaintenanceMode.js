@@ -2,7 +2,10 @@ import React from "react";
 import { View } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import { Classes } from "_styles";
-export default function LocationDenied({ message }) {
+import { Button } from "_atoms";
+import { t2 } from "_utils/lang";
+
+export default function LocationDenied({ message, onReload = () => {} }) {
   const { colors } = useTheme();
 
   return (
@@ -14,6 +17,15 @@ export default function LocationDenied({ message }) {
       </View>
       <View style={{ padding: 10 }}>
         <Text style={{ fontSize: 25, textAlign: "center" }}>{message}</Text>
+      </View>
+      <View style={{ marginTop: 20 }}>
+        <Button
+          style={Classes.authorizeButton(colors)}
+          mode="contained"
+          onPress={onReload}
+        >
+          {t2("main.reload")}
+        </Button>
       </View>
     </View>
   );

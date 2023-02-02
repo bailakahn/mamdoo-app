@@ -32,7 +32,10 @@ export default function MainTabs({ role }) {
   return user.user?.accessToken ? (
     user.user?.verified ? (
       app?.settings?.prelaunchMode?.active ? (
-        <MaintenanceMode message={app.settings.prelaunchMode.message} />
+        <MaintenanceMode
+          message={app.settings.prelaunchMode.message}
+          onReload={app.actions?.getSettings}
+        />
       ) : (
         <Tab.Navigator
           initialRouteName="Home"

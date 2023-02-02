@@ -40,7 +40,7 @@
   "submit": {
     "production": {
       "android": {
-        "serviceAccountKeyPath": "$SERVICE_ACCOUNT_KEY"
+        "serviceAccountKeyPath": "./service-account-key-prod.json"
       }
     }
   }

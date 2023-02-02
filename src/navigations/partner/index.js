@@ -53,7 +53,10 @@ export default function MainTabs({ role }) {
     partner.partner?.verified ? (
       partner.partner.active ? (
         app?.settings?.prelaunchMode?.active ? (
-          <MaintenanceMode message={app.settings.prelaunchMode.message} />
+          <MaintenanceMode
+            message={app.settings.prelaunchMode.message}
+            onReload={app.actions?.getSettings}
+          />
         ) : (
           <Tab.Navigator
             initialRouteName="Home"

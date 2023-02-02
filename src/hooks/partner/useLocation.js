@@ -81,7 +81,7 @@ export default function useLocation() {
 
   useEffect(() => {
     if (
-      ENV_NAME !== "production" &&
+      // ENV_NAME !== "production" &&
       statusForeground &&
       statusForeground.status !== Location.PermissionStatus.UNDETERMINED
     )

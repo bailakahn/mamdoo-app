@@ -19,6 +19,7 @@ export default function useApp() {
   }, []);
 
   const getSettings = () => {
+    console.log("Getting Settings...");
     getRequest({
       method: "GET",
       endpoint: "app/getsettings",
@@ -58,6 +59,6 @@ export default function useApp() {
     app,
     settings,
     appLoaded,
-    actions: { setApp, removeApp, call },
+    actions: { setApp, removeApp, call, getSettings },
   };
 }
