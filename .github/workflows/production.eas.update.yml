@@ -48,4 +48,4 @@ jobs:
         run: yarn install --immutable
 
       - name: Publish update
-        run: eas update --branch production
+        run: eas update --branch production --non-interactive

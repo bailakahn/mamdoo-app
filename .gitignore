@@ -12,3 +12,4 @@ web-build/
 node_modules
 credentials
 .expo
+dist
