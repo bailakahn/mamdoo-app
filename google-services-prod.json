@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "94567310667",
+    "project_id": "mamdoo-341603",
+    "storage_bucket": "mamdoo-341603.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:94567310667:android:59d6f41f593c87977eb4ce",
+        "android_client_info": {
+          "package_name": "com.mamdoo.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "94567310667-vc8ocfaq7r9prv0nf63r0gkdip3qmag0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7SrmxvxfXsyy2k_mLv-PgFRJvMXPRezU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "94567310667-vc8ocfaq7r9prv0nf63r0gkdip3qmag0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -61,7 +61,20 @@ export default function AccountScene({}) {
                 <RoundButton
                   size={0.35}
                   color="error"
-                  text={<Icon size={40} name="clear" />}
+                  text={
+                    <View
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Icon size={40} name="clear" color={"#fff"} />
+                      <Text style={{ color: "#fff" }}>
+                        {t2("ride.denyRide")}
+                      </Text>
+                    </View>
+                  }
                   onPress={ride.actions.denyRequest}
                   shadow={{ size: 0.3 }}
                 />
@@ -71,7 +84,20 @@ export default function AccountScene({}) {
                 <RoundButton
                   size={0.35}
                   color="primary"
-                  text={<Icon size={40} name="check" />}
+                  text={
+                    <View
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Icon size={40} name="check" color={"#fff"} />
+                      <Text style={{ color: "#fff" }}>
+                        {t2("ride.acceptRide")}
+                      </Text>
+                    </View>
+                  }
                   onPress={ride.actions.acceptRequest}
                   shadow={{ size: 0.3 }}
                 />
@@ -149,10 +175,22 @@ export default function AccountScene({}) {
           size={0.35}
           color={!partner.partner.isOnline ? "primary" : "error"}
           text={
-            <Icon
-              size={40}
-              name={!partner.partner.isOnline ? "check" : "clear"}
-            />
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Icon
+                size={40}
+                name={!partner.partner.isOnline ? "check" : "clear"}
+                color={"#fff"}
+              />
+              <Text style={{ color: "#fff" }}>
+                {t2(`${!partner.partner.isOnline ? "home.go" : "home.stop"}`)}
+              </Text>
+            </View>
           }
           onPress={partner.actions.changeStatus}
           shadow={{ size: 0.3 }}

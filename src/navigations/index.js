@@ -7,6 +7,7 @@ import {
 } from "react-native-paper";
 import { useStore } from "_store";
 import { useApp, useTheme } from "_hooks";
+import _ from "lodash";
 import { Colors } from "_styles";
 import ClientRoutes from "./client";
 import PartnerRoutes from "./partner";
@@ -14,6 +15,7 @@ import AppEntry from "../";
 import { navigationRef } from "./RootNavigation";
 import { Loading, LoadingV2 } from "_atoms";
 import LocationDisclosure from "_components/organisms/LocationDisclosure";
+import MaintenanceMode from "_organisms/MaintenanceMode";
 
 export default function NavigationRoot({ mode }) {
   const mamdooTheme = useTheme();
@@ -65,8 +67,16 @@ export default function NavigationRoot({ mode }) {
   //     bootStrapAsync();
   // }, [app]);
 
-  if (!appLoaded || !mamdooTheme.darkModeLoaded || !backgroundPermissionReady)
+  if (
+    !appLoaded ||
+    !mamdooTheme.darkModeLoaded ||
+    !backgroundPermissionReady ||
+    _.isEmpty(settings)
+  )
     return <LoadingV2 color={"#25C0D2"} />;
+
+  if (settings?.maintenanceMode?.active)
+    return <MaintenanceMode message={settings.maintenanceMode.message} />;
 
   if (backgroundPermission == "notLoaded" && app == "partner")
     return (

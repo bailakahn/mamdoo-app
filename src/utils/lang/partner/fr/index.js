@@ -174,7 +174,7 @@ export default {
     callToCancel: "Appelez pour annuler la course",
     openMap: "Ouvrir la carte",
     rideCanceled: "Le client a annulé la course.",
-    endRide: "Terminer la course",
+    endRide: "Terminer",
     arrived: "Je suis arrivé",
     clientOnHisWay:
       "Le client arrive vers vous. S'il ne vient pas, appelez le.",

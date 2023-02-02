@@ -16,7 +16,9 @@ module.exports = ({ config }) => ({
       ? "com.mamdoo.app"
       : `com.mamdoo.app_${process.env.ENV_NAME}`,
     // serviceAccountKeyPath: process.env.SERVICE_ACCOUNT_KEY,
-    googleServicesFile: process.env.SERVICE_ACCOUNT_KEY,
+    googleServicesFile: IS_PROD
+      ? "./google-services-prod.json"
+      : "./google-services-staging.json",
   },
   extra: {
     proxyUrl: process.env.PROXY_URL,

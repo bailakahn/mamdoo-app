@@ -5,126 +5,121 @@ import { useApi } from "_api";
 const acceptedEvents = ["NEW_REQUEST"];
 
 Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-        shouldShowAlert: true,
-        shouldPlaySound: false,
-        shouldSetBadge: false
-    })
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
 });
 
 export default function useNotification() {
-    const getRequest = useApi();
-    const [notification, setNotification] = useState(false);
-    const notificationListener = useRef();
-    const responseListener = useRef();
-    const lastNotificationResponse =
-        Notifications.useLastNotificationResponse();
-    useEffect(() => {
-        if (
-            lastNotificationResponse &&
-            lastNotificationResponse.notification?.request?.content?.data &&
-            lastNotificationResponse.actionIdentifier ===
-                Notifications.DEFAULT_ACTION_IDENTIFIER &&
-            acceptedEvents.includes(
-                lastNotificationResponse?.notification?.request?.content?.data
-                    ?.event
-            )
-        ) {
-            getRequest({
-                method: "POST",
-                endpoint: "notifications/handleNotifications",
-                params: lastNotificationResponse?.notification?.request?.content
-                    ?.data
-            });
-        }
-    }, [lastNotificationResponse]);
-    useEffect(() => {
-        registerForPushNotificationsAsync().then((token) => {
-            saveNotificationToken(token);
-        });
+  const getRequest = useApi();
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+  const lastNotificationResponse = Notifications.useLastNotificationResponse();
+  useEffect(() => {
+    if (
+      lastNotificationResponse &&
+      lastNotificationResponse.notification?.request?.content?.data &&
+      lastNotificationResponse.actionIdentifier ===
+        Notifications.DEFAULT_ACTION_IDENTIFIER &&
+      acceptedEvents.includes(
+        lastNotificationResponse?.notification?.request?.content?.data?.event
+      )
+    ) {
+      getRequest({
+        method: "POST",
+        endpoint: "notifications/handleNotifications",
+        params: lastNotificationResponse?.notification?.request?.content?.data,
+      });
+    }
+  }, [lastNotificationResponse]);
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) => {
+      saveNotificationToken(token);
+    });
 
-        notificationListener.current =
-            Notifications.addNotificationReceivedListener((notification) => {
-                setNotification(notification);
-            });
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification);
+      });
 
-        responseListener.current =
-            Notifications.addNotificationResponseReceivedListener(
-                handleNotificationResponse
-            );
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener(
+        handleNotificationResponse
+      );
 
-        return () => {
-            Notifications.removeNotificationSubscription(
-                notificationListener.current
-            );
-            Notifications.removeNotificationSubscription(
-                responseListener.current
-            );
-        };
-    }, []);
-
-    const saveNotificationToken = (token) => {
-        getRequest({
-            method: "POST",
-            endpoint: "notifications/saveToken",
-            params: {
-                token
-            }
-        }).catch((err) => {
-            console.log(err);
-        });
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
     };
+  }, []);
 
-    return {
-        schedulePushNotification
-    };
+  const saveNotificationToken = (token) => {
+    getRequest({
+      method: "POST",
+      endpoint: "notifications/saveToken",
+      params: {
+        token,
+      },
+    }).catch((err) => {
+      console.log(err);
+    });
+  };
+
+  return {
+    schedulePushNotification,
+  };
 }
 
 const handleNotificationResponse = (response) => {
-    console.log({
-        notification: response?.notification?.request?.content?.data
-    });
+  console.log({
+    notification: response?.notification?.request?.content?.data,
+  });
 };
 
 async function schedulePushNotification() {
-    await Notifications.scheduleNotificationAsync({
-        content: {
-            title: "You've got mail! 📬",
-            body: "Here is the notification body",
-            data: { data: "goes here" }
-        },
-        trigger: { seconds: 2 }
-    });
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "You've got mail! 📬",
+      body: "Here is the notification body",
+      data: { data: "goes here" },
+    },
+    trigger: { seconds: 2 },
+  });
 }
 
 async function registerForPushNotificationsAsync() {
-    let token;
-    if (Constants.isDevice) {
-        const { status: existingStatus } =
-            await Notifications.getPermissionsAsync();
-        let finalStatus = existingStatus;
-        if (existingStatus !== "granted") {
-            const { status } = await Notifications.requestPermissionsAsync();
-            finalStatus = status;
-        }
-        if (finalStatus !== "granted") {
-            alert("Failed to get push token for push notification!");
-            return;
-        }
-        token = (await Notifications.getExpoPushTokenAsync()).data;
-        // console.log(token);
-    } else {
-        alert("Must use physical device for Push Notifications");
+  let token;
+  if (Constants.isDevice) {
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
     }
-
-    if (Platform.OS === "android") {
-        Notifications.setNotificationChannelAsync("default", {
-            name: "default",
-            importance: Notifications.AndroidImportance.MAX,
-            vibrationPattern: [0, 250, 250, 250],
-            lightColor: "#FF231F7C"
-        });
+    if (finalStatus !== "granted") {
+      alert("Failed to get push token for push notification!");
+      return;
     }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    // console.log(token);
+  } else {
+    alert("Must use physical device for Push Notifications");
+  }
 
-    return token;
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
+  }
+
+  return token;
 }

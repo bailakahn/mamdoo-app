@@ -17,7 +17,8 @@
       "env": {
         "ENV_NAME": "staging",
         "PROXY_URL": "https://staging-mamdoo-proxy.herokuapp.com",
-        "PROVIDER_URL": "https://staging-mamdoo-provider.herokuapp.com/"
+        "PROVIDER_URL": "https://staging-mamdoo-provider.herokuapp.com/",
+        "SERVICE_ACCOUNT_KEY": "credentials/staging.json"
       },
       "distribution": "internal",
       "android": {

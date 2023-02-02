@@ -3,6 +3,7 @@ import { View, ScrollView, SafeAreaView } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import LottieView from "lottie-react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import LightAvatar from "_assets/animation/light-avatar.json";
@@ -53,12 +54,42 @@ export default function RideRequestScreen() {
             setVisible={setVisible}
             content={t("ride.canceConfirmContent")}
             onCancel={() => setVisible(false)}
-            cancelText={t("ride.cancelConfirmCancel")}
+            cancelText={
+              <View
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <MaterialCommunityIcons
+                  size={40}
+                  name="arrow-left"
+                  color={"#fff"}
+                />
+                <Text style={{ color: "#fff" }}>
+                  {t("ride.cancelConfirmCancel")}
+                </Text>
+              </View>
+            }
             onConfirm={() => {
               setVisible(false);
               ride.actions.cancelRide();
             }}
-            okText={t("ride.cancelConfirmOk")}
+            okText={
+              <View
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Icon size={40} name="clear" color={"#fff"} />
+                <Text style={{ color: "#fff" }}>
+                  {t("ride.cancelConfirmOk")}
+                </Text>
+              </View>
+            }
             isRounded={true}
           />
           <Text style={{ fontSize: 30, fontWeight: "bold" }}>
@@ -160,7 +191,20 @@ export default function RideRequestScreen() {
                   size={0.35}
                   shadow={{ size: 0.3 }}
                   color="error"
-                  text={<Icon size={40} name="clear" />}
+                  text={
+                    <View
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Icon size={40} name="clear" color={"#fff"} />
+                      <Text style={{ color: "#fff" }}>
+                        {t("ride.cancelRide")}
+                      </Text>
+                    </View>
+                  }
                   onPress={() => setVisible(true)}
                 />
                 <View style={{ marginRight: 50 }} />
@@ -171,7 +215,18 @@ export default function RideRequestScreen() {
               size={0.35}
               shadow={{ size: 0.3 }}
               color="primary"
-              text={<Icon size={40} name="phone" />}
+              text={
+                <View
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Icon size={40} name="phone" color={"#fff"} />
+                  <Text style={{ color: "#fff" }}>{t("ride.callDriver")}</Text>
+                </View>
+              }
               onPress={ride.actions.callDriver}
             />
           </View>

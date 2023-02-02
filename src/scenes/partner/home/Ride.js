@@ -74,13 +74,41 @@ export default function DriverOnTheWayScene() {
               content={t2("ride.canceConfirmContent")}
               onCancel={() => setVisible(false)}
               cancelText={
-                <MaterialCommunityIcons size={40} name="arrow-left" />
+                <View
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    size={40}
+                    name="arrow-left"
+                    color={"#fff"}
+                  />
+                  <Text style={{ color: "#fff" }}>
+                    {t2("ride.cancelConfirmCancel")}
+                  </Text>
+                </View>
               }
               onConfirm={() => {
                 setVisible(false);
                 ride.actions.cancelRide();
               }}
-              okText={<Icon size={40} name="clear" />}
+              okText={
+                <View
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Icon size={40} name="clear" color={"#fff"} />
+                  <Text style={{ color: "#fff" }}>
+                    {t2("ride.cancelConfirmOk")}
+                  </Text>
+                </View>
+              }
               isRounded={true}
             />
           )}
@@ -91,12 +119,34 @@ export default function DriverOnTheWayScene() {
               setVisible={setEndRidePopConfirmVisible}
               content={t2("ride.endConfirmContent")}
               onCancel={() => setEndRidePopConfirmVisible(false)}
-              cancelText={<Icon size={40} name="clear" />}
+              cancelText={
+                <View
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Icon size={40} name="clear" color={"#fff"} />
+                  <Text style={{ color: "#fff" }}>{t2("ride.cancelRide")}</Text>
+                </View>
+              }
               onConfirm={() => {
                 setEndRidePopConfirmVisible(false);
                 ride.actions.onEndRide();
               }}
-              okText={<Icon size={40} name="check" />}
+              okText={
+                <View
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Icon size={40} name="check" color={"#fff"} />
+                  <Text style={{ color: "#fff" }}>{t2("ride.endRide")}</Text>
+                </View>
+              }
               isRounded={true}
               okButtonProps={{ color: "success" }}
               cancelButtonProps={{ color: "error" }}
@@ -147,7 +197,20 @@ export default function DriverOnTheWayScene() {
                 size={0.35}
                 shadow={{ size: 0.3 }}
                 color="error"
-                text={<Icon size={40} name="clear" />}
+                text={
+                  <View
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Icon size={40} name="clear" color={"#fff"} />
+                    <Text style={{ color: "#fff" }}>
+                      {t2("ride.cancelRide")}
+                    </Text>
+                  </View>
+                }
                 onPress={() => setVisible(true)}
               />
               <View style={{ marginRight: 50 }} />
@@ -156,10 +219,20 @@ export default function DriverOnTheWayScene() {
                 shadow={{ size: 0.3 }}
                 color="grey"
                 text={
-                  <>
-                    <MaterialCommunityIcons size={40} name="motorbike" />{" "}
-                    <MaterialCommunityIcons size={40} name="google-maps" />
-                  </>
+                  <View
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      size={40}
+                      name="google-maps"
+                      color={"#fff"}
+                    />
+                    <Text style={{ color: "#fff" }}>{t2("ride.openMap")}</Text>
+                  </View>
                 }
                 onPress={ride.actions.openMap}
               />
@@ -171,7 +244,18 @@ export default function DriverOnTheWayScene() {
               size={0.35}
               shadow={{ size: 0.3 }}
               color="primary"
-              text={<Icon size={40} name="phone" />}
+              text={
+                <View
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Icon size={40} name="phone" color={"#fff"} />
+                  <Text style={{ color: "#fff" }}>{t2("ride.callDriver")}</Text>
+                </View>
+              }
               onPress={ride.actions.callDriver}
             />
             <View style={{ marginRight: 50 }} />
@@ -182,7 +266,20 @@ export default function DriverOnTheWayScene() {
                 shadow={{ size: 0.3 }}
                 color="success"
                 text={
-                  <MaterialCommunityIcons size={40} name="map-marker-check" />
+                  <View
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      size={40}
+                      name="map-marker-check"
+                      color={"#fff"}
+                    />
+                    <Text style={{ color: "#fff" }}>{t2("ride.arrived")}</Text>
+                  </View>
                 }
                 onPress={ride.actions.onDriverArrived}
               />
@@ -192,7 +289,20 @@ export default function DriverOnTheWayScene() {
                 shadow={{ size: 0.3 }}
                 color="success"
                 text={
-                  <MaterialCommunityIcons size={40} name="map-marker-check" />
+                  <View
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      size={40}
+                      name="location-exit"
+                      color={"#fff"}
+                    />
+                    <Text style={{ color: "#fff" }}>{t2("ride.endRide")}</Text>
+                  </View>
                 }
                 onPress={() => setEndRidePopConfirmVisible(true)}
               />

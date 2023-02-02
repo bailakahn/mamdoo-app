@@ -24,7 +24,6 @@ export default function useApp() {
       endpoint: "app/getsettings",
     })
       .then((settings) => {
-        console.log({ settings });
         setSettings(settings);
       })
       .catch((err) => {
