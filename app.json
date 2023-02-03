@@ -48,6 +48,12 @@
       "buildNumber": "0.0.7"
     },
     "android": {
+      "permissions": [
+        "ACCESS_BACKGROUND_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "CAMERA"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/mamdoo-adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
