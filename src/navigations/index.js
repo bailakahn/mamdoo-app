@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { ScrollView, SafeAreaView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import {
   Provider as PaperProvider,
@@ -85,7 +86,20 @@ export default function NavigationRoot({ mode }) {
 
   if (backgroundPermission == "notLoaded" && app == "partner")
     return (
-      <LocationDisclosure setBackgroundPermission={setBackgroundPermission} />
+      <SafeAreaView
+        style={{
+          flex: 1,
+          backgroundColor: "#fff",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <ScrollView>
+          <LocationDisclosure
+            setBackgroundPermission={setBackgroundPermission}
+          />
+        </ScrollView>
+      </SafeAreaView>
     );
 
   return (

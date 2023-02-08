@@ -6,63 +6,68 @@ import { t2 } from "_utils/lang";
 import { Button } from "_atoms";
 
 export default function LocationDisclosure({ setBackgroundPermission }) {
-    const { colors } = useTheme();
+  const { colors } = useTheme();
 
-    return (
-        <View style={Classes.container(colors)}>
-            <View style={{ marginTop: 20 }}>
-                <Image
-                    source={require("_assets/logo.png")}
-                    style={Classes.formLogo(colors)}
-                />
-            </View>
-            <View style={{ marginBottom: 20 }}>
-                <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-                    {t2("main.locationDisclosureTitle")}
-                </Text>
-            </View>
+  return (
+    <View
+      style={{
+        ...Classes.container(colors),
+        backgroundColor: "#fff",
+      }}
+    >
+      <View style={{ marginTop: 20 }}>
+        <Image
+          source={require("_assets/logo.png")}
+          style={Classes.formLogo(colors)}
+        />
+      </View>
+      <View style={{ marginBottom: 20 }}>
+        <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+          {t2("main.locationDisclosureTitle")}
+        </Text>
+      </View>
 
-            <View style={{ padding: 20 }}>
-                <View>
-                    <Text
-                        style={{
-                            fontSize: 20,
-                            textAlign: "left",
-                            fontWeight: "bold"
-                        }}
-                    >
-                        {`\u2022 ` + t2("main.locationDisclosureText")}
-                    </Text>
-                </View>
-
-                <View style={{ marginTop: 10 }}>
-                    <Text
-                        style={{
-                            fontSize: 20,
-                            textAlign: "left",
-                            fontWeight: "bold"
-                        }}
-                    >
-                        {`\u2022 ` + t2("main.locationDisclosureTextDetails")}
-                    </Text>
-                </View>
-            </View>
-
-            <View style={{ padding: 10 }}>
-                <Text style={{ fontSize: 15, textAlign: "center" }}>
-                    {t2("main.locationDisclosureApprovalText")}
-                </Text>
-            </View>
-
-            <View style={{ marginTop: 20 }}>
-                <Button
-                    style={Classes.authorizeButton(colors)}
-                    mode="contained"
-                    onPress={() => setBackgroundPermission("loaded")}
-                >
-                    {t2("main.locationDisclosureApprovalButton")}
-                </Button>
-            </View>
+      <View style={{ padding: 20 }}>
+        <View>
+          <Text
+            style={{
+              fontSize: 20,
+              textAlign: "left",
+              fontWeight: "bold",
+            }}
+          >
+            {`\u2022 ` + t2("main.locationDisclosureText")}
+          </Text>
         </View>
-    );
+
+        <View style={{ marginTop: 10 }}>
+          <Text
+            style={{
+              fontSize: 20,
+              textAlign: "left",
+              fontWeight: "bold",
+            }}
+          >
+            {`\u2022 ` + t2("main.locationDisclosureTextDetails")}
+          </Text>
+        </View>
+      </View>
+
+      <View style={{ padding: 10 }}>
+        <Text style={{ fontSize: 15, textAlign: "center" }}>
+          {t2("main.locationDisclosureApprovalText")}
+        </Text>
+      </View>
+
+      <View style={{ marginTop: 20, marginBottom: 30 }}>
+        <Button
+          style={Classes.authorizeButton(colors)}
+          mode="contained"
+          onPress={() => setBackgroundPermission("loaded")}
+        >
+          {t2("main.locationDisclosureApprovalButton")}
+        </Button>
+      </View>
+    </View>
+  );
 }
