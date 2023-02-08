@@ -35,5 +35,8 @@ export default function rideActions(state, dispatch) {
     showRideReview: (reviewRequestId) => {
       dispatch({ type: types.SHOW_RIDE_REVIEW, reviewRequestId });
     },
+    setNewRequestId: (newRequestId) => {
+      dispatch({ type: types.SET_NEW_REQUEST_ID, newRequestId });
+    },
   };
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Linking, Platform, Alert } from "react-native";
 import Constants from "expo-constants";
 import * as IntentLauncher from "expo-intent-launcher";
@@ -20,6 +20,7 @@ export default function useRide() {
       denied,
       distanceMatrix,
       reviewRequestId,
+      newRequestId,
     },
     actions: { resetRide, setRideDenied, setRideCanceled, hideRideReview },
   } = useStore();
@@ -35,6 +36,23 @@ export default function useRide() {
       params: {
         requestId,
         driverId: driver._id,
+      },
+    })
+      .then(() => {
+        resetRide();
+        navigation.navigate("Home");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const cancelNewRequest = () => {
+    getRequest({
+      method: "POST",
+      endpoint: "rides/cancelNewRequest",
+      params: {
+        requestId: newRequestId,
       },
     })
       .then(() => {
@@ -101,6 +119,7 @@ export default function useRide() {
     actions: {
       callDriver,
       cancelRide,
+      cancelNewRequest,
       setRideCanceled,
       setRideDenied,
       resetRide,

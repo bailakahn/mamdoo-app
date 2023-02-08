@@ -20,6 +20,7 @@ export default (state = ride, action) => {
         request: null,
         // canceled: false,
         onGoingRide: false,
+        newRequestId: false,
       };
     case types.SET_CAN_CANCEL:
       return {
@@ -93,6 +94,11 @@ export default (state = ride, action) => {
       return {
         ...state,
         reviewRequestId: false,
+      };
+    case types.SET_NEW_REQUEST_ID:
+      return {
+        ...state,
+        newRequestId: action.newRequestId,
       };
     default:
       return state;

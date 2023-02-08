@@ -26,6 +26,7 @@ export default {
     denied: false,
     onGoingRide: false,
     reviewRequestId: false,
+    newRequestId: false,
   },
 };
 
