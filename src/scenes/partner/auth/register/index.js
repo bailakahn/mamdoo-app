@@ -253,7 +253,7 @@ export default function Register({ navigation }) {
                       { label: "Matoto", value: "Matoto" },
                       { label: "Ratoma", value: "Ratoma" },
                     ].map(({ label, value }) => (
-                      <Picker.Item label={label} value={value} />
+                      <Picker.Item key={value} label={label} value={value} />
                     ))}
                   </Picker>
                 </View>
