@@ -220,6 +220,7 @@ export default {
     pinText:
       "Le code pin vous permettra de vous reconnecter. Veuillez le mémoriser",
     vehicleOwner: "Êtes-vous propriétaire ?",
+    selectMunicipality: "Commune de",
   },
   account: {
     changeApp: "Changer d'application",

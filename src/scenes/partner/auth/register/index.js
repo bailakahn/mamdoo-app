@@ -9,6 +9,7 @@ import {
   Linking,
 } from "react-native";
 import { useTheme, Text, TextInput, Switch } from "react-native-paper";
+import { Picker } from "@react-native-picker/picker";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import { usePartner, useApp } from "_hooks";
@@ -174,7 +175,7 @@ export default function Register({ navigation }) {
                       ...partner.formPartner,
                       cab: {
                         ...partner.formPartner.cab,
-                        model,
+                        model: model.toUpperCase(),
                       },
                     })
                   }
@@ -222,6 +223,39 @@ export default function Register({ navigation }) {
                       });
                     }}
                   />
+                </View>
+
+                <View
+                  style={{
+                    marginTop: 20,
+                  }}
+                >
+                  <View style={{ marginBottom: 10 }}>
+                    <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                      {t2("form.selectMunicipality")}
+                    </Text>
+                  </View>
+                  <Picker
+                    selectedValue={partner.formPartner?.municipality}
+                    onValueChange={(itemValue, itemIndex) =>
+                      partner.actions.setFormPartner({
+                        ...partner.formPartner,
+                        municipality: itemValue,
+                      })
+                    }
+                    // mode="dropdown"
+                    style={{ backgroundColor: "lightgrey" }}
+                  >
+                    {[
+                      { label: "Dixin", value: "Dixin" },
+                      { label: "Kaloum", value: "Kaloum" },
+                      { label: "Matam", value: "Matam" },
+                      { label: "Matoto", value: "Matoto" },
+                      { label: "Ratoma", value: "Ratoma" },
+                    ].map(({ label, value }) => (
+                      <Picker.Item label={label} value={value} />
+                    ))}
+                  </Picker>
                 </View>
               </View>
             </View>

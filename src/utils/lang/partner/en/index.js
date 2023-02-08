@@ -220,6 +220,7 @@ export default {
     notRegisteredYet: "Not Register Yet ?",
     forgotPassword: "Forgot your pin ?",
     vehicleOwner: "Does you vehicle belong to you ?",
+    selectMunicipality: "Minicipality",
   },
   account: {
     changeApp: "Change App",
