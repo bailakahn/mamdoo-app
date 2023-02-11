@@ -169,7 +169,7 @@ export default function Register({ navigation }) {
                   style={Classes.formInput(colors)}
                   mode="outlined"
                   label={t2("form.cabModel")}
-                  placeholder={t2("form.cabModel")}
+                  placeholder={t2("form.cabModelPlaceholder")}
                   value={partner.formPartner.cab.model}
                   onChangeText={(model) =>
                     partner.actions.setFormPartner({
@@ -198,7 +198,6 @@ export default function Register({ navigation }) {
                       },
                     })
                   }
-                  // maxLength={6}
                 />
 
                 <View
@@ -257,6 +256,42 @@ export default function Register({ navigation }) {
                       <Picker.Item key={value} label={label} value={value} />
                     ))}
                   </Picker>
+                </View>
+
+                <View
+                  style={{
+                    marginTop: 20,
+                  }}
+                >
+                  <TextInput
+                    style={Classes.formInput(colors)}
+                    mode="outlined"
+                    label={t2("form.neighborhood")}
+                    placeholder={t2("form.neighborhoodPlaceHolder")}
+                    value={partner.formPartner.neighborhood}
+                    onChangeText={(neighborhood) =>
+                      partner.actions.setFormPartner({
+                        ...partner.formPartner,
+                        neighborhood,
+                      })
+                    }
+                  />
+                </View>
+
+                <View style={{}}>
+                  <TextInput
+                    style={Classes.formInput(colors)}
+                    mode="outlined"
+                    label={t2("form.base")}
+                    placeholder={t2("form.basePlaceholder")}
+                    value={partner.formPartner.base}
+                    onChangeText={(base) =>
+                      partner.actions.setFormPartner({
+                        ...partner.formPartner,
+                        base,
+                      })
+                    }
+                  />
                 </View>
               </View>
             </View>

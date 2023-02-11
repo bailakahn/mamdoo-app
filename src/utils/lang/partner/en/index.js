@@ -223,6 +223,11 @@ export default {
     selectMunicipality: "Minicipality",
     pinPlaceholder: "Something you will remember",
     registerPin: "Pin Code (4 digits)",
+    neighborhood: "Neighborhood",
+    neighborhoodPlaceHolder: "Example: Kipé or Nongo or Lambandji",
+    base: "Base",
+    basePlaceholder: "Example: Pharma Guinée or Pont Madina",
+    cabModelPlaceholder: "Example: TVS, Honda",
   },
   account: {
     changeApp: "Change App",

@@ -16,6 +16,8 @@ export default function usePartner() {
     pin: "",
     cab: { model: "", licensePlate: "", owner: false },
     municipality: "Ratoma",
+    neighborhood: "",
+    base: "",
   });
 
   const [auth, setAuth] = useState({ phoneNumber: "", pin: "" });
