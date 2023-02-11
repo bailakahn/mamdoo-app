@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { View, Platform, Image } from "react-native";
+import { View, ScrollView, SafeAreaView } from "react-native";
 import {
   useTheme,
   Text,
@@ -35,54 +35,69 @@ export default function Confirmation() {
   }, []);
 
   return (
-    <>
-      <View
-        style={{
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: colors.background,
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
           justifyContent: "center",
           alignItems: "center",
-          height: Mixins.height(0.9, true),
         }}
       >
-        <LottieView
-          ref={animation}
-          style={[
-            Classes.animation(colors),
-            {
-              width: 200,
-              height: 200,
-            },
-          ]}
-          autoPlay
-          loop
-          source={ReadyAmimation}
-        />
-
-        <View>
-          <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-            {t2("upload.uploadConfirmation")}
-          </Text>
-        </View>
-      </View>
-      <View
-        style={{
-          justifyContent: "flex-end",
-          alignItems: "center",
-          marginBottom: 20,
-        }}
-      >
-        <Button
-          {...Classes.callButtonContainer(colors)}
-          mode="contained"
-          onPress={() =>
-            partner.actions.setPartner({
-              ...partner.partner,
-              active: true,
-            })
-          }
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            height: Mixins.height(0.9, true),
+          }}
         >
-          {`${t2("upload.continue")}`}
-        </Button>
-      </View>
-    </>
+          <LottieView
+            ref={animation}
+            style={[
+              Classes.animation(colors),
+              {
+                width: 200,
+                height: 200,
+              },
+            ]}
+            autoPlay
+            loop
+            source={ReadyAmimation}
+          />
+
+          <View>
+            <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+              {t2("upload.uploadConfirmation")}
+            </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            justifyContent: "flex-end",
+            alignItems: "center",
+            marginBottom: 20,
+          }}
+        >
+          <Button
+            {...Classes.callButtonContainer(colors)}
+            mode="contained"
+            onPress={() =>
+              partner.actions.setPartner({
+                ...partner.partner,
+                active: true,
+              })
+            }
+          >
+            {`${t2("upload.continue")}`}
+          </Button>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
