@@ -108,7 +108,7 @@ export default {
     lastName: "Last Name",
     phoneNumber: "Phone Number",
     phoneNumberPlaceholder: "Ex: 622442233",
-    pin: "Pin Code",
+    pin: "Pin Code (4 digits)",
     pinValidation: "Pin Validation",
     pinText:
       "This Pin Code will allow you to login later. Please save it somewhere",
@@ -120,6 +120,8 @@ export default {
     alreadyHaveAccount: "Already have an account ?",
     notRegisteredYet: "Not Register Yet ?",
     forgotPassword: "Forgot your code pin ?",
+    pinPlaceholder: "Something you will remember",
+    registerPin: "Pin Code (4 digits)",
   },
   account: {
     changeApp: "Change App",

@@ -88,11 +88,11 @@ export default function usePartner() {
       return;
     }
 
-    if (!settings.REGEX.licencePlate.test(formPartner.cab.licensePlate)) {
-      setIsLoading(false);
-      setFormError(t2("errors.licensePlate"));
-      return;
-    }
+    // if (!settings.REGEX.licencePlate.test(formPartner.cab.licensePlate)) {
+    //   setIsLoading(false);
+    //   setFormError(t2("errors.licensePlate"));
+    //   return;
+    // }
 
     getRequest({
       method: "POST",

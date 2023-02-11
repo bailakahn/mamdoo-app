@@ -102,6 +102,7 @@ export default function Register({ navigation }) {
                   style={Classes.formInput(colors)}
                   mode="outlined"
                   label={t2("form.pin")}
+                  placeholder={t2("form.pinPlaceholder")}
                   value={partner.formPartner.pin}
                   onChangeText={(pin) =>
                     partner.actions.setFormPartner({
@@ -175,7 +176,7 @@ export default function Register({ navigation }) {
                       ...partner.formPartner,
                       cab: {
                         ...partner.formPartner.cab,
-                        model: model.toUpperCase(),
+                        model: model,
                       },
                     })
                   }
@@ -193,11 +194,11 @@ export default function Register({ navigation }) {
                       ...partner.formPartner,
                       cab: {
                         ...partner.formPartner.cab,
-                        licensePlate: licensePlate.toUpperCase(),
+                        licensePlate: licensePlate,
                       },
                     })
                   }
-                  maxLength={6}
+                  // maxLength={6}
                 />
 
                 <View

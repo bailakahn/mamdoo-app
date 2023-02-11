@@ -221,6 +221,8 @@ export default {
     forgotPassword: "Forgot your pin ?",
     vehicleOwner: "Does you vehicle belong to you ?",
     selectMunicipality: "Minicipality",
+    pinPlaceholder: "Something you will remember",
+    registerPin: "Pin Code (4 digits)",
   },
   account: {
     changeApp: "Change App",

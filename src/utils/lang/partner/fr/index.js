@@ -214,13 +214,15 @@ export default {
     alreadyHaveAccount: "Vous avez déjà un compte ?",
     notRegisteredYet: "Pas de compte ?",
     forgotPassword: "Code pin oublié ?",
-    pin: "Code pin",
+    pin: "Code pin (4 chiffres)",
     pinValidation: "Validation code pin",
     start: "Commencer",
     pinText:
       "Le code pin vous permettra de vous reconnecter. Veuillez le mémoriser",
     vehicleOwner: "Êtes-vous propriétaire ?",
     selectMunicipality: "Commune de",
+    pinPlaceholder: "Un code facile á retenir",
+    registerPin: "Code Pin (4 chiffres)",
   },
   account: {
     changeApp: "Changer d'application",
