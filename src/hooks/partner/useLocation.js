@@ -61,8 +61,8 @@ export default function useLocation() {
       Location.startLocationUpdatesAsync(TASK_FETCH_LOCATION, {
         activityType: Location.ActivityType.AutomotiveNavigation,
         accuracy: Location.Accuracy.Highest,
-        distanceInterval: 1000, // minimum change (in meters) betweens updates
-        deferredUpdatesInterval: 60000, // minimum interval (in milliseconds) between updates
+        distanceInterval: 2000, // 2KM // minimum change (in meters) betweens updates
+        deferredUpdatesInterval: 600000, //10 minutes // minimum interval (in milliseconds) between updates
         // foregroundService is how you get the task to be updated as often as would be if the app was open
         foregroundService: {
           notificationTitle: "Using your location",

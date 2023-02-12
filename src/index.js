@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView, View, Image } from "react-native";
+import { SafeAreaView, View, Image, ScrollView } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import _ from "lodash";
 import { Classes } from "_styles";
@@ -13,72 +13,78 @@ const Main = () => {
 
   return (
     <SafeAreaView style={Classes.container(colors)}>
-      <View style={{ marginTop: -50 }}>
-        <Image
-          source={require("_assets/logo.png")}
-          style={Classes.formLogo(colors)}
-        />
-      </View>
-      <View
-        style={{
-          alignItems: "flex-start",
-          marginBottom: 10,
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <Button
-          mode="outlined"
-          onPress={() => app.actions.setApp("client")}
-          style={[
-            Classes.splashButton(colors),
-            {
-              borderColor: colors.primary,
-              height: 50,
-            },
-          ]}
-        >
+        <View style={{ marginTop: -50 }}>
+          <Image
+            source={require("_assets/logo.png")}
+            style={Classes.formLogo(colors)}
+          />
+        </View>
+        <View style={{ ...Classes.mamdooUse(colors), alignItems: "center" }}>
           <Text
             style={{
-              fontSize: 20,
-              textAlign: "center",
+              fontSize: 30,
               fontWeight: "bold",
-              paddingRight: 50,
-              color: colors.primary,
             }}
           >
-            {t("main.iAmAClient")}
+            {t("main.iam") + ":"}
           </Text>
-        </Button>
-      </View>
-      <View
-        style={{
-          alignItems: "flex-start",
-          marginBottom: 10,
-        }}
-      >
-        <Button
-          mode="contained"
-          onPress={() => app.actions.setApp("partner")}
-          style={[
-            Classes.splashButton(colors),
-            {
-              borderColor: colors.accent,
-              height: 50,
-            },
-          ]}
+        </View>
+        <View
+          style={{
+            alignItems: "flex-start",
+            marginBottom: 10,
+          }}
         >
-          <Text
-            style={{
-              fontSize: 20,
-              textAlign: "center",
-              fontWeight: "bold",
-              paddingRight: 50,
-              color: colors.text,
-            }}
+          <Button
+            mode="outlined"
+            onPress={() => app.actions.setApp("client")}
+            {...Classes.splashButton(colors)}
           >
-            {t("main.iAmAPartner")}
-          </Text>
-        </Button>
-      </View>
+            <Text
+              style={{
+                fontSize: 20,
+                textAlign: "center",
+                fontWeight: "bold",
+                paddingRight: 50,
+                color: colors.primary,
+              }}
+            >
+              {t("main.iAmAClient")}
+            </Text>
+          </Button>
+        </View>
+        <View
+          style={{
+            alignItems: "flex-start",
+            marginBottom: 10,
+          }}
+        >
+          <Button
+            mode="contained"
+            onPress={() => app.actions.setApp("partner")}
+            {...Classes.splashButton(colors)}
+          >
+            <Text
+              style={{
+                fontSize: 20,
+                textAlign: "center",
+                fontWeight: "bold",
+                paddingRight: 50,
+                color: colors.text,
+              }}
+            >
+              {t("main.iAmAPartner")}
+            </Text>
+          </Button>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

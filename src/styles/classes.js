@@ -278,13 +278,23 @@ export const backButton = (colors) => ({
   backgroundColor: colors.accent,
 });
 
+export const mamdooUse = (colors) => ({
+  marginBottom: 20,
+});
+
 export const splashButton = (colors) => ({
-  marginTop: 20,
-  width: Mixins.width(0.6, true),
-  height: Mixins.height(40),
-  justifyContent: "center",
-  borderRadius: 15,
-  borderWidth: 2,
+  style: {
+    marginTop: 20,
+    width: Mixins.width(0.6, true),
+    height: Mixins.height(90),
+    justifyContent: "center",
+    borderRadius: 15,
+    borderWidth: 2,
+    borderColor: colors.primary,
+  },
+  contentStyle: {
+    height: Mixins.height(90),
+  },
 });
 
 export const backButtonLabel = (colors) => ({

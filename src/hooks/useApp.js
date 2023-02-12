@@ -28,6 +28,7 @@ export default function useApp() {
         setSettings(settings);
       })
       .catch((err) => {
+        setSettings({ error: true });
         console.log(err);
       });
   };
