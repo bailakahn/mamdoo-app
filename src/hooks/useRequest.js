@@ -32,6 +32,8 @@ export default function useRequest() {
             coordinates: [longitude, latitude],
             excludedDriver: driverId,
             requestId,
+            retryCount,
+            maxRetries,
           },
         }).catch((err) => {
           console.log(err);
