@@ -20,13 +20,21 @@ export default function RideRequestScreen({ navigation, route }) {
   const request = useRequest();
   const [visible, setVisible] = useState(false);
 
+  const [disabled, setDisabled] = useState(false);
+
   useEffect(() => {
     if (animation.current) animation.current.play();
   }, []);
 
   useEffect(() => {
-    if ((ride.canceled && route?.params?.driverId) || ride.denied)
-      request.actions.makeRideRequest(navigation, route?.params?.driverId);
+    if ((ride.canceled && route?.params?.driverId) || ride.denied) {
+      setDisabled(true);
+      request.actions.makeRideRequest(
+        navigation,
+        route?.params?.driverId,
+        setDisabled
+      );
+    }
   }, [ride.canceled, ride.denied, route]);
 
   return (
@@ -122,6 +130,7 @@ export default function RideRequestScreen({ navigation, route }) {
 
           <View style={{ marginTop: 20 }}>
             <RoundButton
+              disabled={disabled}
               size={0.35}
               shadow={{ size: 0.3 }}
               color="error"

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import useLocation from "./useLocation";
 import { useApi } from "_api";
 import { useStore } from "_store";
+import { set } from "react-native-reanimated";
 export default function useRequest() {
   const location = useLocation();
   const getRequest = useApi();
@@ -9,10 +10,14 @@ export default function useRequest() {
     actions: { resetRide, setOnGoingRide, setNewRequestId },
   } = useStore();
 
-  const makeRideRequest = async (navigation, driverId) => {
+  const makeRideRequest = async (navigation, driverId, setDisabled) => {
     resetRide();
     setOnGoingRide();
     const { latitude, longitude } = await location.actions.getCurrentPosition();
+
+    if (setDisabled) {
+      setDisabled(false);
+    }
 
     let retryCount = 0;
     const maxRetries = 5;
