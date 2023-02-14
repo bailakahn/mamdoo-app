@@ -19,7 +19,7 @@ export default function useLocation() {
 
     if (status && status.granted)
       Location.getCurrentPositionAsync({
-        accuracy: Location.LocationAccuracy.Highest,
+        accuracy: Location.LocationAccuracy.Balanced,
         distanceInterval: 100,
       })
         .then(({ coords: { latitude, longitude } }) => {
@@ -43,7 +43,7 @@ export default function useLocation() {
     let {
       coords: { latitude, longitude },
     } = await Location.getCurrentPositionAsync({
-      accuracy: Location.LocationAccuracy.Highest,
+      accuracy: Location.LocationAccuracy.Balanced,
       distanceInterval: 100,
     });
     setLocation({ latitude, longitude });
