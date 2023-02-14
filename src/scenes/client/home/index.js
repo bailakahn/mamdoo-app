@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, SafeAreaView, ScrollView } from "react-native";
+import { View, SafeAreaView, ScrollView, Platform } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
@@ -63,31 +63,65 @@ export default function HomeScreen({ navigation, route }) {
             visible={visible}
             setVisible={setVisible}
             content={
-              <View>
+              Platform.OS === "ios" ? (
                 <View>
-                  <View style={{ alignItems: "center", marginBottom: 5 }}>
+                  <View>
+                    <View style={{ alignItems: "center", marginBottom: 5 }}>
+                      <Text
+                        style={{
+                          color: "red",
+                          fontSize: 25,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        IMPORTANT!
+                      </Text>
+                    </View>
+                    <View style={{ alignItems: "center" }}>
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          fontWeight: "bold",
+                          textAlign: "center",
+                        }}
+                      >
+                        {t("ride.confirmRideContent")}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={{ marginTop: 10, alignItems: "center" }}>
+                    <Text style={{ fontSize: 20 }}>
+                      {t("ride.confirmRide")}
+                    </Text>
+                  </View>
+                </View>
+              ) : (
+                <>
+                  <View>
                     <Text
-                      style={{ color: "red", fontSize: 25, fontWeight: "bold" }}
+                      style={{
+                        color: "red",
+                        fontSize: 20,
+                        fontWeight: "bold",
+                        marginRight: 15,
+                      }}
                     >
                       IMPORTANT!
                     </Text>
                   </View>
-                  <View style={{ alignItems: "center" }}>
+                  <Text>{t("ride.confirmRideContent")}</Text>
+                  <View style={{ marginTop: 10, alignItems: "center" }}>
                     <Text
                       style={{
                         fontSize: 20,
                         fontWeight: "bold",
-                        textAlign: "center",
                       }}
                     >
-                      {t("ride.confirmRideContent")}
+                      {t("ride.confirmRide")}
                     </Text>
                   </View>
-                </View>
-                <View style={{ marginTop: 10, alignItems: "center" }}>
-                  <Text style={{ fontSize: 20 }}>{t("ride.confirmRide")}</Text>
-                </View>
-              </View>
+                </>
+              )
             }
             onCancel={() => setVisible(false)}
             cancelText={

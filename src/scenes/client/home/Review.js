@@ -45,6 +45,11 @@ export default function ReviewScreen({ navigation, route }) {
           showsVerticalScrollIndicator={false}
           style={{ flex: 1 }}
           keyboardDismissMode="interactive"
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
           <TouchableWithoutFeedback
             onPress={Keyboard.dismiss}
