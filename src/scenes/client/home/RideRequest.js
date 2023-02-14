@@ -47,7 +47,13 @@ export default function RideRequestScreen({ navigation, route }) {
         marginTop: 50,
       }}
     >
-      <ScrollView>
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <View style={Classes.container(colors)}>
           <PopConfirm
             title={t("ride.cancelConfirmTitle")}
@@ -107,6 +113,16 @@ export default function RideRequestScreen({ navigation, route }) {
               text={t(`ride.rideDenied`)}
               onDismiss={() => ride.actions.setRideDenied(false)}
               onClose={() => ride.actions.setRideDenied(false)}
+            />
+          )}
+          {ride.rideRequestMessage && (
+            <Info
+              visible={!!ride.rideRequestMessage}
+              text={
+                <Text style={{ fontSize: 20 }}>{ride.rideRequestMessage}</Text>
+              }
+              onDismiss={() => ride.actions.setRideRequestMessage(false)}
+              onClose={() => ride.actions.setRideRequestMessage(false)}
             />
           )}
           <Text style={{ fontSize: 30, fontWeight: "bold" }}>

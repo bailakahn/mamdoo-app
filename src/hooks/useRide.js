@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Linking, Platform, Alert } from "react-native";
 import Constants from "expo-constants";
 import * as IntentLauncher from "expo-intent-launcher";
@@ -21,8 +21,15 @@ export default function useRide() {
       distanceMatrix,
       reviewRequestId,
       newRequestId,
+      rideRequestMessage,
     },
-    actions: { resetRide, setRideDenied, setRideCanceled, hideRideReview },
+    actions: {
+      resetRide,
+      setRideDenied,
+      setRideCanceled,
+      hideRideReview,
+      setRideRequestMessage,
+    },
   } = useStore();
 
   useEffect(() => {
@@ -116,6 +123,7 @@ export default function useRide() {
     denied,
     distanceMatrix,
     reviewRequestId,
+    rideRequestMessage,
     actions: {
       callDriver,
       cancelRide,
@@ -125,6 +133,7 @@ export default function useRide() {
       resetRide,
       hideRideReview,
       reviewRide,
+      setRideRequestMessage,
     },
   };
 }

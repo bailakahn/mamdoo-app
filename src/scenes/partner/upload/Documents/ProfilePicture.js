@@ -255,7 +255,18 @@ export default function ProfilePicture({ navigation }) {
               <Button
                 {...Classes.callButtonContainer(colors)}
                 mode="contained"
-                onPress={handlePresentModalPress}
+                // onPress={handlePresentModalPress}
+                onPress={() =>
+                  upload.actions.takePhoto((result) => {
+                    partner.actions.setUploadDocuments({
+                      ...partner.uploadDocuments,
+                      profilePicture: {
+                        uri: result.uri,
+                        base64: result.base64,
+                      },
+                    });
+                  })
+                }
               >
                 <Text>{`${t2("upload.profilePictureTake")}`}</Text>
               </Button>
@@ -263,7 +274,7 @@ export default function ProfilePicture({ navigation }) {
           </View>
         )}
       </ScrollView>
-      <BottomView />
+      {/* <BottomView /> */}
     </SafeAreaView>
   );
 }

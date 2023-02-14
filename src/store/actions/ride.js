@@ -38,5 +38,8 @@ export default function rideActions(state, dispatch) {
     setNewRequestId: (newRequestId) => {
       dispatch({ type: types.SET_NEW_REQUEST_ID, newRequestId });
     },
+    setRideRequestMessage: (rideRequestMessage) => {
+      dispatch({ type: types.SET_RIDE_REQUEST_MESSAGE, rideRequestMessage });
+    },
   };
 }

@@ -2,12 +2,19 @@ import React, { useEffect, useState } from "react";
 import useLocation from "./useLocation";
 import { useApi } from "_api";
 import { useStore } from "_store";
-import { set } from "react-native-reanimated";
+import { t } from "_utils/lang";
+
 export default function useRequest() {
   const location = useLocation();
   const getRequest = useApi();
+
   const {
-    actions: { resetRide, setOnGoingRide, setNewRequestId },
+    actions: {
+      resetRide,
+      setOnGoingRide,
+      setNewRequestId,
+      setRideRequestMessage,
+    },
   } = useStore();
 
   const makeRideRequest = async (navigation, driverId, setDisabled) => {
@@ -45,11 +52,18 @@ export default function useRequest() {
         })) || {};
 
       setNewRequestId(requestId);
-      if (foundDrivers) stop = true;
+      if (foundDrivers) {
+        stop = true;
+        setRideRequestMessage(t("ride.rideFoundDrivers"));
+      }
+
+      if (retryCount === 1) setRideRequestMessage(t("ride.rideWidenSearch"));
+
       retryCount++;
     } while (retryCount <= maxRetries && !stop);
 
     if (!stop) {
+      setRideRequestMessage(false);
       navigation.navigate("Home", { notFound: true });
       setOnGoingRide();
     }

@@ -102,6 +102,14 @@ export default {
       "Annuler trop de courses peut vous valoir une expulsion de l'application!!!",
     cancelConfirmOk: "Oui",
     cancelConfirmCancel: "Non",
+    confirmRideTitle: "Confirmer la demande",
+    confirmRideContent:
+      "Veuillez ne pas faire de demande juste pour tester. Ceci a un impact négatif sur nos motards. Mamdoo vous remercie pour votre compréhension.",
+    confirmRide: "Êtes vous prêt pour une course ?",
+    rideWidenSearch:
+      "Nous cherchons dans une zone plus élargie. Veuillez patienter.",
+    rideFoundDrivers:
+      "Nous avons trouvé des motards à proximité. L'un d'entre eux devrait accepter votre demande sous peu.",
   },
   form: {
     fullName: "Prénom Nom",

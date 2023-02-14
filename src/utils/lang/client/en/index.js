@@ -103,6 +103,13 @@ export default {
       "Cancelling too many rides will have you blocked from using Mamdoo!!",
     cancelConfirmOk: "Yes",
     cancelConfirmCancel: "No",
+    confirmRideTitle: "Confirm Ride Request",
+    confirmRideContent:
+      "Please do not book rides just to test. This has a negative effect on our drivers. Wait until you need a ride to book. Thank you!",
+    confirmRide: "Do you need a ride ?",
+    rideWidenSearch: "We are looking in a wider area. Please be patient.",
+    rideFoundDrivers:
+      "We found drivers near you. One of them will accept your ride soon.",
   },
   form: {
     fullName: "Full Name",

@@ -100,6 +100,11 @@ export default (state = ride, action) => {
         ...state,
         newRequestId: action.newRequestId,
       };
+    case types.SET_RIDE_REQUEST_MESSAGE:
+      return {
+        ...state,
+        rideRequestMessage: action.rideRequestMessage,
+      };
     default:
       return state;
   }

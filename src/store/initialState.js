@@ -27,6 +27,7 @@ export default {
     onGoingRide: false,
     reviewRequestId: false,
     newRequestId: false,
+    rideRequestMessage: false,
   },
 };
 

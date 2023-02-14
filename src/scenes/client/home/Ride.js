@@ -46,7 +46,13 @@ export default function RideRequestScreen() {
         justifyContent: "center",
       }}
     >
-      <ScrollView>
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <View style={Classes.container(colors)}>
           <PopConfirm
             title={t("ride.cancelConfirmTitle")}

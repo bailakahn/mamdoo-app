@@ -206,14 +206,25 @@ export default function CabLicense({ navigation }) {
               <Button
                 {...Classes.callButtonContainer(colors)}
                 mode="contained"
-                onPress={handlePresentModalPress}
+                // onPress={handlePresentModalPress}
+                onPress={() =>
+                  upload.actions.takePhoto((result) => {
+                    partner.actions.setUploadDocuments({
+                      ...partner.uploadDocuments,
+                      cabLicense: {
+                        uri: result.uri,
+                        base64: result.base64,
+                      },
+                    });
+                  })
+                }
               >
                 <Text>{`${t2("upload.profilePictureTake")}`}</Text>
               </Button>
             </View>
           </View>
         )}
-        <BottomView />
+        {/* <BottomView /> */}
       </ScrollView>
     </SafeAreaView>
   );

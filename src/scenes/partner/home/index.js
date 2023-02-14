@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View } from "react-native";
+import { View, ScrollView, SafeAreaView } from "react-native";
 import { Headline, useTheme, Portal, Text, Modal } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Classes } from "_styles";
@@ -124,90 +124,109 @@ export default function AccountScene({}) {
           />
         )}
       </Portal>
-      <View style={Classes.container(colors)}>
-        <View>
-          <Text style={{ ...Classes.text(colors), fontSize: 25 }}>
-            {t2("home.welcome")}
-          </Text>
-        </View>
-
-        <View
-          style={Classes.driverWelcomeNoticeView(
-            colors,
-            partner.partner.isOnline
-          )}
-        >
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-            {partner.partner.isOnline
-              ? t2("home.onlineWelcomeText")
-              : t2("home.offlineWelcomeText")}
-          </Text>
-        </View>
-      </View>
-      {partner.partner?.isBlocked && (
-        <View
-          style={{
-            ...Classes.notice(colors, "error"),
+      <SafeAreaView
+        style={{
+          flex: 1,
+          backgroundColor: colors.background,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
             justifyContent: "center",
             alignItems: "center",
-            alignSelf: "center",
           }}
         >
-          <View>
-            <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-              {t2("home.accountBlocked")}
-            </Text>
-          </View>
-          <View style={{ marginTop: 30 }}>
-            <Button
-              {...Classes.callButtonContainer(colors)}
-              mode="contained"
-              onPress={app.actions.call}
-            >
-              {`${t2("main.callUs")}`}
-            </Button>
-          </View>
-        </View>
-      )}
-      <View style={[Classes.bottonView(colors)]}>
-        <RoundButton
-          disabled={partner.partner?.isBlocked}
-          size={0.35}
-          color={!partner.partner.isOnline ? "primary" : "error"}
-          text={
-            <View
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Icon
-                size={40}
-                name={!partner.partner.isOnline ? "check" : "clear"}
-                color={"#fff"}
-              />
-              <Text style={{ color: "#fff" }}>
-                {t2(`${!partner.partner.isOnline ? "home.go" : "home.stop"}`)}
+          <View style={Classes.container(colors)}>
+            <View>
+              <Text style={{ ...Classes.text(colors), fontSize: 25 }}>
+                {t2("home.welcome")}
               </Text>
             </View>
-          }
-          onPress={partner.actions.changeStatus}
-          shadow={{ size: 0.3 }}
-        />
-      </View>
-      <View style={Classes.statusNoticeView(colors)}>
-        <Icon
-          name="info-outline"
-          color={!partner.partner.isOnline ? colors.primary : colors.accent}
-          size={30}
-        />
-        <Text style={{ fontSize: 20, marginLeft: 10 }}>
-          {!partner.partner.isOnline
-            ? t2("home.goNotice")
-            : t2("home.stopNotice")}
-        </Text>
-      </View>
+
+            <View
+              style={Classes.driverWelcomeNoticeView(
+                colors,
+                partner.partner.isOnline
+              )}
+            >
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                {partner.partner.isOnline
+                  ? t2("home.onlineWelcomeText")
+                  : t2("home.offlineWelcomeText")}
+              </Text>
+            </View>
+          </View>
+          {partner.partner?.isBlocked && (
+            <View
+              style={{
+                ...Classes.notice(colors, "error"),
+                justifyContent: "center",
+                alignItems: "center",
+                alignSelf: "center",
+              }}
+            >
+              <View>
+                <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                  {t2("home.accountBlocked")}
+                </Text>
+              </View>
+              <View style={{ marginTop: 30 }}>
+                <Button
+                  {...Classes.callButtonContainer(colors)}
+                  mode="contained"
+                  onPress={app.actions.call}
+                >
+                  {`${t2("main.callUs")}`}
+                </Button>
+              </View>
+            </View>
+          )}
+          <View style={[Classes.bottonView(colors)]}>
+            <RoundButton
+              disabled={partner.partner?.isBlocked}
+              size={0.35}
+              color={!partner.partner.isOnline ? "primary" : "error"}
+              text={
+                <View
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Icon
+                    size={40}
+                    name={!partner.partner.isOnline ? "check" : "clear"}
+                    color={"#fff"}
+                  />
+                  <Text style={{ color: "#fff" }}>
+                    {t2(
+                      `${!partner.partner.isOnline ? "home.go" : "home.stop"}`
+                    )}
+                  </Text>
+                </View>
+              }
+              onPress={partner.actions.changeStatus}
+              shadow={{ size: 0.3 }}
+            />
+          </View>
+          <View style={Classes.statusNoticeView(colors)}>
+            <Icon
+              name="info-outline"
+              color={!partner.partner.isOnline ? colors.primary : colors.accent}
+              size={30}
+            />
+            <Text style={{ fontSize: 20, marginLeft: 10 }}>
+              {!partner.partner.isOnline
+                ? t2("home.goNotice")
+                : t2("home.stopNotice")}
+            </Text>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     </>
   );
 }

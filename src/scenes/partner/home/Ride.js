@@ -60,7 +60,13 @@ export default function DriverOnTheWayScene() {
         justifyContent: "center",
       }}
     >
-      <ScrollView>
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <View
           style={{
             ...Classes.container(colors),
