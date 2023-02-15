@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { View, SafeAreaView, ScrollView } from "react-native";
+import { View, SafeAreaView, ScrollView, Platform } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { Classes } from "_styles";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -99,6 +99,70 @@ export default function RideRequestScreen({ navigation, route }) {
             }
             isRounded={true}
           />
+          {!!request.nearByDrivers && (
+            <PopConfirm
+              title={t("ride.rideFoundExactDrivers", {
+                drivers: request.nearByDrivers,
+              })}
+              visible={!!request.nearByDrivers}
+              setVisible={request.actions.setNearByDrivers}
+              content={
+                Platform.OS === "ios" ? (
+                  <View style={{ display: "flex", alignItems: "center" }}>
+                    <Text style={{ fontSize: 20 }}>
+                      {t("ride.confirmRide")}
+                    </Text>
+                  </View>
+                ) : (
+                  <Text>{t("ride.confirmRide")}</Text>
+                )
+              }
+              onDismiss={() => {
+                request.actions.setNearByDrivers(false);
+                navigation.navigate("Home");
+              }}
+              onCancel={() => {
+                request.actions.setNearByDrivers(false);
+                navigation.navigate("Home");
+              }}
+              cancelText={
+                <View
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Icon size={40} name="clear" color={"#fff"} />
+                  <Text style={{ color: "#fff" }}>
+                    {t("ride.cancelConfirmCancel")}
+                  </Text>
+                </View>
+              }
+              onConfirm={() => {
+                request.actions.setNearByDrivers(false);
+                request.actions.makeRideRequest(navigation);
+                navigation.navigate("RideRequest");
+              }}
+              okText={
+                <View
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Icon size={40} name="check" color={"#fff"} />
+                  <Text style={{ color: "#fff" }}>
+                    {t("ride.cancelConfirmOk")}
+                  </Text>
+                </View>
+              }
+              okButtonProps={{ color: "primary" }}
+              cancelButtonProps={{ color: "error" }}
+              isRounded={true}
+            />
+          )}
           {ride.canceled && (
             <Info
               visible={ride.canceled}

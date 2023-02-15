@@ -140,7 +140,8 @@ export default function HomeScreen({ navigation, route }) {
             }
             onConfirm={() => {
               setVisible(false);
-              request.actions.makeRideRequest(navigation);
+              request.actions.findDrivers(navigation);
+              // request.actions.makeRideRequest(navigation);
               navigation.navigate("RideRequest");
             }}
             okText={

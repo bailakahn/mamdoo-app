@@ -41,5 +41,8 @@ export default function rideActions(state, dispatch) {
     setRideRequestMessage: (rideRequestMessage) => {
       dispatch({ type: types.SET_RIDE_REQUEST_MESSAGE, rideRequestMessage });
     },
+    setNearByDrivers: (nearByDrivers) => {
+      dispatch({ type: types.SET_NEARBY_DRIVERS, nearByDrivers });
+    },
   };
 }

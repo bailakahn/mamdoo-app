@@ -28,6 +28,7 @@ export default {
     reviewRequestId: false,
     newRequestId: false,
     rideRequestMessage: false,
+    nearByDrivers: 0,
   },
 };
 

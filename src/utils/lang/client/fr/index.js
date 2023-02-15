@@ -109,7 +109,10 @@ export default {
     rideWidenSearch:
       "Nous cherchons dans une zone plus élargie. Veuillez patienter.",
     rideFoundDrivers:
-      "Nous avons trouvé des motards à proximité. L'un d'entre eux devrait accepter votre demande sous peu.",
+      "L'un des motards à proximité devrait accepter votre demande sous peu.",
+    rideFoundExactDrivers:
+      "Nous avons trouvé %{drivers} motard(s) près de vous.",
+    rideSendDrivers: "Voulez-vous confirmer ?",
   },
   form: {
     fullName: "Prénom Nom",

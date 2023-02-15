@@ -108,8 +108,9 @@ export default {
       "Please do not book rides just to test. This has a negative effect on our drivers. Wait until you need a ride to book. Thank you!",
     confirmRide: "Do you need a ride ?",
     rideWidenSearch: "We are looking in a wider area. Please be patient.",
-    rideFoundDrivers:
-      "We found drivers near you. One of them will accept your ride soon.",
+    rideFoundDrivers: "One driver will accept your ride soon.",
+    rideFoundExactDrivers: "We found %{drivers} driver(s) near you.",
+    rideSendDrivers: "Should we send you one ?",
   },
   form: {
     fullName: "Full Name",

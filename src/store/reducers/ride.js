@@ -21,6 +21,7 @@ export default (state = ride, action) => {
         // canceled: false,
         onGoingRide: false,
         newRequestId: false,
+        nearByDrivers: 0,
       };
     case types.SET_CAN_CANCEL:
       return {
@@ -43,6 +44,7 @@ export default (state = ride, action) => {
         ...state,
         requestId: null,
         onGoingRide: false,
+        nearByDrivers: 0,
       };
     case types.SET_RIDE:
       return {
@@ -79,6 +81,7 @@ export default (state = ride, action) => {
         canceled: false,
         denied: false,
         onGoingRide: false,
+        nearByDrivers: 0,
       };
     case types.SET_ONGOING_RIDE:
       return {
@@ -104,6 +107,11 @@ export default (state = ride, action) => {
       return {
         ...state,
         rideRequestMessage: action.rideRequestMessage,
+      };
+    case types.SET_NEARBY_DRIVERS:
+      return {
+        ...state,
+        nearByDrivers: action.nearByDrivers,
       };
     default:
       return state;

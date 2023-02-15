@@ -22,6 +22,7 @@ export default function useRide() {
       reviewRequestId,
       newRequestId,
       rideRequestMessage,
+      nearByDrivers,
     },
     actions: {
       resetRide,
@@ -29,6 +30,7 @@ export default function useRide() {
       setRideCanceled,
       hideRideReview,
       setRideRequestMessage,
+      setNearByDrivers,
     },
   } = useStore();
 
@@ -124,6 +126,7 @@ export default function useRide() {
     distanceMatrix,
     reviewRequestId,
     rideRequestMessage,
+    nearByDrivers,
     actions: {
       callDriver,
       cancelRide,
@@ -134,6 +137,7 @@ export default function useRide() {
       hideRideReview,
       reviewRide,
       setRideRequestMessage,
+      setNearByDrivers,
     },
   };
 }
