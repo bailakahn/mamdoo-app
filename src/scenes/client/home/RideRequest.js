@@ -6,7 +6,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { t } from "_utils/lang";
 import LottieView from "lottie-react-native";
-import PinAnimation from "_assets/animation/location-pin-jumping-animation-11.json";
+import PinAnimation from "_assets/animation/area-map.json";
 import { useRide, useRequest } from "_hooks";
 import { Info } from "_molecules";
 import { RoundButton } from "_atoms";
