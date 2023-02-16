@@ -13,6 +13,7 @@ const socketEvents = [
   "CANCEL_REQUEST",
   "END_RIDE",
   "REQUEST_DENIED",
+  "RESET_REQUEST",
 ];
 export default function useProxy() {
   const { dispatch } = useStore();
@@ -58,6 +59,15 @@ export default function useProxy() {
         if (event == "REQUEST_DENIED") {
           dispatch({ type: types.REQUEST_DENIED, denied: true });
           return;
+        }
+
+        if (event == "RESET_REQUEST") {
+          dispatch({
+            type: types.SET_RIDE_REQUEST_MESSAGE,
+            rideRequestMessage: false,
+          });
+          navigation.navigate("Home", { notFound: true });
+          dispatch({ type: types.SET_ONGOING_RIDE });
         }
 
         dispatch({ type: event, data });
