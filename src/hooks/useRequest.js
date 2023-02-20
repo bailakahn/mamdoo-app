@@ -116,8 +116,27 @@ export default function useRequest() {
     }
   };
 
+  const updateStatus = (requestId, driverId, status) => {
+    getRequest({
+      method: "POST",
+      endpoint: "rides/updateStatus",
+      params: {
+        requestId,
+        driverId,
+        status,
+      },
+    })
+      // .then(() => {
+      //   resetRide();
+      //   navigation.navigate("Home");
+      // })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return {
     nearByDrivers,
-    actions: { makeRideRequest, findDrivers, setNearByDrivers },
+    actions: { makeRideRequest, findDrivers, setNearByDrivers, updateStatus },
   };
 }

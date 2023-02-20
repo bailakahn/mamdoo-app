@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Linking, Platform, Alert } from "react-native";
 import { useStore } from "_store";
 import { useApi } from "_api";
+import { t } from "_utils/lang";
 
 export default function useApp() {
   const getRequest = useApi();
@@ -33,17 +34,17 @@ export default function useApp() {
       });
   };
 
-  const call = () => {
+  const call = (phoneNumber) => {
     const { phone = "" } = settings;
-    if (!phone) {
+    if (!phone || !phoneNumber) {
       Alert.alert(t("errors.phoneNumber"));
       return;
     }
 
     var platformText = "";
-    if (Platform.OS === "ios") platformText = `tel://${phone}`;
+    if (Platform.OS === "ios") platformText = `tel://${phoneNumber || phone}`;
     // TODO why `tel` works and `telprompt` dont
-    else platformText = `tel://${phone}`;
+    else platformText = `tel://${phoneNumber || phone}`;
 
     Linking.canOpenURL(platformText)
       .then((supported) => {

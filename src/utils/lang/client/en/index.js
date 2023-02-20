@@ -66,6 +66,11 @@ export default {
     noDriver: "We did not find any driver at the moment. Please retry again!",
     accountBlocked:
       "Your account has been blocked, This is probably a result of too many rides canceled.",
+    noDriver: "No driver responded",
+    contactDrivers: "Please contact our nearest drivers",
+    firstName: "First Name",
+    seen: "Last Seen",
+    call: "Call",
   },
   rating: {
     rateDriver: "Rate your Mamdoo",

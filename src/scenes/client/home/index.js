@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, SafeAreaView, ScrollView, Platform } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import {
+  View,
+  SafeAreaView,
+  ScrollView,
+  Platform,
+  TouchableOpacity,
+} from "react-native";
+import { Text, useTheme, List, Divider, DataTable } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -13,13 +19,16 @@ import {
   useUser,
   useApp,
 } from "_hooks";
-import { Info } from "_molecules";
+import { Info, Modal } from "_molecules";
 import { RoundButton, Button } from "_atoms";
 import PopConfirm from "_organisms/PopConfirm";
+import date from "../../../utils/helpers/date";
 
 export default function HomeScreen({ navigation, route }) {
   const [info, setInfo] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [drivers, setDrivers] = useState(false);
+  const [currentRideId, setCurrentRideId] = useState(false);
   // connect to proxy server
   useProxy();
   useNotifications();
@@ -30,11 +39,16 @@ export default function HomeScreen({ navigation, route }) {
   const { colors } = useTheme();
 
   const request = useRequest();
-  const { params: { notFound } = {} } = route;
+  const { params: { notFound, nearByDrivers, requestId } = {} } = route;
 
   useEffect(() => {
     setInfo(notFound ? true : false);
   }, [notFound]);
+
+  useEffect(() => {
+    setDrivers(!!nearByDrivers?.length ? nearByDrivers : false);
+    setCurrentRideId(requestId);
+  }, [nearByDrivers]);
 
   return (
     <SafeAreaView
@@ -221,7 +235,10 @@ export default function HomeScreen({ navigation, route }) {
               </View>
             }
             onPress={() => {
-              setVisible(true);
+              // setVisible(true);
+              // request.actions.makeRideRequest(navigation);
+              request.actions.findDrivers(navigation);
+              navigation.navigate("RideRequest");
             }}
             shadow={{ size: 0.3 }}
           />
@@ -237,6 +254,95 @@ export default function HomeScreen({ navigation, route }) {
               onClose={() => {
                 navigation.setParams({ notFound: false });
                 setInfo(false);
+              }}
+            />
+            <Modal
+              title={
+                <View>
+                  <View style={{ marginBottom: 10 }}>
+                    <Text
+                      style={{
+                        color: colors.primary,
+                        fontSize: 20,
+                        textAlign: "center",
+                      }}
+                    >
+                      {t("home.noDriver")}
+                    </Text>
+                  </View>
+                  <View style={{ alignItems: "center" }}>
+                    <Text>{t("home.contactDrivers")}</Text>
+                  </View>
+                </View>
+              }
+              visible={!!drivers}
+              children={
+                <View>
+                  <ScrollView>
+                    <DataTable>
+                      <DataTable.Header>
+                        <DataTable.Title style={Classes.dataCell(colors)}>
+                          {t("home.firstName")}
+                        </DataTable.Title>
+                        <DataTable.Title style={Classes.dataCell(colors)}>
+                          Distance
+                        </DataTable.Title>
+                        <DataTable.Title style={Classes.dataCell(colors)}>
+                          {t("home.seen")}
+                        </DataTable.Title>
+                        <DataTable.Title style={Classes.dataCell(colors)}>
+                          {t("home.call")}
+                        </DataTable.Title>
+                      </DataTable.Header>
+                      {!!drivers &&
+                        drivers?.slice(0, 3).map((driver, index) => (
+                          <TouchableOpacity
+                            key={index}
+                            onPress={() => {
+                              request.actions.updateStatus(
+                                currentRideId,
+                                driver?._id,
+                                "referred"
+                              );
+                              app.actions.call(driver?.phoneNumber);
+                            }}
+                          >
+                            <DataTable.Row>
+                              <DataTable.Cell style={Classes.dataCell(colors)}>
+                                {`${driver?.firstName}`}
+                              </DataTable.Cell>
+                              <DataTable.Cell style={Classes.dataCell(colors)}>
+                                {`${
+                                  driver?.distance &&
+                                  (driver?.distance / 1000).toFixed(2)
+                                } KM`}
+                              </DataTable.Cell>
+                              <DataTable.Cell style={Classes.dataCell(colors)}>
+                                {`${date(driver?.lastSeenAt).fromNow(true)}`}
+                              </DataTable.Cell>
+                              <DataTable.Cell style={Classes.dataCell(colors)}>
+                                <Icon
+                                  size={20}
+                                  color={colors.primary}
+                                  name="phone-forwarded"
+                                />
+                              </DataTable.Cell>
+                            </DataTable.Row>
+                          </TouchableOpacity>
+                        ))}
+                    </DataTable>
+                  </ScrollView>
+
+                  <Divider />
+                </View>
+              }
+              onDismiss={() => {
+                navigation.setParams({ nearByDrivers: false });
+                setDrivers(false);
+              }}
+              onClose={() => {
+                navigation.setParams({ nearByDrivers: false });
+                setDrivers(false);
               }}
             />
           </View>

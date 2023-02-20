@@ -149,6 +149,13 @@ export const modalContent = (colors) => ({
   width: Mixins.width(0.9, true),
 });
 
+export const modal = (colors) => ({
+  backgroundColor: colors.background,
+  justifyContent: "center",
+  padding: 30,
+  width: Mixins.width(0.9, true),
+});
+
 export const modalWrapper = (colors) => ({
   alignItems: "center",
 });

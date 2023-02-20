@@ -66,7 +66,10 @@ export default function useProxy() {
             type: types.SET_RIDE_REQUEST_MESSAGE,
             rideRequestMessage: false,
           });
-          navigation.navigate("Home", { notFound: true });
+          navigation.navigate("Home", {
+            nearByDrivers: data?.nearByDrivers,
+            requestId: data?.requestId,
+          });
           dispatch({ type: types.SET_ONGOING_RIDE });
         }
 

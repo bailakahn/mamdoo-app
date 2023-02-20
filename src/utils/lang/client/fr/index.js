@@ -65,6 +65,11 @@ export default {
       "Nous n'avons pas pu trouver de chauffeur. S'il vous plait veuillez reessayer encore!",
     accountBlocked:
       "Votre compte a été bloqué, Surement parceque vous avez annulé beaucoup de courses.",
+    noDriver: "Aucun motard n'a repondu",
+    contactDrivers: "Veuillez contacter un de nos motards proche de vous",
+    firstName: "Prénom",
+    seen: "Vu il y a",
+    call: "Appeler",
   },
   rating: {
     rateDriver: "Notez votre Mamdoo",
