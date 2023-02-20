@@ -83,7 +83,7 @@ export default function useUser() {
       });
   };
 
-  const saveChanges = (editUser, setShowSuccess) => {
+  const saveChanges = (editUser, setShowSuccess, setIsEdit) => {
     setIsLoading(true);
     getRequest({
       method: "POST",
@@ -97,6 +97,7 @@ export default function useUser() {
         setUser({ ...user, ...newValues });
         setShowSuccess(true);
         setTimeout(() => {
+          setIsEdit(false);
           setShowSuccess(false);
         }, 1000);
       })

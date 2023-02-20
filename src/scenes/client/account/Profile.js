@@ -173,7 +173,9 @@ export default function ProfileScene({ navigation }) {
 
           <View>
             <Button
-              onPress={() => user.actions.saveChanges(editUser, setShowSuccess)}
+              onPress={() =>
+                user.actions.saveChanges(editUser, setShowSuccess, setIsEdit)
+              }
               mode="contained"
               style={Classes.profileFormButton(colors)}
               contentStyle={Classes.profileFormButtonContent(colors)}

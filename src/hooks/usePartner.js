@@ -171,7 +171,7 @@ export default function usePartner() {
       });
   };
 
-  const saveChanges = (editPartner, setShowSuccess) => {
+  const saveChanges = (editPartner, setShowSuccess, setIsEdit) => {
     setIsLoading(true);
     getRequest({
       method: "POST",
@@ -187,6 +187,7 @@ export default function usePartner() {
         setPartner({ ...partner, ...newValues });
         setShowSuccess(true);
         setTimeout(() => {
+          setIsEdit(false);
           setShowSuccess(false);
         }, 1000);
       })
