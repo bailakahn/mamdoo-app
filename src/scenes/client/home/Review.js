@@ -115,6 +115,8 @@ export default function ReviewScreen({ navigation, route }) {
                   onChangeText={(value) => setNote(value)}
                   maxLength={200}
                   numberOfLines={2}
+                  onSubmitEditing={() => Keyboard.dismiss()}
+                  blurOnSubmit={true}
                 />
               </View>
 
