@@ -50,6 +50,10 @@ export default function HomeScreen({ navigation, route }) {
     setCurrentRideId(requestId);
   }, [nearByDrivers]);
 
+  useEffect(() => {
+    if (user) user.actions.updateLocation();
+  }, []);
+
   return (
     <SafeAreaView
       style={{

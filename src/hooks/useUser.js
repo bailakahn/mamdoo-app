@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { t } from "_utils/lang";
 import { useApi } from "_api";
 import { useStore } from "_store";
+import useLocation from "./partner/useLocation";
+
 export default function useUser() {
   const getRequest = useApi();
+  const location = useLocation();
 
   const {
     auth: { user, userLoaded },
@@ -305,6 +308,19 @@ export default function useUser() {
       });
   };
 
+  const updateLocation = async () => {
+    const { latitude, longitude } = await location.actions.getCurrentPosition();
+
+    getRequest({
+      method: "POST",
+      endpoint: "user/updateLocation",
+      params: {
+        coordinates: [longitude, latitude],
+        type: "Point",
+      },
+    });
+  };
+
   return {
     formUser,
     formError,
@@ -318,6 +334,7 @@ export default function useUser() {
     forgotPasswordError,
     isLoading,
     actions: {
+      updateLocation,
       saveUser,
       setFormUser,
       saveChanges,
