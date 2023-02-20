@@ -63,7 +63,8 @@ export default {
   home: {
     welcome: "Welcome On Mamdoo",
     bookRide: "Book",
-    noDriver: "We did not find any driver at the moment. Please retry again!",
+    noDriverFound:
+      "We did not find any driver at the moment. Please retry again!",
     accountBlocked:
       "Your account has been blocked, This is probably a result of too many rides canceled.",
     noDriver: "No driver responded",
@@ -87,7 +88,8 @@ export default {
   },
   ride: {
     hello: "Hello",
-    driverSearch: "Searching a",
+    driverSearch: "Searching a Mamdoo",
+    nearYou: "Near by you",
     wait: "Please wait while we find you a Mamdoo",
     mamdoo: "Mamdoo",
     foundMamdoo: "Mamdoo Found",

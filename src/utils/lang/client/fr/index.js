@@ -61,7 +61,7 @@ export default {
   home: {
     welcome: "Bienvenue sur Mamdoo",
     bookRide: "Commander",
-    noDriver:
+    noDriverFound:
       "Nous n'avons pas pu trouver de chauffeur. S'il vous plait veuillez reessayer encore!",
     accountBlocked:
       "Votre compte a été bloqué, Surement parceque vous avez annulé beaucoup de courses.",
@@ -86,7 +86,8 @@ export default {
   },
   ride: {
     hello: "Salut",
-    driverSearch: "Recherche de votre",
+    driverSearch: "Nous recherchons un Mamdoo",
+    nearYou: "proche de vous",
     wait: "Veuillez patienter pendant que nous trouvons votre Mamdoo",
     mamdoo: "Mamdoo",
     foundMamdoo: "Mamdoo trouvé",

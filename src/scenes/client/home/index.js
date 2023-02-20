@@ -246,7 +246,7 @@ export default function HomeScreen({ navigation, route }) {
           <View style={{ marginTop: 30 }}>
             <Info
               visible={info}
-              text={t("home.noDriver")}
+              text={t("home.noDriverFound")}
               onDismiss={() => {
                 navigation.setParams({ notFound: false });
                 setInfo(false);
@@ -258,27 +258,22 @@ export default function HomeScreen({ navigation, route }) {
             />
             <Modal
               title={
-                <View>
-                  <View style={{ marginBottom: 10 }}>
-                    <Text
-                      style={{
-                        color: colors.primary,
-                        fontSize: 20,
-                        textAlign: "center",
-                      }}
-                    >
-                      {t("home.noDriver")}
-                    </Text>
-                  </View>
-                  <View style={{ alignItems: "center" }}>
-                    <Text>{t("home.contactDrivers")}</Text>
-                  </View>
-                </View>
+                <Text
+                  style={{
+                    color: colors.primary,
+                    fontSize: 20,
+                  }}
+                >
+                  {t("home.noDriver")}
+                </Text>
               }
               visible={!!drivers}
               children={
                 <View>
                   <ScrollView>
+                    <View>
+                      <Text>{t("home.contactDrivers")}</Text>
+                    </View>
                     <DataTable>
                       <DataTable.Header>
                         <DataTable.Title style={Classes.dataCell(colors)}>
@@ -332,8 +327,6 @@ export default function HomeScreen({ navigation, route }) {
                         ))}
                     </DataTable>
                   </ScrollView>
-
-                  <Divider />
                 </View>
               }
               onDismiss={() => {

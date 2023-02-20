@@ -189,9 +189,11 @@ export default function RideRequestScreen({ navigation, route }) {
               onClose={() => ride.actions.setRideRequestMessage(false)}
             />
           )}
-          <Text style={{ fontSize: 30, fontWeight: "bold" }}>
-            {t("ride.driverSearch")}
-          </Text>
+          <View style={{ padding: 5 }}>
+            <Text style={{ fontSize: 30, fontWeight: "bold" }}>
+              {t("ride.driverSearch")}
+            </Text>
+          </View>
 
           <LottieView
             ref={animation}
@@ -205,7 +207,7 @@ export default function RideRequestScreen({ navigation, route }) {
             source={PinAnimation}
           />
           <Text style={{ fontSize: 30, fontWeight: "bold" }}>
-            {t("ride.mamdoo")}
+            {t("ride.nearYou")}
           </Text>
 
           <View style={{ marginTop: 20 }}>
