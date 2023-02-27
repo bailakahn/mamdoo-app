@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useKeepAwake } from "expo-keep-awake";
 import { View, ScrollView, SafeAreaView } from "react-native";
 import { Headline, useTheme, Portal, Text, Modal } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -20,6 +21,7 @@ export default function AccountScene({}) {
   usePartnerProxy();
   useNotifications();
   useLanguage();
+  useKeepAwake();
   const ride = useRide();
   const partner = usePartner();
   useLocation();

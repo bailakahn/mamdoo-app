@@ -317,7 +317,13 @@ export default function HomeScreen({ navigation, route }) {
                                 } KM`}
                               </DataTable.Cell>
                               <DataTable.Cell style={Classes.dataCell(colors)}>
-                                {`${date(driver?.lastSeenAt).fromNow(true)}`}
+                                {date(driver?.lastSeenAt).isAfter(
+                                  date().subtract(1, "hour")
+                                )
+                                  ? `${date(driver?.lastSeenAt).fromNow(true)}`
+                                  : `${date()
+                                      .subtract(1, "hour")
+                                      .fromNow(true)}`}
                               </DataTable.Cell>
                               <DataTable.Cell style={Classes.dataCell(colors)}>
                                 <Icon
