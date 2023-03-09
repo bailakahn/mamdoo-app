@@ -400,6 +400,18 @@ export default function usePartner() {
       });
   };
 
+  const saveTime = (time) => {
+    getRequest({
+      method: "POST",
+      endpoint: "drivers/savetime",
+      params: {
+        time,
+      },
+    }).catch((err) => {
+      console.log(err);
+    });
+  };
+
   return {
     formPartner,
     formError,
@@ -436,6 +448,7 @@ export default function usePartner() {
       setUploadDocuments,
       uploadDocumentsToS3,
       setPartner,
+      saveTime,
     },
   };
 }

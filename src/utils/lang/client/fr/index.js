@@ -116,8 +116,9 @@ export default {
       "Nous cherchons dans une zone plus élargie. Veuillez patienter.",
     rideFoundDrivers:
       "L'un des motards à proximité devrait accepter votre demande sous peu.",
-    rideFoundExactDrivers:
-      "Nous avons trouvé %{drivers} motard(s) près de vous.",
+    rideFoundExactDrivers: "Nous avons trouvé des motard(s) près de vous.",
+    // rideFoundExactDrivers:
+    // "Nous avons trouvé %{drivers} motard(s) près de vous.",
     rideSendDrivers: "Voulez-vous confirmer ?",
   },
   form: {

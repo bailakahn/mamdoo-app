@@ -116,7 +116,8 @@ export default {
     confirmRide: "Do you need a ride ?",
     rideWidenSearch: "We are looking in a wider area. Please be patient.",
     rideFoundDrivers: "One driver will accept your ride soon.",
-    rideFoundExactDrivers: "We found %{drivers} driver(s) near you.",
+    rideFoundExactDrivers: "We found driver(s) near you.",
+    // rideFoundExactDrivers: "We found %{drivers} driver(s) near you.",
     rideSendDrivers: "Should we send you one ?",
   },
   form: {
