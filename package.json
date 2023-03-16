@@ -24,6 +24,7 @@
     "deepmerge": "^4.2.2",
     "dotenv": "^16.0.3",
     "expo": "^47.0.0",
+    "expo-application": "~5.0.1",
     "expo-constants": "~14.0.2",
     "expo-image-picker": "~14.0.2",
     "expo-intent-launcher": "~10.3.1",
