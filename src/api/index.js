@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // import { BACKEND_ENDPOINT } from "@env";
 import Constants from "expo-constants";
@@ -22,6 +23,7 @@ export function useApi() {
           app === "client" ? user?.accessToken : partner?.accessToken,
         "x-application-version": Application.nativeApplicationVersion,
         "x-build-version": Application.nativeBuildVersion,
+        "x-os-type": Platform.OS,
       },
       method,
     };
