@@ -70,6 +70,7 @@ export default {
     firstName: "Prénom",
     seen: "Vu il y a",
     call: "Appeler",
+    phoneNumber: "Téléphone",
   },
   rating: {
     rateDriver: "Notez votre Mamdoo",

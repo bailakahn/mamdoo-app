@@ -72,6 +72,7 @@ export default {
     firstName: "First Name",
     seen: "Last Seen",
     call: "Call",
+    phoneNumber: "Phone",
   },
   rating: {
     rateDriver: "Rate your Mamdoo",

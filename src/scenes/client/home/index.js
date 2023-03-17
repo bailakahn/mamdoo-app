@@ -268,26 +268,23 @@ export default function HomeScreen({ navigation, route }) {
                     fontSize: 20,
                   }}
                 >
-                  {t("home.noDriver")}
+                  {t("home.contactDrivers")}
                 </Text>
               }
               visible={!!drivers}
               children={
                 <View>
                   <ScrollView>
-                    <View>
+                    {/* <View>
                       <Text>{t("home.contactDrivers")}</Text>
-                    </View>
+                    </View> */}
                     <DataTable>
                       <DataTable.Header>
                         <DataTable.Title style={Classes.dataCell(colors)}>
                           {t("home.firstName")}
                         </DataTable.Title>
                         <DataTable.Title style={Classes.dataCell(colors)}>
-                          Distance
-                        </DataTable.Title>
-                        <DataTable.Title style={Classes.dataCell(colors)}>
-                          {t("home.seen")}
+                          {t("home.phoneNumber")}
                         </DataTable.Title>
                         <DataTable.Title style={Classes.dataCell(colors)}>
                           {t("home.call")}
@@ -310,20 +307,12 @@ export default function HomeScreen({ navigation, route }) {
                               <DataTable.Cell style={Classes.dataCell(colors)}>
                                 {`${driver?.firstName}`}
                               </DataTable.Cell>
-                              <DataTable.Cell style={Classes.dataCell(colors)}>
-                                {`${
-                                  driver?.distance &&
-                                  (driver?.distance / 1000).toFixed(2)
-                                } KM`}
-                              </DataTable.Cell>
-                              <DataTable.Cell style={Classes.dataCell(colors)}>
-                                {date(driver?.lastSeenAt).isAfter(
-                                  date().subtract(1, "hour")
-                                )
-                                  ? `${date(driver?.lastSeenAt).fromNow(true)}`
-                                  : `${date()
-                                      .subtract(1, "hour")
-                                      .fromNow(true)}`}
+                              <DataTable.Cell
+                                style={{
+                                  ...Classes.dataCell(colors),
+                                }}
+                              >
+                                {driver?.phoneNumber}
                               </DataTable.Cell>
                               <DataTable.Cell style={Classes.dataCell(colors)}>
                                 <Icon
