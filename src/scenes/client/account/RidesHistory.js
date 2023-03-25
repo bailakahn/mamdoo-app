@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { View, ScrollView } from "react-native";
-import { useTheme, Text, DataTable } from "react-native-paper";
+import { View, FlatList } from "react-native";
+import { useTheme, Text, List, Divider } from "react-native-paper";
 import { Classes } from "_styles";
 import { useUser } from "_hooks";
 import date from "../../../utils/helpers/date";
@@ -8,67 +8,71 @@ import { t, lang } from "_utils/lang"; // without this line it didn't work
 import { LoadingV2 } from "_atoms";
 
 export default function RidesHistoryScene() {
-    const { colors } = useTheme();
-    const user = useUser();
+  const { colors } = useTheme();
+  const user = useUser();
 
-    useEffect(() => {
-        user.actions.getRidesHistory();
-    }, []);
+  useEffect(() => {
+    user.actions.getRidesHistory();
+  }, []);
 
-    return user.isLoading ? (
-        <LoadingV2 />
-    ) : (
-        <ScrollView>
-            <DataTable>
-                <DataTable.Header>
-                    <DataTable.Title style={Classes.dataCell(colors)}>
-                        {t("ridesHistory.date")}
-                    </DataTable.Title>
-                    <DataTable.Title style={Classes.dataCell(colors)}>
-                        {t("ridesHistory.mamdoo")}
-                    </DataTable.Title>
-                    <DataTable.Title style={Classes.dataCell(colors)}>
-                        {t("ridesHistory.status")}
-                    </DataTable.Title>
-                </DataTable.Header>
-                {user.ridesHistory.map((ride, i) => (
-                    <DataTable.Row key={i}>
-                        <DataTable.Cell style={Classes.dataCell(colors)}>
-                            {date(ride.createdAt).format(
-                                lang === "fr"
-                                    ? "D MMM YYYY, HH:mm"
-                                    : "YYYY MMM Do, HH:mm"
-                            )}
-                        </DataTable.Cell>
-                        <DataTable.Cell style={Classes.dataCell(colors)}>
-                            {ride.driver
-                                ? `${ride.driver.firstName} ${ride.driver.lastName}`
-                                : "Inconu"}
-                        </DataTable.Cell>
-                        <DataTable.Cell style={Classes.dataCell(colors)}>
-                            <Text
-                                style={{
-                                    color:
-                                        ride.status == "canceled"
-                                            ? colors.accent
-                                            : colors.primary
-                                }}
-                            >
-                                {t(`profile.${ride.status}`)}
-                            </Text>
-                        </DataTable.Cell>
-                    </DataTable.Row>
-                ))}
-
-                {/* <DataTable.Pagination
-                    page={1}
-                    numberOfPages={10}
-                    onPageChange={(page) => {
-                        console.log(page);
-                    }}
-                    label="1-2 of 6"
-                /> */}
-            </DataTable>
-        </ScrollView>
-    );
+  return user.isLoading ? (
+    <LoadingV2 />
+  ) : (
+    <View>
+      <FlatList
+        data={user.ridesHistory}
+        keyExtractor={(ride) => ride._id}
+        ListEmptyComponent={
+          <View style={{ alignItems: "center", marginTop: 20 }}>
+            <Text>{t("ridesHistory.noRides")}</Text>
+          </View>
+        }
+        onEndReachedThreshold={0.1}
+        onEndReached={() => {
+          console.log(
+            "more...",
+            user.ridesHistory[user.ridesHistory.length - 1].createdAt
+          );
+          user.actions.getMoreRidesHistory(
+            user.ridesHistory[user.ridesHistory.length - 1].createdAt
+          );
+        }}
+        renderItem={({ item: ride }) => {
+          return (
+            <View>
+              <List.Item
+                title={
+                  ride.driver
+                    ? `${ride.driver.firstName} ${ride.driver.lastName}`
+                    : "Inconu"
+                }
+                description={date(ride.createdAt).format(
+                  lang === "fr" ? "D MMM YYYY, HH:mm:ss" : "YYYY MMM Do, HH:mm"
+                )}
+                left={(props) => (
+                  <List.Icon
+                    {...props}
+                    icon={
+                      ride.status === "completed"
+                        ? "checkbox-marked-circle"
+                        : "chevron-right"
+                    }
+                    color={colors.primary}
+                  />
+                )}
+                right={(props) => (
+                  <List.Icon
+                    {...props}
+                    icon={"chevron-right"}
+                    color={colors.primary}
+                  />
+                )}
+              />
+              <Divider />
+            </View>
+          );
+        }}
+      />
+    </View>
+  );
 }

@@ -203,7 +203,7 @@ export default function usePartner() {
   const getRidesHistory = () => {
     setIsLoading(true);
     getRequest({
-      method: "GET",
+      method: "POST",
       endpoint: "rides/drivers/history",
     })
       .then((data) => {
@@ -214,6 +214,20 @@ export default function usePartner() {
       })
       .finally(() => {
         setIsLoading(false);
+      });
+  };
+
+  const getMoreRidesHistory = (from) => {
+    getRequest({
+      method: "POST",
+      endpoint: "rides/drivers/history",
+      params: { from },
+    })
+      .then((data) => {
+        setRidesHistory([...ridesHistory, ...data]);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -434,6 +448,7 @@ export default function usePartner() {
       changeStatus,
       saveChanges,
       getRidesHistory,
+      getMoreRidesHistory,
       logout,
       refresh,
       deleteAccount,

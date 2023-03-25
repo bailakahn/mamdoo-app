@@ -116,7 +116,7 @@ export default function useUser() {
   const getRidesHistory = () => {
     setIsLoading(true);
     getRequest({
-      method: "GET",
+      method: "POST",
       endpoint: "rides/clients/history",
     })
       .then((data) => {
@@ -127,6 +127,20 @@ export default function useUser() {
       })
       .finally(() => {
         setIsLoading(false);
+      });
+  };
+
+  const getMoreRidesHistory = (from) => {
+    getRequest({
+      method: "POST",
+      endpoint: "rides/clients/history",
+      params: { from },
+    })
+      .then((data) => {
+        setRidesHistory([...ridesHistory, ...data]);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -339,6 +353,7 @@ export default function useUser() {
       setFormUser,
       saveChanges,
       getRidesHistory,
+      getMoreRidesHistory,
       logout,
       setAuth,
       loginUser,

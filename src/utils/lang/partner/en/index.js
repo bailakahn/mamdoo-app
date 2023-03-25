@@ -267,5 +267,6 @@ export default {
     date: "Date",
     client: "Client",
     status: "Status",
+    noRides: "No Ride",
   },
 };

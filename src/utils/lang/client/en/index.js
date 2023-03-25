@@ -176,5 +176,6 @@ export default {
     date: "Date",
     mamdoo: "Mamdoo",
     status: "Status",
+    noRides: "No Ride",
   },
 };
