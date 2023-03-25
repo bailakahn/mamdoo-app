@@ -264,7 +264,6 @@ export default function HomeScreen({ navigation, route }) {
               title={
                 <Text
                   style={{
-                    color: colors.primary,
                     fontSize: 20,
                   }}
                 >
@@ -275,56 +274,35 @@ export default function HomeScreen({ navigation, route }) {
               children={
                 <View>
                   <ScrollView>
-                    {/* <View>
-                      <Text>{t("home.contactDrivers")}</Text>
-                    </View> */}
-                    <DataTable>
-                      <DataTable.Header>
-                        <DataTable.Title style={Classes.dataCell(colors)}>
-                          {t("home.firstName")}
-                        </DataTable.Title>
-                        <DataTable.Title style={Classes.dataCell(colors)}>
-                          {t("home.phoneNumber")}
-                        </DataTable.Title>
-                        <DataTable.Title style={Classes.dataCell(colors)}>
-                          {t("home.call")}
-                        </DataTable.Title>
-                      </DataTable.Header>
-                      {!!drivers &&
-                        drivers?.slice(0, 3).map((driver, index) => (
-                          <TouchableOpacity
-                            key={index}
-                            onPress={() => {
-                              request.actions.updateStatus(
-                                currentRideId,
-                                driver?._id,
-                                "referred"
-                              );
-                              app.actions.call(driver?.phoneNumber);
-                            }}
-                          >
-                            <DataTable.Row>
-                              <DataTable.Cell style={Classes.dataCell(colors)}>
-                                {`${driver?.firstName}`}
-                              </DataTable.Cell>
-                              <DataTable.Cell
-                                style={{
-                                  ...Classes.dataCell(colors),
-                                }}
-                              >
-                                {driver?.phoneNumber}
-                              </DataTable.Cell>
-                              <DataTable.Cell style={Classes.dataCell(colors)}>
-                                <Icon
-                                  size={20}
+                    {!!drivers &&
+                      drivers?.slice(0, 3).map((driver, index) => (
+                        <TouchableOpacity
+                          key={index}
+                          onPress={() => {
+                            request.actions.updateStatus(
+                              currentRideId,
+                              driver?._id,
+                              "referred"
+                            );
+                            app.actions.call(driver?.phoneNumber);
+                          }}
+                        >
+                          <View>
+                            <List.Item
+                              title={`${driver?.firstName} ${driver?.lastName}`}
+                              description={driver?.phoneNumber}
+                              right={(props) => (
+                                <List.Icon
+                                  {...props}
+                                  icon={"phone"}
                                   color={colors.primary}
-                                  name="phone-forwarded"
                                 />
-                              </DataTable.Cell>
-                            </DataTable.Row>
-                          </TouchableOpacity>
-                        ))}
-                    </DataTable>
+                              )}
+                            />
+                            <Divider />
+                          </View>
+                        </TouchableOpacity>
+                      ))}
                   </ScrollView>
                 </View>
               }

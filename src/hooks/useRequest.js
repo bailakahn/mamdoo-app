@@ -56,7 +56,7 @@ export default function useRequest() {
       setNewRequestId(requestId);
       if (foundDrivers) {
         stop = true;
-        setRideRequestMessage(t("ride.rideFoundDrivers"));
+        // setRideRequestMessage(t("ride.rideFoundDrivers"));
       }
 
       if (retryCount === 1) setRideRequestMessage(t("ride.rideWidenSearch"));

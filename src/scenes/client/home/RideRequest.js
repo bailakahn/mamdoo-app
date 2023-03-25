@@ -179,7 +179,7 @@ export default function RideRequestScreen({ navigation, route }) {
               onClose={() => ride.actions.setRideDenied(false)}
             />
           )}
-          {ride.rideRequestMessage && (
+          {/* {ride.rideRequestMessage && (
             <Info
               visible={!!ride.rideRequestMessage}
               text={
@@ -188,10 +188,13 @@ export default function RideRequestScreen({ navigation, route }) {
               onDismiss={() => ride.actions.setRideRequestMessage(false)}
               onClose={() => ride.actions.setRideRequestMessage(false)}
             />
-          )}
+          )} */}
+
           <View style={{ padding: 5 }}>
-            <Text style={{ fontSize: 30, fontWeight: "bold" }}>
-              {t("ride.driverSearch")}
+            <Text
+              style={{ fontSize: 30, fontWeight: "bold", textAlign: "center" }}
+            >
+              {`${t("ride.driverSearch")} ${t("ride.nearYou")}`}
             </Text>
           </View>
 
@@ -206,9 +209,14 @@ export default function RideRequestScreen({ navigation, route }) {
             ]}
             source={PinAnimation}
           />
-          <Text style={{ fontSize: 30, fontWeight: "bold" }}>
-            {t("ride.nearYou")}
-          </Text>
+
+          {ride.rideRequestMessage && (
+            <View>
+              <Text style={{ fontSize: 20, textAlign: "center" }}>
+                {ride.rideRequestMessage}
+              </Text>
+            </View>
+          )}
 
           <View style={{ marginTop: 20 }}>
             <RoundButton
