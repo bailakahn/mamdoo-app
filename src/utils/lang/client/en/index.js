@@ -59,6 +59,8 @@ export default {
     expired: "This code is expired",
     notFound: "We could not find this code",
     invalidCode: "We could not verify this code",
+    userBlocked: "This account is blocked!",
+    noUser: "No account found for this user!",
   },
   home: {
     welcome: "Welcome On Mamdoo",

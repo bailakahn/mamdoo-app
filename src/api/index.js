@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Platform } from "react-native";
+import { Platform, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // import { BACKEND_ENDPOINT } from "@env";
 import Constants from "expo-constants";
 import * as Application from "expo-application";
 import { useStore } from "_store";
+import { t, lang } from "_utils/lang"; // without this line it didn't work
+
 const PROVIDER_URL = Constants.expoConfig.extra.providerUrl;
 
+var alertShown = false;
 export function useApi() {
   const {
     main: { app },
     auth: { user = {}, partner = {} },
+    actions: { removeUser, removePartner },
   } = useStore();
 
   const getRequest = ({ method = "GET", endpoint, params }) => {
@@ -47,6 +51,26 @@ export function useApi() {
       }))
       .then(({ status, data }) => {
         if (status !== 200) {
+          if (
+            ["errors.userBlocked", "errors.noUser"].includes(data.code) &&
+            !alertShown
+          ) {
+            Alert.alert(
+              t("errors.crashErrorTitle"),
+              t(data?.code || "errors.crashErrorTitle"),
+              [
+                {
+                  text: "OK",
+                  onPress: () => {
+                    alertShown = false;
+                    if (app === "client") removeUser();
+                    else removePartner();
+                  },
+                },
+              ]
+            );
+            alertShown = true;
+          }
           console.log({ status, data });
           const error = new Error(`${data.type}: ${data.message}`);
           error.code = data.code;
