@@ -149,12 +149,14 @@ export default {
     viewProfile: "View Profile",
     ridesHistory: "Rides History",
     logout: "Logout",
+    feedback: "Feedback",
   },
   screens: {
     home: "Home",
     account: "Account",
     profile: "Profile",
     ridesHistory: "Rides History",
+    feedback: "Feedback",
   },
   profile: {
     edit: "Edit",
@@ -179,5 +181,13 @@ export default {
     mamdoo: "Mamdoo",
     status: "Status",
     noRides: "No Ride",
+  },
+  feedback: {
+    title: "Feedback Form",
+    description:
+      "We would like to have your feedback about our service. Please take few minutes to fill this form.",
+    rating: "How would you rate our service ?",
+    placeholder: "Give us your comments",
+    send: "Send",
   },
 };

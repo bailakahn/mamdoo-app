@@ -149,12 +149,14 @@ export default {
     viewProfile: "Voir votre profil",
     ridesHistory: "Historique de courses",
     logout: "Se déconnecter",
+    feedback: "Ecrivez-nous",
   },
   screens: {
     home: "Accueil",
     account: "Compte",
     profile: "Profil",
     ridesHistory: "Historique de courses",
+    feedback: "Commentaires",
   },
   profile: {
     edit: "Modifier",
@@ -179,5 +181,13 @@ export default {
     mamdoo: "Mamdoo",
     status: "Status",
     noRides: "Aucune course",
+  },
+  feedback: {
+    title: "Formulaire de retour",
+    description:
+      "Nous aimerions avoir votre opinion sur notre service. Veuillez prendre quelques minutes pour remplir ce formulaire et nous faire part de vos commentaires.",
+    rating: "Comment trouvez vous notre service ?",
+    placeholder: "Ecrivez votre commentaire",
+    send: "Envoyez",
   },
 };
