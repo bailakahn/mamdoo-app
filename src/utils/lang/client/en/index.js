@@ -140,7 +140,7 @@ export default {
     registerHeader: "Register",
     alreadyHaveAccount: "Already have an account ?",
     notRegisteredYet: "Not Register Yet ?",
-    forgotPassword: "Forgot your code pin ?",
+    forgotPassword: "I forgot my pin code",
     pinPlaceholder: "Something you will remember",
     registerPin: "Pin Code (4 digits)",
   },
@@ -157,6 +157,8 @@ export default {
     profile: "Profile",
     ridesHistory: "Rides History",
     feedback: "Feedback",
+    login: "Connection",
+    forgotPassword: "Forgot Pin",
   },
   profile: {
     edit: "Edit",

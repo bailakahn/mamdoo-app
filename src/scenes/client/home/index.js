@@ -6,7 +6,7 @@ import {
   Platform,
   TouchableOpacity,
 } from "react-native";
-import { Text, useTheme, List, Divider, DataTable } from "react-native-paper";
+import { Text, useTheme, List, Divider } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -22,7 +22,6 @@ import {
 import { Info, Modal } from "_molecules";
 import { RoundButton, Button } from "_atoms";
 import PopConfirm from "_organisms/PopConfirm";
-import date from "../../../utils/helpers/date";
 
 export default function HomeScreen({ navigation, route }) {
   const [info, setInfo] = useState(false);

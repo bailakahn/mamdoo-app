@@ -1,72 +1,84 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+import { useTheme } from "react-native-paper";
 
 const Stack = createStackNavigator();
 
 import {
-    FormScene,
-    LoginScene,
-    ForgotPasswordScene,
-    ResetPinScene
+  FormScene,
+  LoginScene,
+  ForgotPasswordScene,
+  ResetPinScene,
 } from "_scenes/client";
+import { t } from "_utils/lang";
 
 export default function AuthStack({}) {
-    return (
-        <Stack.Navigator
-            initialRouteName="Login"
-            screenOptions={{ headerShown: false }}
-        >
-            <Stack.Screen
-                name="Login"
-                component={LoginScene}
-                options={({ navigation }) => ({
-                    headerStyle: {
-                        borderBottomWidth: 1
-                    },
-                    headerTitleStyle: {
-                        // color: "#000"
-                    }
-                })}
-            />
+  const { colors } = useTheme();
 
-            <Stack.Screen
-                name="Register"
-                component={FormScene}
-                options={({ navigation }) => ({
-                    headerStyle: {
-                        borderBottomWidth: 1
-                    },
-                    headerTitleStyle: {
-                        // color: "#000"
-                    }
-                })}
-            />
+  return (
+    <Stack.Navigator
+      initialRouteName="Login"
+      screenOptions={{ headerShown: false }}
+    >
+      <Stack.Screen
+        name="Login"
+        component={LoginScene}
+        options={({ navigation }) => ({
+          headerStyle: {
+            borderBottomWidth: 1,
+          },
+          headerTitleStyle: {
+            // color: "#000"
+          },
+        })}
+      />
 
-            <Stack.Screen
-                name="ForgotPassword"
-                component={ForgotPasswordScene}
-                options={({ navigation }) => ({
-                    headerStyle: {
-                        borderBottomWidth: 1
-                    },
-                    headerTitleStyle: {
-                        // color: "#000"
-                    }
-                })}
-            />
+      <Stack.Screen
+        name="Register"
+        component={FormScene}
+        options={({ navigation }) => ({
+          headerStyle: {
+            borderBottomWidth: 1,
+          },
+          headerTitleStyle: {
+            // color: "#000"
+          },
+        })}
+      />
 
-            <Stack.Screen
-                name="ResetPin"
-                component={ResetPinScene}
-                options={({ navigation }) => ({
-                    headerStyle: {
-                        borderBottomWidth: 1
-                    },
-                    headerTitleStyle: {
-                        // color: "#000"
-                    }
-                })}
-            />
-        </Stack.Navigator>
-    );
+      <Stack.Screen
+        name="ForgotPassword"
+        component={ForgotPasswordScene}
+        options={({ navigation }) => ({
+          headerStyle: {
+            borderBottomWidth: 1,
+            backgroundColor: colors.background,
+          },
+          headerTitleStyle: {
+            // color: "#000"
+          },
+          headerBackTitle: t("screens.login"),
+          headerTitle: t("screens.forgotPassword"),
+          headerShown: true,
+        })}
+      />
+
+      <Stack.Screen
+        name="ResetPin"
+        component={ResetPinScene}
+        options={({ navigation }) => ({
+          headerStyle: {
+            borderBottomWidth: 1,
+            backgroundColor: colors.background,
+          },
+          headerTitleStyle: {
+            // color: "#000"
+          },
+          headerBackTitle: t("screens.login"),
+          headerTitle: t("screens.forgotPassword"),
+          headerShown: true,
+        })}
+      />
+    </Stack.Navigator>
+  );
 }

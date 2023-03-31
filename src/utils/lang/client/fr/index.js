@@ -140,7 +140,7 @@ export default {
     registerHeader: "Créer un compte",
     alreadyHaveAccount: "Vous avez déjà un compte ?",
     notRegisteredYet: "Pas de compte ?",
-    forgotPassword: "Code pin oublié ?",
+    forgotPassword: "J'ai oublié mon code pin",
     pinPlaceholder: "Un code facile á retenir",
     registerPin: "Code Pin (4 chiffres)",
   },
@@ -157,6 +157,8 @@ export default {
     profile: "Profil",
     ridesHistory: "Historique de courses",
     feedback: "Commentaires",
+    login: "Connexion",
+    forgotPassword: "Code pin oublié",
   },
   profile: {
     edit: "Modifier",

@@ -12,19 +12,19 @@ i18n.fallbacks = true;
 i18n.locale = Localization.locale.includes("fr") ? "fr" : "en";
 
 export const t = (scope, options) => {
-    i18n.translations = {
-        fr: { ...clientFr },
-        en: { ...clientEn }
-    };
-    return i18n.t(scope, options);
+  i18n.translations = {
+    fr: { ...clientFr },
+    en: { ...clientEn },
+  };
+  return i18n.t(scope, options);
 };
 
 export const t2 = (scope, options) => {
-    i18n.translations = {
-        fr: { ...clientFr, ...partnerFr },
-        en: { ...clientEn, ...partnerEn }
-    };
-    return i18n.t(scope, options);
+  i18n.translations = {
+    fr: { ...clientFr, ...partnerFr },
+    en: { ...clientEn, ...partnerEn },
+  };
+  return i18n.t(scope, options);
 };
 
 export const lang = i18n.locale;
