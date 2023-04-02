@@ -39,6 +39,10 @@ export default {
     privacyPolicyText: "En créant un compte vous acceptez nos",
     privacyPolicyLink:
       "Conditions d'utilisation et notre politique de confidentialité",
+    appUpdateTitle: "Veuillez mettre à jour l'application",
+    appUpdateDescription:
+      "Pour profiter du meilleur de Mamdoo, veuillez mettre a jour votre application",
+    appUpdateButton: "Mettre à jour",
   },
   errors: {
     crashErrorTitle: "Oops, Quelque chose s'est mal passé",

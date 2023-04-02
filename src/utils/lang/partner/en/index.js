@@ -41,6 +41,10 @@ export default {
     pinVerificationNotice:
       "Then enter your new pin code. Do not use the same code as the one we sent by SMS.",
     reload: "Reload",
+    appUpdateTitle: "Update your application",
+    appUpdateDescription:
+      "To enjoy the best of Mamdoo, update your application today",
+    appUpdateButton: "Update Now",
   },
   upload: {
     notActive: "Your account is not active",

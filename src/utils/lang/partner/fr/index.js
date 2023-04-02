@@ -40,6 +40,10 @@ export default {
     pinVerificationNotice:
       "Ensuite entrez votre nouveau code pin. N'utilisez pas le même code que celui que vous avez reçu par SMS.",
     reload: "Recharger",
+    appUpdateTitle: "Veuillez mettre à jour l'application",
+    appUpdateDescription:
+      "Pour profiter du meilleur de Mamdoo, veuillez mettre a jour votre application",
+    appUpdateButton: "Mettre à jour",
   },
   upload: {
     notActive: "Votre compte n'est pas activé",

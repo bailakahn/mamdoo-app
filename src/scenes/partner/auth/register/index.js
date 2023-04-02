@@ -69,7 +69,7 @@ export default function Register({ navigation }) {
                   </Text>
                 </View>
                 <View>
-                  {/* <TextInput
+                  <TextInput
                     style={[Classes.formInput(colors)]}
                     outlineStyle={{ borderRadius: 10 }}
                     mode="outlined"
@@ -83,24 +83,8 @@ export default function Register({ navigation }) {
                       })
                     }
                     maxLength={50}
-                  /> */}
-
-                  <TI
-                    style={[Classes.formInput(colors)]}
-                    // outlineStyle={{ borderRadius: 10 }}
-                    // mode="outlined"
-                    // label={t2("form.firstName")}
-                    placeholder={t2("form.firstName")}
-                    placeholderTextColor="#000"
-                    value={partner.formPartner.firstName}
-                    onChangeText={(firstName) =>
-                      partner.actions.setFormPartner({
-                        ...partner.formPartner,
-                        firstName,
-                      })
-                    }
-                    maxLength={50}
                   />
+
                   <TextInput
                     style={Classes.formInput(colors)}
                     outlineStyle={{ borderRadius: 10 }}

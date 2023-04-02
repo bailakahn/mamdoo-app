@@ -17,11 +17,17 @@ import { navigationRef } from "./RootNavigation";
 import { LoadingV2 } from "_atoms";
 import LocationDisclosure from "_components/organisms/LocationDisclosure";
 import MaintenanceMode from "_organisms/MaintenanceMode";
+import ForceUpdate from "_organisms/ForceUpdate";
+import Constants from "expo-constants";
+import * as Application from "expo-application";
+const ENV_NAME = Constants.expoConfig.extra.envName;
 
 export default function NavigationRoot({ mode }) {
   const mamdooTheme = useTheme();
 
   const { app, appLoaded, settings, actions } = useApp();
+
+  console.log({ ENV_NAME });
 
   const {
     main: { backgroundPermission, backgroundPermissionReady },
@@ -78,6 +84,13 @@ export default function NavigationRoot({ mode }) {
     _.isEmpty(settings)
   )
     return <LoadingV2 color={"#25C0D2"} />;
+
+  if (
+    ENV_NAME !== "localhost" &&
+    Application.nativeApplicationVersion !== settings?.appVersion &&
+    settings?.showUpdateScreen
+  )
+    return <ForceUpdate />;
 
   if (settings?.maintenanceMode?.active)
     return (
