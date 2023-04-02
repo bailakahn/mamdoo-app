@@ -67,6 +67,7 @@ export default function ForgotPassword({ navigation }) {
             <View style={{ marginTop: 10 }}>
               <TextInput
                 style={Classes.formInput(colors)}
+                outlineStyle={{ borderRadius: 10 }}
                 mode="outlined"
                 label={t("form.phoneNumber")}
                 placeholder={t("form.phoneNumberPlaceholder")}

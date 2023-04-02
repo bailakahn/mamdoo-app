@@ -78,6 +78,7 @@ export default {
     mandatoyStepsDescription:
       "Voici ce que vous devez faire pour configurer votre compte",
     profilePicture: "Photo de profil",
+    aProfilePicture: "Une photo de profil",
     profilePictureTitle: "Prenez-vous en photo pour illustrer votre profil",
     profilePictureDescription:
       "Votre photo de profil aide les gens à vous reconnaître. Veuillez noter qu'une fois votre photo de profil envoyée, vous ne pouvez plus la modifier.",

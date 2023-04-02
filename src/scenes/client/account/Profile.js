@@ -56,11 +56,15 @@ export default function ProfileScene({ navigation }) {
       headerRight: () =>
         !isEdit ? (
           <Button onPress={() => setIsEdit(!isEdit)}>
-            <Text style={{ color: colors.primary }}>{t2("profile.edit")}</Text>
+            <Text style={{ color: colors.primary, fontSize: 20 }}>
+              {t2("profile.edit")}
+            </Text>
           </Button>
         ) : (
           <Button onPress={() => setIsEdit(!isEdit)}>
-            <Text style={{ color: colors.accent }}>{t2("profile.cancel")}</Text>
+            <Text style={{ color: colors.accent, fontSize: 20 }}>
+              {t2("profile.cancel")}
+            </Text>
           </Button>
         ),
     });
@@ -131,7 +135,6 @@ export default function ProfileScene({ navigation }) {
                 </Text>
               </Button>
             </View>
-            <Divider />
           </View>
         </View>
       ) : (
@@ -141,6 +144,7 @@ export default function ProfileScene({ navigation }) {
               <TextInput
                 key={i}
                 style={Classes.profileFormInput(colors)}
+                outlineStyle={{ borderRadius: 10 }}
                 mode="outlined"
                 label={title}
                 value={editUser[name]}

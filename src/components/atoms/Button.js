@@ -1,11 +1,16 @@
 import React from "react";
 import { Button as PaperButton } from "react-native-paper";
 
-export default function Button({ labelStyle, ...props }) {
-    return (
-        <PaperButton
-            {...props}
-            labelStyle={{ color: "#ffffff", ...labelStyle }}
-        />
-    );
+export default function Button({ labelStyle, disabled, style, ...props }) {
+  return (
+    <PaperButton
+      {...props}
+      disabled={disabled}
+      style={{
+        ...style,
+        ...(disabled ? { backgroundColor: "lightgray" } : {}),
+      }}
+      labelStyle={{ color: "#ffffff", ...labelStyle }}
+    />
+  );
 }

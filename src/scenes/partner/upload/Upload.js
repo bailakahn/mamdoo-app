@@ -21,14 +21,20 @@ export default function Upload({ navigation }) {
 
   const UploadConfirmation = () => (
     <Portal>
-      <Dialog visible={visible} onDismiss={() => setVisible(false)}>
+      <Dialog
+        style={{ backgroundColor: colors.background }}
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+      >
         <Dialog.Title>{t2("upload.uploadDocuments")}</Dialog.Title>
         <Dialog.Content>
           <Paragraph>{t2("upload.uploadDocumentsConfirmation")}</Paragraph>
         </Dialog.Content>
         <Dialog.Actions>
           <Button onPress={() => setVisible(false)} style={{ marginRight: 50 }}>
-            <Text style={{ color: colors.text }}>{t2("upload.cancel")}</Text>
+            <Text variant="titleLarge" style={{ color: colors.text }}>
+              {t2("upload.cancel")}
+            </Text>
           </Button>
           <Button
             mode="text"
@@ -37,7 +43,9 @@ export default function Upload({ navigation }) {
               partner.actions.uploadDocumentsToS3(navigation);
             }}
           >
-            <Text style={{ color: colors.primary }}>{t2("upload.upload")}</Text>
+            <Text variant="titleLarge" style={{ color: colors.primary }}>
+              {t2("upload.upload")}
+            </Text>
           </Button>
         </Dialog.Actions>
       </Dialog>

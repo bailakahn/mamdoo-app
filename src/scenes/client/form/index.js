@@ -71,6 +71,7 @@ export default function Form({ navigation }) {
             <View>
               <TextInput
                 style={Classes.formInput(colors)}
+                outlineStyle={{ borderRadius: 10 }}
                 mode="outlined"
                 label={t("form.firstName")}
                 placeholder={t("form.firstName")}
@@ -86,6 +87,7 @@ export default function Form({ navigation }) {
 
               <TextInput
                 style={Classes.formInput(colors)}
+                outlineStyle={{ borderRadius: 10 }}
                 mode="outlined"
                 label={t("form.lastName")}
                 placeholder={t("form.lastName")}
@@ -101,6 +103,7 @@ export default function Form({ navigation }) {
 
               <TextInput
                 style={Classes.formInput(colors)}
+                outlineStyle={{ borderRadius: 10 }}
                 mode="outlined"
                 label={t("form.phoneNumber")}
                 placeholder={t("form.phoneNumberPlaceholder")}
@@ -118,6 +121,7 @@ export default function Form({ navigation }) {
 
               <TextInput
                 style={Classes.formInput(colors)}
+                outlineStyle={{ borderRadius: 10 }}
                 mode="outlined"
                 label={t("form.pin")}
                 value={user.formUser.pin}

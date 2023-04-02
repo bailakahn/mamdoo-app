@@ -74,6 +74,7 @@ export default function PinVerification({ navigation }) {
             <View style={{ marginTop: 10 }}>
               <TextInput
                 style={Classes.formInput(colors)}
+                outlineStyle={{ borderRadius: 10 }}
                 mode="outlined"
                 label={t("main.verificationPlaceholder")}
                 placeholder={t("main.verificationPlaceholder")}
@@ -97,6 +98,7 @@ export default function PinVerification({ navigation }) {
             <View style={{ marginTop: 10 }}>
               <TextInput
                 style={Classes.formInput(colors)}
+                outlineStyle={{ borderRadius: 10 }}
                 mode="outlined"
                 label={t("form.pin")}
                 placeholder={t("form.pin")}
@@ -113,6 +115,7 @@ export default function PinVerification({ navigation }) {
               />
               <TextInput
                 style={Classes.formInput(colors)}
+                outlineStyle={{ borderRadius: 10 }}
                 mode="outlined"
                 label={t("form.pinValidation")}
                 placeholder={t("form.pinValidation")}

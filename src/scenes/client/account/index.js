@@ -51,56 +51,66 @@ export default function AccountScene({ navigation }) {
   ) : (
     <ScrollView style={Classes.container2(colors)}>
       <View>
-        <List.Item
-          left={(props) => (
-            <Avatar.Text
-              size={60}
-              label={`${user.user.firstName
-                .charAt(0)
-                .toUpperCase()}${user.user.lastName.charAt(0).toUpperCase()}`}
-            />
-          )}
-          title={`${user.user.firstName} ${user.user.lastName}`}
-          description={t("account.viewProfile")}
-          onPress={() => navigation.navigate("Profile")}
-          right={(props) => <List.Icon {...props} icon={"chevron-right"} />}
-          style={Classes.accountMenuItem(colors)}
-          titleStyle={{ fontWeight: "bold", fontSize: 20 }}
-        />
-        <Divider />
-      </View>
-      <View>
-        {menu.map(({ title, icon, onPress }, i) => (
-          <View key={i}>
-            <List.Item
-              title={title}
-              left={(props) => (
-                <List.Icon {...props} icon={icon} color={colors.primary} />
-              )}
-              onPress={onPress}
-              style={Classes.menuItem(colors)}
-              right={(props) => <List.Icon {...props} icon={"chevron-right"} />}
-            />
-            <Divider />
-          </View>
-        ))}
-      </View>
+        <View>
+          <List.Item
+            left={(props) => (
+              <View style={{ paddingLeft: 10 }}>
+                <Avatar.Text
+                  size={60}
+                  label={`${user.user.firstName
+                    .charAt(0)
+                    .toUpperCase()}${user.user.lastName
+                    .charAt(0)
+                    .toUpperCase()}`}
+                />
+              </View>
+            )}
+            title={`${user.user.firstName} ${user.user.lastName}`}
+            description={t("account.viewProfile")}
+            onPress={() => navigation.navigate("Profile")}
+            right={(props) => <List.Icon {...props} icon={"chevron-right"} />}
+            style={Classes.accountMenuItem(colors)}
+            titleStyle={{ fontWeight: "bold", fontSize: 20 }}
+          />
+          <Divider />
+        </View>
+        <View>
+          {menu.map(({ title, icon, onPress }, i) => (
+            <View key={i}>
+              <List.Item
+                title={title}
+                left={(props) => (
+                  <List.Icon {...props} icon={icon} color={colors.primary} />
+                )}
+                onPress={onPress}
+                style={Classes.menuItem(colors)}
+                right={(props) => (
+                  <List.Icon {...props} icon={"chevron-right"} />
+                )}
+              />
+              <Divider />
+            </View>
+          ))}
+        </View>
 
-      <View>
-        <List.Item
-          title={t("main.darkMode")}
-          description={t("main.enableDarkMode")}
-          right={(props) => (
-            <Switch
-              color={colors.primary}
-              value={theme.isDarkMode}
-              onValueChange={() => theme.actions.setDarkMode(!theme.isDarkMode)}
-            />
-          )}
-          style={Classes.accountMenuItem(colors)}
-          titleStyle={{ fontWeight: "bold", fontSize: 20 }}
-        />
-        <Divider />
+        <View>
+          <List.Item
+            title={t("main.darkMode")}
+            description={t("main.enableDarkMode")}
+            right={(props) => (
+              <Switch
+                color={colors.primary}
+                value={theme.isDarkMode}
+                onValueChange={() =>
+                  theme.actions.setDarkMode(!theme.isDarkMode)
+                }
+              />
+            )}
+            style={Classes.accountMenuItem(colors)}
+            titleStyle={{ fontWeight: "bold", fontSize: 20 }}
+          />
+          <Divider />
+        </View>
       </View>
     </ScrollView>
   );

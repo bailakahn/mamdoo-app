@@ -66,6 +66,7 @@ export default function Login({ navigation }) {
             <View>
               <TextInput
                 style={Classes.formInput(colors)}
+                outlineStyle={{ borderRadius: 10 }}
                 mode="outlined"
                 label={t("form.phoneNumber")}
                 placeholder={t("form.phoneNumberPlaceholder")}
@@ -83,6 +84,7 @@ export default function Login({ navigation }) {
 
               <TextInput
                 style={Classes.formInput(colors)}
+                outlineStyle={{ borderRadius: 10 }}
                 mode="outlined"
                 label={t("form.pin")}
                 placeholder={t("form.pin")}

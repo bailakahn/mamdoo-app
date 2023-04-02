@@ -3,8 +3,8 @@ import { ScrollView, SafeAreaView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import {
   Provider as PaperProvider,
-  DefaultTheme,
-  DarkTheme,
+  MD3LightTheme as DefaultTheme,
+  MD3DarkTheme as DarkTheme,
 } from "react-native-paper";
 import { useStore } from "_store";
 import { useApp, useTheme } from "_hooks";
@@ -14,7 +14,7 @@ import ClientRoutes from "./client";
 import PartnerRoutes from "./partner";
 import AppEntry from "../";
 import { navigationRef } from "./RootNavigation";
-import { Loading, LoadingV2 } from "_atoms";
+import { LoadingV2 } from "_atoms";
 import LocationDisclosure from "_components/organisms/LocationDisclosure";
 import MaintenanceMode from "_organisms/MaintenanceMode";
 
@@ -40,7 +40,10 @@ export default function NavigationRoot({ mode }) {
   const theme = {
     ...themeMode,
     roundness: 2,
-    colors: Colors.colors[mamdooTheme.isDarkMode ? "dark" : "light"],
+    colors: {
+      ...themeMode.colors,
+      ...Colors.colors[mamdooTheme.isDarkMode ? "dark" : "light"],
+    },
   };
 
   useEffect(() => {
@@ -103,7 +106,7 @@ export default function NavigationRoot({ mode }) {
     );
 
   return (
-    <PaperProvider theme={theme}>
+    <PaperProvider theme={{ ...theme }}>
       <NavigationContainer ref={navigationRef} theme={theme}>
         {!app ? (
           <AppEntry />

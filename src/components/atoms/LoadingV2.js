@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { Classes } from "_styles";
 import { useTheme, ActivityIndicator } from "react-native-paper";
-export default function Loading({
+function Loading({
   color,
   animating = true,
   size = "large",
@@ -26,3 +26,5 @@ export default function Loading({
     </View>
   );
 }
+
+export default React.memo(Loading);

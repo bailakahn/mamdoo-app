@@ -52,6 +52,7 @@ export default function MainTabs({ role }) {
             name="Home"
             children={() => <HomeStack role={role} />}
             options={{
+              tabBarColor: "red",
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons name="home" color={color} size={25} />
               ),

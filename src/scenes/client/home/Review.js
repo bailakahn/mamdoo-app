@@ -20,9 +20,9 @@ export default function ReviewScreen({ navigation, route }) {
   const [price, setPrice] = useState(0);
 
   // connect to proxy server
-  useProxy();
-  useNotifications();
-  useLanguage();
+  // useProxy();
+  // useNotifications();
+  // useLanguage();
   const ride = useRide();
 
   const { colors } = useTheme();

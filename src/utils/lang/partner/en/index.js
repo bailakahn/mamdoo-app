@@ -78,6 +78,7 @@ export default {
     mandatoyStepsTitle: "Mandatory Steps",
     mandatoyStepsDescription:
       "This is what you need to do to complete your account configuration",
+    aProfilePicture: "A Profile Picture",
     profilePicture: "Profile Picture",
     profilePictureTitle: "Take a picture of yourself",
     profilePictureDescription:

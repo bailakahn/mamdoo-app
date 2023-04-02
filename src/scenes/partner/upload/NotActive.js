@@ -36,12 +36,12 @@ export default function ForgotPassword({ navigation }) {
         }}
       >
         <View style={Classes.container(colors)}>
-          {/* <View style={{ marginTop: 20 }}>
-          <Image
-            source={require("_assets/logo.png")}
-            style={Classes.formLogo(colors)}
-          />
-        </View> */}
+          <View>
+            <Image
+              source={require("_assets/logo.png")}
+              style={Classes.formLogo(colors)}
+            />
+          </View>
           <View style={{ marginBottom: 25 }}>
             <Text style={{ fontSize: 25, fontWeight: "bold" }}>
               {t2("upload.notActive")}
@@ -57,6 +57,9 @@ export default function ForgotPassword({ navigation }) {
           </View>
           <View style={{ ...Classes.centeredText(colors), marginTop: 10 }}>
             <Text style={{ textAlign: "left" }}>
+              {`\u2022 ${t2("upload.aProfilePicture")}`}
+            </Text>
+            <Text style={{ textAlign: "left" }}>
               {`\u2022 ${t2("upload.driverLicence")}`}
             </Text>
             <Text style={{ textAlign: "left" }}>
@@ -68,9 +71,9 @@ export default function ForgotPassword({ navigation }) {
               {t2("upload.timeToValidate")}
             </Text>
           </View>
-          <View style={{ ...Classes.centeredText(colors), marginTop: 10 }}>
+          {/* <View style={{ ...Classes.centeredText(colors), marginTop: 10 }}>
             <Text style={{ textAlign: "left" }}>{t2("upload.reloadText")}</Text>
-          </View>
+          </View> */}
           {/* <View
             style={{
               flexDirection: "row",
@@ -99,12 +102,12 @@ export default function ForgotPassword({ navigation }) {
           </View>
 
           <View style={{ marginTop: 50 }}>
-            <View style={{ ...Classes.centeredText(colors), marginTop: 10 }}>
+            {/* <View style={{ ...Classes.centeredText(colors), marginTop: 10 }}>
               <Text style={{ textAlign: "left" }}>
                 {t2("upload.afterDelay")}
               </Text>
-            </View>
-            <View style={{ marginTop: 30, marginBottom: 20 }}>
+            </View> */}
+            {/* <View style={{ marginTop: 30, marginBottom: 20 }}>
               <Button
                 // style={Classes.callButton(colors)}
                 {...Classes.callButtonContainer(colors)}
@@ -113,7 +116,7 @@ export default function ForgotPassword({ navigation }) {
               >
                 {`${t2("upload.call")} ${app.settings.phone}`}
               </Button>
-            </View>
+            </View> */}
             <View style={{ marginTop: 15, marginBottom: 20 }}>
               <Button
                 {...Classes.logoutButton(colors)}
