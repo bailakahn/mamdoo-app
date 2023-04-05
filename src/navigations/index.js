@@ -27,8 +27,6 @@ export default function NavigationRoot({ mode }) {
 
   const { app, appLoaded, settings, actions } = useApp();
 
-  console.log({ ENV_NAME });
-
   const {
     main: { backgroundPermission, backgroundPermissionReady },
     actions: {

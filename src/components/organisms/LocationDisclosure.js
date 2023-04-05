@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Image } from "react-native";
+import { View } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
-import { Button } from "_atoms";
+import { Button, Image } from "_atoms";
 
 export default function LocationDisclosure({ setBackgroundPermission }) {
   const { colors } = useTheme();
@@ -18,6 +18,7 @@ export default function LocationDisclosure({ setBackgroundPermission }) {
       <View style={{ marginTop: 20 }}>
         <Image
           source={require("_assets/logo.png")}
+          cacheKey={"logo.png"}
           style={Classes.formLogo(colors)}
         />
       </View>

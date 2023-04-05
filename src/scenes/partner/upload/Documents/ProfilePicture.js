@@ -1,7 +1,7 @@
 import React, { useRef, useMemo, useCallback } from "react";
 import {
   View,
-  Image,
+  Image as RNImage,
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
@@ -14,7 +14,7 @@ import {
 } from "@gorhom/bottom-sheet";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
-import { Button } from "_atoms";
+import { Button, Image } from "_atoms";
 import { usePartner } from "_hooks";
 import useUpload from "../../../../hooks/partner/useUpload";
 import * as Mixins from "../../../../styles/mixins";
@@ -118,7 +118,7 @@ export default function ProfilePicture({ navigation }) {
         {partner.uploadDocuments.profilePicture ? (
           <View style={{ alignItems: "center" }}>
             <View style={{ alignItems: "center", marginTop: 20 }}>
-              <Image
+              <RNImage
                 source={{
                   uri: partner.uploadDocuments?.profilePicture?.uri,
                 }}
@@ -210,6 +210,7 @@ export default function ProfilePicture({ navigation }) {
                   <Text>Example</Text>
                   <Image
                     source={require("_assets/avatar.png")}
+                    cacheKey={"avatar.png"}
                     style={{
                       width: Mixins.width(0.4, true),
                       height: Mixins.height(0.2, true),
@@ -268,7 +269,7 @@ export default function ProfilePicture({ navigation }) {
                   })
                 }
               >
-                <Text>{`${t2("upload.profilePictureTake")}`}</Text>
+                {t2("upload.profilePictureTake")}
               </Button>
             </View>
           </View>

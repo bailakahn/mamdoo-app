@@ -1,11 +1,11 @@
 import React from "react";
-import { SafeAreaView, View, Image, ScrollView } from "react-native";
+import { SafeAreaView, View, ScrollView } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import _ from "lodash";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { useApp } from "_hooks";
-import { Button } from "_atoms";
+import { Button, Image } from "_atoms";
 
 const Main = () => {
   const { colors } = useTheme();
@@ -23,6 +23,7 @@ const Main = () => {
         <View style={{ marginTop: -50 }}>
           <Image
             source={require("_assets/logo.png")}
+            cacheKey={"logo.png"}
             style={Classes.formLogo(colors)}
           />
         </View>

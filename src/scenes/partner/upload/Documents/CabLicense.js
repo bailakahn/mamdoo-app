@@ -1,7 +1,7 @@
 import React, { useRef, useCallback, useMemo } from "react";
 import {
   View,
-  Image,
+  Image as RNImage,
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
@@ -14,7 +14,7 @@ import {
 } from "@gorhom/bottom-sheet";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
-import { Button } from "_atoms";
+import { Button, Image } from "_atoms";
 import { usePartner } from "_hooks";
 import useUpload from "../../../../hooks/partner/useUpload";
 import * as Mixins from "../../../../styles/mixins";
@@ -119,7 +119,7 @@ export default function CabLicense({ navigation }) {
         {partner.uploadDocuments.cabLicense ? (
           <View style={{ alignItems: "center" }}>
             <View style={{ alignItems: "center", marginTop: 20 }}>
-              <Image
+              <RNImage
                 source={{
                   uri: partner.uploadDocuments?.cabLicense?.uri,
                 }}
@@ -186,6 +186,7 @@ export default function CabLicense({ navigation }) {
                 <View style={{ alignItems: "center", marginTop: 30 }}>
                   <Image
                     source={require("_assets/registration.png")}
+                    cacheKey="registration.png"
                     style={{
                       width: Mixins.width(0.6, true),
                       height: Mixins.height(0.2, true),
@@ -219,7 +220,7 @@ export default function CabLicense({ navigation }) {
                   })
                 }
               >
-                <Text>{`${t2("upload.profilePictureTake")}`}</Text>
+                {t2("upload.profilePictureTake")}
               </Button>
             </View>
           </View>

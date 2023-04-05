@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   View,
-  Image,
   TouchableOpacity,
   Platform,
   ScrollView,
@@ -15,7 +14,7 @@ import { Picker } from "@react-native-picker/picker";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import { usePartner, useApp } from "_hooks";
-import { Button, RoundButton, LoadingV2 } from "_atoms";
+import { Button, RoundButton, LoadingV2, Image } from "_atoms";
 
 export default function Register({ navigation }) {
   const { colors } = useTheme();
@@ -58,6 +57,7 @@ export default function Register({ navigation }) {
             <View style={{ marginTop: 20 }}>
               <Image
                 source={require("_assets/logo.png")}
+                cacheKey="logo.png"
                 style={Classes.formLogo(colors)}
               />
             </View>

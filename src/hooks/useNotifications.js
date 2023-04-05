@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { Alert } from "react-native";
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import { useApi } from "_api";
@@ -98,18 +99,19 @@ async function registerForPushNotificationsAsync() {
     const { status: existingStatus } =
       await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
+    console.log({ existingStatus });
     if (existingStatus !== "granted") {
       const { status } = await Notifications.requestPermissionsAsync();
       finalStatus = status;
     }
     if (finalStatus !== "granted") {
-      alert("Failed to get push token for push notification!");
+      Alert.alert("Failed to get push token for push notification!");
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
     // console.log(token);
   } else {
-    alert("Must use physical device for Push Notifications");
+    Alert.alert("Must use physical device for Push Notifications");
   }
 
   if (Platform.OS === "android") {

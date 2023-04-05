@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   View,
-  Image,
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
@@ -10,7 +9,7 @@ import {
 import { useTheme, Text, TextInput } from "react-native-paper";
 import { Classes } from "_styles";
 import { t, t2 } from "_utils/lang";
-import { Button, LoadingV2 } from "_atoms";
+import { Button, LoadingV2, Image } from "_atoms";
 import { usePartner } from "_hooks";
 
 export default function PinVerification({ navigation }) {
@@ -50,6 +49,7 @@ export default function PinVerification({ navigation }) {
             <View>
               <Image
                 source={require("_assets/logo.png")}
+                cacheKey="logo.png"
                 style={Classes.formLogo(colors)}
               />
             </View>

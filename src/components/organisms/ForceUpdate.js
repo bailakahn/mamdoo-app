@@ -5,11 +5,11 @@ import {
   ScrollView,
   Platform,
   Linking,
-  Image,
+  Image as RNImage,
 } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import { Classes } from "_styles";
-import { Button } from "_atoms";
+import { Button, Image } from "_atoms";
 import { t2 } from "_utils/lang";
 import * as Mixins from "../../styles/mixins";
 
@@ -57,6 +57,7 @@ export default function ForceUpdate({}) {
         <View>
           <Image
             source={require("_assets/update-app.png")}
+            cacheKey={"update-app.png"}
             style={{
               width: Mixins.width(0.9, true),
               height: Mixins.height(0.5, true),

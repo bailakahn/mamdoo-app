@@ -1,15 +1,9 @@
 import React from "react";
-import {
-  View,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  SafeAreaView,
-} from "react-native";
+import { View, ScrollView, SafeAreaView } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
-import { Button, LoadingV2 } from "_atoms";
+import { Button, LoadingV2, Image } from "_atoms";
 import { useApp, usePartner } from "_hooks";
 
 export default function ForgotPassword({ navigation }) {
@@ -39,6 +33,7 @@ export default function ForgotPassword({ navigation }) {
           <View>
             <Image
               source={require("_assets/logo.png")}
+              cacheKey="logo.png"
               style={Classes.formLogo(colors)}
             />
           </View>

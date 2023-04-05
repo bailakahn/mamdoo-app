@@ -1,15 +1,9 @@
 import React from "react";
-import {
-  View,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
-} from "react-native";
+import { View, TouchableOpacity, ScrollView, SafeAreaView } from "react-native";
 import { useTheme, Text, TextInput } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
-import { Button, LoadingV2 } from "_atoms";
+import { Button, LoadingV2, Image } from "_atoms";
 import { useUser } from "_hooks";
 
 export default function Verification({ navigation }) {
@@ -32,6 +26,7 @@ export default function Verification({ navigation }) {
           <View>
             <Image
               source={require("_assets/logo.png")}
+              cacheKey="logo.png"
               style={Classes.formLogo(colors)}
             />
           </View>

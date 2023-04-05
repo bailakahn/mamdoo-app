@@ -1,7 +1,7 @@
 import React, { useRef, useCallback, useMemo, useState } from "react";
 import {
   View,
-  Image,
+  Image as RNImage,
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
@@ -14,7 +14,7 @@ import {
 } from "@gorhom/bottom-sheet";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
-import { Button } from "_atoms";
+import { Button, Image } from "_atoms";
 import { usePartner } from "_hooks";
 import useUpload from "../../../../hooks/partner/useUpload";
 import * as Mixins from "../../../../styles/mixins";
@@ -118,7 +118,7 @@ export default function DriverLicense({ navigation }) {
         partner.uploadDocuments.driverLicenseBack ? (
           <View style={{ alignItems: "center" }}>
             <View style={{ alignItems: "center", marginTop: 20 }}>
-              <Image
+              <RNImage
                 source={{
                   uri: partner.uploadDocuments?.driverLicenseFront?.uri,
                 }}
@@ -128,7 +128,7 @@ export default function DriverLicense({ navigation }) {
                 }}
                 resizeMode="contain"
               />
-              <Image
+              <RNImage
                 source={{
                   uri: partner.uploadDocuments?.driverLicenseBack?.uri,
                 }}
@@ -208,6 +208,7 @@ export default function DriverLicense({ navigation }) {
                 >
                   <Image
                     source={require("_assets/driver-license-front.png")}
+                    cacheKey={"driver-license-front.png"}
                     style={{
                       width: Mixins.width(0.6, true),
                       height: Mixins.height(0.2, true),
@@ -216,6 +217,7 @@ export default function DriverLicense({ navigation }) {
                   />
                   <Image
                     source={require("_assets/driver-license-back.png")}
+                    cacheKey="driver-license-back.png"
                     style={{
                       width: Mixins.width(0.6, true),
                       height: Mixins.height(0.2, true),
@@ -240,7 +242,7 @@ export default function DriverLicense({ navigation }) {
                   name = "driverLicenseFront";
                 }}
               >
-                <Text>{`${t2("upload.driverLicenceFront")}`}</Text>
+                {t2("upload.driverLicenceFront")}
               </Button>
             </View>
             <View
@@ -257,7 +259,7 @@ export default function DriverLicense({ navigation }) {
                   name = "driverLicenseBack";
                 }}
               >
-                <Text>{`${t2("upload.driverLicenceBack")}`}</Text>
+                {t2("upload.driverLicenceBack")}
               </Button>
             </View>
           </View>
