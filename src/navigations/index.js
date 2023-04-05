@@ -6,6 +6,9 @@ import {
   MD3LightTheme as DefaultTheme,
   MD3DarkTheme as DarkTheme,
 } from "react-native-paper";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import FontAwesome from "react-native-vector-icons/Ionicons";
+import Icon from "react-native-vector-icons/MaterialIcons";
 import { useStore } from "_store";
 import { useApp, useTheme } from "_hooks";
 import _ from "lodash";
@@ -20,8 +23,36 @@ import MaintenanceMode from "_organisms/MaintenanceMode";
 import ForceUpdate from "_organisms/ForceUpdate";
 import Constants from "expo-constants";
 import * as Application from "expo-application";
+
 const ENV_NAME = Constants.expoConfig.extra.envName;
 
+MaterialCommunityIcons.loadFont("home", { family: "material-community" });
+MaterialCommunityIcons.loadFont("account-settings", {
+  family: "material-community",
+});
+MaterialCommunityIcons.loadFont("arrow-left", {
+  family: "material-community",
+});
+MaterialCommunityIcons.loadFont("google-maps", {
+  family: "material-community",
+});
+MaterialCommunityIcons.loadFont("motorbike", {
+  family: "material-community",
+});
+MaterialCommunityIcons.loadFont("map-marker-check", {
+  family: "material-community",
+});
+MaterialCommunityIcons.loadFont("location-exit", {
+  family: "material-community",
+});
+
+FontAwesome.loadFont("ios-information-circle-outline");
+
+Icon.loadFont("clear");
+Icon.loadFont("check");
+Icon.loadFont("phone-forwarded");
+Icon.loadFont("phone");
+Icon.loadFont("info-outline");
 export default function NavigationRoot({ mode }) {
   const mamdooTheme = useTheme();
 

@@ -238,10 +238,10 @@ export default function HomeScreen({ navigation, route }) {
               </View>
             }
             onPress={() => {
-              // setVisible(true);
+              setVisible(true);
               // request.actions.makeRideRequest(navigation);
-              request.actions.findDrivers(navigation);
-              navigation.navigate("RideRequest");
+              // request.actions.findDrivers(navigation);
+              // navigation.navigate("RideRequest");
             }}
             shadow={{ size: 0.3 }}
           />

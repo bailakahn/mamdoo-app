@@ -22,6 +22,10 @@ const ENV_NAME = Constants.expoConfig.extra.envName;
 
 const Tab = createMaterialBottomTabNavigator();
 
+MaterialCommunityIcons.loadFont("home", { family: "material-community" });
+MaterialCommunityIcons.loadFont("account-settings", {
+  family: "material-community",
+});
 export default function MainTabs({ role }) {
   const { colors } = useTheme();
   const partner = usePartner();
