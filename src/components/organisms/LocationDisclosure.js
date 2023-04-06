@@ -18,7 +18,7 @@ export default function LocationDisclosure({ setBackgroundPermission }) {
       <View style={{ marginTop: 20 }}>
         <Image
           source={require("_assets/logo.png")}
-          cacheKey={"logo.png"}
+          cacheKey={"logo"}
           style={Classes.formLogo(colors)}
         />
       </View>

@@ -208,7 +208,7 @@ export default function DriverLicense({ navigation }) {
                 >
                   <Image
                     source={require("_assets/driver-license-front.png")}
-                    cacheKey={"driver-license-front.png"}
+                    cacheKey={"driver-license-front"}
                     style={{
                       width: Mixins.width(0.6, true),
                       height: Mixins.height(0.2, true),
@@ -217,7 +217,7 @@ export default function DriverLicense({ navigation }) {
                   />
                   <Image
                     source={require("_assets/driver-license-back.png")}
-                    cacheKey="driver-license-back.png"
+                    cacheKey="driver-license-back"
                     style={{
                       width: Mixins.width(0.6, true),
                       height: Mixins.height(0.2, true),

@@ -49,7 +49,7 @@ export default function Verification({ navigation }) {
             <View>
               <Image
                 source={require("_assets/logo.png")}
-                cacheKey="logo.png"
+                cacheKey="logo"
                 style={Classes.formLogo(colors)}
               />
             </View>

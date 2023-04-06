@@ -210,7 +210,7 @@ export default function ProfilePicture({ navigation }) {
                   <Text>Example</Text>
                   <Image
                     source={require("_assets/avatar.png")}
-                    cacheKey={"avatar.png"}
+                    cacheKey={"avatar"}
                     style={{
                       width: Mixins.width(0.4, true),
                       height: Mixins.height(0.2, true),

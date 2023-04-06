@@ -69,7 +69,8 @@ const CustomFastImage = (props) => {
       let imgXt = getImgXtension(uri);
 
       if (!imgXt || !imgXt.length) {
-        Alert.alert(`Impossible de charger l'image`);
+        console.log("Impossible de charger l'image");
+        // Alert.alert(`Impossible de charger l'image`);
         return;
       }
 
@@ -86,7 +87,8 @@ const CustomFastImage = (props) => {
           console.log("cached NEw!");
           setUri(cached.path);
         } else {
-          Alert.alert(`Couldn't load Image!`);
+          console.log("Impossible de charger l'image", cached);
+          // Alert.alert(`Couldn't load Image!`);
         }
       }
     }

@@ -186,7 +186,7 @@ export default function CabLicense({ navigation }) {
                 <View style={{ alignItems: "center", marginTop: 30 }}>
                   <Image
                     source={require("_assets/registration.png")}
-                    cacheKey="registration.png"
+                    cacheKey="registration"
                     style={{
                       width: Mixins.width(0.6, true),
                       height: Mixins.height(0.2, true),

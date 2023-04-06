@@ -57,7 +57,7 @@ export default function ForceUpdate({}) {
         <View>
           <Image
             source={require("_assets/update-app.png")}
-            cacheKey={"update-app.png"}
+            cacheKey={"update-app"}
             style={{
               width: Mixins.width(0.9, true),
               height: Mixins.height(0.5, true),

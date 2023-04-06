@@ -23,7 +23,7 @@ const Main = () => {
         <View style={{ marginTop: -50 }}>
           <Image
             source={require("_assets/logo.png")}
-            cacheKey={"logo.png"}
+            cacheKey={"logo"}
             style={Classes.formLogo(colors)}
           />
         </View>
