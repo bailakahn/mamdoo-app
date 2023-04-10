@@ -61,7 +61,7 @@ export default {
     expired: "Ce code a expiré",
     notFound: "Code introuvable",
     invalidCode: "La vérification a échouée",
-    userBlocked: "This account is blocked!",
+    userBlocked: "Ce compte est bloqué!",
     noUser: "Aucun compte trouvé pour cet utilisateur!",
   },
   home: {

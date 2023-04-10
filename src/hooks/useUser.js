@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { t } from "_utils/lang";
 import { useApi } from "_api";
 import { useStore } from "_store";
-import useLocation from "./partner/useLocation";
+import useLocation from "./useLocation";
 
 export default function useUser() {
   const getRequest = useApi();
