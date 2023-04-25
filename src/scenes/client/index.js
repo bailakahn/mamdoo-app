@@ -5,7 +5,7 @@ export { default as RideScene } from "./home/Ride";
 export { default as ReviewScene } from "./home/Review";
 
 // FORM
-export { default as FormScene } from "./form";
+export { default as RegisterScene } from "./auth/register";
 export { default as LoginScene } from "./auth/login";
 export { default as ForgotPasswordScene } from "./auth/ForgotPassword";
 export { default as ResetPinScene } from "./auth/ForgotPassword/ResetPin";

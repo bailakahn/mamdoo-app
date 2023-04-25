@@ -3,7 +3,6 @@ import { t2, t } from "_utils/lang";
 import { useApi } from "_api";
 import { useStore } from "_store";
 import useLocation from "./partner/useLocation";
-import settings from "../constants/settings";
 
 export default function usePartner() {
   const getRequest = useApi();

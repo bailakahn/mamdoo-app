@@ -1,5 +1,11 @@
 import React from "react";
-import { View, TouchableOpacity, ScrollView, SafeAreaView } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  ScrollView,
+  SafeAreaView,
+  KeyboardAvoidingView,
+} from "react-native";
 import { useTheme, Text, TextInput } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
@@ -21,111 +27,123 @@ export default function Verification({ navigation }) {
         justifyContent: "center",
       }}
     >
-      <ScrollView>
-        <View style={Classes.container(colors)}>
-          <View>
-            <Image
-              source={require("_assets/logo.png")}
-              cacheKey="logo"
-              style={Classes.formLogo(colors)}
-            />
-          </View>
-          {/* <View style={{ marginBottom: 25 }}>
-                <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-                    {t("main.verification")}
+      <KeyboardAvoidingView
+        {...(Platform.OS === "ios"
+          ? {
+              enabled: true,
+              behavior: "padding",
+              keyboardVerticalOffset: 5,
+            }
+          : {})}
+      >
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+          }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View
+            style={{
+              ...Classes.container(colors),
+              justifyContent: "flex-start",
+            }}
+          >
+            <View style={{ marginBottom: 25 }}>
+              <Text
+                variant="titleLarge"
+                style={{ fontSize: 25, fontWeight: "bold" }}
+              >
+                {t("main.verifyAccount")}
+              </Text>
+            </View>
+
+            <View style={{ ...Classes.centeredLargeText(colors) }}>
+              <Text>
+                <Text variant="titleMedium" style={{ textAlign: "left" }}>
+                  {t("main.verificationSent")}
                 </Text>
-            </View> */}
-          <View style={{ marginBottom: 25 }}>
-            <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-              {t("main.accountNotVerified")}
-            </Text>
-          </View>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    color: colors.primary,
+                  }}
+                >
+                  {user.user?.phoneNumber}
+                </Text>
+              </Text>
+            </View>
 
-          <View style={Classes.centeredText(colors)}>
-            <Text style={{ textAlign: "center" }}>
-              {t("main.verificationSent")}
-            </Text>
-          </View>
+            <View style={{ marginTop: 30 }}>
+              <TextInput
+                style={Classes.formInput(colors)}
+                outlineStyle={{ borderRadius: 10 }}
+                mode="outlined"
+                label={t("main.verificationPlaceholder")}
+                placeholder={t("main.verificationPlaceholder")}
+                value={user.verificationCode}
+                onChangeText={(code) => user.actions.setVerificationCode(code)}
+                maxLength={4}
+                keyboardType="number-pad"
+                returnKeyType="done"
+              />
+            </View>
+            <View style={Classes.error(colors)}>
+              {user.verificationError && (
+                <Text style={Classes.errorText(colors)}>
+                  {user.verificationError}
+                </Text>
+              )}
+            </View>
 
-          <View style={{ marginTop: 10 }}>
-            <Text
+            <View
               style={{
-                fontSize: 25,
-                fontWeight: "bold",
-                color: colors.primary,
+                justifyContent: "center",
               }}
             >
-              {user.user?.phoneNumber}
-            </Text>
+              <TouchableOpacity
+                style={{ alignItems: "center", marginTop: 10 }}
+                onPress={user.actions.resend}
+              >
+                <Text style={{ color: colors.accent, fontSize: 20 }}>
+                  {t("main.sendVerificationAgain")}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={{ marginTop: 30 }}>
-            <TextInput
-              style={Classes.formInput(colors)}
-              mode="outlined"
-              label={t("main.verificationPlaceholder")}
-              placeholder={t("main.verificationPlaceholder")}
-              value={user.verificationCode}
-              onChangeText={(code) => user.actions.setVerificationCode(code)}
-              maxLength={4}
-              keyboardType="number-pad"
-              returnKeyType="done"
-            />
-          </View>
-          <View style={Classes.error(colors)}>
-            {user.verificationError && (
-              <Text style={Classes.errorText(colors)}>
-                {user.verificationError}
-              </Text>
-            )}
-          </View>
-          <View style={{ marginTop: 30 }}>
-            <Button
-              {...Classes.verifyButtonContainer(colors)}
-              mode="contained"
-              onPress={user.actions.verifyAccount}
-              disabled={!user.verificationCode}
-            >
-              {`${t("main.verify")}`}
-            </Button>
-          </View>
+          <View style={Classes.bottonView(colors)}>
+            <View>
+              <Button
+                {...Classes.buttonContainer(colors)}
+                mode="contained"
+                onPress={user.actions.verifyAccount}
+                disabled={!user.verificationCode}
+              >
+                <Text variant="titleLarge" style={{ color: "#fff" }}>{`${t(
+                  "main.verify"
+                )}`}</Text>
+              </Button>
+            </View>
 
-          <View
-            style={{
-              justifyContent: "center",
-              marginTop: 30,
-            }}
-          >
-            <Text style={{ fontSize: 20 }}>
-              {t("main.verificationNotReceived")}
-            </Text>
-            <TouchableOpacity
-              style={{ alignItems: "center", marginTop: 10 }}
-              onPress={user.actions.resend}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                marginTop: 30,
+              }}
             >
-              <Text style={{ color: colors.accent, fontSize: 20 }}>
-                {t("main.sendVerificationAgain")}
-              </Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={{ marginLeft: 10 }}
+                onPress={user.actions.logout}
+              >
+                <Text style={{ color: colors.accent, fontSize: 20 }}>
+                  {t("main.editPhoneNumber")}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              marginTop: 30,
-            }}
-          >
-            <TouchableOpacity
-              style={{ marginLeft: 10 }}
-              onPress={user.actions.logout}
-            >
-              <Text style={{ color: colors.accent, fontSize: 20 }}>
-                {t("main.editPhoneNumber")}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

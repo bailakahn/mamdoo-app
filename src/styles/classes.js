@@ -15,16 +15,33 @@ export const container2 = (colors) => ({
   backgroundColor: colors.background,
 });
 
+export const textInputOutline = (colors) => ({
+  // borderColor: colors.inputBoder,
+  borderRadius: 10,
+});
+
 export const containerCenter = (colors) => ({
   justifyContent: "center",
   alignItems: "center",
 });
 
+export const mainView = (colors) => ({
+  width: Mixins.width(0.9, true),
+});
+
+export const privacyPolicyView = (colors) => ({
+  width: Mixins.width(0.9, true),
+});
+
+export const centeredLargeText = (colors) => ({
+  width: Mixins.width(0.9, true),
+});
+
 export const buttonContainer = (colors) => ({
   style: {
     marginTop: 20,
-    width: Mixins.width(0.85, true),
-    height: Mixins.height(40),
+    width: Mixins.width(0.95, true),
+    height: Mixins.height(45),
     justifyContent: "center",
   },
   contentStyle: {
@@ -217,14 +234,10 @@ export const shadowView = (colors) => ({
 });
 
 export const formInput = (colors) => ({
-  width: Mixins.width(0.85, true),
+  width: Mixins.width(0.93, true),
+  height: Mixins.width(0.13, true),
   fontSize: 20,
-  borderBottomColor: "grey",
   marginBottom: 20,
-  // ...(Platform.OS === "android" && {
-  //     borderWidth: 1,
-  //     paddingLeft: 18
-  // })
 });
 
 export const profileFormInput = (colors) => ({

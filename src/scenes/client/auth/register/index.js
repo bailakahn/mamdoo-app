@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
-  Text,
   TouchableOpacity,
   ScrollView,
   KeyboardAvoidingView,
@@ -9,15 +8,16 @@ import {
   Linking,
   SafeAreaView,
 } from "react-native";
-import { useTheme, TextInput, Checkbox } from "react-native-paper";
+import { useTheme, TextInput, Text } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { useUser, useApp } from "_hooks";
 import { Button, RoundButton, LoadingV2, Image } from "_atoms";
 
-export default function Form({ navigation }) {
+export default function Register({ navigation }) {
   const { colors } = useTheme();
   const app = useApp();
+  const [hidePin, setHidePin] = useState(true);
 
   const user = useUser();
 
@@ -44,18 +44,15 @@ export default function Form({ navigation }) {
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
           }}
+          keyboardShouldPersistTaps="handled"
         >
-          <View style={Classes.container(colors)}>
-            <View>
-              <Image
-                source={require("_assets/logo.png")}
-                cacheKey="logo"
-                style={Classes.formLogo(colors)}
-              />
-            </View>
+          <View
+            style={{
+              ...Classes.container(colors),
+              justifyContent: "flex-start",
+            }}
+          >
             <View>
               <View style={{ marginBottom: 10 }}>
                 <Text
@@ -134,46 +131,39 @@ export default function Form({ navigation }) {
                 maxLength={4}
                 keyboardType="number-pad"
                 returnKeyType="done"
+                secureTextEntry={hidePin}
+                right={
+                  <TextInput.Icon
+                    style={{ marginTop: 15 }}
+                    icon={hidePin ? "eye" : "eye-off"}
+                    iconColor={colors.primary}
+                    onPress={() => setHidePin(!hidePin)}
+                  />
+                }
               />
             </View>
             <View style={Classes.centeredView(colors)}>
-              <Text style={Classes.text(colors)}>{t("form.pinText")}</Text>
               {user.formError && (
                 <Text style={Classes.errorText(colors)}>{user.formError}</Text>
               )}
             </View>
-            <View
-              style={{
-                ...Classes.centeredView(colors),
-                marginTop: 20,
-                marginBottom: 20,
-              }}
-            >
-              <Text
-                style={{
-                  textAlign: "center",
-                  marginBottom: 5,
-                  ...Classes.text(colors),
-                }}
-              >
-                {t("main.privacyPolicyText")}
-              </Text>
-              <TouchableOpacity
-                style={{ marginLeft: 10, alignItems: "center" }}
-                onPress={() =>
-                  Linking.openURL("https://www.mamdoo.app/fr/policy")
-                }
-              >
+          </View>
+          <View style={Classes.bottonView(colors)}>
+            <View style={Classes.privacyPolicyView(colors)}>
+              <Text style={{ fontSize: 16 }}>
+                <Text var>{t("main.privacyPolicyText")}</Text>
                 <Text
                   style={{
                     color: colors.primary,
-                    fontSize: 16,
                     fontWeight: "bold",
                   }}
+                  onPress={() =>
+                    Linking.openURL("https://www.mamdoo.app/fr/policy")
+                  }
                 >
                   {t("main.privacyPolicyLink")}
                 </Text>
-              </TouchableOpacity>
+              </Text>
             </View>
             <View>
               <Button
@@ -188,10 +178,11 @@ export default function Form({ navigation }) {
                   !user.formUser.pin
                 }
               >
-                {t("form.start")}
+                <Text style={{ color: "#000" }} variant="titleLarge">
+                  {t("form.start")}
+                </Text>
               </Button>
             </View>
-
             <View
               style={{
                 flexDirection: "row",
@@ -210,18 +201,6 @@ export default function Form({ navigation }) {
                   {t("form.login")}
                 </Text>
               </TouchableOpacity>
-            </View>
-
-            <View style={{ marginTop: 50, alignItems: "center" }}>
-              <RoundButton
-                size={0.3}
-                color={"grey"}
-                text={"Changer d'application"}
-                onPress={() => {
-                  app.actions.removeApp();
-                }}
-                shadow={{ size: 0.27 }}
-              />
             </View>
           </View>
         </ScrollView>

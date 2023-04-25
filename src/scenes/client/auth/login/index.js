@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   TouchableOpacity,
@@ -7,7 +7,7 @@ import {
   Platform,
   SafeAreaView,
 } from "react-native";
-import { useTheme, Text, TextInput } from "react-native-paper";
+import { useTheme, Text, TextInput, FAB } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { useUser, useApp } from "_hooks";
@@ -16,6 +16,7 @@ import { Button, RoundButton, LoadingV2, Image } from "_atoms";
 export default function Login({ navigation }) {
   const { colors } = useTheme();
   const app = useApp();
+  const [hidePin, setHidePin] = useState(true);
 
   const user = useUser();
 
@@ -27,12 +28,9 @@ export default function Login({ navigation }) {
         flex: 1,
         backgroundColor: colors.background,
         alignItems: "center",
-        justifyContent: "center",
       }}
     >
       <KeyboardAvoidingView
-        // behavior="height"
-        // style={{ flex: 1, paddingHorizontal: 10 }}
         {...(Platform.OS === "ios"
           ? {
               enabled: true,
@@ -44,18 +42,22 @@ export default function Login({ navigation }) {
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
           }}
+          keyboardShouldPersistTaps="handled"
         >
-          <View style={Classes.container(colors)}>
-            <View>
+          <View
+            style={{
+              ...Classes.container(colors),
+              justifyContent: "flex-start",
+            }}
+          >
+            {/* <View>
               <Image
                 source={require("_assets/logo.png")}
                 cacheKey="logo"
                 style={Classes.formLogo(colors)}
               />
-            </View>
+            </View> */}
             <View>
               <View style={{ marginBottom: 25 }}>
                 <Text style={{ fontSize: 25, fontWeight: "bold" }}>
@@ -66,7 +68,7 @@ export default function Login({ navigation }) {
             <View>
               <TextInput
                 style={Classes.formInput(colors)}
-                outlineStyle={{ borderRadius: 10 }}
+                outlineStyle={Classes.textInputOutline(colors)}
                 mode="outlined"
                 label={t("form.phoneNumber")}
                 placeholder={t("form.phoneNumberPlaceholder")}
@@ -98,6 +100,15 @@ export default function Login({ navigation }) {
                 maxLength={4}
                 keyboardType="number-pad"
                 returnKeyType="done"
+                secureTextEntry={hidePin}
+                right={
+                  <TextInput.Icon
+                    style={{ marginTop: 15 }}
+                    icon={hidePin ? "eye" : "eye-off"}
+                    iconColor={colors.primary}
+                    onPress={() => setHidePin(!hidePin)}
+                  />
+                }
               />
             </View>
             <View style={Classes.error(colors)}>
@@ -105,18 +116,45 @@ export default function Login({ navigation }) {
                 <Text style={Classes.errorText(colors)}>{user.formError}</Text>
               )}
             </View>
+
+            <View
+              style={{
+                ...Classes.mainView(colors),
+                alignItems: "flex-end",
+                marginTop: 10,
+              }}
+            >
+              <TouchableOpacity
+                style={{ marginLeft: 10 }}
+                onPress={() => navigation.navigate("ForgotPassword")}
+              >
+                <Text style={{ color: colors.accent, fontSize: 20 }}>
+                  {t("form.forgotPassword")}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={Classes.bottonView(colors)}>
+            <View style={{ alignSelf: "flex-end" }}>
+              <FAB
+                icon="swap-horizontal-bold"
+                style={{
+                  backgroundColor: colors.primary,
+                }}
+                color={"#fff"}
+                onPress={() => app.actions.removeApp()}
+              />
+            </View>
             <View>
               <Button
                 mode="contained"
                 onPress={user.actions.loginUser}
-                // style={Classes.formButton(colors)}
                 disabled={!user.auth.phoneNumber || !user.auth.pin}
-                // contentStyle={{
-                //     height: 50
-                // }}
                 {...Classes.buttonContainer(colors)}
               >
-                {t("form.start")}
+                <Text style={{ color: "#fff" }} variant="titleLarge">
+                  {t("form.login")}
+                </Text>
               </Button>
             </View>
 
@@ -136,35 +174,6 @@ export default function Login({ navigation }) {
                   {t("form.register")}
                 </Text>
               </TouchableOpacity>
-            </View>
-
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                marginTop: 30,
-              }}
-            >
-              <TouchableOpacity
-                style={{ marginLeft: 10 }}
-                onPress={() => navigation.navigate("ForgotPassword")}
-              >
-                <Text style={{ color: colors.accent, fontSize: 20 }}>
-                  {t("form.forgotPassword")}
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={{ marginTop: 30 }}>
-              <RoundButton
-                size={0.3}
-                color={"grey"}
-                text={"Changer d'application"}
-                onPress={() => {
-                  app.actions.removeApp();
-                }}
-                shadow={{ size: 0.27 }}
-              />
             </View>
           </View>
         </ScrollView>

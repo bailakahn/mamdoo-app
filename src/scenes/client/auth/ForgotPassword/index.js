@@ -4,6 +4,7 @@ import {
   SafeAreaView,
   ScrollView,
   KeyboardAvoidingView,
+  TouchableOpacity,
 } from "react-native";
 import { useTheme, Text, TextInput } from "react-native-paper";
 import { Classes } from "_styles";
@@ -27,8 +28,6 @@ export default function ForgotPassword({ navigation }) {
       }}
     >
       <KeyboardAvoidingView
-        // behavior="height"
-        // style={{ flex: 1, paddingHorizontal: 10 }}
         {...(Platform.OS === "ios"
           ? {
               enabled: true,
@@ -38,28 +37,24 @@ export default function ForgotPassword({ navigation }) {
           : {})}
       >
         <ScrollView
-        // if enabled then scrolling when keyboard is active does not work
-        //   contentContainerStyle={{
-        //     flexGrow: 1,
-        //     justifyContent: "center",
-        //     alignItems: "center",
-        //   }}
+          contentContainerStyle={{
+            flexGrow: 1,
+          }}
+          keyboardShouldPersistTaps="handled"
         >
-          <View style={Classes.container(colors)}>
-            <View>
-              <Image
-                source={require("_assets/logo.png")}
-                cacheKey="logo"
-                style={Classes.formLogo(colors)}
-              />
-            </View>
+          <View
+            style={{
+              ...Classes.container(colors),
+              justifyContent: "flex-start",
+            }}
+          >
             <View style={{ marginBottom: 25 }}>
               <Text style={{ fontSize: 25, fontWeight: "bold" }}>
                 {t("main.forgotPassword")}
               </Text>
             </View>
-            <View style={Classes.centeredText(colors)}>
-              <Text style={{ textAlign: "center" }}>
+            <View style={Classes.centeredLargeText(colors)}>
+              <Text style={{ textAlign: "center", fontSize: 20 }}>
                 {t("main.forgotPasswordText")}
               </Text>
             </View>
@@ -90,16 +85,38 @@ export default function ForgotPassword({ navigation }) {
                 </Text>
               )}
             </View>
-            <View style={{ marginTop: 10 }}>
+          </View>
+          <View style={Classes.bottonView(colors)}>
+            <View>
               <Button
-                {...Classes.verifyButtonContainer(colors)}
+                {...Classes.buttonContainer(colors)}
                 mode="contained"
                 onPress={() => {
                   user.actions.sendForgotPinVerification(navigation);
                 }}
+                disabled={!user?.forgotPasswordUser.phoneNumber}
               >
-                {`${t("main.resetPassword")}`}
+                <Text style={{ color: "#fff" }} variant="titleLarge">
+                  {t("main.resetPassword")}
+                </Text>
               </Button>
+            </View>
+
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                marginTop: 20,
+              }}
+            >
+              <TouchableOpacity
+                style={{ marginLeft: 10 }}
+                onPress={() => navigation.navigate("Login")}
+              >
+                <Text style={{ color: colors.accent, fontSize: 20 }}>
+                  {t("form.backToLogin")}
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>

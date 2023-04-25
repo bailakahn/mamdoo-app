@@ -5,7 +5,7 @@ import { useTheme } from "react-native-paper";
 const Stack = createStackNavigator();
 
 import {
-  FormScene,
+  RegisterScene,
   LoginScene,
   ForgotPasswordScene,
   ResetPinScene,
@@ -35,7 +35,7 @@ export default function AuthStack({}) {
 
       <Stack.Screen
         name="Register"
-        component={FormScene}
+        component={RegisterScene}
         options={({ navigation }) => ({
           headerStyle: {
             borderBottomWidth: 1,
@@ -59,7 +59,6 @@ export default function AuthStack({}) {
           },
           headerBackTitle: t("screens.login"),
           headerTitle: t("screens.forgotPassword"),
-          headerShown: true,
         })}
       />
 
@@ -76,7 +75,6 @@ export default function AuthStack({}) {
           },
           headerBackTitle: t("screens.login"),
           headerTitle: t("screens.forgotPassword"),
-          headerShown: true,
         })}
       />
     </Stack.Navigator>
