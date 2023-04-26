@@ -28,8 +28,6 @@ export default function ForgotPassword({ navigation }) {
       }}
     >
       <KeyboardAvoidingView
-        // behavior="height"
-        // style={{ flex: 1, paddingHorizontal: 10 }}
         {...(Platform.OS === "ios"
           ? {
               enabled: true,
@@ -41,25 +39,23 @@ export default function ForgotPassword({ navigation }) {
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
           }}
+          keyboardShouldPersistTaps="handled"
         >
-          <View style={Classes.container(colors)}>
-            <View>
-              <Image
-                source={require("_assets/logo.png")}
-                cacheKey="logo"
-                style={Classes.formLogo(colors)}
-              />
-            </View>
+          <View
+            style={{
+              ...Classes.container(colors),
+              justifyContent: "flex-start",
+            }}
+          >
             <View style={{ marginBottom: 25 }}>
               <Text style={{ fontSize: 25, fontWeight: "bold" }}>
                 {t2("main.forgotPassword")}
               </Text>
             </View>
-            <View style={Classes.centeredText(colors)}>
-              <Text style={{ textAlign: "center" }}>
+
+            <View style={Classes.centeredLargeText(colors)}>
+              <Text style={{ textAlign: "left", fontSize: 20 }}>
                 {t2("main.forgotPasswordText")}
               </Text>
             </View>
@@ -90,9 +86,11 @@ export default function ForgotPassword({ navigation }) {
                 </Text>
               )}
             </View>
-            <View style={{ marginTop: 10 }}>
+          </View>
+          <View style={Classes.bottonView(colors)}>
+            <View>
               <Button
-                {...Classes.verifyButtonContainer(colors)}
+                {...Classes.buttonContainer(colors)}
                 mode="contained"
                 onPress={() => {
                   partner.actions.sendForgotPinVerification(navigation);
@@ -105,7 +103,7 @@ export default function ForgotPassword({ navigation }) {
               style={{
                 flexDirection: "row",
                 justifyContent: "center",
-                marginTop: 50,
+                marginTop: 30,
               }}
             >
               <TouchableOpacity
@@ -113,7 +111,7 @@ export default function ForgotPassword({ navigation }) {
                 onPress={() => navigation.navigate("Login")}
               >
                 <Text style={{ color: colors.accent, fontSize: 20 }}>
-                  {t("main.goBack")}
+                  {t("form.backToLogin")}
                 </Text>
               </TouchableOpacity>
             </View>

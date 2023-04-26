@@ -132,10 +132,7 @@ export default function Verification({ navigation }) {
                 marginTop: 30,
               }}
             >
-              <TouchableOpacity
-                style={{ marginLeft: 10 }}
-                onPress={user.actions.logout}
-              >
+              <TouchableOpacity onPress={user.actions.logout}>
                 <Text style={{ color: colors.accent, fontSize: 20 }}>
                   {t("main.editPhoneNumber")}
                 </Text>

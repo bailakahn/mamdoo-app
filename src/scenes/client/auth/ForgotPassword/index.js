@@ -54,7 +54,7 @@ export default function ForgotPassword({ navigation }) {
               </Text>
             </View>
             <View style={Classes.centeredLargeText(colors)}>
-              <Text style={{ textAlign: "center", fontSize: 20 }}>
+              <Text style={{ textAlign: "left", fontSize: 20 }}>
                 {t("main.forgotPasswordText")}
               </Text>
             </View>

@@ -12,7 +12,7 @@ import {
 import { useTheme, Text, TextInput, Switch } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import { Classes } from "_styles";
-import { t2 } from "_utils/lang";
+import { t2, t } from "_utils/lang";
 import { usePartner, useApp } from "_hooks";
 import { Button, RoundButton, LoadingV2, Image } from "_atoms";
 
@@ -23,6 +23,7 @@ export default function Register({ navigation }) {
   const partner = usePartner();
 
   const [step, setStep] = useState(1);
+  const [hidePin, setHidePin] = useState(true);
 
   return partner.isLoading ? (
     <LoadingV2 />
@@ -36,8 +37,6 @@ export default function Register({ navigation }) {
       }}
     >
       <KeyboardAvoidingView
-        // behavior="height"
-        // style={{ flex: 1, paddingHorizontal: 10 }}
         {...(Platform.OS === "ios"
           ? {
               enabled: true,
@@ -49,22 +48,31 @@ export default function Register({ navigation }) {
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
           }}
+          keyboardShouldPersistTaps="handled"
         >
-          <View style={Classes.container(colors)}>
-            <View style={{ marginTop: 20 }}>
-              <Image
-                source={require("_assets/logo.png")}
-                cacheKey="logo"
-                style={Classes.formLogo(colors)}
-              />
-            </View>
+          <View
+            style={{
+              ...Classes.container(colors),
+              justifyContent: "flex-start",
+            }}
+          >
             {step === 1 ? (
               <>
                 <View style={{ marginBottom: 25 }}>
                   <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+                    {t2("form.registerHeader")}
+                  </Text>
+                </View>
+                <View style={Classes.centeredLargeText(colors)}>
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      textAlign: "left",
+                      color: colors.primary,
+                    }}
+                    variant="titleMedium"
+                  >
                     {t2("form.personalInfo")}
                   </Text>
                 </View>
@@ -135,58 +143,30 @@ export default function Register({ navigation }) {
                     maxLength={4}
                     keyboardType="number-pad"
                     returnKeyType="done"
+                    secureTextEntry={hidePin}
+                    right={
+                      <TextInput.Icon
+                        style={{ marginTop: 15 }}
+                        icon={hidePin ? "eye" : "eye-off"}
+                        iconColor={colors.primary}
+                        onPress={() => setHidePin(!hidePin)}
+                      />
+                    }
                   />
                 </View>
-              </>
-            ) : (
-              <View>
-                <View
-                  style={{
-                    alignItems: "flex-start",
-                    marginBottom: 10,
-                  }}
-                >
-                  <Button
-                    mode="contained"
-                    onPress={() => setStep((step) => step - 1)}
-                    // style={[
-                    //     Classes.backButton(colors),
-                    //     {
-                    //         alignItems: "center"
-                    //     }
-                    // ]}
-                    // {...Classes.backButtonContainer(colors, "accent")}
-                    labelStyle={Classes.backButtonLabel(colors)}
+                <View style={Classes.centeredLargeText(colors)}>
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      textAlign: "left",
+                      color: colors.primary,
+                    }}
+                    variant="titleMedium"
                   >
-                    <Text
-                      style={{
-                        fontSize: 20,
-                        textAlign: "center",
-                        paddingRight: 50,
-                        color: "#ffffff",
-                      }}
-                    >
-                      {t2("form.back")}
-                    </Text>
-                  </Button>
+                    {t2("form.cabInfo")}
+                  </Text>
                 </View>
                 <View>
-                  <View
-                    style={{
-                      marginTop: 10,
-                      marginBottom: 25,
-                      alignItems: "center",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 25,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {t2("form.cabInfo")}
-                    </Text>
-                  </View>
                   <TextInput
                     style={Classes.formInput(colors)}
                     outlineStyle={{ borderRadius: 10 }}
@@ -226,10 +206,9 @@ export default function Register({ navigation }) {
 
                   <View
                     style={{
-                      display: "flex",
+                      ...Classes.centeredLargeText(colors),
                       flexDirection: "row",
                       justifyContent: "space-between",
-                      marginTop: 10,
                     }}
                   >
                     <Text style={{ fontSize: 18 }}>
@@ -248,7 +227,34 @@ export default function Register({ navigation }) {
                       }}
                     />
                   </View>
-
+                </View>
+              </>
+            ) : (
+              <View>
+                <View
+                  style={{
+                    alignItems: "flex-start",
+                    marginBottom: 10,
+                  }}
+                >
+                  <Button
+                    mode="contained"
+                    onPress={() => setStep((step) => step - 1)}
+                    labelStyle={Classes.backButtonLabel(colors)}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        textAlign: "center",
+                        paddingRight: 50,
+                        color: "#ffffff",
+                      }}
+                    >
+                      {t2("form.back")}
+                    </Text>
+                  </Button>
+                </View>
+                <View>
                   <View
                     style={{
                       marginTop: 20,
@@ -329,38 +335,23 @@ export default function Register({ navigation }) {
                 </Text>
               )}
             </View>
-            <View
-              style={{
-                ...Classes.centeredView(colors),
-                marginTop: 20,
-                marginBottom: 20,
-              }}
-            >
-              <Text
-                style={{
-                  textAlign: "center",
-                  marginBottom: 5,
-                  ...Classes.text(colors),
-                }}
-              >
-                {t2("main.privacyPolicyText")}
-              </Text>
-              <TouchableOpacity
-                style={{ marginLeft: 10, alignItems: "center" }}
-                onPress={() =>
-                  Linking.openURL("https://www.mamdoo.app/fr/policy")
-                }
-              >
+          </View>
+          <View style={Classes.bottonView(colors)}>
+            <View style={Classes.privacyPolicyView(colors)}>
+              <Text style={{ fontSize: 16 }}>
+                <Text var>{t("main.privacyPolicyText")}</Text>
                 <Text
                   style={{
                     color: colors.primary,
-                    fontSize: 16,
                     fontWeight: "bold",
                   }}
+                  onPress={() =>
+                    Linking.openURL("https://www.mamdoo.app/fr/policy")
+                  }
                 >
-                  {t2("main.privacyPolicyLink")}
+                  {t("main.privacyPolicyLink")}
                 </Text>
-              </TouchableOpacity>
+              </Text>
             </View>
             <View>
               {step === 1 ? (
@@ -375,7 +366,7 @@ export default function Register({ navigation }) {
                     //         justifyContent: "center"
                     //     }
                     // ]}
-                    {...Classes.nextButtonContainer(colors)}
+                    {...Classes.buttonContainer(colors)}
                     labelStyle={Classes.nextButtonLabel(colors)}
                   >
                     <Text
@@ -397,7 +388,6 @@ export default function Register({ navigation }) {
                   <Button
                     mode="contained"
                     onPress={partner.actions.savePartner}
-                    // style={Classes.formButton(colors)}
                     {...Classes.buttonContainer(colors)}
                     disabled={
                       !partner.formPartner.firstName ||
@@ -441,17 +431,6 @@ export default function Register({ navigation }) {
                     {t2("form.login")}
                   </Text>
                 </TouchableOpacity>
-              </View>
-              <View style={{ marginTop: 50, alignItems: "center" }}>
-                <RoundButton
-                  size={0.3}
-                  color={"grey"}
-                  text={"Changer d'application"}
-                  onPress={() => {
-                    app.actions.removeApp();
-                  }}
-                  shadow={{ size: 0.27 }}
-                />
               </View>
             </View>
           </View>

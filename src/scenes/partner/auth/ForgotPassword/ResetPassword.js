@@ -15,6 +15,7 @@ import { usePartner } from "_hooks";
 export default function PinVerification({ navigation }) {
   const { colors } = useTheme();
   const partner = usePartner();
+  const [hidePin, setHidePin] = useState(true);
 
   return partner.isLoading ? (
     <LoadingV2 />
@@ -28,8 +29,6 @@ export default function PinVerification({ navigation }) {
       }}
     >
       <KeyboardAvoidingView
-        // behavior="height"
-        // style={{ flex: 1, paddingHorizontal: 10 }}
         {...(Platform.OS === "ios"
           ? {
               enabled: true,
@@ -41,36 +40,38 @@ export default function PinVerification({ navigation }) {
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
           }}
+          keyboardShouldPersistTaps="handled"
         >
-          <View style={Classes.container(colors)}>
-            <View>
-              <Image
-                source={require("_assets/logo.png")}
-                cacheKey="logo"
-                style={Classes.formLogo(colors)}
-              />
-            </View>
-
-            <View style={Classes.centeredText(colors)}>
-              <Text style={{ textAlign: "center" }}>
-                {t("main.verificationSent")}
+          <View
+            style={{
+              ...Classes.container(colors),
+              justifyContent: "flex-start",
+            }}
+          >
+            <View style={{ marginBottom: 10 }}>
+              <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+                {t("form.pinResetTitle")}
               </Text>
             </View>
 
-            <View style={{ marginTop: 10 }}>
-              <Text
-                style={{
-                  fontSize: 25,
-                  fontWeight: "bold",
-                  color: colors.primary,
-                }}
-              >
-                {partner.partner?.phoneNumber}
+            <View style={{ ...Classes.centeredLargeText(colors) }}>
+              <Text>
+                <Text variant="titleMedium" style={{ textAlign: "left" }}>
+                  {t("main.verificationSent")}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    color: colors.primary,
+                  }}
+                >
+                  {partner.partner?.phoneNumber}
+                </Text>
               </Text>
             </View>
+
             <View style={{ marginTop: 10 }}>
               <TextInput
                 style={Classes.formInput(colors)}
@@ -90,9 +91,9 @@ export default function PinVerification({ navigation }) {
                 returnKeyType="done"
               />
             </View>
-            <View style={Classes.centeredText(colors)}>
-              <Text style={{ textAlign: "center" }}>
-                {t2("main.pinVerificationNotice")}
+            <View style={Classes.centeredLargeText(colors)}>
+              <Text style={{ fontSize: 15 }}>
+                {t("form.pinResetDescription")}
               </Text>
             </View>
             <View style={{ marginTop: 10 }}>
@@ -112,6 +113,15 @@ export default function PinVerification({ navigation }) {
                 maxLength={4}
                 keyboardType="number-pad"
                 returnKeyType="done"
+                secureTextEntry={hidePin}
+                right={
+                  <TextInput.Icon
+                    style={{ marginTop: 15 }}
+                    icon={hidePin ? "eye" : "eye-off"}
+                    iconColor={colors.primary}
+                    onPress={() => setHidePin(!hidePin)}
+                  />
+                }
               />
               <TextInput
                 style={Classes.formInput(colors)}
@@ -129,6 +139,15 @@ export default function PinVerification({ navigation }) {
                 maxLength={4}
                 keyboardType="number-pad"
                 returnKeyType="done"
+                secureTextEntry={hidePin}
+                right={
+                  <TextInput.Icon
+                    style={{ marginTop: 15 }}
+                    icon={hidePin ? "eye" : "eye-off"}
+                    iconColor={colors.primary}
+                    onPress={() => setHidePin(!hidePin)}
+                  />
+                }
               />
             </View>
             <View style={Classes.error(colors)}>
@@ -138,9 +157,26 @@ export default function PinVerification({ navigation }) {
                 </Text>
               )}
             </View>
-            <View style={{ marginTop: 30 }}>
+
+            <View
+              style={{
+                justifyContent: "center",
+              }}
+            >
+              <TouchableOpacity
+                style={{ marginTop: 10, alignItems: "center" }}
+                onPress={partner.actions.resend}
+              >
+                <Text style={{ color: colors.accent, fontSize: 20 }}>
+                  {t("main.sendVerificationAgain")}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={Classes.bottonView(colors)}>
+            <View>
               <Button
-                {...Classes.verifyButtonContainer(colors)}
+                {...Classes.buttonContainer(colors)}
                 mode="contained"
                 onPress={() => {
                   partner.actions.resetPin();
@@ -157,36 +193,17 @@ export default function PinVerification({ navigation }) {
 
             <View
               style={{
-                justifyContent: "center",
-                marginTop: 30,
-              }}
-            >
-              <Text style={{ fontSize: 20 }}>
-                {t("main.verificationNotReceived")}
-              </Text>
-              <TouchableOpacity
-                style={{ marginTop: 10, alignItems: "center" }}
-                onPress={partner.actions.resend}
-              >
-                <Text style={{ color: colors.accent, fontSize: 20 }}>
-                  {t("main.sendVerificationAgain")}
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            <View
-              style={{
                 flexDirection: "row",
                 justifyContent: "center",
                 marginTop: 30,
               }}
             >
               <TouchableOpacity
-                style={{ marginLeft: 10, marginBottom: 100 }}
-                onPress={() => navigation.navigate("ForgotPassword")}
+                style={{ marginLeft: 10 }}
+                onPress={() => navigation.navigate("Login")}
               >
                 <Text style={{ color: colors.accent, fontSize: 20 }}>
-                  {t("main.editPhoneNumber")}
+                  {t("form.backToLogin")}
                 </Text>
               </TouchableOpacity>
             </View>

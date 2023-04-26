@@ -7,16 +7,17 @@ import {
   KeyboardAvoidingView,
   SafeAreaView,
 } from "react-native";
-import { useTheme, Text, TextInput } from "react-native-paper";
+import { useTheme, Text, TextInput, FAB } from "react-native-paper";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import { usePartner, useApp } from "_hooks";
-import { Button, RoundButton, LoadingV2, Image } from "_atoms";
+import { Button, LoadingV2 } from "_atoms";
 
 export default function Login({ navigation }) {
   const { colors } = useTheme();
   const app = useApp();
   const partner = usePartner();
+  const [hidePin, setHidePin] = useState(true);
 
   return partner.isLoading ? (
     <LoadingV2 />
@@ -30,8 +31,6 @@ export default function Login({ navigation }) {
       }}
     >
       <KeyboardAvoidingView
-        // behavior="height"
-        // style={{ flex: 1, paddingHorizontal: 10 }}
         {...(Platform.OS === "ios"
           ? {
               enabled: true,
@@ -43,18 +42,15 @@ export default function Login({ navigation }) {
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
           }}
+          keyboardShouldPersistTaps="handled"
         >
-          <View style={Classes.container(colors)}>
-            <View style={{ marginTop: 20 }}>
-              <Image
-                source={require("_assets/logo.png")}
-                cacheKey="logo"
-                style={Classes.formLogo(colors)}
-              />
-            </View>
+          <View
+            style={{
+              ...Classes.container(colors),
+              justifyContent: "flex-start",
+            }}
+          >
             <>
               <View style={{ marginBottom: 25 }}>
                 <Text style={{ fontSize: 25, fontWeight: "bold" }}>
@@ -96,6 +92,15 @@ export default function Login({ navigation }) {
                   maxLength={4}
                   keyboardType="number-pad"
                   returnKeyType="done"
+                  secureTextEntry={hidePin}
+                  right={
+                    <TextInput.Icon
+                      style={{ marginTop: 15 }}
+                      icon={hidePin ? "eye" : "eye-off"}
+                      iconColor={colors.primary}
+                      onPress={() => setHidePin(!hidePin)}
+                    />
+                  }
                 />
               </View>
             </>
@@ -107,6 +112,34 @@ export default function Login({ navigation }) {
               )}
             </View>
 
+            <View
+              style={{
+                ...Classes.mainView(colors),
+                alignItems: "flex-end",
+                marginTop: 10,
+              }}
+            >
+              <TouchableOpacity
+                style={{ marginLeft: 10 }}
+                onPress={() => navigation.navigate("ForgotPassword")}
+              >
+                <Text style={{ color: colors.accent, fontSize: 20 }}>
+                  {t2("form.forgotPassword")}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={Classes.bottonView(colors)}>
+            <View style={{ alignSelf: "flex-end" }}>
+              <FAB
+                icon="swap-horizontal-bold"
+                style={{
+                  backgroundColor: colors.primary,
+                }}
+                color={"#fff"}
+                onPress={() => app.actions.removeApp()}
+              />
+            </View>
             <View>
               <Button
                 mode="contained"
@@ -115,10 +148,11 @@ export default function Login({ navigation }) {
                 {...Classes.buttonContainer(colors)}
                 disabled={!partner.auth.phoneNumber || !partner.auth.pin}
               >
-                {t2("form.start")}
+                <Text style={{ color: "#fff" }} variant="titleLarge">
+                  {t2("form.login")}
+                </Text>
               </Button>
             </View>
-
             <View
               style={{
                 flexDirection: "row",
@@ -137,35 +171,6 @@ export default function Login({ navigation }) {
                   {t2("form.register")}
                 </Text>
               </TouchableOpacity>
-            </View>
-
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                marginTop: 30,
-              }}
-            >
-              <TouchableOpacity
-                style={{ marginLeft: 10 }}
-                onPress={() => navigation.navigate("ForgotPassword")}
-              >
-                <Text style={{ color: colors.accent, fontSize: 20 }}>
-                  {t2("form.forgotPassword")}
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={{ marginTop: 50 }}>
-              <RoundButton
-                size={0.3}
-                color={"grey"}
-                text={"Changer d'application"}
-                onPress={() => {
-                  app.actions.removeApp();
-                }}
-                shadow={{ size: 0.27 }}
-              />
             </View>
           </View>
         </ScrollView>
