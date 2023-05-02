@@ -49,6 +49,44 @@ export const buttonContainer = (colors) => ({
   },
 });
 
+export const cancelRideButtonContainer = (colors) => ({
+  style: {
+    width: Mixins.width(0.95, true),
+    height: Mixins.height(45),
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: colors.error,
+  },
+  contentStyle: {
+    height: Mixins.height(40),
+  },
+});
+
+export const cancelRideDriverArrivedButtonContainer = (colors) => ({
+  style: {
+    width: Mixins.width(0.45, true),
+    height: Mixins.height(45),
+    justifyContent: "flex-start",
+    borderWidth: 1,
+    borderColor: colors.error,
+  },
+  contentStyle: {
+    height: Mixins.height(40),
+  },
+});
+
+export const alertButtonContainer = (colors) => ({
+  style: {
+    width: Mixins.width(0.35, true),
+    height: Mixins.height(45),
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  contentStyle: {
+    height: Mixins.height(40),
+  },
+});
+
 export const callButtonContainer = (colors) => ({
   style: {
     width: Mixins.width(0.7, true),
@@ -121,7 +159,6 @@ export const nextButtonContainer = (colors) => ({
 export const bottonView = (colors) => ({
   flex: 1,
   justifyContent: "flex-end",
-  alignItems: "center",
   marginBottom: 20,
 });
 
@@ -240,11 +277,41 @@ export const formInput = (colors) => ({
   marginBottom: 20,
 });
 
+export const rideFormInput = (colors) => ({
+  width: Mixins.width(0.93, true),
+  height: Mixins.width(0.1, true),
+  // fontSize: 20,
+  marginBottom: 10,
+  backgroundColor: "#e8e8e8",
+});
+
+export const predictionItems = (colors) => ({
+  width: Mixins.width(0.93, true),
+  height: Mixins.width(0.12, true),
+});
+
+export const rideFormInputContainer = (colors) => ({
+  width: Mixins.width(0.93, true),
+  // height: Mixins.width(0.1, true),
+  fontSize: 20,
+  // marginBottom: 10,
+});
+
 export const profileFormInput = (colors) => ({
   width: Mixins.width(0.95, true),
   fontSize: 20,
   borderBottomColor: "grey",
   marginBottom: 20,
+});
+
+export const cabType = (colors) => ({
+  width: Mixins.width(0.95, true),
+  height: Mixins.width(0.15, true),
+  borderRadius: 10,
+  // padding: 10,
+  marginBottom: 10,
+  borderWidth: 1,
+  borderColor: "#e0e0e0",
 });
 
 export const errorText = (colors) => ({

@@ -69,6 +69,7 @@ export default {
   },
   home: {
     welcome: "Welcome On Mamdoo",
+    hi: "Hello ",
     bookRide: "Book",
     noDriverFound:
       "We did not find any driver at the moment. Please retry again!",
@@ -80,6 +81,12 @@ export default {
     seen: "Last Seen",
     call: "Call",
     phoneNumber: "Phone",
+    whereTo: "Where do you want to go ?",
+    from: "From",
+    to: "Where are you going ?",
+    noResultFound: "No result were found!",
+    distance: "Distance: ",
+    estimatedTime: "Estimted Time: ",
   },
   rating: {
     rateDriver: "Rate your Mamdoo",
@@ -168,6 +175,7 @@ export default {
     feedback: "Feedback",
     login: "Connection",
     forgotPassword: "Forgot Pin",
+    rideForm: "Book a Ride",
   },
   profile: {
     edit: "Edit",

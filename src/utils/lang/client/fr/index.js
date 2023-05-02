@@ -67,6 +67,7 @@ export default {
   },
   home: {
     welcome: "Bienvenue sur Mamdoo",
+    hi: "Bonjour ",
     bookRide: "Commander",
     noDriverFound:
       "Nous n'avons pas pu trouver de chauffeur. S'il vous plait veuillez reessayer encore!",
@@ -78,6 +79,12 @@ export default {
     seen: "Vu il y a",
     call: "Appeler",
     phoneNumber: "Téléphone",
+    whereTo: "Où allez-vous ?",
+    from: "D'où partez vous ?",
+    to: "Où allez-vous ?",
+    noResultFound: "Aucun resultat!",
+    distance: "Distance: ",
+    estimatedTime: "Temps estimé: ",
   },
   rating: {
     rateDriver: "Notez votre Mamdoo",
@@ -100,7 +107,7 @@ export default {
     mamdoo: "Mamdoo",
     foundMamdoo: "Mamdoo trouvé",
     driver: "Mamdoo",
-    isOnHisWay: "est en route vers votre position",
+    isOnHisWay: "est en route",
     arrivesIn: "Il sera la dans",
     phoneNumber: "Numéro",
     callDriver: "Appeler",
@@ -169,6 +176,7 @@ export default {
     feedback: "Commentaires",
     login: "Connexion",
     forgotPassword: "Code pin oublié",
+    rideForm: "Commandez une course",
   },
   profile: {
     edit: "Modifier",

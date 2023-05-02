@@ -44,5 +44,23 @@ export default function rideActions(state, dispatch) {
     setNearByDrivers: (nearByDrivers) => {
       dispatch({ type: types.SET_NEARBY_DRIVERS, nearByDrivers });
     },
+    setStep: (step) => {
+      dispatch({ type: types.SET_RIDE_STEP, step });
+    },
+    setNewRide: (newRide) => {
+      dispatch({ type: types.SET_NEW_RIDE, newRide });
+    },
+    setNewRideDetails: (newRideDetails) => {
+      dispatch({ type: types.SET_NEW_RIDE_DETAILS, newRideDetails });
+    },
+    setCabTypes: (cabTypes) => {
+      dispatch({ type: types.SET_CAB_TYPES, cabTypes });
+    },
+    setPaymentTypes: (paymentTypes) => {
+      dispatch({ type: types.SET_PAYMENT_TYPES, paymentTypes });
+    },
+    setBottomSheetHeight: (height) => {
+      dispatch({ type: types.SET_BOTTOM_SHEET_HEIGHT, height });
+    },
   };
 }

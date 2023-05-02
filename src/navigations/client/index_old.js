@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import HomeStack from "./stacks/Home";
 import AccountStack from "./stacks/Account";
 import AuthtStack from "./stacks/Auth";
@@ -11,7 +12,8 @@ import LocationDenied from "_components/organisms/LocationDenied";
 import { useStore } from "_store";
 import { useApp } from "_hooks";
 import MaintenanceMode from "_organisms/MaintenanceMode";
-const Stack = createNativeStackNavigator();
+import { t } from "_utils/lang";
+const Tab = createMaterialBottomTabNavigator();
 
 export default function MainTabs({ role }) {
   const { colors } = useTheme();
@@ -35,39 +37,54 @@ export default function MainTabs({ role }) {
           onReload={app.actions?.getSettings}
         />
       ) : (
-        <Stack.Navigator
-          initialRouteName="HomeStack"
+        <Tab.Navigator
+          initialRouteName="Home"
+          // shifting={true}
           sceneAnimationEnabled={false}
-          screenOptions={{
-            headerShown: false,
+          activeColor={colors.primary}
+          barStyle={{
+            backgroundColor: colors.background,
+            borderTopColor: colors.border,
+            borderTopWidth: 1,
           }}
         >
-          <Stack.Screen
-            name="HomeStack"
+          <Tab.Screen
+            name="Home"
             children={() => <HomeStack role={role} />}
-            options={({ navigation }) => ({
-              headerStyle: {
-                borderBottomWidth: 1,
+            options={{
+              tabBarColor: "red",
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="home" color={color} size={25} />
+              ),
+              tabBarLabel: t("screens.home"),
+            }}
+            listeners={{
+              tabPress: (e) => {
+                if (onGoingRide) e.preventDefault();
               },
-              headerTitleStyle: {
-                // color: "#000"
-              },
-            })}
+            }}
           />
 
-          <Stack.Screen
-            name="AccountStack"
+          <Tab.Screen
+            name="Account"
             children={({}) => <AccountStack />}
             options={({ navigation }) => ({
-              headerStyle: {
-                borderBottomWidth: 1,
-              },
-              headerTitleStyle: {
-                // color: "#000"
-              },
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons
+                  name="account-settings"
+                  color={color}
+                  size={25}
+                />
+              ),
+              tabBarLabel: t("screens.account"),
             })}
+            listeners={{
+              tabPress: (e) => {
+                if (onGoingRide) e.preventDefault();
+              },
+            }}
           />
-        </Stack.Navigator>
+        </Tab.Navigator>
       )
     ) : (
       <VerificationStack />

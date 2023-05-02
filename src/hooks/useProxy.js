@@ -33,6 +33,7 @@ export default function useProxy() {
         if (event === "FOUND_DRIVER") {
           console.log({ foundDriver: data });
           dispatch({ type: "SET_CAN_CANCEL" });
+          dispatch({ type: "SET_RIDE_STEP", step: 4 });
         }
 
         if (event == "CANCEL_REQUEST") {
@@ -73,6 +74,9 @@ export default function useProxy() {
           dispatch({ type: types.SET_ONGOING_RIDE });
         }
 
+        if (event == "DRIVER_ARRIVED") {
+          dispatch({ type: "SET_RIDE_STEP", step: 5 });
+        }
         dispatch({ type: event, data });
       });
     });

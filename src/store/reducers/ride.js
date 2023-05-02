@@ -1,4 +1,4 @@
-import { ride } from "../initialState";
+import { ride, defaultNewRide, defaultNewRideDetails } from "../initialState";
 import types from "../types";
 import * as RootNavigation from "_navigations/RootNavigation";
 export default (state = ride, action) => {
@@ -22,6 +22,11 @@ export default (state = ride, action) => {
         onGoingRide: false,
         newRequestId: false,
         nearByDrivers: 0,
+        newRide: { ...defaultNewRide },
+        newRideDetails: { ...defaultNewRideDetails },
+        step: 1,
+        mapHeight: "80%",
+        bottomSheetHeight: "20%",
       };
     case types.SET_CAN_CANCEL:
       return {
@@ -113,6 +118,43 @@ export default (state = ride, action) => {
       return {
         ...state,
         nearByDrivers: action.nearByDrivers,
+      };
+    case types.SET_RIDE_STEP:
+      return {
+        ...state,
+        step: action.step,
+      };
+    case types.SET_NEW_RIDE:
+      return {
+        ...state,
+        newRide: {
+          ...state.newRide,
+          ...action.newRide,
+        },
+      };
+    case types.SET_NEW_RIDE_DETAILS:
+      return {
+        ...state,
+        newRideDetails: {
+          ...state.newRideDetails,
+          ...action.newRideDetails,
+        },
+      };
+    case types.SET_CAB_TYPES:
+      return {
+        ...state,
+        cabTypes: action.cabTypes,
+      };
+    case types.SET_PAYMENT_TYPES:
+      return {
+        ...state,
+        paymentTypes: action.paymentTypes,
+      };
+    case types.SET_BOTTOM_SHEET_HEIGHT:
+      return {
+        ...state,
+        bottomSheetHeight: `${action.height}%`,
+        mapHeight: `${100 - action.height}%`,
       };
     default:
       return state;

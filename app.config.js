@@ -9,6 +9,9 @@ module.exports = ({ config }) => ({
     bundleIdentifier: IS_PROD
       ? "com.mamdoo.app"
       : `com.mamdoo.app-${process.env.ENV_NAME}`,
+    config: {
+      googleMapsApiKey: "AIzaSyAOms3z5wGZja5MI8bZdgJ8C6ccOYaY78M",
+    },
   },
   android: {
     ...config.android,
@@ -19,6 +22,11 @@ module.exports = ({ config }) => ({
     googleServicesFile: IS_PROD
       ? "./google-services-prod.json"
       : "./google-services-staging.json",
+    config: {
+      googleMaps: {
+        apiKey: "AIzaSyAOms3z5wGZja5MI8bZdgJ8C6ccOYaY78M",
+      },
+    },
   },
   extra: {
     proxyUrl: process.env.PROXY_URL,

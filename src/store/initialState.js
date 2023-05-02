@@ -1,3 +1,32 @@
+const defaultNewRide = {
+  pickUp: {
+    text: "",
+    location: {},
+    placeId: "",
+  },
+  dropOff: {
+    text: "",
+    location: {},
+    placeId: "",
+  },
+  price: {
+    text: "",
+    value: 0,
+  },
+  maxPrice: {
+    text: "",
+    value: 0,
+  },
+};
+
+const defaultNewRideDetails = {
+  polyline: [],
+  distance: {},
+  duration: {},
+};
+
+export { defaultNewRide, defaultNewRideDetails };
+
 export default {
   main: {
     app: null,
@@ -29,6 +58,13 @@ export default {
     newRequestId: false,
     rideRequestMessage: false,
     nearByDrivers: 0,
+    step: 1,
+    newRide: defaultNewRide,
+    newRideDetails: defaultNewRideDetails,
+    cabTypes: [],
+    paymentTypes: [],
+    mapHeight: "80%",
+    bottomSheetHeight: "20%",
   },
 };
 

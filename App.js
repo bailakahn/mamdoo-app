@@ -8,15 +8,15 @@ import OfflineNotice from "_components/organisms/OfflineNotice";
 import ErrorBoundary from "_components/organisms/ErrorBoundary";
 
 export default function App() {
-    return (
-        <StoreProvider>
-            <NetworkProvider>
-                <OfflineNotice />
-                <ErrorBoundary>
-                    <NavigationRoot />
-                </ErrorBoundary>
-                {Platform.OS === "ios" && <StatusBar style="auto" />}
-            </NetworkProvider>
-        </StoreProvider>
-    );
+  return (
+    <StoreProvider>
+      <NetworkProvider>
+        <OfflineNotice />
+        <ErrorBoundary>
+          <NavigationRoot />
+        </ErrorBoundary>
+        {Platform.OS === "ios" && <StatusBar style="dark" />}
+      </NetworkProvider>
+    </StoreProvider>
+  );
 }

@@ -3,6 +3,7 @@ export { default as HomeScene } from "./home";
 export { default as RideRequestScene } from "./home/RideRequest";
 export { default as RideScene } from "./home/Ride";
 export { default as ReviewScene } from "./home/Review";
+export { default as SearchRideScene } from "./home/SearchRide";
 
 // FORM
 export { default as RegisterScene } from "./auth/register";
