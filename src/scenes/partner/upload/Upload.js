@@ -60,142 +60,148 @@ export default function Upload({ navigation }) {
         flex: 1,
         backgroundColor: colors.background,
         alignItems: "center",
-        justifyContent: "center",
       }}
     >
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
-          justifyContent: "center",
           alignItems: "center",
         }}
       >
         <UploadConfirmation />
         <View
           style={{
-            ...Classes.centeredView(colors),
+            flexGrow: 1,
+            justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Text
+          <View
             style={{
-              fontSize: 25,
-              fontWeight: "bold",
+              ...Classes.centeredViewUpload(colors),
+              alignItems: "center",
             }}
           >
-            {t2("upload.mandatoyStepsTitle")}
-          </Text>
+            <Text
+              style={{
+                fontSize: 25,
+                fontWeight: "bold",
+              }}
+            >
+              {t2("upload.mandatoyStepsTitle")}
+            </Text>
 
-          <Text
+            <Text
+              style={{
+                fontSize: 15,
+                marginTop: 10,
+              }}
+            >
+              {t2("upload.mandatoyStepsDescription")}
+            </Text>
+          </View>
+
+          <View
             style={{
-              fontSize: 15,
-              marginTop: 10,
+              ...Classes.centeredView(colors),
+              marginTop: 20,
             }}
           >
-            {t2("upload.mandatoyStepsDescription")}
-          </Text>
-        </View>
+            <View style={Classes.uploadDocuments(colors)}>
+              <View style={{ marginBottom: 20 }}>
+                <List.Item
+                  title={t2("upload.profilePicture")}
+                  titleNumberOfLines={5}
+                  left={(props) => (
+                    <List.Icon
+                      {...props}
+                      icon={"camera"}
+                      color={colors.primary}
+                    />
+                  )}
+                  right={(props) => (
+                    <List.Icon
+                      {...props}
+                      icon={
+                        partner?.uploadDocuments?.profilePicture
+                          ? "checkbox-marked-circle"
+                          : "chevron-right"
+                      }
+                      color={colors.primary}
+                    />
+                  )}
+                  onPress={() => navigation.navigate("ProfilePicture")}
+                />
+                <Divider />
+              </View>
+              <View style={{ marginBottom: 20 }}>
+                <List.Item
+                  title={`${t2("upload.driverLicense")} (${t2(
+                    "upload.optional"
+                  )})`}
+                  titleNumberOfLines={5}
+                  left={(props) => (
+                    <List.Icon
+                      {...props}
+                      icon={"card-account-details"}
+                      color={colors.primary}
+                    />
+                  )}
+                  right={(props) => (
+                    <List.Icon
+                      {...props}
+                      icon={
+                        partner?.uploadDocuments?.driverLicenseFront &&
+                        partner?.uploadDocuments?.driverLicenseBack
+                          ? "checkbox-marked-circle"
+                          : "chevron-right"
+                      }
+                      color={colors.primary}
+                    />
+                  )}
+                  onPress={() => navigation.navigate("DriverLicense")}
+                />
+                <Divider />
+              </View>
 
-        <View
-          style={{
-            ...Classes.centeredView(colors),
-            marginTop: 20,
-          }}
-        >
-          <View style={Classes.uploadDocuments(colors)}>
-            <View style={{ marginBottom: 20 }}>
-              <List.Item
-                title={t2("upload.profilePicture")}
-                titleNumberOfLines={5}
-                left={(props) => (
-                  <List.Icon
-                    {...props}
-                    icon={"camera"}
-                    color={colors.primary}
-                  />
-                )}
-                right={(props) => (
-                  <List.Icon
-                    {...props}
-                    icon={
-                      partner?.uploadDocuments?.profilePicture
-                        ? "checkbox-marked-circle"
-                        : "chevron-right"
-                    }
-                    color={colors.primary}
-                  />
-                )}
-                onPress={() => navigation.navigate("ProfilePicture")}
-              />
-              <Divider />
-            </View>
-            <View style={{ marginBottom: 20 }}>
-              <List.Item
-                title={`${t2("upload.driverLicense")} (${t2(
-                  "upload.optional"
-                )})`}
-                titleNumberOfLines={5}
-                left={(props) => (
-                  <List.Icon
-                    {...props}
-                    icon={"card-account-details"}
-                    color={colors.primary}
-                  />
-                )}
-                right={(props) => (
-                  <List.Icon
-                    {...props}
-                    icon={
-                      partner?.uploadDocuments?.driverLicenseFront &&
-                      partner?.uploadDocuments?.driverLicenseBack
-                        ? "checkbox-marked-circle"
-                        : "chevron-right"
-                    }
-                    color={colors.primary}
-                  />
-                )}
-                onPress={() => navigation.navigate("DriverLicense")}
-              />
-              <Divider />
-            </View>
-
-            <View style={{ marginBottom: 20 }}>
-              <List.Item
-                title={t2("upload.cabLicense")}
-                titleNumberOfLines={5}
-                left={(props) => (
-                  <List.Icon
-                    {...props}
-                    icon={"file-document"}
-                    color={colors.primary}
-                  />
-                )}
-                right={(props) => (
-                  <List.Icon
-                    {...props}
-                    icon={
-                      partner?.uploadDocuments?.cabLicense
-                        ? "checkbox-marked-circle"
-                        : "chevron-right"
-                    }
-                    color={colors.primary}
-                  />
-                )}
-                onPress={() => navigation.navigate("CabLicense")}
-              />
-              <Divider />
+              <View style={{ marginBottom: 20 }}>
+                <List.Item
+                  title={t2("upload.cabLicense")}
+                  titleNumberOfLines={5}
+                  left={(props) => (
+                    <List.Icon
+                      {...props}
+                      icon={"file-document"}
+                      color={colors.primary}
+                    />
+                  )}
+                  right={(props) => (
+                    <List.Icon
+                      {...props}
+                      icon={
+                        partner?.uploadDocuments?.cabLicense
+                          ? "checkbox-marked-circle"
+                          : "chevron-right"
+                      }
+                      color={colors.primary}
+                    />
+                  )}
+                  onPress={() => navigation.navigate("CabLicense")}
+                />
+                <Divider />
+              </View>
             </View>
           </View>
         </View>
-        <View style={{ marginTop: 30 }}>
+        <View style={Classes.bottonView(colors)}>
           <Button
-            {...Classes.callButtonContainer(colors)}
+            {...Classes.buttonContainer(colors)}
             mode="contained"
             onPress={() => setVisible(true)}
             disabled={
               !partner.uploadDocuments?.profilePicture ||
-              // !partner.uploadDocuments?.driverLicenseFront ||
-              // !partner.uploadDocuments?.driverLicenseBack ||
+              !partner.uploadDocuments?.driverLicenseFront ||
+              !partner.uploadDocuments?.driverLicenseBack ||
               !partner.uploadDocuments?.cabLicense
             }
           >

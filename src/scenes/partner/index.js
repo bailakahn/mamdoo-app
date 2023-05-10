@@ -1,6 +1,7 @@
 // HOME
 export { default as HomeScene } from "./home";
 export { default as Ride } from "./home/Ride";
+export { default as RideSummaryScene } from "./home/RideSummary";
 
 // UPLOAD
 export { default as NotActiveScene } from "./upload/NotActive";
@@ -15,3 +16,6 @@ export { default as ConfirmationScene } from "./upload/Confirmation";
 export { default as AccountScene } from "./account";
 export { default as ProfileScene } from "./account/Profile";
 export { default as RidesHistoryScene } from "./account/RidesHistory";
+
+// PENDING
+export { default as PendingScene } from "./pending";

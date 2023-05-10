@@ -195,6 +195,9 @@ export default {
     endConfirmContent: "Is this ride completed ?",
     endConfirmOk: "Yes",
     endConfirmCancel: "No",
+    done: "Done",
+    price: "Price: ",
+    rideSummaryTitle: "Ride Summary",
   },
   form: {
     fullName: "Full Name",
@@ -273,5 +276,11 @@ export default {
     client: "Client",
     status: "Status",
     noRides: "No Ride",
+  },
+  pending: {
+    title: "Verification in Progress",
+    description:
+      "Our teams are checking your application. Note that this process can take up to 5 business days. If you have concerns, please contact us.",
+    contactUs: "Contact us",
   },
 };

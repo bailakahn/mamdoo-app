@@ -1,5 +1,6 @@
 import * as Mixins from "./mixins";
 import { Platform, StatusBar } from "react-native";
+import { color } from "react-native-reanimated";
 export const container = (colors) => ({
   flex: 1,
   backgroundColor: colors.background,
@@ -43,6 +44,19 @@ export const buttonContainer = (colors) => ({
     width: Mixins.width(0.95, true),
     height: Mixins.height(45),
     justifyContent: "center",
+  },
+  contentStyle: {
+    height: Mixins.height(40),
+  },
+});
+
+export const logoutButtonContainer = (colors) => ({
+  style: {
+    marginTop: 20,
+    width: Mixins.width(0.95, true),
+    height: Mixins.height(45),
+    justifyContent: "center",
+    backgroundColor: colors.error,
   },
   contentStyle: {
     height: Mixins.height(40),
@@ -106,6 +120,18 @@ export const nextOnboardingButtonContainer = (colors) => ({
     width: Mixins.width(0.35, true),
     height: Mixins.height(35),
     justifyContent: "center",
+  },
+  contentStyle: {
+    height: Mixins.height(40),
+  },
+});
+
+export const logoutPendingButtonContainer = (colors) => ({
+  style: {
+    width: Mixins.width(0.95, true),
+    height: Mixins.height(45),
+    justifyContent: "center",
+    backgroundColor: colors.error,
   },
   contentStyle: {
     height: Mixins.height(40),
@@ -546,7 +572,7 @@ export const centeredViewUpload = (colors) => ({
 });
 
 export const uploadInstructions = (colors) => ({
-  height: Mixins.height(0.4, true),
+  // height: Mixins.height(0.4, true),
 });
 
 export const uploadDocuments = (colors) => ({

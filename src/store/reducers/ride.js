@@ -18,6 +18,7 @@ export default (state = ride, action) => {
         canCancel: false,
         driverArrived: false,
         request: null,
+        ridePrice: 0,
         canceled: false,
         onGoingRide: false,
         newRequestId: false,
@@ -174,6 +175,11 @@ export default (state = ride, action) => {
         ...state,
         bottomSheetHeight: `${action.height}%`,
         mapHeight: `${100 - action.height}%`,
+      };
+    case types.SET_RIDE_PRICE:
+      return {
+        ...state,
+        ridePrice: action.ridePrice,
       };
     default:
       return state;

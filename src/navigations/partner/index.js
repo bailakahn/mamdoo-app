@@ -6,6 +6,7 @@ import HomeStack from "./stacks/Home";
 import AccountStack from "./stacks/Account";
 import AuthStack from "./stacks/Auth";
 import VerificationStack from "./stacks/Verification";
+import PendingStack from "./stacks/Pending";
 import UploadStack from "./stacks/Upload";
 import { useTheme } from "@react-navigation/native";
 import { usePartner } from "_hooks";
@@ -61,6 +62,8 @@ export default function MainTabs({ role }) {
             message={app.settings.prelaunchMode.message}
             onReload={app.actions?.getSettings}
           />
+        ) : partner.partner.status === "pending" ? (
+          <PendingStack />
         ) : (
           <Tab.Navigator
             initialRouteName="HomeStack"

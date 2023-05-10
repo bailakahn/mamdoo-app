@@ -4,11 +4,11 @@ import { useTheme, Text } from "react-native-paper";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import { Button, LoadingV2, Image } from "_atoms";
-import { useApp, usePartner } from "_hooks";
+import { usePartner } from "_hooks";
+import * as Mixins from "../../../styles/mixins";
 
 export default function ForgotPassword({ navigation }) {
   const { colors } = useTheme();
-  const app = useApp();
   const partner = usePartner();
 
   return partner.isLoading ? (
@@ -19,108 +19,78 @@ export default function ForgotPassword({ navigation }) {
         flex: 1,
         backgroundColor: colors.background,
         alignItems: "center",
-        justifyContent: "center",
+        // justifyContent: "center",
       }}
     >
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
-          justifyContent: "center",
-          alignItems: "center",
+          // justifyContent: "center",
+          // alignItems: "center",
         }}
       >
         <View style={Classes.container(colors)}>
-          <View>
-            <Image
-              source={require("_assets/logo.png")}
-              cacheKey="logo"
-              style={Classes.formLogo(colors)}
-            />
-          </View>
-          <View style={{ marginBottom: 25 }}>
-            <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-              {t2("upload.notActive")}
-            </Text>
-          </View>
-          <View style={Classes.centeredText(colors)}>
-            <Text style={{ textAlign: "left" }}>
+          <View style={Classes.centeredViewUpload(colors)}>
+            <Text
+              variant="bodyLarge"
+              style={{ textAlign: "left", fontWeight: "900", fontSize: 20 }}
+            >
               {t2("upload.notActiveText")}
             </Text>
           </View>
-          <View style={{ ...Classes.centeredText(colors), marginTop: 10 }}>
-            <Text style={{ textAlign: "left" }}>{t2("upload.listOfIds")}</Text>
+          <View
+            style={{ ...Classes.centeredViewUpload(colors), marginTop: 10 }}
+          >
+            <Text variant="bodyLarge" style={{ textAlign: "left" }}>
+              {t2("upload.listOfIds")}
+            </Text>
           </View>
-          <View style={{ ...Classes.centeredText(colors), marginTop: 10 }}>
-            <Text style={{ textAlign: "left" }}>
+          <View
+            style={{
+              ...Classes.centeredViewUpload(colors),
+              marginTop: 10,
+            }}
+          >
+            <Text variant="bodyLarge" style={{ textAlign: "left" }}>
               {`\u2022 ${t2("upload.aProfilePicture")}`}
             </Text>
-            <Text style={{ textAlign: "left" }}>
+            <Text variant="bodyLarge" style={{ textAlign: "left" }}>
               {`\u2022 ${t2("upload.driverLicence")}`}
             </Text>
-            <Text style={{ textAlign: "left" }}>
+            <Text variant="bodyLarge" style={{ textAlign: "left" }}>
               {`\u2022 ${t2("upload.licenceRegistration")}`}
             </Text>
           </View>
-          <View style={{ ...Classes.centeredText(colors), marginTop: 10 }}>
-            <Text style={{ textAlign: "left" }}>
-              {t2("upload.timeToValidate")}
-            </Text>
+          <View>
+            <Image
+              source={require("_assets/id.png")}
+              cacheKey="id"
+              style={{
+                width: Mixins.width(0.5, true),
+                height: Mixins.height(0.4, true),
+              }}
+            />
           </View>
-          {/* <View style={{ ...Classes.centeredText(colors), marginTop: 10 }}>
-            <Text style={{ textAlign: "left" }}>{t2("upload.reloadText")}</Text>
-          </View> */}
-          {/* <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              marginTop: 30,
-            }}
-          >
-            <TouchableOpacity
-              style={{ marginLeft: 10 }}
-              onPress={partner.actions.refresh}
-            >
-              <Text style={{ color: colors.accent, fontSize: 20 }}>
-                {t2("upload.reloadButton")}
-              </Text>
-            </TouchableOpacity>
-          </View> */}
-          <View style={{ marginTop: 30, marginBottom: 20 }}>
+        </View>
+        <View style={Classes.bottonView(colors)}>
+          <View>
             <Button
               // style={Classes.callButton(colors)}
-              {...Classes.callButtonContainer(colors)}
+              {...Classes.buttonContainer(colors)}
               mode="contained"
               onPress={() => navigation.navigate("UploadInstructions")}
             >
               {`${t2("upload.addDocuments")}`}
             </Button>
           </View>
-
-          <View style={{ marginTop: 50 }}>
-            {/* <View style={{ ...Classes.centeredText(colors), marginTop: 10 }}>
-              <Text style={{ textAlign: "left" }}>
-                {t2("upload.afterDelay")}
-              </Text>
-            </View> */}
-            {/* <View style={{ marginTop: 30, marginBottom: 20 }}>
-              <Button
-                // style={Classes.callButton(colors)}
-                {...Classes.callButtonContainer(colors)}
-                mode="contained"
-                onPress={app.actions.call}
-              >
-                {`${t2("upload.call")} ${app.settings.phone}`}
-              </Button>
-            </View> */}
-            <View style={{ marginTop: 15, marginBottom: 20 }}>
-              <Button
-                {...Classes.logoutButton(colors)}
-                mode="contained"
-                onPress={() => partner.actions.logout()}
-              >
-                {`${t2("upload.logout")}`}
-              </Button>
-            </View>
+          <View>
+            <Button
+              {...Classes.logoutButtonContainer(colors)}
+              mode="contained"
+              onPress={() => partner.actions.logout()}
+            >
+              {`${t2("upload.logout")}`}
+            </Button>
           </View>
         </View>
       </ScrollView>

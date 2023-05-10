@@ -62,5 +62,8 @@ export default function rideActions(state, dispatch) {
     setBottomSheetHeight: (height) => {
       dispatch({ type: types.SET_BOTTOM_SHEET_HEIGHT, height });
     },
+    setRidePrice: (ridePrice) => {
+      dispatch({ type: types.SET_RIDE_PRICE, ridePrice });
+    },
   };
 }

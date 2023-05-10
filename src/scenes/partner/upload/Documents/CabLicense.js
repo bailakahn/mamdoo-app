@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useMemo } from "react";
+import React from "react";
 import {
   View,
   Image as RNImage,
@@ -7,11 +7,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useTheme, Text } from "react-native-paper";
-import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-  BottomSheetBackdrop,
-} from "@gorhom/bottom-sheet";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import { Button, Image } from "_atoms";
@@ -23,82 +18,6 @@ export default function CabLicense({ navigation }) {
   const { colors } = useTheme();
   const partner = usePartner();
   const upload = useUpload();
-  // ref
-  const bottomSheetModalRef = useRef(null);
-
-  // variables
-  const snapPoints = useMemo(() => ["25%", "25%"], []);
-
-  // callbacks
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-
-  const handleSheetChanges = useCallback((index) => {
-    console.log("handleSheetChanges", index);
-  }, []);
-
-  const BottomView = () => (
-    <BottomSheetModalProvider>
-      <BottomSheetModal
-        ref={bottomSheetModalRef}
-        index={1}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-        handleStyle={{ backgroundColor: colors.overlap }}
-        handleIndicatorStyle={{ backgroundColor: colors.text }}
-        backdropComponent={BottomSheetBackdrop}
-      >
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: colors.overlap,
-            width: Mixins.width(1, true),
-            alignItems: "center",
-          }}
-        >
-          <View style={{ marginTop: 10 }}>
-            <Button
-              {...Classes.callButtonContainer(colors)}
-              mode="contained"
-              onPress={() =>
-                upload.actions.takePhoto((result) => {
-                  partner.actions.setUploadDocuments({
-                    ...partner.uploadDocuments,
-                    cabLicense: {
-                      uri: result.uri,
-                      base64: result.base64,
-                    },
-                  });
-                })
-              }
-            >
-              {`${t2("upload.fromCamera")}`}
-            </Button>
-          </View>
-          <View style={{ marginTop: 10 }}>
-            <Button
-              {...Classes.callButtonContainer(colors)}
-              mode="contained"
-              onPress={() =>
-                upload.actions.pickImage((result) => {
-                  partner.actions.setUploadDocuments({
-                    ...partner.uploadDocuments,
-                    cabLicense: {
-                      uri: result.uri,
-                      base64: result.base64,
-                    },
-                  });
-                })
-              }
-            >
-              {`${t2("upload.fromGallery")}`}
-            </Button>
-          </View>
-        </View>
-      </BottomSheetModal>
-    </BottomSheetModalProvider>
-  );
 
   return (
     <SafeAreaView
@@ -106,18 +25,22 @@ export default function CabLicense({ navigation }) {
         flex: 1,
         backgroundColor: colors.background,
         alignItems: "center",
-        justifyContent: "center",
       }}
     >
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
-          justifyContent: "center",
           alignItems: "center",
         }}
       >
         {partner.uploadDocuments.cabLicense ? (
-          <View style={{ alignItems: "center" }}>
+          <View
+            style={{
+              alignItems: "center",
+              flexGrow: 1,
+              justifyContent: "center",
+            }}
+          >
             <View style={{ alignItems: "center", marginTop: 20 }}>
               <RNImage
                 source={{
@@ -125,36 +48,6 @@ export default function CabLicense({ navigation }) {
                 }}
                 style={Classes.profilePicture(colors)}
               />
-            </View>
-            <View style={{ marginTop: 30 }}>
-              <Button
-                {...Classes.callButtonContainer(colors)}
-                mode="contained"
-                onPress={() => navigation.navigate("Upload")}
-              >
-                {`${t2("upload.useThisPicture")}`}
-              </Button>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                marginTop: 30,
-              }}
-            >
-              <TouchableOpacity
-                style={{ marginLeft: 10 }}
-                onPress={() => {
-                  partner.actions.setUploadDocuments({
-                    ...partner.uploadDocuments,
-                    cabLicense: null,
-                  });
-                }}
-              >
-                <Text style={{ color: colors.error, fontSize: 20 }}>
-                  {t2("upload.takeAgain")}
-                </Text>
-              </TouchableOpacity>
             </View>
           </View>
         ) : (
@@ -168,7 +61,7 @@ export default function CabLicense({ navigation }) {
             >
               <Text
                 style={{
-                  fontSize: 25,
+                  fontSize: 20,
                   fontWeight: "bold",
                 }}
               >
@@ -196,16 +89,50 @@ export default function CabLicense({ navigation }) {
                 </View>
               </ScrollView>
             </View>
-
+          </View>
+        )}
+        <View style={Classes.bottonView(colors)}>
+          {partner.uploadDocuments.cabLicense ? (
+            <View>
+              <View style={{ marginTop: 30 }}>
+                <Button
+                  {...Classes.buttonContainer(colors)}
+                  mode="contained"
+                  onPress={() => navigation.navigate("Upload")}
+                >
+                  {`${t2("upload.useThisPicture")}`}
+                </Button>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  marginTop: 30,
+                }}
+              >
+                <TouchableOpacity
+                  style={{ marginLeft: 10 }}
+                  onPress={() => {
+                    partner.actions.setUploadDocuments({
+                      ...partner.uploadDocuments,
+                      cabLicense: null,
+                    });
+                  }}
+                >
+                  <Text style={{ color: colors.error, fontSize: 20 }}>
+                    {t2("upload.takeAgain")}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          ) : (
             <View
               style={{
-                marginTop: 30,
-                marginBottom: 20,
                 alignItems: "center",
               }}
             >
               <Button
-                {...Classes.callButtonContainer(colors)}
+                {...Classes.buttonContainer(colors)}
                 mode="contained"
                 // onPress={handlePresentModalPress}
                 onPress={() =>
@@ -223,9 +150,8 @@ export default function CabLicense({ navigation }) {
                 {t2("upload.profilePictureTake")}
               </Button>
             </View>
-          </View>
-        )}
-        {/* <BottomView /> */}
+          )}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

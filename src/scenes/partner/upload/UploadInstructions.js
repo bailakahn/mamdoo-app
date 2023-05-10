@@ -14,27 +14,24 @@ export default function ForgotPassword({ navigation }) {
         flex: 1,
         backgroundColor: colors.background,
         alignItems: "center",
-        justifyContent: "center",
       }}
     >
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
-          justifyContent: "center",
           alignItems: "center",
         }}
       >
         <View
           style={{
-            ...Classes.centeredView(colors),
-            alignItems: "center",
-            justifyContent: "center",
+            ...Classes.centeredViewUpload(colors),
+            // alignItems: "center",
           }}
         >
           <Text
             style={{
-              fontSize: 25,
-              fontWeight: "bold",
+              fontSize: 20,
+              fontWeight: "900",
             }}
           >
             {t2("upload.uploadDocumentsTipsTitle")}
@@ -51,7 +48,7 @@ export default function ForgotPassword({ navigation }) {
         </View>
         <View
           style={{
-            ...Classes.centeredView(colors),
+            ...Classes.centeredViewUpload(colors),
             marginTop: 20,
           }}
         >
@@ -113,23 +110,18 @@ export default function ForgotPassword({ navigation }) {
               )}
             />
           </ScrollView>
-          <View
-            style={{
-              alignItems: "center",
-              marginTop: 50,
+        </View>
+        <View style={Classes.bottonView(colors)}>
+          <Button
+            mode="contained"
+            onPress={() => {
+              navigation.navigate("Upload");
             }}
+            color={colors.primary}
+            {...Classes.buttonContainer(colors)}
           >
-            <Button
-              mode="contained"
-              onPress={() => {
-                navigation.navigate("Upload");
-              }}
-              color={colors.primary}
-              {...Classes.callButtonContainer(colors)}
-            >
-              {t2("upload.understood")}
-            </Button>
-          </View>
+            {t2("upload.understood")}
+          </Button>
         </View>
       </ScrollView>
     </SafeAreaView>

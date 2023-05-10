@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Linking, Platform, Alert } from "react-native";
-import Constants from "expo-constants";
-import * as IntentLauncher from "expo-intent-launcher";
 import * as Location from "expo-location";
 import { useStore } from "_store";
 import { t } from "_utils/lang";
@@ -15,8 +13,9 @@ export default function useRide() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [info, setInfo] = useState(false);
+
   const {
-    ride: { canCancel, driverArrived, request, requestId, canceled },
+    ride: { canCancel, driverArrived, request, requestId, canceled, ridePrice },
     auth: { partner },
     actions: {
       resetRide,
@@ -25,6 +24,7 @@ export default function useRide() {
       setRide,
       setRideCanceled,
       setOnGoingRide,
+      setRidePrice,
     },
     dispatch,
   } = useStore();
@@ -163,9 +163,10 @@ export default function useRide() {
         driverId: partner.userId,
       },
     })
-      .then(() => {
-        resetRide();
-        navigation.navigate("Home");
+      .then(({ maxPrice }) => {
+        console.log({ maxPrice });
+        setRidePrice(maxPrice);
+        navigation.navigate("RideSummary");
       })
       .catch((err) => {
         console.log(err);
@@ -209,6 +210,17 @@ export default function useRide() {
       });
   };
 
+  function formatPrice(price) {
+    // Convert price to an integer
+    const priceInt = Math.floor(price);
+
+    // Add thousands separators to the integer part
+    const priceStr = priceInt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+    // Return the formatted price as a string
+    return priceStr;
+  }
+
   return {
     requestId,
     request,
@@ -218,6 +230,7 @@ export default function useRide() {
     error,
     info,
     isLoading,
+    ridePrice,
     actions: {
       resetRequest,
       acceptRequest,
@@ -231,6 +244,7 @@ export default function useRide() {
       setInfo,
       resetRide,
       onEndRide,
+      formatPrice,
     },
   };
 }

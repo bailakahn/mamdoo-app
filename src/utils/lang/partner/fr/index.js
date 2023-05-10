@@ -62,9 +62,8 @@ export default {
     call: "Appeler",
     upload: "Télécharger",
     addDocuments: "Ajouter vos documents",
-    uploadDocumentsTipsTitle: "Conseils pour télécharger vos documents",
-    uploadDocumentsTipsDescription:
-      "Suivez ces conseils pour vous assurer que vous téléchargez vos documents avec succès dès la première fois.",
+    uploadDocumentsTipsTitle: "Instructions de téléchargement",
+    uploadDocumentsTipsDescription: "Pour télécharger vos documents, veuillez.",
     tipOneTitle: "Utiliser des documents originaux",
     tipOneDescription:
       "Veuillez prendre des photos de vos documents originaux ; les documents photocopiés ne sont pas acceptés.",
@@ -194,6 +193,9 @@ export default {
     endConfirmContent: "Avez-vous terminer cette course ?",
     endConfirmOk: "Oui",
     endConfirmCancel: "Non",
+    done: "Terminer",
+    price: "Prix: ",
+    rideSummaryTitle: "Resumé de la course",
   },
   form: {
     fullName: "Prénom Nom",
@@ -273,5 +275,11 @@ export default {
     client: "Client",
     status: "Status",
     noRides: "Aucune course",
+  },
+  pending: {
+    title: "Vérification en cours",
+    description:
+      "Nos équipes vérifient votre compte. La vérification peut prendre jusqu'á 5 jours ouvrables",
+    contactUs: "Contactez-nous",
   },
 };

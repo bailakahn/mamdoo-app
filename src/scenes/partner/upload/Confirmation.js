@@ -1,32 +1,18 @@
 import React, { useRef, useEffect } from "react";
 import { View, ScrollView, SafeAreaView } from "react-native";
-import {
-  useTheme,
-  Text,
-  List,
-  Divider,
-  Dialog,
-  Portal,
-  Paragraph,
-} from "react-native-paper";
+import { useTheme, Text } from "react-native-paper";
 import LottieView from "lottie-react-native";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
-import { Button, LoadingV2 } from "_atoms";
+import { Button } from "_atoms";
 import { usePartner, useTheme as useMamdooTheme } from "_hooks";
 import ReadyAmimation from "_assets/animation/ready.json";
-import LightReadyAmimation from "_assets/animation/light-ready.gif";
-import DarkReadyAmimation from "_assets/animation/dark-ready.gif";
 import * as Mixins from "../../../styles/mixins";
 
 export default function Confirmation() {
   const { colors } = useTheme();
   const theme = useMamdooTheme();
   const partner = usePartner();
-
-  const readyAnimationGif = theme.isDarkMode
-    ? DarkReadyAmimation
-    : LightReadyAmimation;
 
   const animation = useRef();
 
@@ -40,21 +26,19 @@ export default function Confirmation() {
         flex: 1,
         backgroundColor: colors.background,
         alignItems: "center",
-        justifyContent: "center",
       }}
     >
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
-          justifyContent: "center",
           alignItems: "center",
         }}
       >
         <View
           style={{
+            flexGrow: 1,
             justifyContent: "center",
             alignItems: "center",
-            height: Mixins.height(0.9, true),
           }}
         >
           <LottieView
@@ -77,15 +61,9 @@ export default function Confirmation() {
             </Text>
           </View>
         </View>
-        <View
-          style={{
-            justifyContent: "flex-end",
-            alignItems: "center",
-            marginBottom: 20,
-          }}
-        >
+        <View style={Classes.bottonView(colors)}>
           <Button
-            {...Classes.callButtonContainer(colors)}
+            {...Classes.buttonContainer(colors)}
             mode="contained"
             onPress={() =>
               partner.actions.setPartner({
