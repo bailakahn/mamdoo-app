@@ -42,6 +42,17 @@ export default {
     appUpdateDescription:
       "To enjoy the best of Mamdoo, update your application today",
     appUpdateButton: "Update Now",
+    skip: "Skip",
+    next: "Next",
+    done: "Done",
+    onboardingPriceTitle: "No more arbitrary prices",
+    onboardingPriceDescription: "Know the price of your ride before booking",
+    onboardingMapTitle: "Visibility",
+    onboardingMapDescription:
+      "View your  to know the route our drivers will be taking to drop you off",
+    onboardingDestinationTitle: "Enter your destination",
+    onboardingDestinationDescription:
+      "Start typing your destination, we will show you the closest places",
   },
   errors: {
     crashErrorTitle: "Oops, Something Went Wrong",
@@ -66,6 +77,7 @@ export default {
     invalidCode: "We could not verify this code",
     userBlocked: "This account is blocked!",
     noUser: "No account found for this user!",
+    internal: "Oops, Something Went Wrong",
   },
   home: {
     welcome: "Welcome On Mamdoo",
@@ -134,6 +146,21 @@ export default {
     rideFoundExactDrivers: "We found driver(s) near you.",
     // rideFoundExactDrivers: "We found %{drivers} driver(s) near you.",
     rideSendDrivers: "Should we send you one ?",
+    alertTitle: "Confirm Emergency?",
+    alertDescription:
+      "The app will immediately send an alert to our support team and provide them with the user's location and ride details. We will also alert the nearest police office.",
+    alertButtonConfirm: "Confirm",
+    alertButtonCancel: "Cancel",
+    contactCustomerService: "Contact our customer service",
+    toFindYouADriver: "To help you find a Mamdoo",
+    callUs: "Call Us",
+    end: "End",
+    serviceNotAvailable: "Our services are not available in your country!",
+    outsideWorkingHours: "Our services are available from:",
+    outsideWorkingHoursTo: "to",
+    am: "AM",
+    pm: "PM",
+    ongoingRide: "Ongoing ride",
   },
   form: {
     fullName: "Full Name",

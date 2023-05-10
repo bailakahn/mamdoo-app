@@ -62,11 +62,37 @@ export const cancelRideButtonContainer = (colors) => ({
   },
 });
 
+export const callUsButtonContainer = (colors) => ({
+  style: {
+    width: Mixins.width(0.65, true),
+    height: Mixins.height(45),
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: colors.primary,
+  },
+  contentStyle: {
+    height: Mixins.height(40),
+  },
+});
+
+export const endRideButtonContainer = (colors) => ({
+  style: {
+    width: Mixins.width(0.95, true),
+    height: Mixins.height(45),
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: colors.primary,
+  },
+  contentStyle: {
+    height: Mixins.height(40),
+  },
+});
+
 export const cancelRideDriverArrivedButtonContainer = (colors) => ({
   style: {
     width: Mixins.width(0.45, true),
     height: Mixins.height(45),
-    justifyContent: "flex-start",
+    justifyContent: "center",
     borderWidth: 1,
     borderColor: colors.error,
   },
@@ -75,12 +101,53 @@ export const cancelRideDriverArrivedButtonContainer = (colors) => ({
   },
 });
 
-export const alertButtonContainer = (colors) => ({
+export const nextOnboardingButtonContainer = (colors) => ({
   style: {
     width: Mixins.width(0.35, true),
+    height: Mixins.height(35),
+    justifyContent: "center",
+  },
+  contentStyle: {
+    height: Mixins.height(40),
+  },
+});
+
+export const skipButtonContainer = (colors) => ({
+  style: {
+    width: Mixins.width(0.3, true),
+    height: Mixins.height(35),
+    justifyContent: "center",
+  },
+  contentStyle: {
+    height: Mixins.height(40),
+  },
+});
+
+export const alertButtonContainer = (colors) => ({
+  width: Mixins.width(0.35, true),
+  height: Mixins.height(45),
+  justifyContent: "center",
+  alignItems: "center",
+});
+
+export const alertConfirmButtonContainer = (colors) => ({
+  style: {
+    width: Mixins.width(0.65, true),
     height: Mixins.height(45),
     justifyContent: "center",
-    alignItems: "center",
+  },
+  contentStyle: {
+    height: Mixins.height(40),
+  },
+});
+
+export const alertCancelButtonContainer = (colors) => ({
+  style: {
+    width: Mixins.width(0.65, true),
+    height: Mixins.height(45),
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: colors.error,
   },
   contentStyle: {
     height: Mixins.height(40),
@@ -277,12 +344,12 @@ export const formInput = (colors) => ({
   marginBottom: 20,
 });
 
-export const rideFormInput = (colors) => ({
+export const rideFormInput = (colors, isDarkMode = false) => ({
   width: Mixins.width(0.93, true),
   height: Mixins.width(0.1, true),
   // fontSize: 20,
   marginBottom: 10,
-  backgroundColor: "#e8e8e8",
+  backgroundColor: isDarkMode ? "#3B3B3B" : "#e8e8e8",
 });
 
 export const predictionItems = (colors) => ({

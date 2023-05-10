@@ -63,7 +63,7 @@ export default function MainTabs({ role }) {
           />
         ) : (
           <Tab.Navigator
-            initialRouteName="Home"
+            initialRouteName="HomeStack"
             // shifting={true}
             sceneAnimationEnabled={false}
             activeColor={colors.primary}
@@ -74,7 +74,7 @@ export default function MainTabs({ role }) {
             }}
           >
             <Tab.Screen
-              name="Home"
+              name="HomeStack"
               children={() => <HomeStack role={role} />}
               options={{
                 tabBarIcon: ({ color, size }) => (
@@ -90,7 +90,7 @@ export default function MainTabs({ role }) {
             />
 
             <Tab.Screen
-              name="Account"
+              name="AccountStack"
               children={({}) => <AccountStack />}
               options={({ navigation }) => ({
                 tabBarIcon: ({ color, size }) => (

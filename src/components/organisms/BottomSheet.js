@@ -56,7 +56,9 @@ const BottomSheet = ({
               width: 50,
               height: 5,
               borderRadius: 5,
-              backgroundColor: "#e0e0e0",
+              backgroundColor: theme?.isDarkMode
+                ? colors.inputBoder
+                : "#e0e0e0",
               marginTop: -5,
               marginBottom: 5,
             },

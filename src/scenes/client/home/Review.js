@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   TouchableWithoutFeedback,
@@ -7,7 +7,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from "react-native";
-import { Text, useTheme, Headline, TextInput } from "react-native-paper";
+import { Text, useTheme, Headline, TextInput, Chip } from "react-native-paper";
 import { AirbnbRating } from "@rneui/themed";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
@@ -19,14 +19,14 @@ export default function ReviewScreen({ navigation, route }) {
   const [note, setNote] = useState("");
   const [price, setPrice] = useState(0);
 
-  // connect to proxy server
-  // useProxy();
-  // useNotifications();
-  // useLanguage();
   const ride = useRide();
 
   const { colors } = useTheme();
   const [ratingColor, setRatingColor] = useState(colors.primary);
+
+  useEffect(() => {
+    ride.actions.getRide();
+  }, []);
 
   return (
     <SafeAreaView
@@ -56,6 +56,22 @@ export default function ReviewScreen({ navigation, route }) {
             accessible={false}
           >
             <View style={{ ...Classes.container(colors) }}>
+              {ride.endedRide && (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "baseline",
+                    marginBottom: 20,
+                  }}
+                >
+                  <Text variant="titleLarge" style={{ fontWeight: "bold" }}>
+                    {`${t("rating.ridePrice")}: `}
+                  </Text>
+                  <Text variant="titleLarge">
+                    {`${ride.actions.formatPrice(ride.endedRide.maxPrice)} GNF`}
+                  </Text>
+                </View>
+              )}
               <View>
                 <Headline style={Classes.text(colors)}>
                   {t("rating.rateDriver")}
@@ -89,24 +105,13 @@ export default function ReviewScreen({ navigation, route }) {
 
               <View style={{ marginTop: 20 }}>
                 <TextInput
-                  style={Classes.formInput(colors)}
-                  mode="outlined"
-                  label={t("rating.ridePrice")}
-                  placeholder={t("rating.ridePricePlaceholder")}
-                  value={price}
-                  onChangeText={(value) => setPrice(value)}
-                  maxLength={6}
-                  keyboardType="number-pad"
-                  returnKeyType="done"
-                />
-
-                <TextInput
                   style={{
                     ...Classes.formInput(colors),
                     height: 100,
                     alignContent: "flex-start",
                     justifyContent: "flex-start",
                   }}
+                  outlineStyle={{ borderRadius: 10 }}
                   mode="outlined"
                   multiline
                   label={"Note"}

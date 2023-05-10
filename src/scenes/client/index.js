@@ -17,3 +17,6 @@ export { default as AccountScene } from "./account";
 export { default as ProfileScene } from "./account/Profile";
 export { default as RidesHistoryScene } from "./account/RidesHistory";
 export { default as FeedbackScene } from "./account/Feedback";
+
+// ONGOARDING
+export { default as OnboardingScene } from "./onboarding";

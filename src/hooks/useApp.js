@@ -9,13 +9,22 @@ export default function useApp() {
 
   const {
     main: { app, appLoaded, settings },
-    actions: { getApp, setApp, removeApp, setSettings },
+    actions: {
+      getApp,
+      setApp,
+      removeApp,
+      setSettings,
+      getAppLaunched,
+      setAppLaunched,
+    },
   } = useStore();
 
   useEffect(() => {
     if (!appLoaded) {
       getApp();
       getSettings();
+      getAppLaunched();
+      // setAppLaunched(false);
     }
   }, []);
 
@@ -34,17 +43,17 @@ export default function useApp() {
       });
   };
 
-  const call = (phoneNumber) => {
+  const call = () => {
     const { phone = "" } = settings;
-    if (!phone || !phoneNumber) {
+    if (!phone) {
       Alert.alert(t("errors.phoneNumber"));
       return;
     }
 
     var platformText = "";
-    if (Platform.OS === "ios") platformText = `tel://${phoneNumber || phone}`;
+    if (Platform.OS === "ios") platformText = `tel://${phone}`;
     // TODO why `tel` works and `telprompt` dont
-    else platformText = `tel://${phoneNumber || phone}`;
+    else platformText = `tel://${phone}`;
 
     Linking.canOpenURL(platformText)
       .then((supported) => {
@@ -61,6 +70,6 @@ export default function useApp() {
     app,
     settings,
     appLoaded,
-    actions: { setApp, removeApp, call, getSettings },
+    actions: { setApp, removeApp, call, getSettings, setAppLaunched },
   };
 }

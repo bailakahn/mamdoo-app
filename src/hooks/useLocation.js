@@ -123,7 +123,6 @@ export default function useLocation() {
     setNewRideDetails
   ) => {
     try {
-      console.log({ origin, destination });
       const response = await getRequest({
         method: "GET",
         endpoint: "directions/json",

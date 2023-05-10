@@ -12,12 +12,18 @@ import { useTheme, Text, Divider, TextInput, List } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
-import { useRide, useLocation, useApp } from "_hooks";
+import {
+  useRide,
+  useLocation,
+  useApp,
+  useTheme as useMamdooTheme,
+} from "_hooks";
 
 function ModalScreen({ navigation }) {
   const { colors } = useTheme();
   const ride = useRide();
   const location = useLocation();
+  const theme = useMamdooTheme();
   const app = useApp();
   const pickUpRef = useRef();
   const dropOffRef = useRef();
@@ -68,7 +74,7 @@ function ModalScreen({ navigation }) {
           <View>
             <TextInput
               ref={pickUpRef}
-              style={Classes.rideFormInput(colors)}
+              style={Classes.rideFormInput(colors, theme.isDarkMode)}
               outlineStyle={{ borderRadius: 5, borderWidth: 0 }}
               mode="outlined"
               placeholder={t("home.from")}
@@ -114,10 +120,11 @@ function ModalScreen({ navigation }) {
 
             <TextInput
               ref={dropOffRef}
-              style={Classes.rideFormInput(colors)}
+              style={Classes.rideFormInput(colors, theme.isDarkMode)}
               outlineStyle={{ borderRadius: 5, borderWidth: 0 }}
               mode="outlined"
               placeholder={t("home.to")}
+              placeholderTextColor={theme.isDarkMode ? colors.text : undefined}
               value={ride.newRide.dropOff.text}
               onChangeText={(value) => {
                 location.actions.getPredictions(

@@ -18,7 +18,7 @@ export default (state = ride, action) => {
         canCancel: false,
         driverArrived: false,
         request: null,
-        // canceled: false,
+        canceled: false,
         onGoingRide: false,
         newRequestId: false,
         nearByDrivers: 0,
@@ -27,6 +27,25 @@ export default (state = ride, action) => {
         step: 1,
         mapHeight: "80%",
         bottomSheetHeight: "20%",
+      };
+    // client no driver
+    case types.NO_DRIVER:
+      return {
+        ...state,
+        driver: null,
+        requestId: null,
+        canCancel: false,
+        driverArrived: false,
+        request: null,
+        onGoingRide: false,
+        newRequestId: false,
+        nearByDrivers: 0,
+        newRide: { ...defaultNewRide },
+        newRideDetails: { ...defaultNewRideDetails },
+        step: 6,
+        // no need to reset map because we are actually keeping the bottom sheet height to show info
+        // mapHeight: "80%",
+        // bottomSheetHeight: "20%",
       };
     case types.SET_CAN_CANCEL:
       return {

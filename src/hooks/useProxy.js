@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import Constants from "expo-constants";
 import useUser from "./useUser";
 import { useStore } from "_store";
-import types from "_store/types";
+import types from "../store/types";
 const PROXY_URL = Constants.expoConfig.extra.proxyUrl;
 const socketEvents = [
   "FOUND_DRIVER",
@@ -13,7 +13,7 @@ const socketEvents = [
   "CANCEL_REQUEST",
   "END_RIDE",
   "REQUEST_DENIED",
-  "RESET_REQUEST",
+  "NO_DRIVER",
 ];
 export default function useProxy() {
   const { dispatch } = useStore();
@@ -39,7 +39,9 @@ export default function useProxy() {
         if (event == "CANCEL_REQUEST") {
           dispatch({ type: event });
           dispatch({ type: types.SET_RIDE_CANCELED, canceled: true });
-          navigation.navigate("RideRequest", {
+          dispatch({ type: types.SET_RIDE_STEP, step: 3 });
+          dispatch({ type: types.SET_BOTTOM_SHEET_HEIGHT, height: 35 });
+          navigation.navigate("Home", {
             driverId: data.driverId,
           });
           return;
@@ -58,21 +60,22 @@ export default function useProxy() {
         }
 
         if (event == "REQUEST_DENIED") {
-          dispatch({ type: types.REQUEST_DENIED, denied: true });
+          dispatch({ type: types.SET_RIDE_STEP, step: 6 });
+          dispatch({ type: types.SET_BOTTOM_SHEET_HEIGHT, height: 35 });
           return;
         }
 
-        if (event == "RESET_REQUEST") {
-          dispatch({
-            type: types.SET_RIDE_REQUEST_MESSAGE,
-            rideRequestMessage: false,
-          });
-          navigation.navigate("Home", {
-            nearByDrivers: data?.nearByDrivers,
-            requestId: data?.requestId,
-          });
-          dispatch({ type: types.SET_ONGOING_RIDE });
-        }
+        // if (event == "NO_DRIVER") {
+        // dispatch({
+        //   type: types.SET_RIDE_REQUEST_MESSAGE,
+        //   rideRequestMessage: false,
+        // });
+        // navigation.navigate("Home", {
+        //   noDriver: data?.noDriver,
+        //   requestId: data?.requestId,
+        // });
+        // dispatch({ type: types.SET_RIDE_STEP, step: 6 });
+        // }
 
         if (event == "DRIVER_ARRIVED") {
           dispatch({ type: "SET_RIDE_STEP", step: 5 });

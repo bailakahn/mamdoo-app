@@ -44,6 +44,17 @@ export default {
     appUpdateDescription:
       "Pour profiter du meilleur de Mamdoo, veuillez mettre a jour votre application",
     appUpdateButton: "Mettre à jour",
+    skip: "Passer",
+    next: "Suivant",
+    done: "Terminer",
+    onboardingPriceTitle: "Fini les prix arbitraires",
+    onboardingPriceDescription:
+      "Soyez informé du prix de votre course à l'avance",
+    onboardingMapTitle: "Visibilité",
+    onboardingMapDescription: "Ayez une visibiliteé sur votre itineraire",
+    onboardingDestinationTitle: "Entrer votre destination",
+    onboardingDestinationDescription:
+      "Commencer á taper votre destination, nous vous suggerons les endroits les plus proches",
   },
   errors: {
     crashErrorTitle: "Oops, Quelque chose s'est mal passé",
@@ -64,6 +75,7 @@ export default {
     invalidCode: "La vérification a échouée",
     userBlocked: "Ce compte est bloqué!",
     noUser: "Aucun compte trouvé pour cet utilisateur!",
+    internal: "Oops, Quelque chose s'est mal passé",
   },
   home: {
     welcome: "Bienvenue sur Mamdoo",
@@ -135,6 +147,22 @@ export default {
     // rideFoundExactDrivers:
     // "Nous avons trouvé %{drivers} motard(s) près de vous.",
     rideSendDrivers: "Voulez-vous confirmer ?",
+    alertTitle: "Confirmer l'urgence?",
+    alertDescription:
+      "Nos équipes seront alertées avec votre localisation et les détails de votre course. Nous allons aussi alerter les autorités les plus proches.",
+    alertButtonConfirm: "Confirmer",
+    alertButtonCancel: "Annuler",
+    contactCustomerService: "Contacter le service client",
+    toFindYouADriver: "Pour vous aider à trouver un Mamdoo",
+    callUs: "Appelez-nous",
+    end: "Terminer",
+    serviceNotAvailable:
+      "Nos services ne sont pas disponibles dans votre pays!",
+    outsideWorkingHours: "Nos services sont disponibles de:",
+    outsideWorkingHoursTo: "à",
+    am: "H",
+    pm: "H",
+    ongoingRide: "Course en cours",
   },
   form: {
     fullName: "Prénom Nom",

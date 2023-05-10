@@ -37,6 +37,7 @@ export default {
     darkModeLoaded: false,
     backgroundPermission: "notLoaded",
     backgroundPermissionReady: false,
+    appLaunched: false,
   },
   auth: {
     user: null,

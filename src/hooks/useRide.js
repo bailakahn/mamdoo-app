@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { Linking, Platform, Alert } from "react-native";
 import Constants from "expo-constants";
-import * as IntentLauncher from "expo-intent-launcher";
 import { useStore } from "_store";
-import { t } from "_utils/lang";
+import { t, lang } from "_utils/lang";
 import { useApi } from "_api";
 import { useNavigation } from "@react-navigation/native";
 import useLocation from "./useLocation";
+import useApp from "./useApp";
+const ENV_NAME = Constants.expoConfig.extra.envName;
 
 export default function useRide() {
   const getRequest = useApi();
   const navigation = useNavigation();
   const location = useLocation();
+  const app = useApp();
 
   const [mapDrivers, setMapDrivers] = useState([]);
+  const [policeStations, setPoliceStations] = useState(null);
+  const [endedRide, setEndedRide] = useState(null);
+  const [validCountry, setValidCountry] = useState(true);
+  const [countryData, setCountryData] = useState({});
+  const [validWorkingHours, setValidWorkingHours] = useState(true);
 
   const {
     ride: {
@@ -64,12 +71,37 @@ export default function useRide() {
     if (!paymentTypes.length) getPaymentTypes();
   }, []);
 
-  const makeRideRequest = async (navigation, driverId, setDisabled) => {
+  const openMap = () => {
+    const scheme = Platform.select({
+      ios: "maps:0,0?q=",
+      android: "geo:0,0?q=",
+    });
+
+    const latLng = `${newRide.dropOff.location?.latitude},${newRide.dropOff.location?.longitude}`;
+
+    const label = `${(driver.firstName, driver.lastName)}`;
+
+    const url = Platform.select({
+      ios: `${scheme}${label}@${latLng}&dirflg=d`,
+      android: `${scheme}${latLng}(${label})`,
+    });
+
+    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latLng}&dir_action=driving`;
+
+    Linking.openURL(googleMapsUrl);
+    return;
+    Linking.canOpenURL(googleMapsUrl).then((canOpen) => {
+      if (canOpen) {
+        Linking.openURL(googleMapsUrl);
+      } else {
+        Linking.openURL(url);
+      }
+    });
+  };
+
+  const makeRideRequest = async (navigation, driverId) => {
     // resetRide();
     // setOnGoingRide();
-    // if (setDisabled) {
-    //   setDisabled(false);
-    // }
 
     let retryCount = 0;
     const maxRetries = 5;
@@ -111,8 +143,9 @@ export default function useRide() {
           console.log(err);
         })) || {};
 
+      console.log({ success, foundDrivers, requestId });
       setNewRequestId(requestId);
-      if (foundDrivers) {
+      if (foundDrivers.length) {
         stop = true;
         // setRideRequestMessage(t("ride.rideFoundDrivers"));
       }
@@ -123,8 +156,9 @@ export default function useRide() {
     } while (retryCount <= maxRetries && !stop);
 
     if (!stop) {
-      setRideRequestMessage(false);
-      navigation.navigate("HomeStack", { notFound: true });
+      // setRideRequestMessage(false);
+      setStep(6);
+      // navigation.navigate("HomeStack", { notFound: true });
       // setOnGoingRide();
     }
   };
@@ -239,6 +273,19 @@ export default function useRide() {
       });
   };
 
+  const getPoliceStations = async () => {
+    getRequest({
+      method: "GET",
+      endpoint: "rides/getpolicestations",
+    })
+      .then((result) => {
+        setCabTypes(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const getPaymentTypes = async () => {
     getRequest({
       method: "GET",
@@ -296,6 +343,64 @@ export default function useRide() {
     return priceStr;
   }
 
+  const getRide = async () => {
+    getRequest({
+      method: "GET",
+      endpoint: "rides/getride",
+      params: { rideId: reviewRequestId },
+    })
+      .then((result) => {
+        setEndedRide(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // Retrieve the country based on the latitude and longitude coordinates
+  const getCountry = async (latitude, longitude) => {
+    const response = await fetch(
+      `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=${lang}`
+    );
+
+    const data = await response.json();
+    return data;
+  };
+
+  const validateCountry = async (user = {}) => {
+    const { latitude, longitude } =
+      location.location || (await location.actions.getCurrentPosition());
+
+    const validCountries =
+      ENV_NAME != "production" || user?.isTest ? ["gn", "ca", "fr"] : ["gn"];
+
+    getCountry(latitude, longitude)
+      .then((data) => {
+        setValidCountry(
+          validCountries.includes(data.countryCode?.toLowerCase())
+        );
+        setCountryData(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const validateWorkingHours = () => {
+    if (!app.settings.workingHours?.is24) {
+      const currentDate = new Date();
+      const currentHour = currentDate.getHours();
+
+      // set working hours
+      const startHour = app.settings.workingHours.startHour;
+      const endHour = app.settings.workingHours.endHour;
+
+      const isWorkingHours = currentHour >= startHour && currentHour < endHour;
+
+      setValidWorkingHours(isWorkingHours);
+    }
+  };
+
   return {
     driver,
     canCancel,
@@ -314,6 +419,10 @@ export default function useRide() {
     paymentTypes,
     mapHeight,
     bottomSheetHeight,
+    endedRide,
+    validCountry,
+    countryData,
+    validWorkingHours,
     actions: {
       callDriver,
       cancelRide,
@@ -336,6 +445,12 @@ export default function useRide() {
       calculateFare,
       makeRideRequest,
       setBottomSheetHeight,
+      getPoliceStations,
+      openMap,
+      getRide,
+      formatPrice,
+      validateCountry,
+      validateWorkingHours,
     },
   };
 }

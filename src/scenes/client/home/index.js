@@ -13,14 +13,23 @@ import {
   Divider,
   Avatar,
   Chip,
-  IconButton,
+  Modal,
+  Portal,
+  Button as OriginalButton,
+  Headline,
 } from "react-native-paper";
 import LottieView from "lottie-react-native";
 import PinAnimation from "_assets/animation/dots.json";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import { useLocation, useRide, useUser, useProxy } from "_hooks";
+import {
+  useLocation,
+  useRide,
+  useUser,
+  useProxy,
+  useApp,
+  useTheme as useMamdooTheme,
+} from "_hooks";
 import { LoadingV2, Button } from "_atoms";
 import BottomSheet from "_organisms/BottomSheet";
 import { Classes } from "_styles";
@@ -30,12 +39,28 @@ import PopConfirm from "_organisms/PopConfirm";
 
 const LATITUDE_DELTA = 0.009;
 const LONGITUDE_DELTA = 0.009;
+const regex = /^([A-Za-z ]+)(?: \((le|la)\))?$/;
 
-export default function Home({ navigation }) {
+const splitCountry = (countryName = "") => {
+  const match = countryName.match(regex);
+  if (match) {
+    const countryName = match[1].trim(); // "Canada"
+    const definiteArticle = match[2] ? match[2] : null; // "le" or null
+    console.log(
+      `Country: ${countryName}, Definite Article: ${definiteArticle}`
+    );
+  } else {
+    console.log("String does not match expected format.");
+    console.log(countryName.split(" ")[0]);
+  }
+};
+
+export default function Home({ navigation, route }) {
   useProxy();
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   const location = useLocation();
+  const theme = useMamdooTheme();
   const user = useUser();
   const ride = useRide();
   const destinationMarkerRef = useRef();
@@ -51,30 +76,20 @@ export default function Home({ navigation }) {
   );
 
   useEffect(() => {
-    if (mapRef.current && ride.newRideDetails.polyline.length) {
+    if ((ride.canceled && route?.params?.driverId) || ride.denied) {
+      ride.actions.makeRideRequest(navigation, route?.params?.driverId);
+    }
+  }, [ride.canceled, ride.denied, route]);
+
+  useEffect(() => {
+    if (ride.newRideDetails.polyline.length) {
       ride.actions.calculateFare(
         ride.newRideDetails?.distance.value,
         ride.newRideDetails?.duration.value
       );
       if (!ride.driver) {
         ride.actions.setBottomSheetHeight(35);
-        // setBottomSheetHeight("35%");
       }
-      //   mapRef.current.fitToCoordinates(
-      //     Object.values(ride.newRideDetails.polyline),
-      //     {
-      //       edgePadding: {
-      //         top: 50,
-      //         right: 50,
-      //         bottom: 50,
-      //         left: 50,
-      //       },
-      //       animated: true,
-      //     }
-      //   );
-
-      //   destinationMarkerRef.current &&
-      //     destinationMarkerRef.current.showCallout();
     }
   }, [ride.newRideDetails.polyline]);
 
@@ -94,6 +109,8 @@ export default function Home({ navigation }) {
   useEffect(() => {
     location.actions.getCurrentPosition();
     ride.actions.getMapByDrivers();
+    ride.actions.validateCountry();
+    ride.actions.validateWorkingHours();
   }, []);
 
   const animateMarker = () => {
@@ -150,10 +167,8 @@ export default function Home({ navigation }) {
   };
 
   const onBackPress = () => {
+    navigation.setParams({ driverId: null });
     ride.actions.resetRide();
-    ride.actions.setBottomSheetHeight(20);
-    // setMapHeight("80%");
-    navigation.navigate("Home");
   };
 
   if (!location.location) return <LoadingV2 />;
@@ -164,7 +179,7 @@ export default function Home({ navigation }) {
         flex: 1,
         ...StyleSheet.absoluteFillObject,
         justifyContent: "flex-end",
-        // alignItems: "flex-end",
+        backgroundColor: colors.primary,
       }}
     >
       <MapView
@@ -175,15 +190,181 @@ export default function Home({ navigation }) {
         showsMyLocationButton={
           ride.newRideDetails?.polyline?.length ? false : true
         }
+        mapPadding={{ top: 20 }}
         style={{
           flex: 1,
           width: "100%",
           height: ride.mapHeight,
           ...StyleSheet.absoluteFillObject,
         }}
+        customMapStyle={
+          theme.isDarkMode
+            ? [
+                {
+                  elementType: "geometry",
+                  stylers: [
+                    {
+                      color: "#242f3e",
+                    },
+                  ],
+                },
+                {
+                  elementType: "labels.text.fill",
+                  stylers: [
+                    {
+                      color: "#746855",
+                    },
+                  ],
+                },
+                {
+                  elementType: "labels.text.stroke",
+                  stylers: [
+                    {
+                      color: "#242f3e",
+                    },
+                  ],
+                },
+                {
+                  featureType: "administrative.locality",
+                  elementType: "labels.text.fill",
+                  stylers: [
+                    {
+                      color: "#d59563",
+                    },
+                  ],
+                },
+                {
+                  featureType: "poi",
+                  elementType: "labels.text.fill",
+                  stylers: [
+                    {
+                      color: "#d59563",
+                    },
+                  ],
+                },
+                {
+                  featureType: "poi.park",
+                  elementType: "geometry",
+                  stylers: [
+                    {
+                      color: "#263c3f",
+                    },
+                  ],
+                },
+                {
+                  featureType: "poi.park",
+                  elementType: "labels.text.fill",
+                  stylers: [
+                    {
+                      color: "#6b9a76",
+                    },
+                  ],
+                },
+                {
+                  featureType: "road",
+                  elementType: "geometry",
+                  stylers: [
+                    {
+                      color: "#38414e",
+                    },
+                  ],
+                },
+                {
+                  featureType: "road",
+                  elementType: "geometry.stroke",
+                  stylers: [
+                    {
+                      color: "#212a37",
+                    },
+                  ],
+                },
+                {
+                  featureType: "road",
+                  elementType: "labels.text.fill",
+                  stylers: [
+                    {
+                      color: "#9ca5b3",
+                    },
+                  ],
+                },
+                {
+                  featureType: "road.highway",
+                  elementType: "geometry",
+                  stylers: [
+                    {
+                      color: "#746855",
+                    },
+                  ],
+                },
+                {
+                  featureType: "road.highway",
+                  elementType: "geometry.stroke",
+                  stylers: [
+                    {
+                      color: "#1f2835",
+                    },
+                  ],
+                },
+                {
+                  featureType: "road.highway",
+                  elementType: "labels.text.fill",
+                  stylers: [
+                    {
+                      color: "#f3d19c",
+                    },
+                  ],
+                },
+                {
+                  featureType: "transit",
+                  elementType: "geometry",
+                  stylers: [
+                    {
+                      color: "#2f3948",
+                    },
+                  ],
+                },
+                {
+                  featureType: "transit.station",
+                  elementType: "labels.text.fill",
+                  stylers: [
+                    {
+                      color: "#d59563",
+                    },
+                  ],
+                },
+                {
+                  featureType: "water",
+                  elementType: "geometry",
+                  stylers: [
+                    {
+                      color: "#17263c",
+                    },
+                  ],
+                },
+                {
+                  featureType: "water",
+                  elementType: "labels.text.fill",
+                  stylers: [
+                    {
+                      color: "#515c6d",
+                    },
+                  ],
+                },
+                {
+                  featureType: "water",
+                  elementType: "labels.text.stroke",
+                  stylers: [
+                    {
+                      color: "#17263c",
+                    },
+                  ],
+                },
+              ]
+            : []
+        }
       >
         {/* <Marker.Animated ref={animatedDriverRef} coordinate={animatedDriver} /> */}
-        {ride.step === 0 &&
+        {ride.step === 1 &&
           Array.isArray(ride.mapDrivers) &&
           ride.mapDrivers.map(({ currentLocation }, index) => (
             <Marker
@@ -233,12 +414,30 @@ export default function Home({ navigation }) {
             />
           )}
       </MapView>
+      {ride.driverArrived && (
+        <TouchableOpacity
+          style={{
+            height: ride.mapHeight,
+            backgroundColor: "rgba(255, 255, 255, 0.5)",
+            zIndex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text variant="titleLarge" style={{ fontWeight: "bold" }}>
+            {t("ride.ongoingRide")}
+          </Text>
+        </TouchableOpacity>
+      )}
       {/* MENU */}
       <View
         style={{
           padding: 5,
           top: insets.top,
           position: "absolute",
+          marginLeft: 20,
+          backgroundColor: colors.background,
+          borderRadius: 50,
         }}
       >
         <MaterialCommunityIcons
@@ -247,6 +446,7 @@ export default function Home({ navigation }) {
           }
           name={!ride.newRideDetails?.polyline?.length ? "menu" : "arrow-left"}
           size={30}
+          color={colors.text}
         />
       </View>
       <BottomSheet height={ride.bottomSheetHeight}>
@@ -258,6 +458,8 @@ export default function Home({ navigation }) {
           <DriverView user={user} ride={ride} navigation={navigation} />
         ) : ride.step === 5 ? (
           <DriverArrivedView user={user} ride={ride} navigation={navigation} />
+        ) : ride.step === 6 ? (
+          <NoDriverView user={user} ride={ride} navigation={navigation} />
         ) : (
           <WelcomeView user={user} ride={ride} navigation={navigation} />
         )}
@@ -277,12 +479,15 @@ export default function Home({ navigation }) {
 
 const WelcomeView = ({ user, ride, navigation }) => {
   const { colors } = useTheme();
+  const app = useApp();
+  const theme = useMamdooTheme();
 
   return (
     <View
       style={{
         flex: 1,
         alignItems: "center",
+        overflow: "hidden",
       }}
     >
       <View>
@@ -304,55 +509,111 @@ const WelcomeView = ({ user, ride, navigation }) => {
         </Text>
       </View>
       <View style={{ width: "100%", marginTop: 10 }}>
-        <Divider style={{ height: 2, backgroundColor: "#e0e0e0" }} />
-      </View>
-      <View
-        style={{
-          alignItems: "center",
-          marginTop: 20,
-        }}
-      >
-        <TouchableOpacity
+        <Divider
           style={{
-            ...Classes.formInput(colors),
-            borderRadius: 10,
-            justifyContent: "center",
-            paddingLeft: 15,
-            backgroundColor: "#e8e8e8",
+            height: 2,
+            ...(!theme.isDarkMode && { backgroundColor: "#e0e0e0" }),
           }}
-          onPress={() => {
-            ride.actions.setStep(1);
-            ride.actions.setNewRide(defaultNewRide);
-            navigation.navigate("RideForm");
-          }}
-        >
-          <View style={{ flexDirection: "row", alignItems: "baseline" }}>
-            <Ionicons name="search" size={20} />
-            <Text
-              variant="titleMedium"
+        />
+      </View>
+      {ride.validCountry ? (
+        ride.validWorkingHours ? (
+          <View
+            style={{
+              alignItems: "center",
+              marginTop: 20,
+            }}
+          >
+            <TouchableOpacity
               style={{
-                color: "#565656",
-                fontSize: 20,
-                marginLeft: 10,
+                ...Classes.formInput(colors),
+                borderRadius: 10,
+                justifyContent: "center",
+                paddingLeft: 15,
+                backgroundColor: theme?.isDarkMode ? "#3B3B3B" : "#e8e8e8",
+              }}
+              onPress={() => {
+                ride.actions.setStep(1);
+                ride.actions.setNewRide(defaultNewRide);
+                navigation.navigate("RideForm");
               }}
             >
-              {t("home.whereTo")}
-            </Text>
+              <View style={{ flexDirection: "row", alignItems: "baseline" }}>
+                <Ionicons name="search" size={20} color={colors.primary} />
+                <Text
+                  variant="titleMedium"
+                  style={{
+                    color: theme?.isDarkMode ? colors.text : "#565656",
+                    fontSize: 20,
+                    marginLeft: 10,
+                  }}
+                >
+                  {t("home.whereTo")}
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
-      </View>
+        ) : (
+          <View
+            style={{
+              alignItems: "center",
+              marginTop: 10,
+            }}
+          >
+            <View style={{ alignItems: "center" }}>
+              <Text variant="titleMedium">{t("ride.outsideWorkingHours")}</Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                marginTop: 10,
+              }}
+            >
+              <Chip icon={"timetable"} textStyle={{ fontWeight: "bold" }}>
+                {`${app.settings.workingHours?.startHour}${t("ride.am")} ${t(
+                  "ride.outsideWorkingHoursTo"
+                )} ${app.settings.workingHours?.endHour}${t("ride.pm")}`}
+              </Chip>
+            </View>
+          </View>
+        )
+      ) : (
+        <View
+          style={{
+            alignItems: "center",
+            marginTop: 10,
+          }}
+        >
+          <View style={{ alignItems: "center" }}>
+            <Text variant="titleMedium">{t("ride.serviceNotAvailable")}</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              marginTop: 10,
+            }}
+          >
+            <Chip icon={"map-marker"} textStyle={{ fontWeight: "bold" }}>
+              {ride.countryData.countryName}
+            </Chip>
+          </View>
+        </View>
+      )}
     </View>
   );
 };
 
 const RideDetailView = ({ user, ride, navigation }) => {
   const { colors } = useTheme();
+  const theme = useMamdooTheme();
 
   return (
     <View
       style={{
         flex: 1,
-        // alignItems: "center",
+        alignItems: "center",
       }}
     >
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -390,7 +651,12 @@ const RideDetailView = ({ user, ride, navigation }) => {
         </View>
       </View>
       <View style={{ width: "100%", marginTop: 10 }}>
-        <Divider style={{ height: 2, backgroundColor: "#e0e0e0" }} />
+        <Divider
+          style={{
+            height: 2,
+            ...(!theme.isDarkMode && { backgroundColor: "#e0e0e0" }),
+          }}
+        />
       </View>
       <View
         style={{
@@ -399,39 +665,46 @@ const RideDetailView = ({ user, ride, navigation }) => {
         }}
       >
         <View>
-          <View
-            style={{
-              borderWidth: 1,
-              padding: 10,
-              borderRadius: 10,
-              alignItems: "center",
-              backgroundColor: "#e0e0e0",
-              borderColor: "#e0e0e0",
-              marginBottom: 5,
-            }}
-          >
-            <Text>{ride.newRide.pickUp?.text}</Text>
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <Chip
+              icon={() => (
+                <MaterialCommunityIcons
+                  name="map-marker-account"
+                  color={colors.primary}
+                  size={30}
+                />
+              )}
+              style={{
+                ...(theme?.isDarkMode && { backgroundColor: "#3B3B3B" }),
+              }}
+              textStyle={{ fontSize: 20, color: colors.text }}
+            >
+              {ride.newRide.pickUp?.text}
+            </Chip>
           </View>
           <View
             style={{
-              //   backgroundColor: "#e0e0e0", // change the color of the divider
               alignItems: "center",
             }}
           >
             <Text>|</Text>
           </View>
-          <View
-            style={{
-              borderWidth: 1,
-              padding: 10,
-              borderRadius: 10,
-              marginTop: 5,
-              alignItems: "center",
-              backgroundColor: "#e0e0e0",
-              borderColor: "#e0e0e0",
-            }}
-          >
-            <Text>{ride.newRide.dropOff?.text}</Text>
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <Chip
+              icon={() => (
+                <MaterialCommunityIcons
+                  name="map-marker-check"
+                  color={colors.primary}
+                  size={30}
+                />
+              )}
+              style={{
+                ...(theme?.isDarkMode && { backgroundColor: "#3B3B3B" }),
+              }}
+              textStyle={{ fontSize: 20, color: colors.text }}
+            >
+              {ride.newRide.dropOff?.text}
+            </Chip>
           </View>
         </View>
         <View
@@ -515,6 +788,7 @@ const DriverSearchView = ({ user, ride, navigation }) => {
 const DriverView = ({ user, ride, navigation }) => {
   const { colors } = useTheme();
   const [visible, setVisible] = useState(false);
+  const theme = useMamdooTheme();
 
   return (
     <View
@@ -545,13 +819,24 @@ const DriverView = ({ user, ride, navigation }) => {
         </View>
 
         <View>
-          <Chip icon={"clock-time-three"}>
+          <Chip
+            icon={"clock-time-three"}
+            style={{
+              ...(theme?.isDarkMode && { backgroundColor: "#3B3B3B" }),
+            }}
+            textStyle={{ color: colors.text }}
+          >
             {ride.distanceMatrix?.duration?.text}
           </Chip>
         </View>
       </View>
       <View style={{ width: "100%", marginTop: 10 }}>
-        <Divider style={{ height: 2, backgroundColor: "#e0e0e0" }} />
+        <Divider
+          style={{
+            height: 2,
+            ...(!theme.isDarkMode && { backgroundColor: "#e0e0e0" }),
+          }}
+        />
       </View>
       <View
         style={{
@@ -578,7 +863,10 @@ const DriverView = ({ user, ride, navigation }) => {
           <Chip
             icon={"phone"}
             onPress={ride.actions.callDriver}
-            textStyle={{ fontSize: 20 }}
+            style={{
+              ...(theme?.isDarkMode && { backgroundColor: "#3B3B3B" }),
+            }}
+            textStyle={{ fontSize: 20, color: colors.text }}
           >{`${ride.driver?.phoneNumber}`}</Chip>
         </View>
       </View>
@@ -629,7 +917,10 @@ const DriverView = ({ user, ride, navigation }) => {
 const DriverArrivedView = ({ user, ride, navigation }) => {
   const { colors } = useTheme();
   const [visible, setVisible] = useState(false);
-
+  const [alertVisible, setAlertVisible] = useState(false);
+  const theme = useMamdooTheme();
+  //   SUIVRE COURSE SUR GOOGLE MAPS
+  // ENLEVER POLILYNE
   return (
     <View
       style={{
@@ -658,11 +949,24 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
         </View>
 
         <View>
-          <Chip icon={"google-street-view"}>{t("ride.meetHimOutside")}</Chip>
+          <Chip
+            icon={"google-street-view"}
+            style={{
+              ...(theme?.isDarkMode && { backgroundColor: "#3B3B3B" }),
+            }}
+            textStyle={{ color: colors.text }}
+          >
+            {t("ride.meetHimOutside")}
+          </Chip>
         </View>
       </View>
       <View style={{ width: "100%", marginTop: 10 }}>
-        <Divider style={{ height: 2, backgroundColor: "#e0e0e0" }} />
+        <Divider
+          style={{
+            height: 2,
+            ...(!theme.isDarkMode && { backgroundColor: "#e0e0e0" }),
+          }}
+        />
       </View>
       <View
         style={{
@@ -689,7 +993,10 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
           <Chip
             icon={"phone"}
             onPress={ride.actions.callDriver}
-            textStyle={{ fontSize: 20 }}
+            style={{
+              ...(theme?.isDarkMode && { backgroundColor: "#3B3B3B" }),
+            }}
+            textStyle={{ fontSize: 20, color: colors.text }}
           >{`${ride.driver?.phoneNumber}`}</Chip>
         </View>
       </View>
@@ -698,7 +1005,7 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
           style={{
             flexDirection: "row",
             justifyContent: "space-evenly",
-            alignItems: "baseline",
+            // alignItems: "baseline",
           }}
         >
           <Button
@@ -710,17 +1017,44 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
           >
             <Text variant="titleMedium">{t("ride.cancelRide")}</Text>
           </Button>
-          <IconButton
-            // {...Classes.alertButtonContainer(colors)}
-            icon="alert-outline"
-            size={40}
-            mode="outlined"
-            containerColor="red"
-            iconColor="#fff"
-            onPress={() => {
-              setVisible(true);
+          <TouchableOpacity
+            style={{
+              ...Classes.alertButtonContainer(colors),
+              borderWidth: 1,
+              borderRadius: 30,
+              backgroundColor: colors.primary,
+              borderColor: colors.primary,
             }}
-          />
+            onPress={() => {
+              ride.actions.openMap();
+            }}
+          >
+            <MaterialCommunityIcons
+              name="map-marker-up"
+              size={40}
+              color="#fff"
+            />
+          </TouchableOpacity>
+          {/* <TouchableOpacity
+            style={{
+              ...Classes.alertButtonContainer(colors),
+              borderWidth: 1,
+              borderRadius: 30,
+              backgroundColor: "red",
+              borderColor: "red",
+            }}
+            onLongPress={() => {
+              setAlertVisible(true);
+            }}
+            delayLongPress={2000}
+          >
+            <MaterialCommunityIcons
+              name="alert-outline"
+              size={40}
+              color="#fff"
+            />
+            <Text style={{ color: "#fff" }}>maintenir</Text>
+          </TouchableOpacity> */}
         </View>
       </View>
       <PopConfirm
@@ -742,6 +1076,134 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
           </Text>
         }
       />
+      {/* <Portal>
+        <Modal
+          contentContainerStyle={Classes.modal(colors)}
+          style={Classes.modalWrapper(colors)}
+          onDismiss={setAlertVisible}
+          visible={alertVisible}
+        >
+          <View style={{ alignItems: "center" }}>
+            <Headline>{t("ride.alertTitle")}</Headline>
+          </View>
+          <View>
+            <Text variant="titleMedium" style={{ textAlign: "center" }}>
+              {t("ride.alertDescription")}
+            </Text>
+          </View>
+
+          <View style={{ marginTop: 20, alignItems: "center" }}>
+            <View>
+              <OriginalButton
+                {...Classes.alertConfirmButtonContainer(colors)}
+                mode="contained"
+                onPress={() => {
+                  ride.actions.getPoliceStations();
+                }}
+              >
+                <Text variant="titleMedium" style={{ color: "#fff" }}>
+                  {t("ride.alertButtonConfirm")}
+                </Text>
+              </OriginalButton>
+            </View>
+
+            <View style={{ marginTop: 20 }}>
+              <OriginalButton
+                {...Classes.alertCancelButtonContainer(colors)}
+                mode="contained"
+                onPress={() => {
+                  setAlertVisible(false);
+                }}
+                buttonColor={"#fff"}
+              >
+                <Text variant="titleMedium">{t("ride.alertButtonCancel")}</Text>
+              </OriginalButton>
+            </View>
+          </View>
+        </Modal>
+      </Portal> */}
+    </View>
+  );
+};
+
+const NoDriverView = ({ user, ride, navigation }) => {
+  const { colors } = useTheme();
+  const [visible, setVisible] = useState(false);
+  const app = useApp();
+
+  return (
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          paddingLeft: 10,
+          paddingRight: 10,
+        }}
+      >
+        <View style={{ flexDirection: "row", alignItems: "baseline" }}>
+          <Text variant="titleLarge" style={{ fontWeight: "bold" }}>
+            {t("home.noDriver")}
+          </Text>
+        </View>
+      </View>
+      <View style={{ width: "100%", marginTop: 10 }}>
+        <Divider style={{ height: 2, backgroundColor: "#e0e0e0" }} />
+      </View>
+      <View
+        style={{
+          marginTop: 10,
+          alignItems: "center",
+        }}
+      >
+        <View>
+          <Text variant="titleLarge">{t("ride.contactCustomerService")}</Text>
+        </View>
+        <View style={{ marginTop: 10, flexDirection: "row" }}>
+          <Chip
+            icon={"phone"}
+            onPress={app.actions.call}
+            textStyle={{ fontSize: 20 }}
+          >{`${app.settings.phone}`}</Chip>
+        </View>
+        <View style={{ marginTop: 20, flexDirection: "row" }}>
+          <Button
+            {...Classes.callUsButtonContainer(colors)}
+            mode="outlined"
+            onPress={app.actions.call}
+            buttonColor={colors.primary}
+          >
+            <Text variant="titleMedium">{t("ride.callUs")}</Text>
+          </Button>
+        </View>
+        <View>
+          <Text variant="titleSmall">{t("ride.toFindYouADriver")}</Text>
+        </View>
+      </View>
+      <View style={Classes.bottonView(colors)}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            marginTop: 10,
+          }}
+        >
+          <Button
+            {...Classes.endRideButtonContainer(colors)}
+            mode="outlined"
+            onPress={() => {
+              navigation.setParams({ driverId: null });
+              ride.actions.resetRide();
+            }}
+          >
+            <Text variant="titleMedium">{t("ride.end")}</Text>
+          </Button>
+        </View>
+      </View>
     </View>
   );
 };

@@ -4,6 +4,7 @@ import HomeStack from "./stacks/Home";
 import AccountStack from "./stacks/Account";
 import AuthtStack from "./stacks/Auth";
 import VerificationStack from "./stacks/Verification";
+import OnboardingStack from "./stacks/Onboarding";
 import { useTheme } from "@react-navigation/native";
 import { useUser, useLocation } from "_hooks";
 import { LoadingV2 } from "_atoms";
@@ -18,6 +19,7 @@ export default function MainTabs({ role }) {
   const user = useUser();
   const { grantStatus, isLoading } = useLocation();
   const {
+    main: { appLaunched, appLoaded },
     ride: { onGoingRide },
   } = useStore();
   const app = useApp();
@@ -26,6 +28,8 @@ export default function MainTabs({ role }) {
 
   // if user don't give location permission then don't allow access to app
   if (grantStatus !== "granted") return <LocationDenied />;
+
+  if (!appLaunched) return <OnboardingStack />;
 
   return user.user?.accessToken ? (
     user.user?.verified ? (
