@@ -165,7 +165,7 @@ export default function Onboarding() {
                 onPress={() => {
                   app.actions.setAppLaunched(true);
                 }}
-                {...Classes.skipButtonContainer(colors)}
+                // {...Classes.skipButtonContainer(colors)}
               >
                 <Text variant="titleMedium">{`${t("main.skip")}`}</Text>
               </Button>
@@ -180,11 +180,9 @@ export default function Onboarding() {
                   }
                   setStep(step + 1);
                 }}
-                {...Classes.nextOnboardingButtonContainer(colors)}
+                // {...Classes.nextOnboardingButtonContainer(colors)}
               >
-                <Text style={{ color: "#fff" }} variant="titleLarge">
-                  {step === 3 ? t("main.done") : t("main.next")}
-                </Text>
+                {step === 3 ? t("main.done") : t("main.next")}
               </Button>
             </View>
           </View>

@@ -125,7 +125,7 @@ export default function ProfilePicture({ navigation }) {
                   mode="contained"
                   onPress={() => navigation.navigate("Upload")}
                 >
-                  {`${t2("upload.profilePictureUse")}`}
+                  {t2("upload.profilePictureUse")}
                 </Button>
               </View>
               <View

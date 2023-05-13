@@ -12,6 +12,8 @@ import LocationDenied from "_components/organisms/LocationDenied";
 import { useStore } from "_store";
 import { useApp } from "_hooks";
 import MaintenanceMode from "_organisms/MaintenanceMode";
+import { t } from "_utils/lang";
+
 const Stack = createNativeStackNavigator();
 
 export default function MainTabs({ role }) {
@@ -56,6 +58,7 @@ export default function MainTabs({ role }) {
               headerTitleStyle: {
                 // color: "#000"
               },
+              title: t("screens.home"),
             })}
           />
 

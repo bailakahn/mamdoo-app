@@ -141,7 +141,7 @@ export default function ReviewScreen({ navigation, route }) {
                     ride.actions.reviewRide({ rating, note, price });
                   }}
                 >
-                  {`${t("rating.done")}`}
+                  {t("rating.done")}
                 </Button>
               </View>
             </View>

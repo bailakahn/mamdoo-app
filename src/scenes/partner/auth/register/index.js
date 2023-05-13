@@ -369,18 +369,7 @@ export default function Register({ navigation }) {
                     {...Classes.buttonContainer(colors)}
                     labelStyle={Classes.nextButtonLabel(colors)}
                   >
-                    <Text
-                      style={{
-                        fontSize: 20,
-                        textAlign: "center",
-                        alignSelf: "center",
-                        color: "#ffffff",
-                      }}
-                    >
-                      {t2("form.next")}
-                    </Text>
-
-                    {/* </View> */}
+                    {t2("form.next")}
                   </Button>
                 </View>
               ) : (

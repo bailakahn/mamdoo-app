@@ -9,7 +9,7 @@ export default function Button({ labelStyle, disabled, style, ...props }) {
         ...style,
         ...(disabled ? { backgroundColor: "lightgray" } : {}),
       }}
-      labelStyle={{ color: "#ffffff", ...labelStyle }}
+      // labelStyle={{ color: "#ffffff", ...labelStyle }}
       {...props}
     />
   );

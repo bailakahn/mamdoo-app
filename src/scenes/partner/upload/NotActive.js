@@ -80,7 +80,7 @@ export default function ForgotPassword({ navigation }) {
               mode="contained"
               onPress={() => navigation.navigate("UploadInstructions")}
             >
-              {`${t2("upload.addDocuments")}`}
+              {t2("upload.addDocuments")}
             </Button>
           </View>
           <View>
@@ -89,7 +89,7 @@ export default function ForgotPassword({ navigation }) {
               mode="contained"
               onPress={() => partner.actions.logout()}
             >
-              {`${t2("upload.logout")}`}
+              {t2("upload.logout")}
             </Button>
           </View>
         </View>

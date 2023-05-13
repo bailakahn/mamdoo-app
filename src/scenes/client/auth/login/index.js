@@ -152,9 +152,7 @@ export default function Login({ navigation }) {
                 disabled={!user.auth.phoneNumber || !user.auth.pin}
                 {...Classes.buttonContainer(colors)}
               >
-                <Text style={{ color: "#fff" }} variant="titleLarge">
-                  {t("form.login")}
-                </Text>
+                {t("form.login")}
               </Button>
             </View>
 

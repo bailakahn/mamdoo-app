@@ -72,7 +72,7 @@ export default function Confirmation() {
               })
             }
           >
-            {`${t2("upload.continue")}`}
+            {t2("upload.continue")}
           </Button>
         </View>
       </ScrollView>

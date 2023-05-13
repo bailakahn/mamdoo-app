@@ -117,9 +117,7 @@ export default function Verification({ navigation }) {
                 onPress={partner.actions.verifyAccount}
                 disabled={!partner.verificationCode}
               >
-                <Text variant="titleLarge" style={{ color: "#fff" }}>{`${t(
-                  "main.verify"
-                )}`}</Text>
+                {t("main.verify")}
               </Button>
             </View>
 

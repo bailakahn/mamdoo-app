@@ -189,9 +189,7 @@ export default function PinVerification({ navigation }) {
                   !user.forgotPasswordUser.pinValidation
                 }
               >
-                <Text style={{ color: "#fff" }} variant="titleLarge">
-                  {t("main.resetPassword")}
-                </Text>
+                {t("main.resetPassword")}
               </Button>
             </View>
             <View

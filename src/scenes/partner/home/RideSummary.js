@@ -72,9 +72,7 @@ export default function RideSummaryScene({ navigation }) {
               }}
               {...Classes.buttonContainer(colors)}
             >
-              <Text style={{ color: "#fff" }} variant="titleLarge">
-                {t2("ride.done")}
-              </Text>
+              {t2("ride.done")}
             </Button>
           </View>
         </View>

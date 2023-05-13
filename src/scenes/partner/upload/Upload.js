@@ -205,7 +205,7 @@ export default function Upload({ navigation }) {
               !partner.uploadDocuments?.cabLicense
             }
           >
-            {`${t2("upload.uploadDocuments")}`}
+            {t2("upload.uploadDocuments")}
           </Button>
         </View>
       </ScrollView>

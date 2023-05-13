@@ -187,7 +187,7 @@ export default function PinVerification({ navigation }) {
                   !partner.forgotPinUser.pinValidation
                 }
               >
-                {`${t2("main.resetPassword")}`}
+                {t2("main.resetPassword")}
               </Button>
             </View>
 

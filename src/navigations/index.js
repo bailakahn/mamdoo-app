@@ -115,7 +115,7 @@ export default function NavigationRoot({ mode }) {
     return <LoadingV2 color={"#25C0D2"} />;
 
   if (
-    ENV_NAME !== "localhost" &&
+    ENV_NAME === "production" &&
     Application.nativeApplicationVersion !== settings?.appVersion &&
     settings?.showUpdateScreen
   )

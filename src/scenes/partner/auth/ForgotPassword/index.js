@@ -96,7 +96,7 @@ export default function ForgotPassword({ navigation }) {
                   partner.actions.sendForgotPinVerification(navigation);
                 }}
               >
-                {`${t2("main.resetPassword")}`}
+                {t2("main.resetPassword")}
               </Button>
             </View>
             <View

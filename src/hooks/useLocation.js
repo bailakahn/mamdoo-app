@@ -120,7 +120,9 @@ export default function useLocation() {
     origin,
     destination,
     newRideDetails,
-    setNewRideDetails
+    setNewRideDetails,
+    setStep,
+    setBottomSheetHeight
   ) => {
     try {
       const response = await getRequest({
@@ -132,6 +134,12 @@ export default function useLocation() {
           lang,
         },
       });
+
+      if (!response.routes || !response.routes.length) {
+        setStep && setStep(6);
+        setBottomSheetHeight && setBottomSheetHeight(35);
+        return;
+      }
 
       let points = polyline.decode(response.routes[0].overview_polyline.points);
 

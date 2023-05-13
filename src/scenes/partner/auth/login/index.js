@@ -148,9 +148,7 @@ export default function Login({ navigation }) {
                 {...Classes.buttonContainer(colors)}
                 disabled={!partner.auth.phoneNumber || !partner.auth.pin}
               >
-                <Text style={{ color: "#fff" }} variant="titleLarge">
-                  {t2("form.login")}
-                </Text>
+                {t2("form.login")}
               </Button>
             </View>
             <View

@@ -163,6 +163,7 @@ export default {
     am: "H",
     pm: "H",
     ongoingRide: "Course en cours",
+    clickToOpenTheMap: "Toucher pour suivre votre course",
   },
   form: {
     fullName: "Prénom Nom",

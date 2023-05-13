@@ -72,7 +72,7 @@ export default function DriverLicense({ navigation }) {
                 })
               }
             >
-              {`${t2("upload.fromCamera")}`}
+              {t2("upload.fromCamera")}
             </Button>
           </View>
           <View style={{ marginTop: 10 }}>
@@ -91,7 +91,7 @@ export default function DriverLicense({ navigation }) {
                 })
               }
             >
-              {`${t2("upload.fromGallery")}`}
+              {t2("upload.fromGallery")}
             </Button>
           </View>
         </View>
@@ -211,7 +211,7 @@ export default function DriverLicense({ navigation }) {
                   mode="contained"
                   onPress={() => navigation.navigate("Upload")}
                 >
-                  {`${t2("upload.useThisPicture")}`}
+                  {t2("upload.useThisPicture")}
                 </Button>
               </View>
               <View

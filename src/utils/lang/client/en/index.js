@@ -161,6 +161,7 @@ export default {
     am: "AM",
     pm: "PM",
     ongoingRide: "Ongoing ride",
+    clickToOpenTheMap: "Click to follow your ride",
   },
   form: {
     fullName: "Full Name",

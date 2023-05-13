@@ -96,9 +96,7 @@ export default function ForgotPassword({ navigation }) {
                 }}
                 disabled={!user?.forgotPasswordUser.phoneNumber}
               >
-                <Text style={{ color: "#fff" }} variant="titleLarge">
-                  {t("main.resetPassword")}
-                </Text>
+                {t("main.resetPassword")}
               </Button>
             </View>
 

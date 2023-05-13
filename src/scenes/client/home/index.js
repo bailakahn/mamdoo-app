@@ -5,7 +5,7 @@ import MapView, {
   Polyline,
   AnimatedRegion,
 } from "react-native-maps";
-import { View, TouchableOpacity, StyleSheet, Platform } from "react-native";
+import { View, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   useTheme,
@@ -82,14 +82,12 @@ export default function Home({ navigation, route }) {
   }, [ride.canceled, ride.denied, route]);
 
   useEffect(() => {
-    if (ride.newRideDetails.polyline.length) {
+    if (!ride.driver && ride.newRideDetails?.polyline.length) {
       ride.actions.calculateFare(
         ride.newRideDetails?.distance.value,
         ride.newRideDetails?.duration.value
       );
-      if (!ride.driver) {
-        ride.actions.setBottomSheetHeight(35);
-      }
+      ride.actions.setBottomSheetHeight(35);
     }
   }, [ride.newRideDetails.polyline]);
 
@@ -423,9 +421,15 @@ export default function Home({ navigation, route }) {
             alignItems: "center",
             justifyContent: "center",
           }}
+          onPress={() => {
+            ride.actions.openMap();
+          }}
         >
           <Text variant="titleLarge" style={{ fontWeight: "bold" }}>
             {t("ride.ongoingRide")}
+          </Text>
+          <Text variant="titleLarge" style={{ fontWeight: "bold" }}>
+            {t("ride.clickToOpenTheMap")}
           </Text>
         </TouchableOpacity>
       )}
@@ -608,6 +612,7 @@ const WelcomeView = ({ user, ride, navigation }) => {
 const RideDetailView = ({ user, ride, navigation }) => {
   const { colors } = useTheme();
   const theme = useMamdooTheme();
+  const insets = useSafeAreaInsets();
 
   return (
     <View
@@ -658,82 +663,87 @@ const RideDetailView = ({ user, ride, navigation }) => {
           }}
         />
       </View>
-      <View
-        style={{
-          alignItems: "center",
-          marginTop: 10,
-        }}
-      >
-        <View>
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
-            <Chip
-              icon={() => (
-                <MaterialCommunityIcons
-                  name="map-marker-account"
-                  color={colors.primary}
-                  size={30}
-                />
-              )}
-              style={{
-                ...(theme?.isDarkMode && { backgroundColor: "#3B3B3B" }),
-              }}
-              textStyle={{ fontSize: 20, color: colors.text }}
-            >
-              {ride.newRide.pickUp?.text}
-            </Chip>
-          </View>
-          <View
-            style={{
-              alignItems: "center",
-            }}
-          >
-            <Text>|</Text>
-          </View>
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
-            <Chip
-              icon={() => (
-                <MaterialCommunityIcons
-                  name="map-marker-check"
-                  color={colors.primary}
-                  size={30}
-                />
-              )}
-              style={{
-                ...(theme?.isDarkMode && { backgroundColor: "#3B3B3B" }),
-              }}
-              textStyle={{ fontSize: 20, color: colors.text }}
-            >
-              {ride.newRide.dropOff?.text}
-            </Chip>
-          </View>
-        </View>
+      <ScrollView>
         <View
           style={{
-            padding: 10,
+            alignItems: "center",
             marginTop: 10,
           }}
         >
-          <Text
-            variant="titleLarge"
-            style={{ fontWeight: "bold", color: colors.primary }}
-          >
-            {`${ride.newRide.price?.text} - ${ride.newRide.maxPrice.text}`}
-          </Text>
-        </View>
-        <View>
-          <Button
-            {...Classes.buttonContainer(colors)}
-            mode="contained"
-            disabled={!ride.newRide.price?.value}
-            onPress={() => {
-              ride.actions.setStep(3);
-              ride.actions.makeRideRequest(navigation);
+          <View>
+            <View style={{ flexDirection: "row", justifyContent: "center" }}>
+              <Chip
+                icon={() => (
+                  <MaterialCommunityIcons
+                    name="map-marker-account"
+                    color={colors.primary}
+                    size={30}
+                  />
+                )}
+                style={{
+                  ...(theme?.isDarkMode && { backgroundColor: "#3B3B3B" }),
+                }}
+                textStyle={{ fontSize: 20, color: colors.text }}
+              >
+                {ride.newRide.pickUp?.text}
+              </Chip>
+            </View>
+            <View
+              style={{
+                alignItems: "center",
+              }}
+            >
+              <Text>|</Text>
+            </View>
+            <View style={{ flexDirection: "row", justifyContent: "center" }}>
+              <Chip
+                icon={() => (
+                  <MaterialCommunityIcons
+                    name="map-marker-check"
+                    color={colors.primary}
+                    size={30}
+                  />
+                )}
+                style={{
+                  ...(theme?.isDarkMode && { backgroundColor: "#3B3B3B" }),
+                }}
+                textStyle={{ fontSize: 20, color: colors.text }}
+                onPress={() => {
+                  navigation.navigate("RideForm");
+                }}
+              >
+                {ride.newRide.dropOff?.text}
+              </Chip>
+            </View>
+          </View>
+          <View
+            style={{
+              padding: 10,
+              marginTop: 10,
             }}
           >
-            <Text variant="titleLarge">{t("home.bookRide")}</Text>
-          </Button>
+            <Text
+              variant="titleLarge"
+              style={{ fontWeight: "bold", color: colors.primary }}
+            >
+              {`${ride.newRide.price?.text} - ${ride.newRide.maxPrice.text}`}
+            </Text>
+          </View>
+          <View style={{ marginBottom: insets.bottom }}>
+            <Button
+              {...Classes.buttonContainer(colors)}
+              mode="contained"
+              disabled={!ride.newRide.price?.value}
+              onPress={() => {
+                ride.actions.setStep(3);
+                ride.actions.makeRideRequest(navigation);
+              }}
+            >
+              {t("home.bookRide")}
+            </Button>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -741,6 +751,7 @@ const RideDetailView = ({ user, ride, navigation }) => {
 const DriverSearchView = ({ user, ride, navigation }) => {
   const { colors } = useTheme();
   const animation = useRef();
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     if (animation.current) animation.current.play();
@@ -752,35 +763,28 @@ const DriverSearchView = ({ user, ride, navigation }) => {
         flex: 1,
       }}
     >
-      <View
-        style={{
-          alignItems: "center",
-          marginTop: 10,
-        }}
-      >
-        <View>
+      <ScrollView>
+        <View
+          style={{
+            alignItems: "center",
+          }}
+        >
           <Text variant="titleLarge" style={{ fontWeight: "bold" }}>{`${t(
             "ride.driverSearch"
           )}...`}</Text>
         </View>
+
         <View
           style={{
-            justifyContent: "flex-end",
+            ...Classes.driverSearchAnimation(colors),
+            marginBottom: insets.bottom,
+            alignItems: "center",
+            alignSelf: "center",
           }}
         >
-          <LottieView
-            ref={animation}
-            style={[
-              // Classes.animation(colors),
-              {
-                width: 400,
-                height: 400,
-              },
-            ]}
-            source={PinAnimation}
-          />
+          <LottieView ref={animation} source={PinAnimation} />
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -789,6 +793,7 @@ const DriverView = ({ user, ride, navigation }) => {
   const { colors } = useTheme();
   const [visible, setVisible] = useState(false);
   const theme = useMamdooTheme();
+  const insets = useSafeAreaInsets();
 
   return (
     <View
@@ -838,58 +843,64 @@ const DriverView = ({ user, ride, navigation }) => {
           }}
         />
       </View>
-      <View
-        style={{
-          marginTop: 10,
-          flexDirection: "row",
-          justifyContent: "space-around",
-          alignItems: "center",
-        }}
-      >
-        <View style={{ marginTop: 10 }}>
-          <Avatar.Text
-            size={70}
-            label={`${ride.driver?.firstName
-              .charAt(0)
-              .toUpperCase()}${ride.driver?.lastName.charAt(0).toUpperCase()}`}
-          />
-        </View>
-        <View>
-          <Text
-            style={{ fontWeight: "bold", fontSize: 20 }}
-          >{`${ride.driver?.firstName} ${ride.driver?.lastName}`}</Text>
-        </View>
-        <View style={{ marginTop: 10 }}>
-          <Chip
-            icon={"phone"}
-            onPress={ride.actions.callDriver}
-            style={{
-              ...(theme?.isDarkMode && { backgroundColor: "#3B3B3B" }),
-            }}
-            textStyle={{ fontSize: 20, color: colors.text }}
-          >{`${ride.driver?.phoneNumber}`}</Chip>
-        </View>
-      </View>
-      <View style={Classes.bottonView(colors)}>
+      <ScrollView>
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-evenly",
             marginTop: 10,
+            marginBottom: 10,
+            flexDirection: "row",
+            justifyContent: "space-around",
+            alignItems: "center",
           }}
         >
-          <Button
-            {...Classes.cancelRideButtonContainer(colors)}
-            mode="outlined"
-            onPress={() => {
-              setVisible(true);
-            }}
-            // buttonColor={"#dd7973"}
-          >
-            <Text variant="titleMedium">{t("ride.cancelRide")}</Text>
-          </Button>
+          <View style={{ marginTop: 10 }}>
+            <Avatar.Text
+              size={70}
+              label={`${ride.driver?.firstName
+                .charAt(0)
+                .toUpperCase()}${ride.driver?.lastName
+                .charAt(0)
+                .toUpperCase()}`}
+            />
+          </View>
+          <View>
+            <Text
+              style={{ fontWeight: "bold", fontSize: 20 }}
+            >{`${ride.driver?.firstName} ${ride.driver?.lastName}`}</Text>
+          </View>
+          <View style={{ marginTop: 10 }}>
+            <Chip
+              icon={"phone"}
+              onPress={ride.actions.callDriver}
+              style={{
+                ...(theme?.isDarkMode && { backgroundColor: "#3B3B3B" }),
+              }}
+              textStyle={{ fontSize: 20, color: colors.text }}
+            >{`${ride.driver?.phoneNumber}`}</Chip>
+          </View>
         </View>
-      </View>
+        <View style={{ marginBottom: insets.bottom }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-evenly",
+              marginTop: 10,
+            }}
+          >
+            <Button
+              {...Classes.cancelRideButtonContainer(colors)}
+              mode="outlined"
+              onPress={() => {
+                setVisible(true);
+              }}
+              textColor={colors.error}
+              // buttonColor={"#dd7973"}
+            >
+              {t("ride.cancelRide")}
+            </Button>
+          </View>
+        </View>
+      </ScrollView>
       <PopConfirm
         title={t("ride.cancelConfirmTitle")}
         visible={visible}
@@ -919,8 +930,8 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
   const [visible, setVisible] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
   const theme = useMamdooTheme();
-  //   SUIVRE COURSE SUR GOOGLE MAPS
-  // ENLEVER POLILYNE
+  const insets = useSafeAreaInsets();
+
   return (
     <View
       style={{
@@ -968,74 +979,77 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
           }}
         />
       </View>
-      <View
-        style={{
-          marginTop: 10,
-          flexDirection: "row",
-          justifyContent: "space-around",
-          alignItems: "center",
-        }}
-      >
-        <View style={{ marginTop: 10 }}>
-          <Avatar.Text
-            size={70}
-            label={`${ride.driver?.firstName
-              .charAt(0)
-              .toUpperCase()}${ride.driver?.lastName.charAt(0).toUpperCase()}`}
-          />
-        </View>
-        <View>
-          <Text
-            style={{ fontWeight: "bold", fontSize: 20 }}
-          >{`${ride.driver?.firstName} ${ride.driver?.lastName}`}</Text>
-        </View>
-        <View style={{ marginTop: 10 }}>
-          <Chip
-            icon={"phone"}
-            onPress={ride.actions.callDriver}
-            style={{
-              ...(theme?.isDarkMode && { backgroundColor: "#3B3B3B" }),
-            }}
-            textStyle={{ fontSize: 20, color: colors.text }}
-          >{`${ride.driver?.phoneNumber}`}</Chip>
-        </View>
-      </View>
-      <View style={Classes.bottonView(colors)}>
+      <ScrollView>
         <View
           style={{
             flexDirection: "row",
-            justifyContent: "space-evenly",
-            // alignItems: "baseline",
+            justifyContent: "space-around",
+            alignItems: "center",
           }}
         >
-          <Button
-            {...Classes.cancelRideDriverArrivedButtonContainer(colors)}
-            mode="outlined"
-            onPress={() => {
-              setVisible(true);
-            }}
-          >
-            <Text variant="titleMedium">{t("ride.cancelRide")}</Text>
-          </Button>
-          <TouchableOpacity
-            style={{
-              ...Classes.alertButtonContainer(colors),
-              borderWidth: 1,
-              borderRadius: 30,
-              backgroundColor: colors.primary,
-              borderColor: colors.primary,
-            }}
-            onPress={() => {
-              ride.actions.openMap();
-            }}
-          >
-            <MaterialCommunityIcons
-              name="map-marker-up"
-              size={40}
-              color="#fff"
+          <View style={{ marginTop: 10 }}>
+            <Avatar.Text
+              size={70}
+              label={`${ride.driver?.firstName
+                .charAt(0)
+                .toUpperCase()}${ride.driver?.lastName
+                .charAt(0)
+                .toUpperCase()}`}
             />
-          </TouchableOpacity>
-          {/* <TouchableOpacity
+          </View>
+          <View>
+            <Text
+              style={{ fontWeight: "bold", fontSize: 20 }}
+            >{`${ride.driver?.firstName} ${ride.driver?.lastName}`}</Text>
+          </View>
+          <View style={{ marginTop: 10 }}>
+            <Chip
+              icon={"phone"}
+              onPress={ride.actions.callDriver}
+              style={{
+                ...(theme?.isDarkMode && { backgroundColor: "#3B3B3B" }),
+              }}
+              textStyle={{ fontSize: 20, color: colors.text }}
+            >{`${ride.driver?.phoneNumber}`}</Chip>
+          </View>
+        </View>
+        <View style={{ marginBottom: insets.bottom, marginTop: 10 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-evenly",
+              // alignItems: "baseline",
+            }}
+          >
+            <Button
+              {...Classes.cancelRideDriverArrivedButtonContainer(colors)}
+              mode="outlined"
+              onPress={() => {
+                setVisible(true);
+              }}
+              textColor={colors.error}
+            >
+              {t("ride.cancelRide")}
+            </Button>
+            <TouchableOpacity
+              style={{
+                ...Classes.alertButtonContainer(colors),
+                borderWidth: 1,
+                borderRadius: 30,
+                backgroundColor: colors.primary,
+                borderColor: colors.primary,
+              }}
+              onPress={() => {
+                ride.actions.openMap();
+              }}
+            >
+              <MaterialCommunityIcons
+                name="map-outline"
+                size={40}
+                color="#fff"
+              />
+            </TouchableOpacity>
+            {/* <TouchableOpacity
             style={{
               ...Classes.alertButtonContainer(colors),
               borderWidth: 1,
@@ -1055,8 +1069,9 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
             />
             <Text style={{ color: "#fff" }}>maintenir</Text>
           </TouchableOpacity> */}
+          </View>
         </View>
-      </View>
+      </ScrollView>
       <PopConfirm
         title={t("ride.cancelConfirmTitle")}
         visible={visible}
@@ -1130,6 +1145,7 @@ const NoDriverView = ({ user, ride, navigation }) => {
   const { colors } = useTheme();
   const [visible, setVisible] = useState(false);
   const app = useApp();
+  const insets = useSafeAreaInsets();
 
   return (
     <View
@@ -1154,56 +1170,63 @@ const NoDriverView = ({ user, ride, navigation }) => {
       <View style={{ width: "100%", marginTop: 10 }}>
         <Divider style={{ height: 2, backgroundColor: "#e0e0e0" }} />
       </View>
-      <View
-        style={{
-          marginTop: 10,
-          alignItems: "center",
+
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
         }}
       >
-        <View>
-          <Text variant="titleLarge">{t("ride.contactCustomerService")}</Text>
-        </View>
-        <View style={{ marginTop: 10, flexDirection: "row" }}>
-          <Chip
-            icon={"phone"}
-            onPress={app.actions.call}
-            textStyle={{ fontSize: 20 }}
-          >{`${app.settings.phone}`}</Chip>
-        </View>
-        <View style={{ marginTop: 20, flexDirection: "row" }}>
-          <Button
-            {...Classes.callUsButtonContainer(colors)}
-            mode="outlined"
-            onPress={app.actions.call}
-            buttonColor={colors.primary}
-          >
-            <Text variant="titleMedium">{t("ride.callUs")}</Text>
-          </Button>
-        </View>
-        <View>
-          <Text variant="titleSmall">{t("ride.toFindYouADriver")}</Text>
-        </View>
-      </View>
-      <View style={Classes.bottonView(colors)}>
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-evenly",
             marginTop: 10,
+            alignItems: "center",
           }}
         >
-          <Button
-            {...Classes.endRideButtonContainer(colors)}
-            mode="outlined"
-            onPress={() => {
-              navigation.setParams({ driverId: null });
-              ride.actions.resetRide();
+          <View>
+            <Text variant="titleLarge">{t("ride.contactCustomerService")}</Text>
+          </View>
+          <View style={{ marginTop: 10, flexDirection: "row" }}>
+            <Chip
+              icon={"phone"}
+              onPress={app.actions.call}
+              textStyle={{ fontSize: 20 }}
+            >{`${app.settings.phone}`}</Chip>
+          </View>
+          <View style={{ marginTop: 20, flexDirection: "row" }}>
+            <Button
+              {...Classes.callUsButtonContainer(colors)}
+              mode="outlined"
+              onPress={app.actions.call}
+              buttonColor={colors.primary}
+            >
+              {t("ride.callUs")}
+            </Button>
+          </View>
+          <View>
+            <Text variant="titleSmall">{t("ride.toFindYouADriver")}</Text>
+          </View>
+        </View>
+        <View style={{ marginBottom: insets.bottom }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-evenly",
+              marginTop: 10,
             }}
           >
-            <Text variant="titleMedium">{t("ride.end")}</Text>
-          </Button>
+            <Button
+              {...Classes.endRideButtonContainer(colors)}
+              mode="outlined"
+              onPress={() => {
+                navigation.setParams({ driverId: null });
+                ride.actions.resetRide();
+              }}
+            >
+              {t("ride.end")}
+            </Button>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };

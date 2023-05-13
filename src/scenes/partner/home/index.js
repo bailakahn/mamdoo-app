@@ -181,7 +181,7 @@ export default function AccountScene({}) {
                   mode="contained"
                   onPress={app.actions.call}
                 >
-                  {`${t2("main.callUs")}`}
+                  {t2("main.callUs")}
                 </Button>
               </View>
             </View>

@@ -21,8 +21,14 @@ const defaultNewRide = {
 
 const defaultNewRideDetails = {
   polyline: [],
-  distance: {},
-  duration: {},
+  distance: {
+    text: "",
+    value: 0,
+  },
+  duration: {
+    text: "",
+    value: 0,
+  },
 };
 
 export { defaultNewRide, defaultNewRideDetails };

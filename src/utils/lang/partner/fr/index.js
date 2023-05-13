@@ -279,7 +279,7 @@ export default {
   pending: {
     title: "Vérification en cours",
     description:
-      "Nos équipes vérifient votre compte. La vérification peut prendre jusqu'á 5 jours ouvrables",
+      "Nos équipes vérifient votre compte. La vérification peut prendre jusqu'à 5 jours ouvrables",
     contactUs: "Contactez-nous",
   },
 };

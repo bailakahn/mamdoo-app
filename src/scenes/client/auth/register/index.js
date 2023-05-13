@@ -169,7 +169,6 @@ export default function Register({ navigation }) {
               <Button
                 mode="contained"
                 onPress={user.actions.saveUser}
-                // style={Classes.formButton(colors)}
                 {...Classes.buttonContainer(colors)}
                 disabled={
                   !user.formUser.firstName ||
@@ -178,9 +177,7 @@ export default function Register({ navigation }) {
                   !user.formUser.pin
                 }
               >
-                <Text style={{ color: "#000" }} variant="titleLarge">
-                  {t("form.start")}
-                </Text>
+                {t("form.start")}
               </Button>
             </View>
             <View

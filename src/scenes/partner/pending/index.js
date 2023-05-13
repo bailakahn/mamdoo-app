@@ -84,9 +84,7 @@ export default function Onboarding() {
                 partner.actions.logout();
               }}
             >
-              <Text style={{ color: "#fff" }} variant="titleLarge">
-                {t2("upload.logout")}
-              </Text>
+              {t2("upload.logout")}
             </Button>
           </View>
         </View>

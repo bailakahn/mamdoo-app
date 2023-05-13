@@ -118,11 +118,11 @@ export const cancelRideDriverArrivedButtonContainer = (colors) => ({
 export const nextOnboardingButtonContainer = (colors) => ({
   style: {
     width: Mixins.width(0.35, true),
-    height: Mixins.height(35),
-    justifyContent: "center",
+    // height: Mixins.height(35),
+    // justifyContent: "center",
   },
   contentStyle: {
-    height: Mixins.height(40),
+    // height: Mixins.height(35),
   },
 });
 
@@ -380,7 +380,7 @@ export const rideFormInput = (colors, isDarkMode = false) => ({
 
 export const predictionItems = (colors) => ({
   width: Mixins.width(0.93, true),
-  height: Mixins.width(0.12, true),
+  height: Mixins.width(0.15, true),
 });
 
 export const rideFormInputContainer = (colors) => ({
@@ -511,6 +511,11 @@ export const roundedButton = (colors) => ({
 
 export const animation = (colors) => ({
   backgroundColor: colors.background,
+});
+
+export const driverSearchAnimation = (colors) => ({
+  width: Mixins.width(0.95, true),
+  height: Mixins.height(0.2, true),
 });
 
 export const callButton = (colors) => ({

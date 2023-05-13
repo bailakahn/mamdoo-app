@@ -100,7 +100,7 @@ export default function CabLicense({ navigation }) {
                   mode="contained"
                   onPress={() => navigation.navigate("Upload")}
                 >
-                  {`${t2("upload.useThisPicture")}`}
+                  {t2("upload.useThisPicture")}
                 </Button>
               </View>
               <View

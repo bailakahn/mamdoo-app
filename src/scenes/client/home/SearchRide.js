@@ -207,7 +207,9 @@ function ModalScreen({ navigation }) {
                         `${ride.newRide.pickUp.location?.latitude},${ride.newRide.pickUp.location?.longitude}`,
                         `${result.geometry.location.lat},${result.geometry.location.lng}`,
                         ride.newRideDetails,
-                        ride.actions.setNewRideDetails
+                        ride.actions.setNewRideDetails,
+                        ride.actions.setStep,
+                        ride.actions.setBottomSheetHeight
                       );
                       navigation.navigate("Home");
                     }
@@ -216,14 +218,18 @@ function ModalScreen({ navigation }) {
                   <List.Item
                     title={item.structured_formatting.main_text}
                     description={
-                      item.description.length > 52
-                        ? item.description.substring(0, 52 - 3) + "..."
-                        : item.description
+                      item.structured_formatting.secondary_text &&
+                      item.structured_formatting.secondary_text.length > 52
+                        ? item.structured_formatting.secondary_text.substring(
+                            0,
+                            52 - 3
+                          ) + "..."
+                        : item.structured_formatting.secondary_text
                     }
                     titleStyle={{ fontWeight: "500", marginBottom: 3 }}
                     style={{
                       ...Classes.predictionItems(colors),
-                      paddingBottom: 15,
+                      // paddingBottom: 15,
                     }}
                     left={() => (
                       <MaterialCommunityIcons
