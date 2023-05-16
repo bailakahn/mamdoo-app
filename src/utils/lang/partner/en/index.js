@@ -150,6 +150,7 @@ export default {
     pin: "The pin code is not valid",
     login: "The phone number or pin code is incorrect",
     pinValidation: "Make sure your two pin codes is identical",
+    internal: "Oops, Something Went Wrong",
   },
   home: {
     go: "GO",

@@ -110,6 +110,7 @@ export default {
     notePlaceHolder: "Dites nous plus sur votre course",
     ridePrice: "Prix de la course",
     ridePricePlaceholder: "Combien vous a coutée votre course ?",
+    addComment: "Ajouter un commentaire ?",
   },
   ride: {
     hello: "Salut",
@@ -196,6 +197,8 @@ export default {
     ridesHistory: "Historique de courses",
     logout: "Se déconnecter",
     feedback: "Ecrivez-nous",
+    feedbackConfirmation: "Retour envoyé avec succès!",
+    close: "Fermer",
   },
   screens: {
     home: "Accueil",

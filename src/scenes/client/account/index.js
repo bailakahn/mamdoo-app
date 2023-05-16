@@ -1,17 +1,29 @@
 import React, { useMemo } from "react";
 import { View, ScrollView } from "react-native";
-import { useTheme, List, Divider, Avatar, Switch } from "react-native-paper";
+import {
+  useTheme,
+  List,
+  Divider,
+  Avatar,
+  Switch,
+  Snackbar,
+} from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { useApp, useUser, useTheme as useMamdooTheme } from "_hooks";
 import { LoadingV2 } from "_atoms";
 
-export default function AccountScene({ navigation }) {
+export default function AccountScene({ navigation, route }) {
   const { colors } = useTheme();
   const user = useUser();
   const app = useApp();
   const theme = useMamdooTheme();
 
+  const { params: { showFeedbackSuccessMessage = false } = {} } = route;
+
+  const hideFeedBackSuccessMessage = () => {
+    navigation.setParams({ showFeedbackSuccessMessage: false });
+  };
   const menu = useMemo(
     () => [
       {
@@ -49,69 +61,86 @@ export default function AccountScene({ navigation }) {
   return user.isLoading ? (
     <LoadingV2 />
   ) : (
-    <ScrollView style={Classes.container2(colors)}>
-      <View>
+    <>
+      <ScrollView style={Classes.container2(colors)}>
         <View>
-          <List.Item
-            left={(props) => (
-              <View style={{ paddingLeft: 10 }}>
-                <Avatar.Text
-                  size={60}
-                  label={`${user.user.firstName
-                    .charAt(0)
-                    .toUpperCase()}${user.user.lastName
-                    .charAt(0)
-                    .toUpperCase()}`}
+          <View>
+            <List.Item
+              left={(props) => (
+                <View style={{ paddingLeft: 10 }}>
+                  <Avatar.Text
+                    size={60}
+                    label={`${user.user.firstName
+                      .charAt(0)
+                      .toUpperCase()}${user.user.lastName
+                      .charAt(0)
+                      .toUpperCase()}`}
+                  />
+                </View>
+              )}
+              title={`${user.user.firstName} ${user.user.lastName}`}
+              description={t("account.viewProfile")}
+              onPress={() => navigation.navigate("Profile")}
+              right={(props) => <List.Icon {...props} icon={"chevron-right"} />}
+              style={Classes.accountMenuItem(colors)}
+              titleStyle={{ fontWeight: "bold", fontSize: 20 }}
+            />
+            <Divider />
+          </View>
+          <View>
+            {menu.map(({ title, icon, onPress }, i) => (
+              <View key={i}>
+                <List.Item
+                  title={title}
+                  left={(props) => (
+                    <List.Icon {...props} icon={icon} color={colors.primary} />
+                  )}
+                  onPress={onPress}
+                  style={Classes.menuItem(colors)}
+                  right={(props) => (
+                    <List.Icon {...props} icon={"chevron-right"} />
+                  )}
                 />
+                <Divider />
               </View>
-            )}
-            title={`${user.user.firstName} ${user.user.lastName}`}
-            description={t("account.viewProfile")}
-            onPress={() => navigation.navigate("Profile")}
-            right={(props) => <List.Icon {...props} icon={"chevron-right"} />}
-            style={Classes.accountMenuItem(colors)}
-            titleStyle={{ fontWeight: "bold", fontSize: 20 }}
-          />
-          <Divider />
-        </View>
-        <View>
-          {menu.map(({ title, icon, onPress }, i) => (
-            <View key={i}>
-              <List.Item
-                title={title}
-                left={(props) => (
-                  <List.Icon {...props} icon={icon} color={colors.primary} />
-                )}
-                onPress={onPress}
-                style={Classes.menuItem(colors)}
-                right={(props) => (
-                  <List.Icon {...props} icon={"chevron-right"} />
-                )}
-              />
-              <Divider />
-            </View>
-          ))}
-        </View>
+            ))}
+          </View>
 
-        <View>
-          <List.Item
-            title={t("main.darkMode")}
-            description={t("main.enableDarkMode")}
-            right={(props) => (
-              <Switch
-                color={colors.primary}
-                value={theme.isDarkMode}
-                onValueChange={() =>
-                  theme.actions.setDarkMode(!theme.isDarkMode)
-                }
-              />
-            )}
-            style={Classes.accountMenuItem(colors)}
-            titleStyle={{ fontWeight: "bold", fontSize: 20 }}
-          />
-          <Divider />
+          <View>
+            <List.Item
+              title={t("main.darkMode")}
+              description={t("main.enableDarkMode")}
+              right={(props) => (
+                <Switch
+                  color={colors.primary}
+                  value={theme.isDarkMode}
+                  onValueChange={() =>
+                    theme.actions.setDarkMode(!theme.isDarkMode)
+                  }
+                />
+              )}
+              style={Classes.accountMenuItem(colors)}
+              titleStyle={{ fontWeight: "bold", fontSize: 20 }}
+            />
+            <Divider />
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+      <Snackbar
+        visible={showFeedbackSuccessMessage}
+        onDismiss={hideFeedBackSuccessMessage}
+        action={{
+          label: t("account.close"),
+          onPress: () => {
+            hideFeedBackSuccessMessage();
+          },
+          textColor: "#fff",
+          labelStyle: { fontWeight: "bold" },
+        }}
+        style={{ backgroundColor: colors.primary }}
+      >
+        {t("account.feedbackConfirmation")}
+      </Snackbar>
+    </>
   );
 }

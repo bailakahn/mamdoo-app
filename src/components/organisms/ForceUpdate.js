@@ -76,7 +76,7 @@ export default function ForceUpdate({}) {
           </Text>
         </View>
 
-        <View style={{ marginTop: 50 }}>
+        <View style={Classes.bottonView(colors)}>
           <Button
             style={Classes.authorizeButton(colors)}
             mode="contained"

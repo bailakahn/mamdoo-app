@@ -544,10 +544,19 @@ export const logoutButton = (colors) => ({
 });
 
 export const authorizeButton = (colors) => ({
-  width: Mixins.width(0.7, true),
+  width: Mixins.width(0.95, true),
   height: 50,
   justifyContent: "center",
   backgroundColor: "#25C0D2",
+  // style: {
+  //   marginTop: 20,
+  //   width: Mixins.width(0.95, true),
+  //   height: Mixins.height(45),
+  //   justifyContent: "center",
+  // },
+  // contentStyle: {
+  //   height: Mixins.height(40),
+  // },
 });
 
 export const openMapButton = (colors) => ({

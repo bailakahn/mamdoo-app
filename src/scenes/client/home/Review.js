@@ -6,13 +6,22 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   ScrollView,
+  Platform,
 } from "react-native";
-import { Text, useTheme, Headline, TextInput, Chip } from "react-native-paper";
+import {
+  Text,
+  useTheme,
+  Headline,
+  TextInput,
+  List,
+  Divider,
+} from "react-native-paper";
 import { AirbnbRating } from "@rneui/themed";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
-import { useProxy, useNotifications, useLanguage, useRide } from "_hooks";
+import { useRide } from "_hooks";
 import { Button } from "_atoms";
+import { Mixins } from "../../../styles";
 
 export default function ReviewScreen({ navigation, route }) {
   const [rating, setRating] = useState(3);
@@ -34,22 +43,23 @@ export default function ReviewScreen({ navigation, route }) {
         flex: 1,
         backgroundColor: colors.background,
         alignItems: "center",
-        justifyContent: "center",
       }}
     >
       <KeyboardAvoidingView
-        behavior="height"
-        style={{ flex: 1, paddingHorizontal: 10 }}
+        {...(Platform.OS === "ios"
+          ? {
+              enabled: true,
+              behavior: "padding",
+              keyboardVerticalOffset: 5,
+            }
+          : {})}
       >
         <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={{ flex: 1 }}
-          keyboardDismissMode="interactive"
           contentContainerStyle={{
             flexGrow: 1,
-            justifyContent: "center",
             alignItems: "center",
           }}
+          keyboardShouldPersistTaps="handled"
         >
           <TouchableWithoutFeedback
             onPress={Keyboard.dismiss}
@@ -57,26 +67,24 @@ export default function ReviewScreen({ navigation, route }) {
           >
             <View style={{ ...Classes.container(colors) }}>
               {ride.endedRide && (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "baseline",
-                    marginBottom: 20,
-                  }}
-                >
-                  <Text variant="titleLarge" style={{ fontWeight: "bold" }}>
-                    {`${t("rating.ridePrice")}: `}
-                  </Text>
-                  <Text variant="titleLarge">
-                    {`${ride.actions.formatPrice(ride.endedRide.maxPrice)} GNF`}
-                  </Text>
+                <View style={{ flex: 1, width: Mixins.width(0.95, true) }}>
+                  <List.Item
+                    title={t("rating.ridePrice")}
+                    right={() => (
+                      <Text variant="titleLarge" style={{ fontWeight: "900" }}>
+                        {`${ride.actions.formatPrice(
+                          ride.endedRide.maxPrice
+                        )} GNF`}
+                      </Text>
+                    )}
+                  />
+                  <Divider />
                 </View>
               )}
               <View>
                 <Headline style={Classes.text(colors)}>
-                  {t("rating.rateDriver")}
+                  {t("rating.rateText") + " ?"}
                 </Headline>
-                <Text>{t("rating.rateText")}</Text>
               </View>
 
               <View>
@@ -102,50 +110,47 @@ export default function ReviewScreen({ navigation, route }) {
                   selectedColor={ratingColor}
                 />
               </View>
-
-              <View style={{ marginTop: 20 }}>
-                <TextInput
-                  style={{
-                    ...Classes.formInput(colors),
-                    height: 100,
-                    alignContent: "flex-start",
-                    justifyContent: "flex-start",
-                  }}
-                  outlineStyle={{ borderRadius: 10 }}
-                  mode="outlined"
-                  multiline
-                  label={"Note"}
-                  placeholder={t("rating.notePlaceHolder")}
-                  value={note}
-                  onChangeText={(value) => setNote(value)}
-                  maxLength={200}
-                  numberOfLines={2}
-                  onSubmitEditing={() => Keyboard.dismiss()}
-                  blurOnSubmit={true}
-                />
-              </View>
-
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 30,
-                  flexDirection: "row",
-                }}
-              >
-                <Button
-                  {...Classes.callButtonContainer(colors)}
-                  mode="contained"
-                  onPress={() => {
-                    navigation.navigate("Home");
-                    ride.actions.reviewRide({ rating, note, price });
-                  }}
-                >
-                  {t("rating.done")}
-                </Button>
-              </View>
             </View>
           </TouchableWithoutFeedback>
+          <View style={Classes.bottonView(colors)}>
+            <View style={{ marginTop: 20 }}>
+              <TextInput
+                style={{
+                  ...Classes.formInput(colors),
+                  alignContent: "flex-start",
+                  justifyContent: "flex-start",
+                  backgroundColor: colors.background,
+                }}
+                outlineStyle={{ borderRadius: 10 }}
+                // mode="outlined"
+                multiline
+                label={t("rating.addComment")}
+                // placeholder={t("rating.addComment")}
+                left={
+                  <TextInput.Icon
+                    icon={"comment-processing-outline"}
+                    iconColor={colors.primary}
+                  />
+                }
+                value={note}
+                onChangeText={(value) => setNote(value)}
+                maxLength={200}
+                numberOfLines={2}
+                onSubmitEditing={() => Keyboard.dismiss()}
+                blurOnSubmit={true}
+              />
+            </View>
+            <Button
+              {...Classes.buttonContainer(colors)}
+              mode="contained"
+              onPress={() => {
+                navigation.navigate("Home");
+                ride.actions.reviewRide({ rating, note, price });
+              }}
+            >
+              {t("rating.done")}
+            </Button>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

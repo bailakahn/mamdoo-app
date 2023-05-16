@@ -118,7 +118,7 @@ export default {
     cancel: "Annuler",
     fromCamera: "A partir de la caméra",
     fromGallery: "A partir de la galérie",
-    uploadConfirmation: "Documents Téléchargés!",
+    uploadConfirmation: "Documents envoyés!",
     continue: "Continuer",
     logout: "Se déconnecter",
     optional: "Optionnel",
@@ -147,6 +147,7 @@ export default {
     pin: "Le code pin est invalide",
     login: "Le numéro de téléphone ou le code pin est incorrecte",
     pinValidation: "Verifiez que vos deux codes pin son identiques",
+    internal: "Oops, Quelque chose s'est mal passé",
   },
   home: {
     go: "COMMENCER",

@@ -112,6 +112,7 @@ export default {
     notePlaceHolder: "Tell us about your ride",
     ridePrice: "Ride Price",
     ridePricePlaceholder: "How much did your ride cost ?",
+    addComment: "Add a comment ?",
   },
   ride: {
     hello: "Hello",
@@ -194,6 +195,8 @@ export default {
     ridesHistory: "Rides History",
     logout: "Logout",
     feedback: "Feedback",
+    feedbackConfirmation: "Feedback successfully sent!",
+    close: "Close",
   },
   screens: {
     home: "Home",

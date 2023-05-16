@@ -202,6 +202,7 @@ export default function Register({ navigation }) {
                         },
                       })
                     }
+                    maxLength={8}
                   />
 
                   <View

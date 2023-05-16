@@ -5,7 +5,13 @@ import MapView, {
   Polyline,
   AnimatedRegion,
 } from "react-native-maps";
-import { View, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  Image,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   useTheme,
@@ -17,6 +23,7 @@ import {
   Portal,
   Button as OriginalButton,
   Headline,
+  List,
 } from "react-native-paper";
 import LottieView from "lottie-react-native";
 import PinAnimation from "_assets/animation/dots.json";
@@ -36,6 +43,7 @@ import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { defaultNewRide } from "_store/initialState";
 import PopConfirm from "_organisms/PopConfirm";
+import { Mixins } from "../../../styles";
 
 const LATITUDE_DELTA = 0.009;
 const LONGITUDE_DELTA = 0.009;
@@ -110,6 +118,17 @@ export default function Home({ navigation, route }) {
     ride.actions.validateCountry();
     ride.actions.validateWorkingHours();
   }, []);
+
+  useEffect(() => {
+    if (ride.step === 5) {
+      location.actions.getDirections(
+        `${ride.newRide.pickUp.location?.latitude},${ride.newRide.pickUp.location?.longitude}`,
+        `${ride.newRide.dropOff.location?.latitude},${ride.newRide.dropOff.location?.longitude}`,
+        ride.newRideDetails,
+        ride.actions.setNewRideDetails
+      );
+    }
+  }, [ride.step]);
 
   const animateMarker = () => {
     var newCoordinate = {
@@ -371,35 +390,124 @@ export default function Home({ navigation, route }) {
                 latitude: currentLocation.coordinates[1],
                 longitude: currentLocation.coordinates[0],
               }}
-            />
+            >
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Image
+                  source={require("_assets/motorbike.png")}
+                  style={{ width: 50, height: 50 }}
+                  resizeMode="contain"
+                />
+              </View>
+            </Marker>
           ))}
 
-        {/* show destination marker when dropoff is filled and search completed */}
-        {ride.step === 2 && ride.newRide.dropOff && (
+        {/* show pickUp and dropOff marker when dropoff is filled and search completed */}
+        {ride.newRide.dropOff && (
+          <>
+            <Marker
+              ref={destinationMarkerRef}
+              coordinate={{
+                latitude: ride.newRide.pickUp.location.latitude,
+                longitude: ride.newRide.pickUp.location.longitude,
+              }}
+            >
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    backgroundColor: "#fff",
+                    padding: 5,
+                    marginBottom: 5,
+                  }}
+                >
+                  <Text variant="titleMedium">{ride.newRide.pickUp.text}</Text>
+                  <MaterialCommunityIcons
+                    name="chevron-right"
+                    size={20}
+                    color="gray"
+                  />
+                </View>
+                <Image
+                  source={require("_assets/client.png")}
+                  style={{ width: 50, height: 50 }}
+                  resizeMode="contain"
+                />
+              </View>
+            </Marker>
+
+            <Marker
+              ref={destinationMarkerRef}
+              coordinate={{
+                latitude: ride.newRide.dropOff.location.latitude,
+                longitude: ride.newRide.dropOff.location.longitude,
+              }}
+              onPress={() => {
+                navigation.navigate("RideForm");
+              }}
+            >
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    backgroundColor: "#fff",
+                    padding: 5,
+                    marginBottom: 5,
+                  }}
+                >
+                  <Text variant="titleMedium">{ride.newRide.dropOff.text}</Text>
+                  <MaterialCommunityIcons
+                    name="chevron-right"
+                    size={20}
+                    color="gray"
+                  />
+                </View>
+                <Image
+                  source={require("_assets/destination.png")}
+                  style={{ width: 50, height: 50 }}
+                  resizeMode="contain"
+                />
+              </View>
+            </Marker>
+          </>
+        )}
+
+        {ride.step === 4 && ride.driver && (
           <Marker
             ref={destinationMarkerRef}
             coordinate={{
-              latitude: ride.newRide.dropOff.location.latitude,
-              longitude: ride.newRide.dropOff.location.longitude,
+              latitude: ride.driver.currentLocation.coordinates[1],
+              longitude: ride.driver.currentLocation.coordinates[0],
             }}
-            // title={ride.newRide.dropOff.text}
           >
-            {/* <View
-                  style={{
-                    backgroundColor: colors.background,
-                    borderWidth: 5,
-                    borderColor: "#e8e8e8",
-                    borderRadius: 5,
-                    padding: 5,
-                  }}
-                >
-                  <Text>{ride.newRide.dropOff.text}</Text>
-                </View> */}
-            <MaterialCommunityIcons
-              name={"google-maps"}
-              size={30}
-              color={colors.primary}
-            />
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Image
+                source={require("_assets/motorbike.png")}
+                style={{ width: 50, height: 50 }}
+                resizeMode="contain"
+              />
+            </View>
           </Marker>
         )}
 
@@ -670,64 +778,40 @@ const RideDetailView = ({ user, ride, navigation }) => {
             marginTop: 10,
           }}
         >
-          <View>
-            <View style={{ flexDirection: "row", justifyContent: "center" }}>
-              <Chip
-                icon={() => (
-                  <MaterialCommunityIcons
-                    name="map-marker-account"
-                    color={colors.primary}
-                    size={30}
-                  />
-                )}
-                style={{
-                  ...(theme?.isDarkMode && { backgroundColor: "#3B3B3B" }),
-                }}
-                textStyle={{ fontSize: 20, color: colors.text }}
-              >
-                {ride.newRide.pickUp?.text}
-              </Chip>
-            </View>
-            <View
-              style={{
-                alignItems: "center",
-              }}
-            >
-              <Text>|</Text>
-            </View>
-            <View style={{ flexDirection: "row", justifyContent: "center" }}>
-              <Chip
-                icon={() => (
-                  <MaterialCommunityIcons
-                    name="map-marker-check"
-                    color={colors.primary}
-                    size={30}
-                  />
-                )}
-                style={{
-                  ...(theme?.isDarkMode && { backgroundColor: "#3B3B3B" }),
-                }}
-                textStyle={{ fontSize: 20, color: colors.text }}
-                onPress={() => {
-                  navigation.navigate("RideForm");
-                }}
-              >
-                {ride.newRide.dropOff?.text}
-              </Chip>
-            </View>
-          </View>
           <View
             style={{
-              padding: 10,
-              marginTop: 10,
+              width: "100%",
+              backgroundColor: "#E9FDFF",
+              borderRadius: 10,
+              paddingLeft: 10,
             }}
           >
-            <Text
-              variant="titleLarge"
-              style={{ fontWeight: "bold", color: colors.primary }}
-            >
-              {`${ride.newRide.price?.text} - ${ride.newRide.maxPrice.text}`}
-            </Text>
+            <TouchableOpacity>
+              <List.Item
+                title={
+                  <Text variant="titleLarge" style={{ fontWeight: "bold" }}>
+                    Moto
+                  </Text>
+                }
+                description={ride.newRideDetails?.duration.text}
+                left={() => (
+                  <View style={{ marginRight: 10 }}>
+                    <Image
+                      source={require("_assets/motorbike.png")}
+                      style={{ width: 50, height: 50 }}
+                      resizeMode="contain"
+                    />
+                  </View>
+                )}
+                right={() => (
+                  <View style={{ justifyContent: "center" }}>
+                    <Text variant="titleLarge" style={{ fontWeight: "bold" }}>
+                      {ride.newRide.maxPrice.text}
+                    </Text>
+                  </View>
+                )}
+              />
+            </TouchableOpacity>
           </View>
           <View style={{ marginBottom: insets.bottom }}>
             <Button
@@ -1143,7 +1227,6 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
 
 const NoDriverView = ({ user, ride, navigation }) => {
   const { colors } = useTheme();
-  const [visible, setVisible] = useState(false);
   const app = useApp();
   const insets = useSafeAreaInsets();
 
@@ -1195,9 +1278,8 @@ const NoDriverView = ({ user, ride, navigation }) => {
           <View style={{ marginTop: 20, flexDirection: "row" }}>
             <Button
               {...Classes.callUsButtonContainer(colors)}
-              mode="outlined"
+              mode="contained"
               onPress={app.actions.call}
-              buttonColor={colors.primary}
             >
               {t("ride.callUs")}
             </Button>

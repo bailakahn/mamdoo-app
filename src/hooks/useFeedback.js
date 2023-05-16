@@ -1,27 +1,23 @@
 import React from "react";
 import { useApi } from "_api";
+import { useNavigation } from "@react-navigation/native";
 
 export default function useFeedback() {
   const getRequest = useApi();
+  const navigation = useNavigation();
 
-  const saveFeedback = (
-    feedback,
-    { setShowSuccessMessage, setNewFeedback }
-  ) => {
+  const saveFeedback = (feedback, { setNewFeedback }) => {
     getRequest({
       method: "POST",
       endpoint: "app/newfeedback",
       params: feedback,
     })
       .then(() => {
-        setShowSuccessMessage(true);
         setNewFeedback({
           rating: 3,
           text: "",
         });
-        setTimeout(() => {
-          setShowSuccessMessage(false);
-        }, 5000);
+        navigation.navigate("Account", { showFeedbackSuccessMessage: true });
       })
       .catch((err) => {
         console.log(err);
