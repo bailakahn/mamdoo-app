@@ -30,7 +30,7 @@ const BottomSheet = ({
     <Animated.View
       style={{
         ...{
-          height,
+          flex: 0,
           backgroundColor: theme?.isDarkMode ? colors.background : "#fff",
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,

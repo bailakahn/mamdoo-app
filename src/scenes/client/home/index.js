@@ -5,13 +5,7 @@ import MapView, {
   Polyline,
   AnimatedRegion,
 } from "react-native-maps";
-import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  Image,
-} from "react-native";
+import { View, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   useTheme,
@@ -37,13 +31,14 @@ import {
   useApp,
   useTheme as useMamdooTheme,
 } from "_hooks";
-import { LoadingV2, Button } from "_atoms";
+import { LoadingV2, Button, Image } from "_atoms";
 import BottomSheet from "_organisms/BottomSheet";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { defaultNewRide } from "_store/initialState";
 import PopConfirm from "_organisms/PopConfirm";
 import { Mixins } from "../../../styles";
+import { th } from "date-fns/locale";
 
 const LATITUDE_DELTA = 0.009;
 const LONGITUDE_DELTA = 0.009;
@@ -82,6 +77,8 @@ export default function Home({ navigation, route }) {
       longitudeDelta: 0.012,
     })
   );
+
+  const bottomRef = useRef();
 
   useEffect(() => {
     if ((ride.canceled && route?.params?.driverId) || ride.denied) {
@@ -188,6 +185,19 @@ export default function Home({ navigation, route }) {
     ride.actions.resetRide();
   };
 
+  const animateToCurrentPosition = async () => {
+    const { latitude, longitude } = await location.actions.getCurrentPosition();
+
+    if (mapRef.current) {
+      mapRef.current.animateToRegion({
+        latitude,
+        longitude,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      });
+    }
+  };
+
   if (!location.location) return <LoadingV2 />;
 
   return (
@@ -203,15 +213,15 @@ export default function Home({ navigation, route }) {
         ref={mapRef}
         region={mapRegion}
         provider={PROVIDER_GOOGLE}
-        showsUserLocation={true}
-        showsMyLocationButton={
-          ride.newRideDetails?.polyline?.length ? false : true
-        }
+        // showsUserLocation={true}
+        // showsMyLocationButton={
+        //   ride.newRideDetails?.polyline?.length ? false : true
+        // }
         mapPadding={{ top: 20 }}
         style={{
           flex: 1,
           width: "100%",
-          height: ride.mapHeight,
+          // height: ride.mapHeight,
           ...StyleSheet.absoluteFillObject,
         }}
         customMapStyle={
@@ -380,15 +390,31 @@ export default function Home({ navigation, route }) {
             : []
         }
       >
+        {location.location && (
+          <Marker
+            coordinate={{
+              latitude: parseFloat(location.location.latitude) || 0,
+              longitude: parseFloat(location.location.longitude) || 0,
+            }}
+          >
+            <Image
+              source={require("_assets/client.png")}
+              cacheKey={"client"}
+              style={{ width: 50, height: 50 }}
+              resizeMode="contain"
+            />
+          </Marker>
+        )}
         {/* <Marker.Animated ref={animatedDriverRef} coordinate={animatedDriver} /> */}
         {ride.step === 1 &&
           Array.isArray(ride.mapDrivers) &&
+          !!ride.mapDrivers.length &&
           ride.mapDrivers.map(({ currentLocation }, index) => (
             <Marker
               key={index}
               coordinate={{
-                latitude: currentLocation.coordinates[1],
-                longitude: currentLocation.coordinates[0],
+                latitude: parseFloat(currentLocation.coordinates[1]) || 0,
+                longitude: parseFloat(currentLocation.coordinates[0]) || 0,
               }}
             >
               <View
@@ -399,6 +425,7 @@ export default function Home({ navigation, route }) {
               >
                 <Image
                   source={require("_assets/motorbike.png")}
+                  cacheKey="motorbike"
                   style={{ width: 50, height: 50 }}
                   resizeMode="contain"
                 />
@@ -407,13 +434,15 @@ export default function Home({ navigation, route }) {
           ))}
 
         {/* show pickUp and dropOff marker when dropoff is filled and search completed */}
-        {ride.newRide.dropOff && (
+        {!!Object.keys(ride.newRide.dropOff.location).length && (
           <>
             <Marker
               ref={destinationMarkerRef}
               coordinate={{
-                latitude: ride.newRide.pickUp.location.latitude,
-                longitude: ride.newRide.pickUp.location.longitude,
+                latitude:
+                  parseFloat(ride.newRide.pickUp.location.latitude) || 0,
+                longitude:
+                  parseFloat(ride.newRide.pickUp.location.longitude) || 0,
               }}
             >
               <View
@@ -426,7 +455,9 @@ export default function Home({ navigation, route }) {
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
-                    backgroundColor: "#fff",
+                    backgroundColor: theme.isDarkMode
+                      ? colors.background
+                      : "#fff",
                     padding: 5,
                     marginBottom: 5,
                   }}
@@ -439,8 +470,9 @@ export default function Home({ navigation, route }) {
                   />
                 </View>
                 <Image
-                  source={require("_assets/client.png")}
-                  style={{ width: 50, height: 50 }}
+                  source={require("_assets/dot.png")}
+                  cacheKey="dot"
+                  style={{ width: 30, height: 30 }}
                   resizeMode="contain"
                 />
               </View>
@@ -449,8 +481,10 @@ export default function Home({ navigation, route }) {
             <Marker
               ref={destinationMarkerRef}
               coordinate={{
-                latitude: ride.newRide.dropOff.location.latitude,
-                longitude: ride.newRide.dropOff.location.longitude,
+                latitude:
+                  parseFloat(ride.newRide.dropOff.location.latitude) || 0,
+                longitude:
+                  parseFloat(ride.newRide.dropOff.location.longitude) || 0,
               }}
               onPress={() => {
                 navigation.navigate("RideForm");
@@ -466,7 +500,9 @@ export default function Home({ navigation, route }) {
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
-                    backgroundColor: "#fff",
+                    backgroundColor: theme.isDarkMode
+                      ? colors.background
+                      : "#fff",
                     padding: 5,
                     marginBottom: 5,
                   }}
@@ -480,6 +516,7 @@ export default function Home({ navigation, route }) {
                 </View>
                 <Image
                   source={require("_assets/destination.png")}
+                  cacheKey="destination"
                   style={{ width: 50, height: 50 }}
                   resizeMode="contain"
                 />
@@ -492,8 +529,10 @@ export default function Home({ navigation, route }) {
           <Marker
             ref={destinationMarkerRef}
             coordinate={{
-              latitude: ride.driver.currentLocation.coordinates[1],
-              longitude: ride.driver.currentLocation.coordinates[0],
+              latitude:
+                parseFloat(ride.driver.currentLocation.coordinates[1]) || 0,
+              longitude:
+                parseFloat(ride.driver.currentLocation.coordinates[0]) || 0,
             }}
           >
             <View
@@ -504,6 +543,7 @@ export default function Home({ navigation, route }) {
             >
               <Image
                 source={require("_assets/motorbike.png")}
+                cacheKey="motirbike"
                 style={{ width: 50, height: 50 }}
                 resizeMode="contain"
               />
@@ -561,6 +601,37 @@ export default function Home({ navigation, route }) {
           color={colors.text}
         />
       </View>
+
+      {!ride.newRideDetails?.polyline?.length && (
+        <View
+          style={{
+            alignItems: "flex-end",
+            marginBottom: 15,
+            marginRight: 10,
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: 30,
+              padding: 10,
+              width: 60,
+              height: 60,
+              alignItems: "center",
+              justifyContent: "center",
+              shadowOpacity: 0.3,
+            }}
+            onPress={animateToCurrentPosition}
+          >
+            <MaterialCommunityIcons
+              name="crosshairs-gps"
+              size={25}
+              color="gray"
+            />
+          </TouchableOpacity>
+        </View>
+      )}
+
       <BottomSheet height={ride.bottomSheetHeight}>
         {ride.step === 2 ? (
           <RideDetailView user={user} ride={ride} navigation={navigation} />
@@ -597,7 +668,7 @@ const WelcomeView = ({ user, ride, navigation }) => {
   return (
     <View
       style={{
-        flex: 1,
+        // flex: 1,
         alignItems: "center",
         overflow: "hidden",
       }}
@@ -634,6 +705,7 @@ const WelcomeView = ({ user, ride, navigation }) => {
             style={{
               alignItems: "center",
               marginTop: 20,
+              marginBottom: 10,
             }}
           >
             <TouchableOpacity
@@ -725,7 +797,7 @@ const RideDetailView = ({ user, ride, navigation }) => {
   return (
     <View
       style={{
-        flex: 1,
+        // flex: 1,
         alignItems: "center",
       }}
     >
@@ -789,15 +861,30 @@ const RideDetailView = ({ user, ride, navigation }) => {
             <TouchableOpacity>
               <List.Item
                 title={
-                  <Text variant="titleLarge" style={{ fontWeight: "bold" }}>
+                  <Text
+                    variant="titleLarge"
+                    style={{
+                      fontWeight: "bold",
+                      ...(theme.isDarkMode && { color: "#000" }),
+                    }}
+                  >
                     Moto
                   </Text>
                 }
-                description={ride.newRideDetails?.duration.text}
+                description={
+                  <Text
+                    style={{
+                      ...(theme.isDarkMode && { color: "#000" }),
+                    }}
+                  >
+                    {ride.newRideDetails?.duration.text}
+                  </Text>
+                }
                 left={() => (
                   <View style={{ marginRight: 10 }}>
                     <Image
                       source={require("_assets/motorbike.png")}
+                      cacheKey="motorbike"
                       style={{ width: 50, height: 50 }}
                       resizeMode="contain"
                     />
@@ -805,7 +892,13 @@ const RideDetailView = ({ user, ride, navigation }) => {
                 )}
                 right={() => (
                   <View style={{ justifyContent: "center" }}>
-                    <Text variant="titleLarge" style={{ fontWeight: "bold" }}>
+                    <Text
+                      variant="titleLarge"
+                      style={{
+                        fontWeight: "bold",
+                        ...(theme.isDarkMode && { color: "#000" }),
+                      }}
+                    >
                       {ride.newRide.maxPrice.text}
                     </Text>
                   </View>
@@ -843,9 +936,11 @@ const DriverSearchView = ({ user, ride, navigation }) => {
 
   return (
     <View
-      style={{
-        flex: 1,
-      }}
+      style={
+        {
+          // flex: 1,
+        }
+      }
     >
       <ScrollView>
         <View
@@ -881,9 +976,11 @@ const DriverView = ({ user, ride, navigation }) => {
 
   return (
     <View
-      style={{
-        flex: 1,
-      }}
+      style={
+        {
+          // flex: 1,
+        }
+      }
     >
       <View
         style={{
@@ -1018,9 +1115,11 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
 
   return (
     <View
-      style={{
-        flex: 1,
-      }}
+      style={
+        {
+          // flex: 1,
+        }
+      }
     >
       <View
         style={{
@@ -1232,9 +1331,11 @@ const NoDriverView = ({ user, ride, navigation }) => {
 
   return (
     <View
-      style={{
-        flex: 1,
-      }}
+      style={
+        {
+          // flex: 1,
+        }
+      }
     >
       <View
         style={{
