@@ -27,9 +27,9 @@ export default function AccountScene({}) {
   useLocation();
   const app = useApp();
 
-  useEffect(() => {
-    ride.actions.resetRide();
-  }, []);
+  // useEffect(() => {
+  //   ride.actions.resetRide();
+  // }, []);
 
   useEffect(() => {
     if (partner) partner.actions.updateLocation();

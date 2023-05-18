@@ -97,7 +97,7 @@ export default function Home({ navigation, route }) {
   }, [ride.newRideDetails.polyline]);
 
   useEffect(() => {
-    if (ride.driver) {
+    if (ride.driver && ride.step === 4) {
       //   setMapHeight("73%");
       ride.actions.setBottomSheetHeight(27);
       location.actions.getDirections(
@@ -433,9 +433,8 @@ export default function Home({ navigation, route }) {
             </Marker>
           ))}
 
-        {/* show pickUp and dropOff marker when dropoff is filled and search completed */}
-        {!!Object.keys(ride.newRide.dropOff.location).length && (
-          <>
+        {[2, 3, 4, 5].includes(ride.step) &&
+          !!Object.keys(ride.newRide.pickUp.location).length && (
             <Marker
               ref={destinationMarkerRef}
               coordinate={{
@@ -477,7 +476,12 @@ export default function Home({ navigation, route }) {
                 />
               </View>
             </Marker>
+          )}
 
+        {/* show dropOff marker when dropoff is filled and search completed */}
+        {[2, 3, 5].includes(ride.step) &&
+          !!Object.keys(ride.newRide.dropOff.location).length &&
+          !ride.driver && (
             <Marker
               ref={destinationMarkerRef}
               coordinate={{
@@ -522,8 +526,7 @@ export default function Home({ navigation, route }) {
                 />
               </View>
             </Marker>
-          </>
-        )}
+          )}
 
         {ride.step === 4 && ride.driver && (
           <Marker
@@ -582,25 +585,29 @@ export default function Home({ navigation, route }) {
         </TouchableOpacity>
       )}
       {/* MENU */}
-      <View
-        style={{
-          padding: 5,
-          top: insets.top,
-          position: "absolute",
-          marginLeft: 20,
-          backgroundColor: colors.background,
-          borderRadius: 50,
-        }}
-      >
-        <MaterialCommunityIcons
-          onPress={
-            !ride.newRideDetails?.polyline?.length ? onMenuPress : onBackPress
-          }
-          name={!ride.newRideDetails?.polyline?.length ? "menu" : "arrow-left"}
-          size={30}
-          color={colors.text}
-        />
-      </View>
+      {!ride.driver && (
+        <View
+          style={{
+            padding: 5,
+            top: insets.top,
+            position: "absolute",
+            marginLeft: 20,
+            backgroundColor: colors.background,
+            borderRadius: 50,
+          }}
+        >
+          <MaterialCommunityIcons
+            onPress={
+              !ride.newRideDetails?.polyline?.length ? onMenuPress : onBackPress
+            }
+            name={
+              !ride.newRideDetails?.polyline?.length ? "menu" : "arrow-left"
+            }
+            size={30}
+            color={colors.text}
+          />
+        </View>
+      )}
 
       {!ride.newRideDetails?.polyline?.length && (
         <View

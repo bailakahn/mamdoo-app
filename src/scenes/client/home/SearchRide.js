@@ -80,7 +80,6 @@ function ModalScreen({ navigation }) {
               placeholder={t("home.from")}
               value={ride.newRide.pickUp.text}
               onChangeText={(value) => {
-                console.log("baila");
                 location.actions.getPredictions(
                   value,
                   `${location.location?.latitude},${location.location?.longitude}`

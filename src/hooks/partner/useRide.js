@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Linking, Platform, Alert } from "react-native";
 import * as Location from "expo-location";
 import { useStore } from "_store";
 import { t } from "_utils/lang";
 import { useApi } from "_api";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import rideStatuses from "../../constants/rideStatuses";
+
 import types from "_store/types";
 export default function useRide() {
   const getRequest = useApi();
@@ -25,9 +28,65 @@ export default function useRide() {
       setRideCanceled,
       setOnGoingRide,
       setRidePrice,
+      setCurrentRide,
     },
     dispatch,
   } = useStore();
+
+  useEffect(() => {
+    // AsyncStorage.removeItem("@mamdoo-current-ride");
+    // return;
+    setIsLoading(true);
+    const bootstrapAsync = async () => {
+      let rideData = await AsyncStorage.getItem("@mamdoo-current-ride");
+      if (rideData) {
+        rideData = JSON.parse(rideData);
+
+        if (!rideData?.request?._id) {
+          await AsyncStorage.removeItem("@mamdoo-current-ride");
+          return;
+        }
+
+        try {
+          const currentRide = await getRequest({
+            method: "GET",
+            endpoint: "rides/getride",
+            params: { rideId: rideData.request._id },
+          });
+
+          if (!currentRide) {
+            await AsyncStorage.removeItem("@mamdoo-current-ride");
+            return;
+          }
+
+          if (currentRide.status === rideStatuses.ACCEPTED) {
+            // set ride to accepted
+            setCurrentRide({
+              ...rideData,
+            });
+
+            navigation.navigate("DriverOnTheWay");
+          } else if (currentRide.status === rideStatuses.ONGOING) {
+            // set ride to ongoing
+            setCurrentRide({
+              ...rideData,
+              driverArrived: true,
+            });
+            navigation.navigate("DriverOnTheWay");
+          } else {
+            // clear ride
+            await AsyncStorage.removeItem("@mamdoo-current-ride");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+
+    bootstrapAsync().finally(() => {
+      setIsLoading(false);
+    });
+  }, []);
 
   const acceptRequest = () => {
     setIsLoading(true);

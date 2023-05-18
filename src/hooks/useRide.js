@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Linking, Platform, Alert } from "react-native";
 import Constants from "expo-constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useStore } from "_store";
 import { t, lang } from "_utils/lang";
 import { useApi } from "_api";
 import { useNavigation } from "@react-navigation/native";
 import useLocation from "./useLocation";
 import useApp from "./useApp";
+import rideStatuses from "../constants/rideStatuses";
+
 const ENV_NAME = Constants.expoConfig.extra.envName;
 
 export default function useRide() {
@@ -58,14 +61,71 @@ export default function useRide() {
       setOnGoingRide,
       setNewRequestId,
       setBottomSheetHeight,
+      setCurrentRide,
     },
   } = useStore();
 
-  // useEffect(() => {
-  //   if (driver) navigation.navigate("Ride");
-  // }, [driver]);
-
   useEffect(() => {
+    // AsyncStorage.removeItem("@mamdoo-current-ride");
+    // return;
+
+    const bootstrapAsync = async () => {
+      let rideData = await AsyncStorage.getItem("@mamdoo-current-ride");
+      // console.log({ rideData });
+      if (rideData) {
+        rideData = JSON.parse(rideData);
+        if (!rideData.requestId && !rideData.newRequestId) {
+          // console.log("Clear");
+          await AsyncStorage.removeItem("@mamdoo-current-ride");
+          return;
+        }
+
+        try {
+          const currentRide = await getRequest({
+            method: "GET",
+            endpoint: "rides/getride",
+            params: { rideId: rideData.requestId || rideData.newRequestId },
+          });
+
+          if (!currentRide) {
+            await AsyncStorage.removeItem("@mamdoo-current-ride");
+            return;
+          }
+
+          if (currentRide.status === rideStatuses.REQUEST) {
+            // set ride to accepted
+            setCurrentRide({
+              ...rideData,
+              step: 3,
+            });
+          } else if (currentRide.status === rideStatuses.ACCEPTED) {
+            // set ride to accepted
+            setCurrentRide({
+              ...rideData,
+              driver: currentRide.driver,
+              step: 4,
+            });
+          } else if (currentRide.status === rideStatuses.ONGOING) {
+            // set ride to ongoing
+            setCurrentRide({
+              ...rideData,
+              driverArrived: true,
+              step: 5,
+            });
+          } else {
+            // clear ride
+            await AsyncStorage.removeItem("@mamdoo-current-ride");
+          }
+          // console.log(currentRide);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      // console.log({ rideData });
+    };
+
+    bootstrapAsync();
+
     if (!cabTypes.length) getCabTypes();
 
     if (!paymentTypes.length) getPaymentTypes();

@@ -54,7 +54,6 @@ export default function useProxy() {
             type: types.SHOW_RIDE_REVIEW,
             reviewRequestId: data.requestId,
           });
-          console.log("ENDDDDDDD RIDE");
           navigation.navigate("Review");
           return;
         }

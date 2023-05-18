@@ -19,7 +19,7 @@ export default function RideSummaryScene({ navigation }) {
         flex: 1,
         backgroundColor: colors.background,
         alignItems: "center",
-        justifyContent: "center",
+        // justifyContent: "center",
       }}
     >
       <ScrollView
@@ -29,7 +29,12 @@ export default function RideSummaryScene({ navigation }) {
           alignItems: "center",
         }}
       >
-        <View>
+        <View
+          style={{
+            flexGrow: 1,
+            justifyContent: "center",
+          }}
+        >
           <Text variant="titleLarge" style={{ fontWeight: "bold" }}>
             {t2("ride.rideSummaryTitle")}
           </Text>

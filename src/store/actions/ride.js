@@ -65,5 +65,8 @@ export default function rideActions(state, dispatch) {
     setRidePrice: (ridePrice) => {
       dispatch({ type: types.SET_RIDE_PRICE, ridePrice });
     },
+    setCurrentRide: (ride) => {
+      dispatch({ type: types.SET_CURRENT_RIDE, ride });
+    },
   };
 }
