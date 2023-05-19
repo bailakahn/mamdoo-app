@@ -110,26 +110,15 @@ export default function Home({ navigation, route }) {
   }, [ride.driver]);
 
   useEffect(() => {
+    console.log({});
+  }, [ride.newRideDetails.distance]);
+
+  useEffect(() => {
     location.actions.getCurrentPosition();
     ride.actions.getMapByDrivers();
     ride.actions.validateCountry();
     ride.actions.validateWorkingHours();
   }, []);
-
-  // useEffect(() => {
-  //   if (
-  //     ride.driverCurrentLocation &&
-  //     ride.driverCurrentLocation?.latitude &&
-  //     ride.driverCurrentLocation?.longitude
-  //   ) {
-  //     location.actions.getDirections(
-  //       `${ride.driverCurrentLocation.latitude},${ride.driverCurrentLocation.longitude}`,
-  //       `${ride.newRide.pickUp.location?.latitude},${ride.newRide.pickUp.location?.longitude}`,
-  //       ride.newRideDetails,
-  //       ride.actions.setNewRideDetails
-  //     );
-  //   }
-  // }, [ride.driverCurrentLocation]);
 
   useEffect(() => {
     if (ride.step === 5) {
@@ -819,12 +808,21 @@ const RideDetailView = ({ user, ride, navigation }) => {
 
   return (
     <View
-      style={{
-        // flex: 1,
-        alignItems: "center",
-      }}
+      style={
+        {
+          // flex: 1,
+          // alignItems: "center",
+        }
+      }
     >
-      <View style={{ flexDirection: "row", justifyContent: "center" }}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginLeft: 5,
+          marginRight: 5,
+        }}
+      >
         <View style={{ flexDirection: "row" }}>
           <Text
             style={{
@@ -866,55 +864,25 @@ const RideDetailView = ({ user, ride, navigation }) => {
           }}
         />
       </View>
-      <ScrollView>
-        <View
-          style={{
-            alignItems: "center",
-            marginTop: 10,
-          }}
-        >
+      <View style={{ alignItems: "center" }}>
+        <ScrollView>
           <View
             style={{
-              width: "100%",
-              backgroundColor: "#E9FDFF",
-              borderRadius: 10,
-              paddingLeft: 10,
+              alignItems: "center",
+              marginTop: 10,
             }}
           >
-            <TouchableOpacity>
-              <List.Item
-                title={
-                  <Text
-                    variant="titleLarge"
-                    style={{
-                      fontWeight: "bold",
-                      ...(theme.isDarkMode && { color: "#000" }),
-                    }}
-                  >
-                    Moto
-                  </Text>
-                }
-                description={
-                  <Text
-                    style={{
-                      ...(theme.isDarkMode && { color: "#000" }),
-                    }}
-                  >
-                    {ride.newRideDetails?.duration.text}
-                  </Text>
-                }
-                left={() => (
-                  <View style={{ marginRight: 10 }}>
-                    <Image
-                      source={require("_assets/motorbike.png")}
-                      cacheKey="motorbike"
-                      style={{ width: 50, height: 50 }}
-                      resizeMode="contain"
-                    />
-                  </View>
-                )}
-                right={() => (
-                  <View style={{ justifyContent: "center" }}>
+            <View
+              style={{
+                width: "100%",
+                backgroundColor: "#E9FDFF",
+                borderRadius: 10,
+                paddingLeft: 10,
+              }}
+            >
+              <TouchableOpacity>
+                <List.Item
+                  title={
                     <Text
                       variant="titleLarge"
                       style={{
@@ -922,28 +890,60 @@ const RideDetailView = ({ user, ride, navigation }) => {
                         ...(theme.isDarkMode && { color: "#000" }),
                       }}
                     >
-                      {ride.newRide.maxPrice.text}
+                      Moto
                     </Text>
-                  </View>
-                )}
-              />
-            </TouchableOpacity>
+                  }
+                  description={
+                    <Text
+                      style={{
+                        ...(theme.isDarkMode && { color: "#000" }),
+                      }}
+                    >
+                      {ride.newRideDetails?.duration.text}
+                    </Text>
+                  }
+                  left={() => (
+                    <View style={{ marginRight: 10 }}>
+                      <Image
+                        source={require("_assets/motorbike.png")}
+                        cacheKey="motorbike"
+                        style={{ width: 50, height: 50 }}
+                        resizeMode="contain"
+                      />
+                    </View>
+                  )}
+                  right={() => (
+                    <View style={{ justifyContent: "center" }}>
+                      <Text
+                        variant="titleLarge"
+                        style={{
+                          fontWeight: "bold",
+                          ...(theme.isDarkMode && { color: "#000" }),
+                        }}
+                      >
+                        {ride.newRide.maxPrice.text}
+                      </Text>
+                    </View>
+                  )}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={{ marginBottom: insets.bottom }}>
+              <Button
+                {...Classes.buttonContainer(colors)}
+                mode="contained"
+                disabled={!ride.newRide.price?.value}
+                onPress={() => {
+                  ride.actions.setStep(3);
+                  ride.actions.makeRideRequest(navigation);
+                }}
+              >
+                {t("home.bookRide")}
+              </Button>
+            </View>
           </View>
-          <View style={{ marginBottom: insets.bottom }}>
-            <Button
-              {...Classes.buttonContainer(colors)}
-              mode="contained"
-              disabled={!ride.newRide.price?.value}
-              onPress={() => {
-                ride.actions.setStep(3);
-                ride.actions.makeRideRequest(navigation);
-              }}
-            >
-              {t("home.bookRide")}
-            </Button>
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
     </View>
   );
 };
@@ -1035,7 +1035,7 @@ const DriverView = ({ user, ride, navigation }) => {
             }}
             textStyle={{ color: colors.text }}
           >
-            {ride.distanceMatrix?.duration?.text}
+            {ride.newRideDetails?.duration?.text}
           </Chip>
         </View>
       </View>

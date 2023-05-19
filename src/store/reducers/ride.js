@@ -12,14 +12,12 @@ export default (state = ride, action) => {
           ...state,
           driver: action.data.driver,
           requestId: action.data.requestId,
-          distanceMatrix: action.data.distanceMatrix,
         })
       );
       return {
         ...state,
         driver: action.data.driver,
         requestId: action.data.requestId,
-        distanceMatrix: action.data.distanceMatrix,
       };
     case types.RESET_RIDE:
       AsyncStorage.removeItem("@mamdoo-current-ride");
