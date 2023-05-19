@@ -31,6 +31,7 @@ const BottomSheet = ({
       style={{
         ...{
           flex: 0,
+          zIndex: 3,
           backgroundColor: theme?.isDarkMode ? colors.background : "#fff",
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,

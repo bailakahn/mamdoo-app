@@ -581,11 +581,12 @@ export default function Home({ navigation, route }) {
       {ride.driverArrived && (
         <TouchableOpacity
           style={{
-            height: ride.mapHeight,
+            // height: ride.mapHeight,
             backgroundColor: "rgba(255, 255, 255, 0.5)",
             zIndex: 1,
             alignItems: "center",
             justifyContent: "center",
+            ...StyleSheet.absoluteFillObject,
           }}
           onPress={() => {
             ride.actions.openMap();

@@ -42,11 +42,11 @@ export const buttonContainer = (colors) => ({
   style: {
     marginTop: 20,
     width: Mixins.width(0.95, true),
-    height: Mixins.height(45),
+    height: Mixins.height(0.05, true),
     justifyContent: "center",
   },
   contentStyle: {
-    height: Mixins.height(40),
+    height: Mixins.height(0.05, true),
   },
 });
 
@@ -54,64 +54,64 @@ export const logoutButtonContainer = (colors) => ({
   style: {
     marginTop: 20,
     width: Mixins.width(0.95, true),
-    height: Mixins.height(45),
+    height: Mixins.height(0.05, true),
     justifyContent: "center",
     backgroundColor: colors.error,
   },
   contentStyle: {
-    height: Mixins.height(40),
+    height: Mixins.height(0.05, true),
   },
 });
 
 export const cancelRideButtonContainer = (colors) => ({
   style: {
     width: Mixins.width(0.95, true),
-    height: Mixins.height(45),
+    height: Mixins.height(0.05, true),
     justifyContent: "center",
     borderWidth: 1,
     borderColor: colors.error,
   },
   contentStyle: {
-    height: Mixins.height(40),
+    height: Mixins.height(0.05, true),
   },
 });
 
 export const callUsButtonContainer = (colors) => ({
   style: {
     width: Mixins.width(0.65, true),
-    height: Mixins.height(45),
+    height: Mixins.height(0.05, true),
     justifyContent: "center",
     borderWidth: 1,
     borderColor: colors.primary,
   },
   contentStyle: {
-    height: Mixins.height(40),
+    height: Mixins.height(0.05, true),
   },
 });
 
 export const endRideButtonContainer = (colors) => ({
   style: {
     width: Mixins.width(0.95, true),
-    height: Mixins.height(45),
+    height: Mixins.height(0.05, true),
     justifyContent: "center",
     borderWidth: 1,
     borderColor: colors.primary,
   },
   contentStyle: {
-    height: Mixins.height(40),
+    height: Mixins.height(0.05, true),
   },
 });
 
 export const cancelRideDriverArrivedButtonContainer = (colors) => ({
   style: {
     width: Mixins.width(0.45, true),
-    height: Mixins.height(45),
+    height: Mixins.height(0.05, true),
     justifyContent: "center",
     borderWidth: 1,
     borderColor: colors.error,
   },
   contentStyle: {
-    height: Mixins.height(40),
+    height: Mixins.height(0.05, true),
   },
 });
 
@@ -129,29 +129,29 @@ export const nextOnboardingButtonContainer = (colors) => ({
 export const logoutPendingButtonContainer = (colors) => ({
   style: {
     width: Mixins.width(0.95, true),
-    height: Mixins.height(45),
+    height: Mixins.height(0.05, true),
     justifyContent: "center",
     backgroundColor: colors.error,
   },
   contentStyle: {
-    height: Mixins.height(40),
+    height: Mixins.height(0.05, true),
   },
 });
 
 export const skipButtonContainer = (colors) => ({
   style: {
     width: Mixins.width(0.3, true),
-    height: Mixins.height(35),
+    height: Mixins.height(0.05, true),
     justifyContent: "center",
   },
   contentStyle: {
-    height: Mixins.height(40),
+    height: Mixins.height(0.05, true),
   },
 });
 
 export const alertButtonContainer = (colors) => ({
   width: Mixins.width(0.35, true),
-  height: Mixins.height(45),
+  height: Mixins.height(0.05, true),
   justifyContent: "center",
   alignItems: "center",
 });
@@ -159,46 +159,46 @@ export const alertButtonContainer = (colors) => ({
 export const alertConfirmButtonContainer = (colors) => ({
   style: {
     width: Mixins.width(0.65, true),
-    height: Mixins.height(45),
+    height: Mixins.height(0.05, true),
     justifyContent: "center",
   },
   contentStyle: {
-    height: Mixins.height(40),
+    height: Mixins.height(0.05, true),
   },
 });
 
 export const alertCancelButtonContainer = (colors) => ({
   style: {
     width: Mixins.width(0.65, true),
-    height: Mixins.height(45),
+    height: Mixins.height(0.05, true),
     justifyContent: "center",
     borderWidth: 1,
     borderColor: colors.error,
   },
   contentStyle: {
-    height: Mixins.height(40),
+    height: Mixins.height(0.05, true),
   },
 });
 
 export const callButtonContainer = (colors) => ({
   style: {
     width: Mixins.width(0.7, true),
-    height: Mixins.height(50),
+    height: Mixins.height(0.05, true),
     justifyContent: "center",
   },
   contentStyle: {
-    height: Mixins.height(50),
+    height: Mixins.height(0.05, true),
   },
 });
 
 export const verifyButtonContainer = (colors) => ({
   style: {
     width: Mixins.width(0.85, true),
-    height: Mixins.height(50),
+    height: Mixins.height(0.05, true),
     justifyContent: "center",
   },
   contentStyle: {
-    height: Mixins.height(50),
+    height: Mixins.height(0.05, true),
   },
 });
 
@@ -206,12 +206,12 @@ export const backButtonContainer = (colors, type) => ({
   style: {
     marginTop: 20,
     width: Mixins.width(0.5, true),
-    height: Mixins.height(50),
+    height: Mixins.height(0.05, true),
     justifyContent: "center",
     backgroundColor: colors[type],
   },
   contentStyle: {
-    height: Mixins.height(50),
+    height: Mixins.height(0.05, true),
   },
 });
 
@@ -219,33 +219,33 @@ export const dynamicButtonContainer = (colors, type) => ({
   style: {
     marginTop: 20,
     width: Mixins.width(0.5, true),
-    height: Mixins.height(50),
+    height: Mixins.height(0.05, true),
     justifyContent: "center",
     backgroundColor: colors[type],
   },
   contentStyle: {
-    height: Mixins.height(50),
+    height: Mixins.height(0.05, true),
   },
 });
 
 export const openMapButtoContainer = (colors) => ({
   style: {
     width: Mixins.width(0.7, true),
-    height: Mixins.height(50),
+    height: Mixins.height(0.05, true),
     justifyContent: "center",
   },
   contentStyle: {
-    height: Mixins.height(50),
+    height: Mixins.height(0.05, true),
   },
 });
 
 export const nextButtonContainer = (colors) => ({
   style: {
     width: Mixins.width(0.85, true),
-    height: Mixins.height(50),
+    height: Mixins.height(0.05, true),
   },
   contentStyle: {
-    height: Mixins.height(50),
+    height: Mixins.height(0.05, true),
   },
 });
 
