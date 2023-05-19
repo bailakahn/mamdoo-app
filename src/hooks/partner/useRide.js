@@ -1,21 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Linking, Platform, Alert } from "react-native";
 import * as Location from "expo-location";
+import polyline from "@mapbox/polyline";
 import { useStore } from "_store";
 import { t } from "_utils/lang";
 import { useApi } from "_api";
+import { useApi as useGoogleApi } from "_api/google";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import rideStatuses from "../../constants/rideStatuses";
-
 import types from "_store/types";
+import Constants from "expo-constants";
+const ENV_NAME = Constants.expoConfig.extra.envName;
+
+let mockLocationInterval = null;
+let expoLocationSubscription = null;
 export default function useRide() {
   const getRequest = useApi();
+  const getGoogleRequest = useGoogleApi();
   const navigation = useNavigation();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [info, setInfo] = useState(false);
+  // const [mockLocationInterval, setMockLocationInterval] = useState(null);
 
   const {
     ride: { canCancel, driverArrived, request, requestId, canceled, ridePrice },
@@ -34,59 +42,178 @@ export default function useRide() {
   } = useStore();
 
   useEffect(() => {
-    // AsyncStorage.removeItem("@mamdoo-current-ride");
-    // return;
-    setIsLoading(true);
-    const bootstrapAsync = async () => {
-      let rideData = await AsyncStorage.getItem("@mamdoo-current-ride");
-      if (rideData) {
-        rideData = JSON.parse(rideData);
+    return () => {
+      if (mockLocationInterval) clearInterval(mockLocationInterval);
+      if (expoLocationSubscription && expoLocationSubscription?.remove)
+        expoLocationSubscription.rmeove();
+    };
+  }, []);
 
-        if (!rideData?.request?._id) {
+  const bootstrapAsync = async () => {
+    setIsLoading(true);
+
+    let rideData = await AsyncStorage.getItem("@mamdoo-current-ride");
+    if (rideData) {
+      rideData = JSON.parse(rideData);
+
+      if (!rideData?.request?._id) {
+        await AsyncStorage.removeItem("@mamdoo-current-ride");
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const currentRide = await getRequest({
+          method: "GET",
+          endpoint: "rides/getride",
+          params: { rideId: rideData.request._id },
+        });
+
+        if (!currentRide) {
           await AsyncStorage.removeItem("@mamdoo-current-ride");
+          setIsLoading(false);
           return;
         }
 
-        try {
-          const currentRide = await getRequest({
-            method: "GET",
-            endpoint: "rides/getride",
-            params: { rideId: rideData.request._id },
+        if (currentRide.status === rideStatuses.ACCEPTED) {
+          // set ride to accepted
+          setCurrentRide({
+            ...rideData,
           });
+          setIsLoading(false);
 
-          if (!currentRide) {
-            await AsyncStorage.removeItem("@mamdoo-current-ride");
-            return;
-          }
+          navigation.navigate("DriverOnTheWay");
+        } else if (currentRide.status === rideStatuses.ONGOING) {
+          // set ride to ongoing
+          setCurrentRide({
+            ...rideData,
+            driverArrived: true,
+          });
+          setIsLoading(false);
 
-          if (currentRide.status === rideStatuses.ACCEPTED) {
-            // set ride to accepted
-            setCurrentRide({
-              ...rideData,
-            });
-
-            navigation.navigate("DriverOnTheWay");
-          } else if (currentRide.status === rideStatuses.ONGOING) {
-            // set ride to ongoing
-            setCurrentRide({
-              ...rideData,
-              driverArrived: true,
-            });
-            navigation.navigate("DriverOnTheWay");
-          } else {
-            // clear ride
-            await AsyncStorage.removeItem("@mamdoo-current-ride");
-          }
-        } catch (error) {
-          console.log(error);
+          navigation.navigate("DriverOnTheWay");
+        } else {
+          // clear ride
+          await AsyncStorage.removeItem("@mamdoo-current-ride");
+          setIsLoading(false);
         }
-      }
-    };
+      } catch (error) {
+        setIsLoading(false);
 
-    bootstrapAsync().finally(() => {
+        console.log(error);
+      }
+    } else {
       setIsLoading(false);
-    });
-  }, []);
+    }
+  };
+
+  const getDirections = async (origin, destination) => {
+    try {
+      const response = await getGoogleRequest({
+        method: "GET",
+        endpoint: "directions/json",
+        params: {
+          origin,
+          destination,
+          lang: "fr",
+        },
+      });
+
+      if (!response.routes || !response.routes.length) {
+        return;
+      }
+
+      let points = polyline.decode(response.routes[0].overview_polyline.points);
+
+      let coords = points.map((point) => ({
+        latitude: point[0],
+        longitude: point[1],
+      }));
+
+      return coords;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const startPositionUpdate = async (request) => {
+    try {
+      // mock driver movement
+      if (ENV_NAME === "localhost") {
+        let i = 0;
+        const {
+          coords: { latitude, longitude },
+        } = await Location.getCurrentPositionAsync({});
+
+        const directions =
+          (await getDirections(
+            `${latitude},${longitude}`,
+            `${request?.pickUp?.coordinates[1]},${request?.pickUp.coordinates[0]}`
+          )) || [];
+
+        const iId = setInterval(() => {
+          if (directions[i]) {
+            getRequest({
+              method: "POST",
+              endpoint: "rides/updateDriverLocation",
+              params: {
+                clientId: request?.client?._id,
+                currentLocation: directions[i],
+              },
+            }).catch((err) => {});
+          }
+          i++;
+        }, 1000);
+
+        mockLocationInterval = iId;
+        return;
+      }
+
+      const locationSubscription = await Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.Highest,
+          distanceInterval: 2000,
+          timeInterval: 60 * 1000,
+        },
+        (currentLocation) => {
+          getRequest({
+            method: "POST",
+            endpoint: "rides/updateDriverLocation",
+            params: {
+              clientId: request?.client?._id,
+              currentLocation: {
+                latitude: currentLocation.coords.latitude,
+                longitude: currentLocation.coords.longitude,
+              },
+            },
+          }).catch((err) => {
+            setError(err.code);
+          });
+        }
+      );
+
+      expoLocationSubscription = locationSubscription;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const stopPositionUpdate = async () => {
+    try {
+      if (ENV_NAME === "localhost") {
+        console.log({ mockLocationInterval, stop: true });
+        if (mockLocationInterval) clearInterval(mockLocationInterval);
+        mockLocationInterval = null;
+        return;
+      }
+
+      if (expoLocationSubscription && expoLocationSubscription?.remove) {
+        expoLocationSubscription.remove();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const acceptRequest = () => {
     setIsLoading(true);
@@ -100,6 +227,7 @@ export default function useRide() {
         setOnGoingRide();
         setRide(ride);
         setCanCancel();
+        startPositionUpdate(ride);
         // TODO: set time out to 3 minutes
         // setTimeout(() => {
         //     setCanCancel();
@@ -192,6 +320,7 @@ export default function useRide() {
 
   const onDriverArrived = () => {
     setIsLoading(true);
+    stopPositionUpdate();
     getRequest({
       method: "POST",
       endpoint: "rides/driverArrived",
@@ -304,6 +433,7 @@ export default function useRide() {
       resetRide,
       onEndRide,
       formatPrice,
+      bootstrapAsync,
     },
   };
 }

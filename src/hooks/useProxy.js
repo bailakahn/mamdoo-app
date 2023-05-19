@@ -14,6 +14,7 @@ const socketEvents = [
   "END_RIDE",
   "REQUEST_DENIED",
   "NO_DRIVER",
+  "DRIVER_LOCATION_UPDATE",
 ];
 export default function useProxy() {
   const { dispatch } = useStore();
@@ -31,9 +32,18 @@ export default function useProxy() {
     socketEvents.forEach((event) => {
       socket.on(event, (data) => {
         if (event === "FOUND_DRIVER") {
-          console.log({ foundDriver: data });
+          // console.log({ foundDriver: data });
           dispatch({ type: "SET_CAN_CANCEL" });
           dispatch({ type: "SET_RIDE_STEP", step: 4 });
+        }
+
+        if (event === "DRIVER_LOCATION_UPDATE") {
+          console.log({ data });
+          dispatch({
+            type: types.SET_DRIVER_LOCATION,
+            currentLocation: data.currentLocation,
+          });
+          return;
         }
 
         if (event == "CANCEL_REQUEST") {

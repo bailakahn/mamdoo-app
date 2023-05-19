@@ -116,6 +116,21 @@ export default function Home({ navigation, route }) {
     ride.actions.validateWorkingHours();
   }, []);
 
+  // useEffect(() => {
+  //   if (
+  //     ride.driverCurrentLocation &&
+  //     ride.driverCurrentLocation?.latitude &&
+  //     ride.driverCurrentLocation?.longitude
+  //   ) {
+  //     location.actions.getDirections(
+  //       `${ride.driverCurrentLocation.latitude},${ride.driverCurrentLocation.longitude}`,
+  //       `${ride.newRide.pickUp.location?.latitude},${ride.newRide.pickUp.location?.longitude}`,
+  //       ride.newRideDetails,
+  //       ride.actions.setNewRideDetails
+  //     );
+  //   }
+  // }, [ride.driverCurrentLocation]);
+
   useEffect(() => {
     if (ride.step === 5) {
       location.actions.getDirections(

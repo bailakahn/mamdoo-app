@@ -68,5 +68,8 @@ export default function rideActions(state, dispatch) {
     setCurrentRide: (ride) => {
       dispatch({ type: types.SET_CURRENT_RIDE, ride });
     },
+    setDriverLocation: (currentLocation) => {
+      dispatch({ type: types.SET_DRIVER_LOCATION, currentLocation });
+    },
   };
 }

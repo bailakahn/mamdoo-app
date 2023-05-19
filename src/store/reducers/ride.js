@@ -252,6 +252,15 @@ export default (state = ride, action) => {
         ...state,
         ...action.ride,
       };
+    case types.SET_DRIVER_LOCATION:
+      return {
+        ...state,
+        // driverCurrentLocation: action.currentLocation,
+        driver: {
+          ...state.driver,
+          currentLocation: action.currentLocation,
+        },
+      };
     default:
       return state;
   }

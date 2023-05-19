@@ -45,6 +45,7 @@ export default function useRide() {
       paymentTypes,
       mapHeight,
       bottomSheetHeight,
+      driverCurrentLocation,
     },
     actions: {
       resetRide,
@@ -62,6 +63,7 @@ export default function useRide() {
       setNewRequestId,
       setBottomSheetHeight,
       setCurrentRide,
+      setDriverLocation,
     },
   } = useStore();
 
@@ -204,7 +206,7 @@ export default function useRide() {
           console.log(err);
         })) || {};
 
-      console.log({ success, foundDrivers, requestId });
+      // console.log({ success, foundDrivers, requestId });
       setNewRequestId(requestId);
       if (foundDrivers.length) {
         stop = true;
@@ -484,6 +486,7 @@ export default function useRide() {
     validCountry,
     countryData,
     validWorkingHours,
+    driverCurrentLocation,
     actions: {
       callDriver,
       cancelRide,
@@ -512,6 +515,7 @@ export default function useRide() {
       formatPrice,
       validateCountry,
       validateWorkingHours,
+      setDriverLocation,
     },
   };
 }
