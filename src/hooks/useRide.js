@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Linking, Platform, Alert } from "react-native";
+import React, { useEffect, useState, useRef } from "react";
+import { Linking, Platform, Alert, AppState } from "react-native";
 import Constants from "expo-constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useStore } from "_store";
@@ -17,6 +17,7 @@ export default function useRide() {
   const navigation = useNavigation();
   const location = useLocation();
   const app = useApp();
+  const appState = useRef(AppState.currentState);
 
   const [mapDrivers, setMapDrivers] = useState([]);
   const [policeStations, setPoliceStations] = useState(null);
@@ -63,74 +64,166 @@ export default function useRide() {
       setBottomSheetHeight,
       setCurrentRide,
       setDriverLocation,
+      showRideReview,
     },
   } = useStore();
 
   useEffect(() => {
+    const subscription = AppState.addEventListener(
+      "change",
+      handleAppStateChange
+    );
+
     // AsyncStorage.removeItem("@mamdoo-current-ride");
     // return;
 
-    const bootstrapAsync = async () => {
-      let rideData = await AsyncStorage.getItem("@mamdoo-current-ride");
-      // console.log({ rideData });
-      if (rideData) {
-        rideData = JSON.parse(rideData);
-        if (!rideData.requestId && !rideData.newRequestId) {
-          // console.log("Clear");
-          await AsyncStorage.removeItem("@mamdoo-current-ride");
-          return;
-        }
+    // const bootstrapAsync = async () => {
+    //   let rideData = await AsyncStorage.getItem("@mamdoo-current-ride");
+    //   // console.log({ rideData });
+    //   if (rideData) {
+    //     rideData = JSON.parse(rideData);
+    //     if (!rideData.requestId && !rideData.newRequestId) {
+    //       // console.log("Clear");
+    //       await AsyncStorage.removeItem("@mamdoo-current-ride");
+    //       return;
+    //     }
 
-        try {
-          const currentRide = await getRequest({
-            method: "GET",
-            endpoint: "rides/getride",
-            params: { rideId: rideData.requestId || rideData.newRequestId },
-          });
+    //     try {
+    //       const currentRide = await getRequest({
+    //         method: "GET",
+    //         endpoint: "rides/getride",
+    //         params: { rideId: rideData.requestId || rideData.newRequestId },
+    //       });
 
-          if (!currentRide) {
-            await AsyncStorage.removeItem("@mamdoo-current-ride");
-            return;
-          }
+    //       if (!currentRide) {
+    //         await AsyncStorage.removeItem("@mamdoo-current-ride");
+    //         return;
+    //       }
 
-          if (currentRide.status === rideStatuses.REQUEST) {
-            // set ride to accepted
-            setCurrentRide({
-              ...rideData,
-              step: 3,
-            });
-          } else if (currentRide.status === rideStatuses.ACCEPTED) {
-            // set ride to accepted
-            setCurrentRide({
-              ...rideData,
-              driver: currentRide.driver,
-              step: 4,
-            });
-          } else if (currentRide.status === rideStatuses.ONGOING) {
-            // set ride to ongoing
-            setCurrentRide({
-              ...rideData,
-              driverArrived: true,
-              step: 5,
-            });
-          } else {
-            // clear ride
-            await AsyncStorage.removeItem("@mamdoo-current-ride");
-          }
-          // console.log(currentRide);
-        } catch (error) {
-          console.log(error);
-        }
-      }
-      // console.log({ rideData });
-    };
+    //       if (currentRide.status === rideStatuses.REQUEST) {
+    //         // set ride to accepted
+    //         setCurrentRide({
+    //           ...rideData,
+    //           step: 3,
+    //         });
+    //       } else if (currentRide.status === rideStatuses.ACCEPTED) {
+    //         // set ride to accepted
+    //         setCurrentRide({
+    //           ...rideData,
+    //           driver: currentRide.driver,
+    //           step: 4,
+    //         });
+    //       } else if (currentRide.status === rideStatuses.ONGOING) {
+    //         // set ride to ongoing
+    //         setCurrentRide({
+    //           ...rideData,
+    //           driverArrived: true,
+    //           step: 5,
+    //         });
+    //       } else {
+    //         // clear ride
+    //         await AsyncStorage.removeItem("@mamdoo-current-ride");
+    //       }
+    //       // console.log(currentRide);
+    //     } catch (error) {
+    //       console.log(error);
+    //     }
+    //   }
+    //   // console.log({ rideData });
+    // };
 
     bootstrapAsync();
 
     if (!cabTypes.length) getCabTypes();
 
     if (!paymentTypes.length) getPaymentTypes();
+
+    return () => {
+      //   AppState.removeEventListener("change", handleAppStateChange);
+      subscription.remove();
+    };
   }, []);
+
+  const handleAppStateChange = (nextAppState) => {
+    if (
+      appState.current.match(/inactive|background/) &&
+      nextAppState === "active"
+    ) {
+      bootstrapAsync();
+    } else if (
+      //   appState.current.match(/active/) &&
+      //   nextAppState === "background"
+      appState.current === "active" &&
+      nextAppState.match(/inactive|background/)
+    ) {
+    }
+    appState.current = nextAppState;
+  };
+
+  const bootstrapAsync = async () => {
+    let rideData = await AsyncStorage.getItem("@mamdoo-current-ride");
+    // console.log({ rideData });
+    if (rideData) {
+      rideData = JSON.parse(rideData);
+      if (!rideData.requestId && !rideData.newRequestId) {
+        // console.log("Clear");
+        await AsyncStorage.removeItem("@mamdoo-current-ride");
+        return;
+      }
+
+      try {
+        const currentRide = await getRequest({
+          method: "GET",
+          endpoint: "rides/getride",
+          params: { rideId: rideData.requestId || rideData.newRequestId },
+        });
+
+        if (!currentRide) {
+          await AsyncStorage.removeItem("@mamdoo-current-ride");
+          return;
+        }
+
+        if (currentRide.status === rideStatuses.REQUEST) {
+          // set ride to accepted
+          setCurrentRide({
+            ...rideData,
+            step: 3,
+          });
+        } else if (currentRide.status === rideStatuses.ACCEPTED) {
+          // set ride to accepted
+          setCurrentRide({
+            ...rideData,
+            driver: currentRide.driver,
+            step: 4,
+          });
+        } else if (currentRide.status === rideStatuses.ONGOING) {
+          // set ride to ongoing
+          setCurrentRide({
+            ...rideData,
+            driverArrived: true,
+            step: 5,
+          });
+        } else if (currentRide.status === rideStatuses.COMPLETED) {
+          resetRide();
+          setRideDenied(false);
+          showRideReview(currentRide._id);
+          // dispatch({ type: types.RESET_RIDE });
+          // dispatch({ type: types.REQUEST_DENIED, denied: false });
+          // dispatch({
+          //   type: types.SHOW_RIDE_REVIEW,
+          //   reviewRequestId: data.requestId,
+          // });
+          navigation.navigate("Review");
+          // clear ride
+          // await AsyncStorage.removeItem("@mamdoo-current-ride");
+        }
+        // console.log(currentRide);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    // console.log({ rideData });
+  };
 
   const openMap = () => {
     const scheme = Platform.select({
@@ -175,35 +268,38 @@ export default function useRide() {
         await new Promise((res) => setTimeout(res, 10000));
       }
 
-      const { success, foundDrivers, requestId } =
-        (await getRequest({
-          method: "POST",
-          endpoint: "rides/newRequest",
-          params: {
-            price: newRide.price,
-            maxPrice: newRide.maxPrice,
-            pickUp: {
-              ...newRide.pickUp,
-              location: [
-                newRide.pickUp.location.longitude,
-                newRide.pickUp.location.latitude,
-              ],
-            },
-            dropOff: {
-              ...newRide.dropOff,
-              location: [
-                newRide.dropOff.location.longitude,
-                newRide.dropOff.location.latitude,
-              ],
-            },
-            excludedDriver: driverId,
-            requestId,
-            retryCount,
-            maxRetries,
+      const {
+        success,
+        foundDrivers = [],
+        requestId,
+      } = (await getRequest({
+        method: "POST",
+        endpoint: "rides/newRequest",
+        params: {
+          price: newRide.price,
+          maxPrice: newRide.maxPrice,
+          pickUp: {
+            ...newRide.pickUp,
+            location: [
+              newRide.pickUp.location.longitude,
+              newRide.pickUp.location.latitude,
+            ],
           },
-        }).catch((err) => {
-          console.log(err);
-        })) || {};
+          dropOff: {
+            ...newRide.dropOff,
+            location: [
+              newRide.dropOff.location.longitude,
+              newRide.dropOff.location.latitude,
+            ],
+          },
+          excludedDriver: driverId,
+          requestId,
+          retryCount,
+          maxRetries,
+        },
+      }).catch((err) => {
+        console.log(err);
+      })) || {};
 
       // console.log({ success, foundDrivers, requestId });
       setNewRequestId(requestId);

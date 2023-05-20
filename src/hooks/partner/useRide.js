@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Linking, Platform, Alert } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { Linking, Platform, Alert, AppState } from "react-native";
 import * as Location from "expo-location";
 import polyline from "@mapbox/polyline";
 import { useStore } from "_store";
@@ -19,6 +19,7 @@ export default function useRide() {
   const getRequest = useApi();
   const getGoogleRequest = useGoogleApi();
   const navigation = useNavigation();
+  const appState = useRef(AppState.currentState);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -42,12 +43,34 @@ export default function useRide() {
   } = useStore();
 
   useEffect(() => {
+    const subscription = AppState.addEventListener(
+      "change",
+      handleAppStateChange
+    );
+
     return () => {
+      subscription.remove();
       if (mockLocationInterval) clearInterval(mockLocationInterval);
       if (expoLocationSubscription && expoLocationSubscription?.remove)
         expoLocationSubscription.rmeove();
     };
   }, []);
+
+  const handleAppStateChange = (nextAppState) => {
+    if (
+      appState.current.match(/inactive|background/) &&
+      nextAppState === "active"
+    ) {
+      bootstrapAsync();
+    } else if (
+      //   appState.current.match(/active/) &&
+      //   nextAppState === "background"
+      appState.current === "active" &&
+      nextAppState.match(/inactive|background/)
+    ) {
+    }
+    appState.current = nextAppState;
+  };
 
   const bootstrapAsync = async () => {
     setIsLoading(true);
@@ -79,6 +102,7 @@ export default function useRide() {
           // set ride to accepted
           setCurrentRide({
             ...rideData,
+            driverArrived: false,
           });
           setIsLoading(false);
 

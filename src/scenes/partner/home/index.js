@@ -29,10 +29,6 @@ export default function AccountScene({}) {
 
   useEffect(() => {
     ride.actions.bootstrapAsync();
-    // ride.actions.resetRide();
-  }, []);
-
-  useEffect(() => {
     if (partner) partner.actions.updateLocation();
   }, []);
 

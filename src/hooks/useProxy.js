@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import socketIOClient from "socket.io-client";
 import { useNavigation } from "@react-navigation/native";
 // import { PROXY_URL } from "@env";
@@ -16,6 +16,7 @@ const socketEvents = [
   "NO_DRIVER",
   "DRIVER_LOCATION_UPDATE",
 ];
+
 export default function useProxy() {
   const { dispatch } = useStore();
   const navigation = useNavigation();
@@ -93,10 +94,8 @@ export default function useProxy() {
       });
     });
 
-    // CLEAN UP THE EFFECT
-    // return () => {
-    //   console.log("Disconnected");
-    //   socket.disconnect();
-    // };
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 }

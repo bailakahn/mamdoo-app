@@ -117,6 +117,7 @@ export default (state = ride, action) => {
         // canceled: action.value,
         driver: null,
         requestId: null,
+        driverArrived: false,
         // onGoingRide: false
       };
     case types.SET_RIDE_CANCELED:

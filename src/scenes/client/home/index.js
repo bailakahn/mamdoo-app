@@ -110,10 +110,6 @@ export default function Home({ navigation, route }) {
   }, [ride.driver]);
 
   useEffect(() => {
-    console.log({});
-  }, [ride.newRideDetails.distance]);
-
-  useEffect(() => {
     location.actions.getCurrentPosition();
     ride.actions.getMapByDrivers();
     ride.actions.validateCountry();

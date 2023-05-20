@@ -108,6 +108,7 @@ export default function ReviewScreen({ navigation, route }) {
                   }}
                   reviewColor={ratingColor}
                   selectedColor={ratingColor}
+                  defaultRating={5}
                 />
               </View>
             </View>

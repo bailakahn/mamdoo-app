@@ -148,6 +148,7 @@ export default {
     login: "Le numéro de téléphone ou le code pin est incorrecte",
     pinValidation: "Verifiez que vos deux codes pin son identiques",
     internal: "Oops, Quelque chose s'est mal passé",
+    userBlocked: "Ce compte est bloqué!",
   },
   home: {
     go: "COMMENCER",

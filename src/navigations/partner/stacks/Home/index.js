@@ -25,7 +25,6 @@ export default function HomeStack({ role }) {
       appState.current.match(/inactive|background/) &&
       nextAppState === "active"
     ) {
-      console.log("here");
       appStartTime = new Date();
     } else if (
       appState.current.match(/active/) &&
