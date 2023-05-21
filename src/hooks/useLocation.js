@@ -116,14 +116,15 @@ export default function useLocation() {
     }
   };
 
-  const getDirections = async (
+  const getDirections = async ({
     origin,
     destination,
-    newRideDetails,
+    newRideDetails = {},
     setNewRideDetails,
     setStep,
-    setBottomSheetHeight
-  ) => {
+    setBottomSheetHeight,
+    step = 2,
+  }) => {
     try {
       const response = await getRequest({
         method: "GET",
@@ -148,11 +149,24 @@ export default function useLocation() {
         longitude: point[1],
       }));
 
+      if (
+        step === 4 &&
+        response.routes[0].legs[0].duration.value <= 180 &&
+        !newRideDetails.notifiedArrival
+      ) {
+        console.log("Driver is near by");
+        // send call to endpoint /rides/driverAlmostThere
+      }
+
       setNewRideDetails({
         ...newRideDetails,
         polyline: coords,
         distance: response.routes[0].legs[0].distance,
         duration: response.routes[0].legs[0].duration,
+        ...(step === 4 &&
+          response.routes[0].legs[0].duration.value <= 180 && {
+            notifiedArrival: true,
+          }),
       });
     } catch (err) {
       console.log(err);

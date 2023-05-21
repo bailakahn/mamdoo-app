@@ -29,6 +29,7 @@ const defaultNewRideDetails = {
     text: "",
     value: 0,
   },
+  notifiedArrival: false,
 };
 
 export { defaultNewRide, defaultNewRideDetails };

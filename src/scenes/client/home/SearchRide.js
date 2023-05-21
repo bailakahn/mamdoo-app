@@ -202,14 +202,14 @@ function ModalScreen({ navigation }) {
                     if (input === "dropOff") {
                       // check if pickUp is set
                       ride.actions.setStep(2);
-                      location.actions.getDirections(
-                        `${ride.newRide.pickUp.location?.latitude},${ride.newRide.pickUp.location?.longitude}`,
-                        `${result.geometry.location.lat},${result.geometry.location.lng}`,
-                        ride.newRideDetails,
-                        ride.actions.setNewRideDetails,
-                        ride.actions.setStep,
-                        ride.actions.setBottomSheetHeight
-                      );
+                      location.actions.getDirections({
+                        origin: `${ride.newRide.pickUp.location?.latitude},${ride.newRide.pickUp.location?.longitude}`,
+                        destination: `${result.geometry.location.lat},${result.geometry.location.lng}`,
+                        newRideDetails: ride.newRideDetails,
+                        setNewRideDetails: ride.actions.setNewRideDetails,
+                        setStep: ride.actions.setStep,
+                        setBottomSheetHeight: ride.actions.setBottomSheetHeight,
+                      });
                       navigation.navigate("Home");
                     }
                   }}

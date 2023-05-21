@@ -68,17 +68,6 @@ export default function Home({ navigation, route }) {
   const ride = useRide();
   const destinationMarkerRef = useRef();
   const mapRef = useRef();
-  const animatedDriverRef = useRef();
-  const [animatedDriver, setAnimatedDriver] = useState(
-    new AnimatedRegion({
-      latitude: 45.55362794417766,
-      longitude: -73.60337738507431,
-      latitudeDelta: 0.012,
-      longitudeDelta: 0.012,
-    })
-  );
-
-  const bottomRef = useRef();
 
   useEffect(() => {
     if ((ride.canceled && route?.params?.driverId) || ride.denied) {
@@ -100,12 +89,13 @@ export default function Home({ navigation, route }) {
     if (ride.driver && ride.step === 4) {
       //   setMapHeight("73%");
       ride.actions.setBottomSheetHeight(27);
-      location.actions.getDirections(
-        `${ride.driver.currentLocation.coordinates[1]},${ride.driver.currentLocation.coordinates[0]}`,
-        `${ride.newRide.pickUp.location?.latitude},${ride.newRide.pickUp.location?.longitude}`,
-        ride.newRideDetails,
-        ride.actions.setNewRideDetails
-      );
+      location.actions.getDirections({
+        origin: `${ride.driver.currentLocation.coordinates[1]},${ride.driver.currentLocation.coordinates[0]}`,
+        destination: `${ride.newRide.pickUp.location?.latitude},${ride.newRide.pickUp.location?.longitude}`,
+        newRideDetails: ride.newRideDetails,
+        setNewRideDetails: ride.actions.setNewRideDetails,
+        step: ride.step,
+      });
     }
   }, [ride.driver]);
 
@@ -118,35 +108,14 @@ export default function Home({ navigation, route }) {
 
   useEffect(() => {
     if (ride.step === 5) {
-      location.actions.getDirections(
-        `${ride.newRide.pickUp.location?.latitude},${ride.newRide.pickUp.location?.longitude}`,
-        `${ride.newRide.dropOff.location?.latitude},${ride.newRide.dropOff.location?.longitude}`,
-        ride.newRideDetails,
-        ride.actions.setNewRideDetails
-      );
+      location.actions.getDirections({
+        origin: `${ride.newRide.pickUp.location?.latitude},${ride.newRide.pickUp.location?.longitude}`,
+        destination: `${ride.newRide.dropOff.location?.latitude},${ride.newRide.dropOff.location?.longitude}`,
+        newRideDetails: ride.newRideDetails,
+        setNewRideDetails: ride.actions.setNewRideDetails,
+      });
     }
   }, [ride.step]);
-
-  const animateMarker = () => {
-    var newCoordinate = {
-      latitude: 45.55170464095152,
-      longitude: -73.59741215249623,
-    };
-
-    // if (Platform.OS === "android") {
-    //   if (animatedDriverRef.current) {
-    //     animatedDriverRef.current.animateMarkerToCoordinate(
-    //       newCoordinate,
-    //       3000
-    //     ); //  number of duration between points
-    //   }
-    // } else {
-    // animatedDriver
-    //   .timing({ ...newCoordinate, duration: 3000, useNativeDriver: false })
-    //   .start();
-    setAnimatedDriver(newCoordinate);
-    // }
-  };
 
   const mapRegion = useMemo(() => {
     if (ride.newRideDetails?.polyline?.length) {
@@ -654,15 +623,6 @@ export default function Home({ navigation, route }) {
         ) : (
           <WelcomeView user={user} ride={ride} navigation={navigation} />
         )}
-        {/* <Button
-          {...Classes.buttonContainer(colors)}
-          mode="contained"
-          onPress={() => {
-            animateMarker();
-          }}
-        >
-          <Text variant="titleLarge">{t("home.bookRide")}</Text>
-        </Button> */}
       </BottomSheet>
     </View>
   );
@@ -1233,7 +1193,7 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
             >
               {t("ride.cancelRide")}
             </Button>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={{
                 ...Classes.alertButtonContainer(colors),
                 borderWidth: 1,
@@ -1250,27 +1210,27 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
                 size={40}
                 color="#fff"
               />
+            </TouchableOpacity> */}
+            <TouchableOpacity
+              style={{
+                ...Classes.alertButtonContainer(colors),
+                borderWidth: 1,
+                borderRadius: 30,
+                backgroundColor: "red",
+                borderColor: "red",
+              }}
+              onLongPress={() => {
+                setAlertVisible(true);
+              }}
+              delayLongPress={2000}
+            >
+              <MaterialCommunityIcons
+                name="alert-outline"
+                size={40}
+                color="#fff"
+              />
+              {/* <Text style={{ color: "#fff" }}>maintenir</Text> */}
             </TouchableOpacity>
-            {/* <TouchableOpacity
-            style={{
-              ...Classes.alertButtonContainer(colors),
-              borderWidth: 1,
-              borderRadius: 30,
-              backgroundColor: "red",
-              borderColor: "red",
-            }}
-            onLongPress={() => {
-              setAlertVisible(true);
-            }}
-            delayLongPress={2000}
-          >
-            <MaterialCommunityIcons
-              name="alert-outline"
-              size={40}
-              color="#fff"
-            />
-            <Text style={{ color: "#fff" }}>maintenir</Text>
-          </TouchableOpacity> */}
           </View>
         </View>
       </ScrollView>
@@ -1293,7 +1253,7 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
           </Text>
         }
       />
-      {/* <Portal>
+      <Portal>
         <Modal
           contentContainerStyle={Classes.modal(colors)}
           style={Classes.modalWrapper(colors)}
@@ -1317,6 +1277,7 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
                 onPress={() => {
                   ride.actions.getPoliceStations();
                 }}
+                buttonColor={"red"}
               >
                 <Text variant="titleMedium" style={{ color: "#fff" }}>
                   {t("ride.alertButtonConfirm")}
@@ -1338,7 +1299,7 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
             </View>
           </View>
         </Modal>
-      </Portal> */}
+      </Portal>
     </View>
   );
 };
