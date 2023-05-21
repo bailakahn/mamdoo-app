@@ -119,6 +119,36 @@ export default function Home({ navigation, route }) {
 
   const mapRegion = useMemo(() => {
     if (ride.newRideDetails?.polyline?.length) {
+      if (ride.step === 4) {
+        const lats = ride.newRideDetails?.polyline.map(
+          (coord) => coord.latitude
+        );
+        const lngs = ride.newRideDetails?.polyline.map(
+          (coord) => coord.longitude
+        );
+
+        const minLat = Math.min(...lats);
+        const maxLat = Math.max(...lats);
+        const minLng = Math.min(...lngs);
+        const maxLng = Math.max(...lngs);
+
+        const latDelta = maxLat - minLat;
+        const lngDelta = maxLng - minLng;
+        const factor = 0.2;
+        const adjustedLatDelta = latDelta + latDelta * factor;
+        const adjustedLngDelta = lngDelta + lngDelta * factor;
+
+        const latitude = (minLat + maxLat) / 2;
+        const longitude = (minLng + maxLng) / 2;
+
+        return {
+          latitude,
+          longitude,
+          latitudeDelta: adjustedLatDelta,
+          longitudeDelta: adjustedLngDelta,
+        };
+      }
+
       let sumLat = ride.newRideDetails?.polyline.reduce((a, c) => {
         return parseFloat(a) + parseFloat(c.latitude);
       }, 0);
@@ -131,7 +161,7 @@ export default function Home({ navigation, route }) {
 
       return {
         latitude: parseFloat(avgLat),
-        longitude: avgLong,
+        longitude: parseFloat(avgLong),
         latitudeDelta: 0.2,
         longitudeDelta: 0.2,
       };
@@ -182,10 +212,6 @@ export default function Home({ navigation, route }) {
         ref={mapRef}
         region={mapRegion}
         provider={PROVIDER_GOOGLE}
-        // showsUserLocation={true}
-        // showsMyLocationButton={
-        //   ride.newRideDetails?.polyline?.length ? false : true
-        // }
         mapPadding={{ top: 20 }}
         style={{
           flex: 1,
@@ -528,7 +554,7 @@ export default function Home({ navigation, route }) {
             <Polyline
               coordinates={Object.values(ride.newRideDetails?.polyline)}
               strokeColor={colors.primary} // fallback for when `strokeColors` is not supported by the map-provider
-              strokeWidth={6}
+              strokeWidth={5}
             />
           )}
       </MapView>
