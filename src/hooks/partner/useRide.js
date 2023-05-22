@@ -52,7 +52,7 @@ export default function useRide() {
       subscription.remove();
       if (mockLocationInterval) clearInterval(mockLocationInterval);
       if (expoLocationSubscription && expoLocationSubscription?.remove)
-        expoLocationSubscription.rmeove();
+        expoLocationSubscription.remove();
     };
   }, []);
 
@@ -197,7 +197,6 @@ export default function useRide() {
         {
           accuracy: Location.Accuracy.Highest,
           distanceInterval: 2000,
-          timeInterval: 60 * 1000,
         },
         (currentLocation) => {
           getRequest({
