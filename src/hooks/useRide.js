@@ -74,64 +74,6 @@ export default function useRide() {
       handleAppStateChange
     );
 
-    // AsyncStorage.removeItem("@mamdoo-current-ride");
-    // return;
-
-    // const bootstrapAsync = async () => {
-    //   let rideData = await AsyncStorage.getItem("@mamdoo-current-ride");
-    //   // console.log({ rideData });
-    //   if (rideData) {
-    //     rideData = JSON.parse(rideData);
-    //     if (!rideData.requestId && !rideData.newRequestId) {
-    //       // console.log("Clear");
-    //       await AsyncStorage.removeItem("@mamdoo-current-ride");
-    //       return;
-    //     }
-
-    //     try {
-    //       const currentRide = await getRequest({
-    //         method: "GET",
-    //         endpoint: "rides/getride",
-    //         params: { rideId: rideData.requestId || rideData.newRequestId },
-    //       });
-
-    //       if (!currentRide) {
-    //         await AsyncStorage.removeItem("@mamdoo-current-ride");
-    //         return;
-    //       }
-
-    //       if (currentRide.status === rideStatuses.REQUEST) {
-    //         // set ride to accepted
-    //         setCurrentRide({
-    //           ...rideData,
-    //           step: 3,
-    //         });
-    //       } else if (currentRide.status === rideStatuses.ACCEPTED) {
-    //         // set ride to accepted
-    //         setCurrentRide({
-    //           ...rideData,
-    //           driver: currentRide.driver,
-    //           step: 4,
-    //         });
-    //       } else if (currentRide.status === rideStatuses.ONGOING) {
-    //         // set ride to ongoing
-    //         setCurrentRide({
-    //           ...rideData,
-    //           driverArrived: true,
-    //           step: 5,
-    //         });
-    //       } else {
-    //         // clear ride
-    //         await AsyncStorage.removeItem("@mamdoo-current-ride");
-    //       }
-    //       // console.log(currentRide);
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
-    //   }
-    //   // console.log({ rideData });
-    // };
-
     bootstrapAsync();
 
     if (!cabTypes.length) getCabTypes();
@@ -139,7 +81,6 @@ export default function useRide() {
     if (!paymentTypes.length) getPaymentTypes();
 
     return () => {
-      //   AppState.removeEventListener("change", handleAppStateChange);
       subscription.remove();
     };
   }, []);
@@ -177,6 +118,8 @@ export default function useRide() {
           endpoint: "rides/getride",
           params: { rideId: rideData.requestId || rideData.newRequestId },
         });
+
+        // console.log({ rideData });
 
         if (!currentRide) {
           await AsyncStorage.removeItem("@mamdoo-current-ride");
@@ -292,6 +235,8 @@ export default function useRide() {
               newRide.dropOff.location.latitude,
             ],
           },
+          duration: newRideDetails?.duration?.value,
+          distance: newRideDetails?.distance?.value,
           excludedDriver: driverId,
           requestId,
           retryCount,

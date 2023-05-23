@@ -30,18 +30,19 @@ import {
   useProxy,
   useApp,
   useTheme as useMamdooTheme,
+  useNotifications,
+  useLanguage,
 } from "_hooks";
 import { LoadingV2, Button, Image } from "_atoms";
 import BottomSheet from "_organisms/BottomSheet";
 import { Classes } from "_styles";
-import { t } from "_utils/lang";
+import { t, lang } from "_utils/lang";
 import { defaultNewRide } from "_store/initialState";
 import PopConfirm from "_organisms/PopConfirm";
 import { Mixins } from "../../../styles";
-import { th } from "date-fns/locale";
 
-const LATITUDE_DELTA = 0.009;
-const LONGITUDE_DELTA = 0.009;
+const LATITUDE_DELTA = 0.005;
+const LONGITUDE_DELTA = 0.005;
 const regex = /^([A-Za-z ]+)(?: \((le|la)\))?$/;
 
 const splitCountry = (countryName = "") => {
@@ -60,6 +61,8 @@ const splitCountry = (countryName = "") => {
 
 export default function Home({ navigation, route }) {
   useProxy();
+  useNotifications();
+  useLanguage();
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   const location = useLocation();
@@ -100,6 +103,7 @@ export default function Home({ navigation, route }) {
   }, [ride.driver]);
 
   useEffect(() => {
+    if (user) user.actions.updateLocation();
     location.actions.getCurrentPosition();
     ride.actions.getMapByDrivers();
     ride.actions.validateCountry();
@@ -180,6 +184,9 @@ export default function Home({ navigation, route }) {
   };
 
   const onBackPress = () => {
+    if (ride.step === 3) {
+      ride.actions.cancelNewRequest();
+    }
     navigation.setParams({ driverId: null });
     ride.actions.resetRide();
   };
@@ -801,8 +808,8 @@ const RideDetailView = ({ user, ride, navigation }) => {
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
-          marginLeft: 5,
-          marginRight: 5,
+          marginLeft: 10,
+          marginRight: 10,
         }}
       >
         <View style={{ flexDirection: "row" }}>
@@ -854,48 +861,20 @@ const RideDetailView = ({ user, ride, navigation }) => {
               marginTop: 10,
             }}
           >
-            <View
-              style={{
-                width: "100%",
-                backgroundColor: "#E9FDFF",
-                borderRadius: 10,
-                paddingLeft: 10,
-              }}
-            >
-              <TouchableOpacity>
-                <List.Item
-                  title={
-                    <Text
-                      variant="titleLarge"
-                      style={{
-                        fontWeight: "bold",
-                        ...(theme.isDarkMode && { color: "#000" }),
-                      }}
-                    >
-                      Moto
-                    </Text>
-                  }
-                  description={
-                    <Text
-                      style={{
-                        ...(theme.isDarkMode && { color: "#000" }),
-                      }}
-                    >
-                      {ride.newRideDetails?.duration.text}
-                    </Text>
-                  }
-                  left={() => (
-                    <View style={{ marginRight: 10 }}>
-                      <Image
-                        source={require("_assets/motorbike.png")}
-                        cacheKey="motorbike"
-                        style={{ width: 50, height: 50 }}
-                        resizeMode="contain"
-                      />
-                    </View>
-                  )}
-                  right={() => (
-                    <View style={{ justifyContent: "center" }}>
+            {ride.cabTypes.map((cabType, index) => (
+              <View
+                key={index}
+                style={{
+                  width: "100%",
+                  backgroundColor: "#E9FDFF",
+                  borderRadius: 10,
+                  paddingLeft: 10,
+                  marginTop: 10,
+                }}
+              >
+                <TouchableOpacity>
+                  <List.Item
+                    title={
                       <Text
                         variant="titleLarge"
                         style={{
@@ -903,13 +882,46 @@ const RideDetailView = ({ user, ride, navigation }) => {
                           ...(theme.isDarkMode && { color: "#000" }),
                         }}
                       >
-                        {ride.newRide.maxPrice.text}
+                        {cabType.description[lang || "fr"]}
                       </Text>
-                    </View>
-                  )}
-                />
-              </TouchableOpacity>
-            </View>
+                    }
+                    description={
+                      <Text
+                        style={{
+                          ...(theme.isDarkMode && { color: "#000" }),
+                        }}
+                      >
+                        {ride.newRideDetails?.duration.text}
+                      </Text>
+                    }
+                    left={() => (
+                      <View style={{ marginRight: 10 }}>
+                        <Image
+                          source={require(`_assets/bike.png`)}
+                          cacheKey="motorbike"
+                          style={{ width: 50, height: 50 }}
+                          resizeMode="contain"
+                        />
+                      </View>
+                    )}
+                    right={() => (
+                      <View style={{ justifyContent: "center" }}>
+                        <Text
+                          variant="titleLarge"
+                          style={{
+                            fontWeight: "bold",
+                            ...(theme.isDarkMode && { color: "#000" }),
+                          }}
+                        >
+                          {ride.newRide.maxPrice.text}
+                        </Text>
+                      </View>
+                    )}
+                  />
+                </TouchableOpacity>
+              </View>
+            ))}
+
             <View style={{ marginBottom: insets.bottom }}>
               <Button
                 {...Classes.buttonContainer(colors)}
@@ -1004,7 +1016,12 @@ const DriverView = ({ user, ride, navigation }) => {
             }}
             variant="titleLarge"
           >
-            {`${ride.driver?.firstName} `}
+            {`${
+              ride.driver?.firstName?.split(" ")[0].length < 15
+                ? ride.driver?.firstName?.split(" ")[0]
+                : ride.driver?.firstName?.split(" ")[0].substring(0, 10 - 3) +
+                  "..."
+            } `}
           </Text>
           <Text variant="titleLarge">{t("ride.isOnHisWay")}</Text>
         </View>
@@ -1032,8 +1049,8 @@ const DriverView = ({ user, ride, navigation }) => {
       <ScrollView>
         <View
           style={{
-            marginTop: 10,
-            marginBottom: 10,
+            marginTop: 20,
+            marginBottom: 20,
             flexDirection: "row",
             justifyContent: "space-around",
             alignItems: "center",
@@ -1050,9 +1067,18 @@ const DriverView = ({ user, ride, navigation }) => {
             />
           </View>
           <View>
-            <Text
-              style={{ fontWeight: "bold", fontSize: 20 }}
-            >{`${ride.driver?.firstName} ${ride.driver?.lastName}`}</Text>
+            <Text style={{ fontWeight: "bold", fontSize: 20 }}>{`${
+              ride.driver?.firstName.split(" ")[0].length < 15
+                ? ride.driver?.firstName.split(" ")[0]
+                : ride.driver?.firstName.split(" ")[0].substring(0, 10 - 3) +
+                  "..."
+            }`}</Text>
+            <Text style={{ fontWeight: "bold", fontSize: 20 }}>{`${
+              ride.driver?.lastName.split(" ")[0].length < 15
+                ? ride.driver?.lastName.split(" ")[0]
+                : ride.driver?.lastName.split(" ")[0].substring(0, 10 - 3) +
+                  "..."
+            }`}</Text>
           </View>
           <View style={{ marginTop: 10 }}>
             <Chip
@@ -1142,7 +1168,12 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
             }}
             variant="titleLarge"
           >
-            {`${ride.driver?.firstName} `}
+            {`${
+              ride.driver?.firstName?.split(" ")[0].length < 15
+                ? ride.driver?.firstName?.split(" ")[0]
+                : ride.driver?.firstName?.split(" ")[0].substring(0, 10 - 3) +
+                  "..."
+            } `}
           </Text>
           <Text variant="titleLarge">{t("ride.driverArrived")}</Text>
         </View>
@@ -1173,6 +1204,8 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
             flexDirection: "row",
             justifyContent: "space-around",
             alignItems: "center",
+            marginBottom: 20,
+            marginTop: 20,
           }}
         >
           <View style={{ marginTop: 10 }}>
@@ -1186,9 +1219,18 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
             />
           </View>
           <View>
-            <Text
-              style={{ fontWeight: "bold", fontSize: 20 }}
-            >{`${ride.driver?.firstName} ${ride.driver?.lastName}`}</Text>
+            <Text style={{ fontWeight: "bold", fontSize: 20 }}>{`${
+              ride.driver?.firstName.split(" ")[0].length < 15
+                ? ride.driver?.firstName.split(" ")[0]
+                : ride.driver?.firstName.split(" ")[0].substring(0, 10 - 3) +
+                  "..."
+            }`}</Text>
+            <Text style={{ fontWeight: "bold", fontSize: 20 }}>{`${
+              ride.driver?.lastName.split(" ")[0].length < 15
+                ? ride.driver?.lastName.split(" ")[0]
+                : ride.driver?.lastName.split(" ")[0].substring(0, 10 - 3) +
+                  "..."
+            }`}</Text>
           </View>
           <View style={{ marginTop: 10 }}>
             <Chip
@@ -1219,7 +1261,7 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
             >
               {t("ride.cancelRide")}
             </Button>
-            {/* <TouchableOpacity
+            <TouchableOpacity
               style={{
                 ...Classes.alertButtonContainer(colors),
                 borderWidth: 1,
@@ -1236,8 +1278,8 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
                 size={40}
                 color="#fff"
               />
-            </TouchableOpacity> */}
-            <TouchableOpacity
+            </TouchableOpacity>
+            {/* <TouchableOpacity
               style={{
                 ...Classes.alertButtonContainer(colors),
                 borderWidth: 1,
@@ -1255,8 +1297,7 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
                 size={40}
                 color="#fff"
               />
-              {/* <Text style={{ color: "#fff" }}>maintenir</Text> */}
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </ScrollView>
@@ -1279,7 +1320,7 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
           </Text>
         }
       />
-      <Portal>
+      {/* <Portal>
         <Modal
           contentContainerStyle={Classes.modal(colors)}
           style={Classes.modalWrapper(colors)}
@@ -1325,7 +1366,7 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
             </View>
           </View>
         </Modal>
-      </Portal>
+      </Portal> */}
     </View>
   );
 };

@@ -79,7 +79,7 @@ export default function Register({ navigation }) {
                     firstName,
                   })
                 }
-                maxLength={50}
+                maxLength={15}
               />
 
               <TextInput
@@ -95,7 +95,7 @@ export default function Register({ navigation }) {
                     lastName,
                   })
                 }
-                maxLength={50}
+                maxLength={15}
               />
 
               <TextInput

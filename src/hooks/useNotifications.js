@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Alert } from "react-native";
 import Constants from "expo-constants";
+import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import { useApi } from "_api";
+import { t } from "_utils/lang";
 const acceptedEvents = ["NEW_REQUEST"];
 
 Notifications.setNotificationHandler({
@@ -95,7 +97,7 @@ async function schedulePushNotification() {
 
 async function registerForPushNotificationsAsync() {
   let token;
-  if (Constants.isDevice) {
+  if (Device.isDevice) {
     const { status: existingStatus } =
       await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
@@ -104,13 +106,13 @@ async function registerForPushNotificationsAsync() {
       finalStatus = status;
     }
     if (finalStatus !== "granted") {
-      Alert.alert("Failed to get push token for push notification!");
+      Alert.alert(t("errors.notificationPermission"));
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
     // console.log(token);
   } else {
-    Alert.alert("Must use physical device for Push Notifications");
+    Alert.alert(t("errors.notificationVirtualDevice"));
   }
 
   if (Platform.OS === "android") {

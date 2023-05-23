@@ -15,12 +15,13 @@ import {
   TextInput,
   List,
   Divider,
+  Avatar,
 } from "react-native-paper";
 import { AirbnbRating } from "@rneui/themed";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { useRide } from "_hooks";
-import { Button } from "_atoms";
+import { Button, LoadingV2 } from "_atoms";
 import { Mixins } from "../../../styles";
 
 export default function ReviewScreen({ navigation, route }) {
@@ -36,6 +37,8 @@ export default function ReviewScreen({ navigation, route }) {
   useEffect(() => {
     ride.actions.getRide();
   }, []);
+
+  if (!ride.endedRide) return <LoadingV2 />;
 
   return (
     <SafeAreaView
@@ -61,26 +64,69 @@ export default function ReviewScreen({ navigation, route }) {
           }}
           keyboardShouldPersistTaps="handled"
         >
+          <View
+            style={{
+              flexGrow: 1,
+              justifyContent: "center",
+            }}
+          >
+            <Text variant="titleLarge" style={{ fontWeight: "bold" }}>
+              {t("ride.rideSummaryTitle")}
+            </Text>
+          </View>
+
           <TouchableWithoutFeedback
             onPress={Keyboard.dismiss}
             accessible={false}
           >
             <View style={{ ...Classes.container(colors) }}>
               {ride.endedRide && (
-                <View style={{ flex: 1, width: Mixins.width(0.95, true) }}>
+                <View
+                  style={{
+                    flex: 1,
+                    width: Mixins.width(0.95, true),
+                  }}
+                >
                   <List.Item
                     title={t("rating.ridePrice")}
                     right={() => (
                       <Text variant="titleLarge" style={{ fontWeight: "900" }}>
                         {`${ride.actions.formatPrice(
-                          ride.endedRide.maxPrice
+                          ride.endedRide.finalPrice || ride.endedRide.maxPrice
                         )} GNF`}
                       </Text>
                     )}
+                    style={{
+                      borderRadius: 10,
+                    }}
                   />
                   <Divider />
                 </View>
               )}
+
+              <View style={{ alignItems: "center", marginBottom: 20 }}>
+                <View>
+                  <Avatar.Text
+                    size={70}
+                    label={`${ride.endedRide.driver?.firstName
+                      .charAt(0)
+                      .toUpperCase()}${ride.endedRide.driver?.lastName
+                      .charAt(0)
+                      .toUpperCase()}`}
+                  />
+                </View>
+
+                <View
+                  style={{
+                    marginTop: 20,
+                  }}
+                >
+                  <Text style={{ fontWeight: "900" }} variant="titleLarge">
+                    {`${ride.endedRide.driver.firstName} ${ride.endedRide.driver.lastName}`}
+                  </Text>
+                </View>
+              </View>
+
               <View>
                 <Headline style={Classes.text(colors)}>
                   {t("rating.rateText") + " ?"}
@@ -114,10 +160,10 @@ export default function ReviewScreen({ navigation, route }) {
             </View>
           </TouchableWithoutFeedback>
           <View style={Classes.bottonView(colors)}>
-            <View style={{ marginTop: 20 }}>
+            <View style={{ marginTop: 20, marginBottom: 20 }}>
               <TextInput
                 style={{
-                  ...Classes.formInput(colors),
+                  // ...Classes.formInput(colors),
                   alignContent: "flex-start",
                   justifyContent: "flex-start",
                   backgroundColor: colors.background,

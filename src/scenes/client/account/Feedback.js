@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   View,
-  TouchableWithoutFeedback,
   Keyboard,
   SafeAreaView,
   KeyboardAvoidingView,
@@ -12,10 +11,9 @@ import { Text, useTheme, Headline, TextInput } from "react-native-paper";
 import { AirbnbRating } from "@rneui/themed";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
-import { useNotifications, useLanguage, useFeedback } from "_hooks";
+import { useFeedback } from "_hooks";
 import { Button } from "_atoms";
 import { Mixins } from "../../../styles";
-import { color } from "react-native-reanimated";
 
 export default function FeedbackScreen({ navigation }) {
   const [newFeedback, setNewFeedback] = useState({
@@ -24,9 +22,6 @@ export default function FeedbackScreen({ navigation }) {
   });
 
   const feedback = useFeedback();
-
-  useNotifications();
-  useLanguage();
 
   const { colors } = useTheme();
   const [ratingColor, setRatingColor] = useState(colors.primary);

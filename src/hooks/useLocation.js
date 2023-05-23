@@ -173,6 +173,65 @@ export default function useLocation() {
     }
   };
 
+  const getDistanceMatrix = async ({
+    origins,
+    destinations,
+    newRideDetails = {},
+    setNewRideDetails,
+    setStep,
+    setBottomSheetHeight,
+    step = 2,
+  }) => {
+    console.log({ origins, destinations });
+    try {
+      const response = await getRequest({
+        method: "GET",
+        endpoint: "distancematrix/json",
+        params: {
+          origins,
+          destinations,
+          lang,
+        },
+      });
+      console.log({ response: response.rows[0].elements[0] });
+      return;
+      if (!response.routes || !response.routes.length) {
+        setStep && setStep(6);
+        setBottomSheetHeight && setBottomSheetHeight(35);
+        return;
+      }
+
+      let points = polyline.decode(response.routes[0].overview_polyline.points);
+
+      let coords = points.map((point) => ({
+        latitude: point[0],
+        longitude: point[1],
+      }));
+
+      if (
+        step === 4 &&
+        response.routes[0].legs[0].duration.value <= 180 &&
+        !newRideDetails.notifiedArrival
+      ) {
+        console.log("Driver is near by");
+        // send call to endpoint /rides/driverAlmostThere
+      }
+
+      setNewRideDetails({
+        ...newRideDetails,
+        polyline: coords,
+        distance: response.routes[0].legs[0].distance,
+        duration: response.routes[0].legs[0].duration,
+        ...(step === 4 &&
+          response.routes[0].legs[0].duration.value <= 180 && {
+            notifiedArrival: true,
+          }),
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return {
     location,
     searchPredictions,
@@ -186,6 +245,7 @@ export default function useLocation() {
       setSearchPredictions,
       getPlaceDetails,
       getDirections,
+      getDistanceMatrix,
     },
   };
 }

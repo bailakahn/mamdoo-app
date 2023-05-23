@@ -58,7 +58,7 @@ export default function RideSummaryScene({ navigation }) {
                 marginTop: 20,
               }}
             >
-              <Text style={{ fontWeight: "900" }}>
+              <Text style={{ fontWeight: "900" }} variant="titleLarge">
                 {`${ride.request.client.firstName} ${ride.request.client.lastName}`}
               </Text>
             </View>

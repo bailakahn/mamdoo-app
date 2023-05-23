@@ -78,6 +78,9 @@ export default {
     userBlocked: "This account is blocked!",
     noUser: "No account found for this user!",
     internal: "Oops, Something Went Wrong",
+    notificationPermission: "Please give access to push notificatons!",
+    notificationVirtualDevice:
+      "Must use physical device for Push Notifications!",
   },
   home: {
     welcome: "Welcome On Mamdoo",
@@ -163,6 +166,7 @@ export default {
     pm: "PM",
     ongoingRide: "Ongoing ride",
     clickToOpenTheMap: "Click to follow your ride",
+    rideSummaryTitle: "Ride Summary",
   },
   form: {
     fullName: "Full Name",

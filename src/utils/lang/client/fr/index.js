@@ -76,6 +76,10 @@ export default {
     userBlocked: "Ce compte est bloqué!",
     noUser: "Aucun compte trouvé pour cet utilisateur!",
     internal: "Oops, Quelque chose s'est mal passé",
+    notificationPermission:
+      "Veuillez autoriser les notifications pour avoir les mises à jour en temps reel!",
+    notificationVirtualDevice:
+      "Vous devez utiliser un appreil physique pour recevoir les notifications!",
   },
   home: {
     welcome: "Bienvenue sur Mamdoo",
@@ -106,7 +110,7 @@ export default {
     bad: "Mauvais",
     okay: "Acceptable",
     good: "Bien",
-    great: "Excéllent",
+    great: "Excellent",
     notePlaceHolder: "Dites nous plus sur votre course",
     ridePrice: "Prix de la course",
     ridePricePlaceholder: "Combien vous a coutée votre course ?",
@@ -165,6 +169,7 @@ export default {
     pm: "H",
     ongoingRide: "Course en cours",
     clickToOpenTheMap: "Toucher pour suivre votre course",
+    rideSummaryTitle: "Resumé de la course",
   },
   form: {
     fullName: "Prénom Nom",

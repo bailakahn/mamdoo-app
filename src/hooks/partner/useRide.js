@@ -366,40 +366,38 @@ export default function useRide() {
 
   const onEndRide = () => {
     setIsLoading(true);
-    getRequest({
-      method: "POST",
-      endpoint: "rides/endRide",
-      params: {
-        requestId: request._id,
-        driverId: partner.userId,
-      },
-    })
-      .then(({ maxPrice }) => {
-        console.log({ maxPrice });
-        setRidePrice(maxPrice);
-        navigation.navigate("RideSummary");
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
 
-    Location.getCurrentPositionAsync({}).then(
-      ({ coords: { latitude, longitude } }) => {
+    Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.Balanced,
+    })
+      .then(({ coords: { latitude, longitude } }) => {
         getRequest({
           method: "POST",
-          endpoint: "rides/saveRealDropOffLocation",
+          endpoint: "rides/endRide",
           params: {
             requestId: request._id,
             coordinates: [longitude, latitude],
           },
-        }).catch((err) => {
-          console.log(err);
-        });
-      }
-    );
+        })
+          .then(({ finalPrice }) => {
+            setRidePrice(finalPrice);
+            // setRide({ ...request, status: rideStatuses.COMPLETED });
+            navigation.navigate("RideSummary");
+          })
+          .catch((err) => {
+            console.log(err);
+            setRidePrice(request?.maxPrice);
+            // setRide({ ...request, status: rideStatuses.COMPLETED });
+            navigation.navigate("RideSummary");
+          })
+          .finally(() => {
+            resetRequest();
+            setIsLoading(false);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const denyRequest = () => {
