@@ -895,7 +895,9 @@ const RideDetailView = ({ user, ride, navigation }) => {
                       </Text>
                     }
                     left={() => (
-                      <View style={{ marginRight: 10 }}>
+                      <View
+                        style={{ marginRight: 10, justifyContent: "center" }}
+                      >
                         <Image
                           source={require(`_assets/bike.png`)}
                           cacheKey="motorbike"
@@ -905,16 +907,40 @@ const RideDetailView = ({ user, ride, navigation }) => {
                       </View>
                     )}
                     right={() => (
-                      <View style={{ justifyContent: "center" }}>
-                        <Text
-                          variant="titleLarge"
-                          style={{
-                            fontWeight: "bold",
-                            ...(theme.isDarkMode && { color: "#000" }),
-                          }}
-                        >
-                          {ride.newRide.maxPrice.text}
-                        </Text>
+                      <View style={{ justifyContent: "flex-start" }}>
+                        <View>
+                          <Text
+                            variant="titleMedium"
+                            style={{
+                              fontWeight: "bold",
+                              ...(theme.isDarkMode && { color: "#000" }),
+                            }}
+                          >
+                            {`${ride.newRide.price.text}`}
+                          </Text>
+                        </View>
+                        <View style={{ alignItems: "center" }}>
+                          <Text
+                            variant="titleMedium"
+                            style={{
+                              fontWeight: "bold",
+                              ...(theme.isDarkMode && { color: "#000" }),
+                            }}
+                          >
+                            à
+                          </Text>
+                        </View>
+                        <View>
+                          <Text
+                            variant="titleMedium"
+                            style={{
+                              fontWeight: "bold",
+                              ...(theme.isDarkMode && { color: "#000" }),
+                            }}
+                          >
+                            {`${ride.newRide.maxPrice.text}`}
+                          </Text>
+                        </View>
                       </View>
                     )}
                   />

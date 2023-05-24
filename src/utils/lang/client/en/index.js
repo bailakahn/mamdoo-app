@@ -102,6 +102,7 @@ export default {
     noResultFound: "No result were found!",
     distance: "Distance: ",
     estimatedTime: "Estimted Time: ",
+    currentPosition: "Your location",
   },
   rating: {
     rateDriver: "Rate your Mamdoo",

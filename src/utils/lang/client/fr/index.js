@@ -101,6 +101,7 @@ export default {
     noResultFound: "Aucun resultat!",
     distance: "Distance: ",
     estimatedTime: "Temps estimé: ",
+    currentPosition: "Votre position",
   },
   rating: {
     rateDriver: "Notez votre Mamdoo",

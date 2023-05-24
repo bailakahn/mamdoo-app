@@ -29,6 +29,7 @@
     "dotenv": "^16.0.3",
     "expo": "^47.0.0",
     "expo-application": "~5.0.1",
+    "expo-av": "~13.0.3",
     "expo-constants": "~14.0.2",
     "expo-device": "~5.0.0",
     "expo-file-system": "~15.1.1",

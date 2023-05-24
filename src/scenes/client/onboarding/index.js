@@ -21,8 +21,8 @@ export default function Onboarding() {
     >
       <View style={{ alignItems: "center" }}>
         <Image
-          source={require("_assets/price.png")}
-          cacheKey={"price"}
+          source={require("_assets/price-fr.png")}
+          cacheKey={"price-fr"}
           resizeMode="contain"
           style={{
             width: Mixins.width(0.7, true),
@@ -99,8 +99,8 @@ export default function Onboarding() {
     >
       <View style={{ alignItems: "center" }}>
         <Image
-          source={require("_assets/map-2.png")}
-          cacheKey={"map-2"}
+          source={require("_assets/destination.jpg")}
+          cacheKey={"destination-jpg"}
           resizeMode="contain"
           style={{
             width: Mixins.width(0.8, true),

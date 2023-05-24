@@ -40,7 +40,8 @@ function ModalScreen({ navigation }) {
     ride.actions.setNewRide({
       ...ride.newRide,
       pickUp: {
-        text: results[0].vicinity.split(",")[0],
+        // text: results[0].vicinity.split(",")[0],
+        text: t("home.currentPosition"),
         location: {
           latitude: `${currentLocation?.latitude}`,
           longitude: `${currentLocation?.longitude}`,
