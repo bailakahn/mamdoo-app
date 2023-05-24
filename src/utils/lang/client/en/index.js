@@ -53,6 +53,9 @@ export default {
     onboardingDestinationTitle: "Enter your destination",
     onboardingDestinationDescription:
       "Start typing your destination, we will show you the closest places",
+    onboardingVideoTitle: "Demo",
+    onboardingVideoDescription:
+      "This short video shows how you can book a ride in this new version!",
   },
   errors: {
     crashErrorTitle: "Oops, Something Went Wrong",

@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useRef } from "react";
 import { View, SafeAreaView, ScrollView } from "react-native";
 import { Text, useTheme, Button } from "react-native-paper";
+import { Video, ResizeMode } from "expo-av";
 import { Image } from "_atoms";
 import { useApp } from "_hooks";
 import * as Mixins from "../../../styles/mixins";
@@ -134,6 +135,79 @@ export default function Onboarding() {
     </View>
   );
 
+  const VideoDemo = () => {
+    const video = useRef(null);
+    const [status, setStatus] = useState({});
+
+    return (
+      <View
+        style={{
+          flexGrow: 1,
+          justifyContent: "center",
+        }}
+      >
+        <View
+          style={{
+            flexGrow: 1,
+            alignItems: "center",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Video
+            ref={video}
+            style={{
+              width: Mixins.width(0.5, true),
+              height: Mixins.height(0.5, true),
+            }}
+            source={require("_assets/videos/demo.mp4")}
+            // source={{
+            //   uri: "https://www.youtube.com/watch?v=fQF6DBtTfsQ",
+            // }}
+            shouldPlay
+            useNativeControls
+            resizeMode={ResizeMode.CONTAIN}
+            isLooping
+            onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+          />
+        </View>
+        <View style={{ marginTop: 20, alignItems: "center" }}>
+          <View>
+            <Text
+              variant="titleLarge"
+              style={{
+                color: colors.primary,
+                fontWeight: "bold",
+              }}
+            >
+              {t("main.onboardingVideoTitle")}
+            </Text>
+          </View>
+
+          {/* <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 20,
+            }}
+          >
+            <Button
+              icon={status.isPlaying ? "pause" : "play"}
+              mode="contained"
+              onPress={() =>
+                status.isPlaying
+                  ? video.current.pauseAsync()
+                  : video.current.playAsync()
+              }
+            >
+              {status.isPlaying ? "Pause" : "Jouer"}
+            </Button>
+          </View> */}
+        </View>
+      </View>
+    );
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -153,9 +227,12 @@ export default function Onboarding() {
           <PriceView />
         ) : step === 2 ? (
           <DestinationView />
-        ) : (
+        ) : step === 3 ? (
           <MapView />
+        ) : (
+          <VideoDemo />
         )}
+
         <View style={Classes.bottonView(colors)}>
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
@@ -165,7 +242,6 @@ export default function Onboarding() {
                 onPress={() => {
                   app.actions.setAppLaunched(true);
                 }}
-                // {...Classes.skipButtonContainer(colors)}
               >
                 <Text variant="titleMedium">{`${t("main.skip")}`}</Text>
               </Button>
@@ -174,7 +250,7 @@ export default function Onboarding() {
               <Button
                 mode="contained"
                 onPress={() => {
-                  if (step === 3) {
+                  if (step === 4) {
                     app.actions.setAppLaunched(true);
                     return;
                   }
@@ -182,7 +258,7 @@ export default function Onboarding() {
                 }}
                 // {...Classes.nextOnboardingButtonContainer(colors)}
               >
-                {step === 3 ? t("main.done") : t("main.next")}
+                {step === 4 ? t("main.done") : t("main.next")}
               </Button>
             </View>
           </View>

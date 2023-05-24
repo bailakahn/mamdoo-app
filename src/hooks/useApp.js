@@ -23,8 +23,8 @@ export default function useApp() {
     if (!appLoaded) {
       getApp();
       getSettings();
-      // getAppLaunched();
-      setAppLaunched(false);
+      getAppLaunched();
+      // setAppLaunched(false);
     }
   }, []);
 

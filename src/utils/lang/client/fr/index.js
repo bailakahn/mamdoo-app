@@ -55,6 +55,9 @@ export default {
     onboardingDestinationTitle: "Entrer votre destination",
     onboardingDestinationDescription:
       "Commencer á taper votre destination, nous vous suggerons les endroits les plus proches",
+    onboardingVideoTitle: "Commander une course",
+    onboardingVideoDescription:
+      "Cette video vous montre comment commander une course dans notre nouvelle interface!",
   },
   errors: {
     crashErrorTitle: "Oops, Quelque chose s'est mal passé",

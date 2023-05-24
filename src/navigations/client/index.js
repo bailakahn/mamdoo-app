@@ -31,7 +31,6 @@ export default function MainTabs({ role }) {
   // if user don't give location permission then don't allow access to app
   if (grantStatus !== "granted") return <LocationDenied />;
 
-  console.log({ appLaunched });
   if (!appLaunched) return <OnboardingStack />;
 
   return user.user?.accessToken ? (
