@@ -44,6 +44,7 @@ export default {
     appUpdateDescription:
       "Pour profiter du meilleur de Mamdoo, veuillez mettre a jour votre application",
     appUpdateButton: "Mettre à jour",
+    logOut: "Se déconnecter",
   },
   upload: {
     notActive: "Votre compte n'est pas activé",

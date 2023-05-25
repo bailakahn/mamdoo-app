@@ -76,7 +76,7 @@ export default function useLocation() {
     }
   };
 
-  const getPredictions = async (input, location) => {
+  const getPredictions = async ({ input, location, user = {} }) => {
     try {
       const { predictions } = await getRequest({
         method: "GET",
@@ -86,9 +86,9 @@ export default function useLocation() {
           input,
           language: lang,
           components:
-            ENV_NAME === "production"
-              ? "country:gn"
-              : "country:ca|country:gn|country:fr",
+            ENV_NAME !== "production" || user?.isAdmin
+              ? "country:ca|country:gn|country:fr"
+              : "country:gn",
         },
       });
 

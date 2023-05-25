@@ -16,6 +16,7 @@ import {
   useRide,
   useLocation,
   useApp,
+  useUser,
   useTheme as useMamdooTheme,
 } from "_hooks";
 
@@ -27,6 +28,7 @@ function ModalScreen({ navigation }) {
   const app = useApp();
   const pickUpRef = useRef();
   const dropOffRef = useRef();
+  const user = useUser();
 
   const [input, setInput] = useState("dropOff");
 
@@ -81,10 +83,11 @@ function ModalScreen({ navigation }) {
               placeholder={t("home.from")}
               value={ride.newRide.pickUp.text}
               onChangeText={(value) => {
-                location.actions.getPredictions(
-                  value,
-                  `${location.location?.latitude},${location.location?.longitude}`
-                );
+                location.actions.getPredictions({
+                  input: value,
+                  location: `${location.location?.latitude},${location.location?.longitude}`,
+                  user: user.user,
+                });
                 ride.actions.setNewRide({
                   ...ride.newRide,
                   pickUp: {
@@ -127,10 +130,11 @@ function ModalScreen({ navigation }) {
               placeholderTextColor={theme.isDarkMode ? colors.text : undefined}
               value={ride.newRide.dropOff.text}
               onChangeText={(value) => {
-                location.actions.getPredictions(
-                  value,
-                  `${location.location?.latitude},${location.location?.longitude}`
-                );
+                location.actions.getPredictions({
+                  input: value,
+                  location: `${location.location?.latitude},${location.location?.longitude}`,
+                  user: user.user,
+                });
                 ride.actions.setNewRide({
                   ...ride.newRide,
                   dropOff: {

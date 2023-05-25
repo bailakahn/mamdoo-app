@@ -163,35 +163,35 @@ export default function useRide() {
   const startPositionUpdate = async (request) => {
     try {
       // mock driver movement
-      // if (ENV_NAME === "localhost") {
-      //   let i = 0;
-      //   const {
-      //     coords: { latitude, longitude },
-      //   } = await Location.getCurrentPositionAsync({});
+      if (ENV_NAME === "localhost") {
+        let i = 0;
+        const {
+          coords: { latitude, longitude },
+        } = await Location.getCurrentPositionAsync({});
 
-      //   const directions =
-      //     (await getDirections(
-      //       `${latitude},${longitude}`,
-      //       `${request?.pickUp?.coordinates[1]},${request?.pickUp.coordinates[0]}`
-      //     )) || [];
+        const directions =
+          (await getDirections(
+            `${latitude},${longitude}`,
+            `${request?.pickUp?.coordinates[1]},${request?.pickUp.coordinates[0]}`
+          )) || [];
 
-      //   const iId = setInterval(() => {
-      //     if (directions[i]) {
-      //       getRequest({
-      //         method: "POST",
-      //         endpoint: "rides/updateDriverLocation",
-      //         params: {
-      //           clientId: request?.client?._id,
-      //           currentLocation: directions[i],
-      //         },
-      //       }).catch((err) => {});
-      //     }
-      //     i++;
-      //   }, 1000);
+        const iId = setInterval(() => {
+          if (directions[i]) {
+            getRequest({
+              method: "POST",
+              endpoint: "rides/updateDriverLocation",
+              params: {
+                clientId: request?.client?._id,
+                currentLocation: directions[i],
+              },
+            }).catch((err) => {});
+          }
+          i++;
+        }, 1000);
 
-      //   mockLocationInterval = iId;
-      //   return;
-      // }
+        mockLocationInterval = iId;
+        return;
+      }
 
       const locationSubscription = await Location.watchPositionAsync(
         {
@@ -224,7 +224,6 @@ export default function useRide() {
   const stopPositionUpdate = async () => {
     try {
       if (ENV_NAME === "localhost") {
-        console.log({ mockLocationInterval, stop: true });
         if (mockLocationInterval) clearInterval(mockLocationInterval);
         mockLocationInterval = null;
         return;

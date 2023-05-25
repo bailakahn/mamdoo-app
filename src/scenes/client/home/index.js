@@ -106,7 +106,7 @@ export default function Home({ navigation, route }) {
     if (user) user.actions.updateLocation();
     location.actions.getCurrentPosition();
     ride.actions.getMapByDrivers();
-    ride.actions.validateCountry();
+    ride.actions.validateCountry(user.user);
     ride.actions.validateWorkingHours();
   }, []);
 

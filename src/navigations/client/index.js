@@ -35,10 +35,17 @@ export default function MainTabs({ role }) {
 
   return user.user?.accessToken ? (
     user.user?.verified ? (
-      app?.settings?.prelaunchMode?.active ? (
+      (app?.settings?.prelaunchMode?.active ||
+        app?.settings?.clientAppEnabled?.active) &&
+      !user.user.isAdmin ? (
         <MaintenanceMode
-          message={app.settings.prelaunchMode.message}
+          message={
+            app?.settings?.prelaunchMode?.active
+              ? app.settings.prelaunchMode.message
+              : app?.settings?.clientAppEnabled.message
+          }
           onReload={app.actions?.getSettings}
+          onLogout={user.actions.logout}
         />
       ) : (
         <Stack.Navigator

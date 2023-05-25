@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { View, SafeAreaView, ScrollView } from "react-native";
 import { Text, useTheme, Button } from "react-native-paper";
 import { Video, ResizeMode } from "expo-av";
-import { Image } from "_atoms";
+import { Image, LoadingV2 } from "_atoms";
 import { useApp } from "_hooks";
 import * as Mixins from "../../../styles/mixins";
 import { Classes } from "_styles";
@@ -100,8 +100,8 @@ export default function Onboarding() {
     >
       <View style={{ alignItems: "center" }}>
         <Image
-          source={require("_assets/destination.jpg")}
-          cacheKey={"destination-jpg"}
+          source={require("_assets/onboarding.png")}
+          cacheKey={"onboarding"}
           resizeMode="contain"
           style={{
             width: Mixins.width(0.8, true),
@@ -159,10 +159,9 @@ export default function Onboarding() {
               width: Mixins.width(0.5, true),
               height: Mixins.height(0.5, true),
             }}
-            source={require("_assets/videos/demo.mp4")}
-            // source={{
-            //   uri: "https://www.youtube.com/watch?v=fQF6DBtTfsQ",
-            // }}
+            source={{
+              uri: "https://dwfhhymkzgxdd.cloudfront.net/videos/demos/demo.mp4",
+            }}
             shouldPlay
             useNativeControls
             resizeMode={ResizeMode.CONTAIN}
@@ -227,8 +226,6 @@ export default function Onboarding() {
           <PriceView />
         ) : step === 2 ? (
           <DestinationView />
-        ) : step === 3 ? (
-          <MapView />
         ) : (
           <VideoDemo />
         )}
@@ -250,7 +247,7 @@ export default function Onboarding() {
               <Button
                 mode="contained"
                 onPress={() => {
-                  if (step === 4) {
+                  if (step === 3) {
                     app.actions.setAppLaunched(true);
                     return;
                   }
@@ -258,7 +255,7 @@ export default function Onboarding() {
                 }}
                 // {...Classes.nextOnboardingButtonContainer(colors)}
               >
-                {step === 4 ? t("main.done") : t("main.next")}
+                {step === 3 ? t("main.done") : t("main.next")}
               </Button>
             </View>
           </View>

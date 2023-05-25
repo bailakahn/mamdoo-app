@@ -475,7 +475,7 @@ export default function useRide() {
       location.location || (await location.actions.getCurrentPosition());
 
     const validCountries =
-      ENV_NAME != "production" || user?.isTest ? ["gn", "ca", "fr"] : ["gn"];
+      ENV_NAME != "production" || user?.isAdmin ? ["gn", "ca", "fr"] : ["gn"];
 
     getCountry(latitude, longitude)
       .then((data) => {

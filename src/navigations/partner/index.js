@@ -57,10 +57,17 @@ export default function MainTabs({ role }) {
   return partner.partner?.accessToken ? (
     partner.partner?.verified ? (
       partner.partner.active ? (
-        app?.settings?.prelaunchMode?.active ? (
+        (app?.settings?.prelaunchMode?.active ||
+          app?.settings?.driverAppEnabled?.active) &&
+        !partner.partner.isAdmin ? (
           <MaintenanceMode
-            message={app.settings.prelaunchMode.message}
+            message={
+              app?.settings?.prelaunchMode?.active
+                ? app.settings.prelaunchMode.message
+                : app?.settings?.driverAppEnabled.message
+            }
             onReload={app.actions?.getSettings}
+            onLogout={partner.actions.logout}
           />
         ) : partner.partner.status === "pending" ? (
           <PendingStack />
