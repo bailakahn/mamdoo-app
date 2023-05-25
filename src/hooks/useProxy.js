@@ -39,7 +39,7 @@ export default function useProxy() {
         }
 
         if (event === "DRIVER_LOCATION_UPDATE") {
-          // console.log({ data });
+          console.log({ data });
           dispatch({
             type: types.SET_DRIVER_LOCATION,
             currentLocation: data.currentLocation,
