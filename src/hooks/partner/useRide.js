@@ -196,7 +196,7 @@ export default function useRide() {
       const locationSubscription = await Location.watchPositionAsync(
         {
           accuracy: Location.Accuracy.Highest,
-          distanceInterval: 2000,
+          distanceInterval: 50,
         },
         (currentLocation) => {
           getRequest({
