@@ -490,7 +490,6 @@ export default function useRide() {
   };
 
   const validateWorkingHours = (user = {}) => {
-    console.log({ b: true });
     if (!app.settings.workingHours?.is24 && !user?.isAdmin) {
       const currentDate = new Date();
       const currentHour = currentDate.getHours();

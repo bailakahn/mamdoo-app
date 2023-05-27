@@ -43,8 +43,26 @@ export default function useApp() {
       });
   };
 
+  const isWorkingHours = () => {
+    if (settings.workingHours) {
+      const currentDate = new Date();
+      const currentHour = currentDate.getHours();
+
+      // set working hours
+      const startHour = settings.workingHours.startHour;
+      const endHour = settings.workingHours.endHour;
+
+      return currentHour >= startHour && currentHour < endHour;
+    }
+
+    return false;
+  };
+
   const call = () => {
-    const { phone = "" } = settings;
+    const { phone: primaryPhoneNumber = "", secondPhoneNumber = "" } = settings;
+
+    const phone = isWorkingHours() ? primaryPhoneNumber : secondPhoneNumber;
+
     if (!phone) {
       Alert.alert(t("errors.phoneNumber"));
       return;
@@ -70,6 +88,13 @@ export default function useApp() {
     app,
     settings,
     appLoaded,
-    actions: { setApp, removeApp, call, getSettings, setAppLaunched },
+    actions: {
+      setApp,
+      removeApp,
+      call,
+      getSettings,
+      setAppLaunched,
+      isWorkingHours,
+    },
   };
 }

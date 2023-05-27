@@ -1447,7 +1447,11 @@ const NoDriverView = ({ user, ride, navigation }) => {
               icon={"phone"}
               onPress={app.actions.call}
               textStyle={{ fontSize: 20 }}
-            >{`${app.settings.phone}`}</Chip>
+            >{`${
+              app.actions.isWorkingHours()
+                ? app.settings.phone
+                : app.settings.secondPhoneNumber
+            }`}</Chip>
           </View>
           <View style={{ marginTop: 20, flexDirection: "row" }}>
             <Button
