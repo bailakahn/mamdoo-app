@@ -58,13 +58,13 @@ export default function MainTabs({ role }) {
     partner.partner?.verified ? (
       partner.partner.active ? (
         (app?.settings?.prelaunchMode?.active ||
-          app?.settings?.driverAppEnabled?.active) &&
+          app?.settings?.driverAppDisabled?.active) &&
         !partner.partner.isAdmin ? (
           <MaintenanceMode
             message={
               app?.settings?.prelaunchMode?.active
                 ? app.settings.prelaunchMode.message
-                : app?.settings?.driverAppEnabled.message
+                : app?.settings?.driverAppDisabled.message
             }
             onReload={app.actions?.getSettings}
             onLogout={partner.actions.logout}

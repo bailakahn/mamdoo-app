@@ -107,7 +107,7 @@ export default function Home({ navigation, route }) {
     location.actions.getCurrentPosition();
     ride.actions.getMapByDrivers();
     ride.actions.validateCountry(user.user);
-    ride.actions.validateWorkingHours();
+    ride.actions.validateWorkingHours(user.user);
   }, []);
 
   useEffect(() => {
@@ -392,7 +392,7 @@ export default function Home({ navigation, route }) {
             : []
         }
       >
-        {location.location && (
+        {location.location && !ride.newRide.dropOff.text && (
           <Marker
             coordinate={{
               latitude: parseFloat(location.location.latitude) || 0,
