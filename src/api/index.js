@@ -6,6 +6,7 @@ import Constants from "expo-constants";
 import * as Application from "expo-application";
 import { useStore } from "_store";
 import { t, lang } from "_utils/lang"; // without this line it didn't work
+import { da } from "date-fns/locale";
 
 const PROVIDER_URL = Constants.expoConfig.extra.providerUrl;
 
@@ -52,11 +53,15 @@ export function useApi() {
       .then(({ status, data }) => {
         if (status !== 200) {
           if (
-            ["errors.userBlocked", "errors.noUser"].includes(data.code) &&
+            [
+              "errors.userBlocked",
+              "errors.noUser",
+              "errors.incompatibleAppVersion",
+            ].includes(data.code) &&
             !alertShown
           ) {
             Alert.alert(
-              t("errors.crashErrorTitle"),
+              t(data?.code ? `${data?.code}Title` : "errors.crashErrorTitle"),
               t(data?.code || "errors.crashErrorTitle"),
               [
                 {

@@ -76,13 +76,17 @@ export default {
     expired: "Ce code a expiré",
     notFound: "Code introuvable",
     invalidCode: "La vérification a échouée",
+    userBlockedTitle: "Utilisateur bloqué",
     userBlocked: "Ce compte est bloqué!",
+    noUserTitle: "Utilisateur introuvalbe",
     noUser: "Aucun compte trouvé pour cet utilisateur!",
     internal: "Oops, Quelque chose s'est mal passé",
     notificationPermission:
       "Veuillez autoriser les notifications pour avoir les mises à jour en temps reel!",
     notificationVirtualDevice:
       "Vous devez utiliser un appreil physique pour recevoir les notifications!",
+    incompatibleAppVersionTitle: "Version incompatible",
+    incompatibleAppVersion: "Veuillez mettre à jour votre application!",
   },
   home: {
     welcome: "Bienvenue sur Mamdoo",

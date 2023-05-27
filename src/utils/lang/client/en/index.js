@@ -78,12 +78,16 @@ export default {
     expired: "This code is expired",
     notFound: "We could not find this code",
     invalidCode: "We could not verify this code",
+    userBlockedTitle: "User blocked",
     userBlocked: "This account is blocked!",
+    noUserTitle: "Can't Find User",
     noUser: "No account found for this user!",
     internal: "Oops, Something Went Wrong",
     notificationPermission: "Please give access to push notificatons!",
     notificationVirtualDevice:
       "Must use physical device for Push Notifications!",
+    incompatibleAppVersionTitle: "Incompatible App Version",
+    incompatibleAppVersion: "Please update your application!",
   },
   home: {
     welcome: "Welcome On Mamdoo",
