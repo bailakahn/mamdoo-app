@@ -17,7 +17,7 @@ import { Mixins } from "../../../styles";
 
 export default function FeedbackScreen({ navigation }) {
   const [newFeedback, setNewFeedback] = useState({
-    rating: 3,
+    rating: 5,
     text: "",
   });
 

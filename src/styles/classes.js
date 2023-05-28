@@ -370,12 +370,20 @@ export const formInput = (colors) => ({
   marginBottom: 20,
 });
 
+export const formInputContent = (colors) => ({
+  height: Mixins.width(0.13, true),
+});
+
 export const rideFormInput = (colors, isDarkMode = false) => ({
   width: Mixins.width(0.93, true),
   height: Mixins.width(0.1, true),
   // fontSize: 20,
   marginBottom: 10,
   backgroundColor: isDarkMode ? "#3B3B3B" : "#e8e8e8",
+});
+
+export const rideFormInputContent = (colors, isDarkMode = false) => ({
+  height: Mixins.width(0.1, true),
 });
 
 export const predictionItems = (colors) => ({

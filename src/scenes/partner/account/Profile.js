@@ -180,10 +180,8 @@ export default function ProfileScene({ navigation }) {
               <Button
                 mode="contained"
                 onPress={() => setVisible(true)}
-                style={Classes.deleteAccountButton(colors)}
-                contentStyle={{
-                  height: 50,
-                }}
+                {...Classes.buttonContainer(colors)}
+                buttonColor={colors.error}
               >
                 <Text style={{ color: colors.white }}>
                   {t2("profile.deleteAccount")}
@@ -193,12 +191,14 @@ export default function ProfileScene({ navigation }) {
           </View>
         </View>
       ) : (
-        <View style={{ alignItems: "center" }}>
+        <View style={{ alignItems: "center", marginTop: 10 }}>
           <View>
             {fields.map(({ name, title }, i) => (
               <TextInput
                 key={i}
-                style={Classes.profileFormInput(colors)}
+                style={Classes.formInput(colors)}
+                outlineStyle={Classes.textInputOutline(colors)}
+                contentStyle={Classes.formInputContent(colors)}
                 mode="outlined"
                 label={title}
                 value={editUser[name]}
@@ -217,7 +217,9 @@ export default function ProfileScene({ navigation }) {
             {cab.map(({ name, title }, i) => (
               <TextInput
                 key={i}
-                style={Classes.profileFormInput(colors)}
+                style={Classes.formInput(colors)}
+                outlineStyle={Classes.textInputOutline(colors)}
+                contentStyle={Classes.formInputContent(colors)}
                 mode="outlined"
                 label={title}
                 value={editUser.cab[name]}
@@ -260,8 +262,7 @@ export default function ProfileScene({ navigation }) {
                 partner.actions.saveChanges(editUser, setShowSuccess, setIsEdit)
               }
               mode="contained"
-              style={Classes.profileFormButton(colors)}
-              contentStyle={Classes.profileFormButtonContent(colors)}
+              {...Classes.buttonContainer(colors)}
             >
               {t2("profile.saveChanges")}
             </Button>
