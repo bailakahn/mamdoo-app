@@ -24,13 +24,19 @@ export default function AccountScene({}) {
   useKeepAwake();
   const ride = useRide();
   const partner = usePartner();
-  useLocation();
+  const location = useLocation();
   const app = useApp();
 
   useEffect(() => {
     ride.actions.bootstrapAsync();
     if (partner) partner.actions.updateLocation();
   }, []);
+
+  const acceptRequest = async () => {
+    const { latitude, longitude } = await location.actions.getCurrentPosition();
+
+    ride.actions.acceptRequest([longitude, latitude]);
+  };
 
   return ride.isLoading ? (
     <LoadingV2 />
@@ -97,7 +103,7 @@ export default function AccountScene({}) {
                       </Text>
                     </View>
                   }
-                  onPress={ride.actions.acceptRequest}
+                  onPress={acceptRequest}
                   shadow={{ size: 0.3 }}
                 />
               </View>

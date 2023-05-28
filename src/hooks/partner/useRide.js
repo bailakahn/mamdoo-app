@@ -237,12 +237,12 @@ export default function useRide() {
     }
   };
 
-  const acceptRequest = () => {
+  const acceptRequest = (driverLocation) => {
     setIsLoading(true);
     getRequest({
       method: "POST",
       endpoint: "rides/acceptRequest",
-      params: { requestId },
+      params: { requestId, driverLocation },
     })
       .then((ride) => {
         resetRequest();
