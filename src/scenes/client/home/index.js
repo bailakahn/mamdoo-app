@@ -74,7 +74,11 @@ export default function Home({ navigation, route }) {
 
   useEffect(() => {
     if ((ride.canceled && route?.params?.driverId) || ride.denied) {
-      ride.actions.makeRideRequest(navigation, route?.params?.driverId);
+      ride.actions.makeRideRequest(
+        navigation,
+        route?.params?.driverId,
+        user.user
+      );
     }
   }, [ride.canceled, ride.denied, route]);
 
@@ -954,8 +958,8 @@ const RideDetailView = ({ user, ride, navigation }) => {
                 mode="contained"
                 disabled={!ride.newRide.price?.value}
                 onPress={() => {
-                  ride.actions.setStep(3);
-                  ride.actions.makeRideRequest(navigation);
+                  // ride.actions.setStep(3);
+                  ride.actions.makeRideRequest(navigation, null, user.user);
                 }}
               >
                 {t("home.bookRide")}

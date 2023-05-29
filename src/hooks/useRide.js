@@ -197,10 +197,24 @@ export default function useRide() {
     });
   };
 
-  const makeRideRequest = async (navigation, driverId) => {
+  const makeRideRequest = async (navigation, driverId = null, user = {}) => {
+    const { workingHours, rideDisabled, phone, secondPhoneNumber } =
+      await app.actions.getSettings();
+
+    if (!validateWorkingHours(user, workingHours) || rideDisabled?.active) {
+      Alert.alert(
+        t("ride.rideDisabledTitle"),
+        `${t("ride.rideDisabledMessage")} ${
+          secondPhoneNumber || phone || "621083616"
+        }`
+      );
+      return;
+    }
+
     // resetRide();
     // setOnGoingRide();
 
+    setStep(3);
     let retryCount = 0;
     const maxRetries = 5;
     let stop = false;
@@ -489,19 +503,25 @@ export default function useRide() {
       });
   };
 
-  const validateWorkingHours = (user = {}) => {
-    if (!app.settings.workingHours?.is24 && !user?.isAdmin) {
+  const validateWorkingHours = (user = {}, workingHours = null) => {
+    workingHours = workingHours ? workingHours : app.settings.workingHours;
+
+    if (!workingHours?.is24 && !user?.isAdmin) {
       const currentDate = new Date();
       const currentHour = currentDate.getHours();
 
       // set working hours
-      const startHour = app.settings.workingHours.startHour;
-      const endHour = app.settings.workingHours.endHour;
+      const startHour = workingHours.startHour;
+      const endHour = workingHours.endHour;
 
       const isWorkingHours = currentHour >= startHour && currentHour < endHour;
 
       setValidWorkingHours(isWorkingHours);
+
+      return isWorkingHours;
     }
+
+    return true;
   };
 
   return {

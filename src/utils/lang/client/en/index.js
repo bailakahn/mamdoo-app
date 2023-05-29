@@ -175,6 +175,8 @@ export default {
     ongoingRide: "Ongoing ride",
     clickToOpenTheMap: "Click to follow your ride",
     rideSummaryTitle: "Ride Summary",
+    rideDisabledTitle: "Can't make ride at this time",
+    rideDisabledMessage: "If you see this message too often, please call us at",
   },
   form: {
     fullName: "Full Name",

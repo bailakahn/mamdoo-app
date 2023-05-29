@@ -28,19 +28,19 @@ export default function useApp() {
     }
   }, []);
 
-  const getSettings = () => {
+  const getSettings = async () => {
     console.log("Getting Settings...");
-    getRequest({
+    const result = await getRequest({
       method: "GET",
       endpoint: "app/getsettings",
-    })
-      .then((settings) => {
-        setSettings(settings);
-      })
-      .catch((err) => {
-        setSettings({ error: true });
-        console.log(err);
-      });
+    }).catch((err) => {
+      setSettings({ error: true });
+      console.log(err);
+    });
+
+    setSettings(result);
+
+    return result;
   };
 
   const isWorkingHours = () => {

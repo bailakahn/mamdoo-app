@@ -178,6 +178,9 @@ export default {
     ongoingRide: "Course en cours",
     clickToOpenTheMap: "Toucher pour suivre votre course",
     rideSummaryTitle: "Resumé de la course",
+    rideDisabledTitle: "Course indisponible",
+    rideDisabledMessage:
+      "Si vous voyez ce message trop souvent contactez-nous au",
   },
   form: {
     fullName: "Prénom Nom",
