@@ -45,8 +45,8 @@ function ModalScreen({ navigation }) {
         // text: results[0].vicinity.split(",")[0],
         text: t("home.currentPosition"),
         location: {
-          latitude: `${currentLocation?.latitude}`,
-          longitude: `${currentLocation?.longitude}`,
+          latitude: currentLocation?.latitude,
+          longitude: currentLocation?.longitude,
         },
         placeId: results[0].place_id,
       },
@@ -187,7 +187,9 @@ function ModalScreen({ navigation }) {
                     const result = await location.actions.getPlaceDetails(
                       item.place_id
                     );
-
+                    console.log({
+                      main_text: item.structured_formatting.main_text,
+                    });
                     ride.actions.setNewRide({
                       ...ride.newRide,
                       [input]: {

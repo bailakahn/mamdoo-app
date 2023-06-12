@@ -23,6 +23,7 @@ import MaintenanceMode from "_organisms/MaintenanceMode";
 import ForceUpdate from "_organisms/ForceUpdate";
 import Constants from "expo-constants";
 import * as Application from "expo-application";
+import compareVersions from "../utils/helpers/compareVersions";
 
 const ENV_NAME = Constants.expoConfig.extra.envName;
 
@@ -115,8 +116,11 @@ export default function NavigationRoot({ mode }) {
     return <LoadingV2 color={"#25C0D2"} />;
 
   if (
-    ENV_NAME === "production" &&
-    Application.nativeApplicationVersion !== settings?.appVersion &&
+    // ENV_NAME === "production" &&
+    compareVersions(
+      Application.nativeApplicationVersion,
+      settings?.minimumCompatibleVersion
+    ) === -1 &&
     settings?.showUpdateScreen
   )
     return <ForceUpdate />;

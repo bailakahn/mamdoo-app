@@ -178,14 +178,22 @@ export default function DriverOnTheWayScene() {
             source={ride.driverArrived ? ReadyAmimation : avatarAnimation}
           />
 
-          <View style={{ marginTop: 40, flexDirection: "row" }}>
+          {/* {ride.driverArrived && (
+            <View>
+              <Text variant="titleMedium" style={{ fontWeight: "bold" }}>
+                Destination: {ride.request.dropOff?.text}
+              </Text>
+            </View>
+          )} */}
+
+          <View style={{ marginTop: 20, flexDirection: "row" }}>
             <Text
               style={{
                 fontWeight: "bold",
                 marginRight: 20,
               }}
             >
-              <Icon size={40} name="phone-forwarded" />
+              <Icon size={30} name="phone-forwarded" />
             </Text>
             <Text
               style={{
@@ -240,12 +248,38 @@ export default function DriverOnTheWayScene() {
                     <Text style={{ color: "#fff" }}>{t2("ride.openMap")}</Text>
                   </View>
                 }
-                onPress={ride.actions.openMap}
+                onPress={() => ride.actions.openMap("pickUp")}
               />
             </View>
           )}
 
-          <View style={{ marginTop: 30, flexDirection: "row" }}>
+          <View style={{ marginTop: 30 }}>
+            {ride.driverArrived && (
+              <RoundButton
+                size={0.35}
+                shadow={{ size: 0.3 }}
+                color="grey"
+                text={
+                  <View
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      size={40}
+                      name="google-maps"
+                      color={"#fff"}
+                    />
+                    <Text style={{ color: "#fff" }}>{t2("ride.openMap")}</Text>
+                  </View>
+                }
+                onPress={() => ride.actions.openMap("dropOff")}
+              />
+            )}
+          </View>
+          <View style={{ marginTop: 10, flexDirection: "row" }}>
             <RoundButton
               size={0.35}
               shadow={{ size: 0.3 }}
@@ -290,28 +324,32 @@ export default function DriverOnTheWayScene() {
                 onPress={ride.actions.onDriverArrived}
               />
             ) : (
-              <RoundButton
-                size={0.35}
-                shadow={{ size: 0.3 }}
-                color="success"
-                text={
-                  <View
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <MaterialCommunityIcons
-                      size={40}
-                      name="location-exit"
-                      color={"#fff"}
-                    />
-                    <Text style={{ color: "#fff" }}>{t2("ride.endRide")}</Text>
-                  </View>
-                }
-                onPress={() => setEndRidePopConfirmVisible(true)}
-              />
+              <>
+                <RoundButton
+                  size={0.35}
+                  shadow={{ size: 0.3 }}
+                  color="success"
+                  text={
+                    <View
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <MaterialCommunityIcons
+                        size={40}
+                        name="location-exit"
+                        color={"#fff"}
+                      />
+                      <Text style={{ color: "#fff" }}>
+                        {t2("ride.endRide")}
+                      </Text>
+                    </View>
+                  }
+                  onPress={() => setEndRidePopConfirmVisible(true)}
+                />
+              </>
             )}
           </View>
 

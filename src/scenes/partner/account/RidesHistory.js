@@ -3,6 +3,7 @@ import { View, FlatList } from "react-native";
 import { useTheme, Text, List, Divider } from "react-native-paper";
 import { Classes } from "_styles";
 import { usePartner } from "_hooks";
+import { useRide } from "_hooks/partner";
 import date from "../../../utils/helpers/date";
 import { t2, lang } from "_utils/lang"; // without this line it didn't work
 import { LoadingV2 } from "_atoms";
@@ -10,6 +11,7 @@ import { LoadingV2 } from "_atoms";
 export default function RidesHistoryScene() {
   const { colors } = useTheme();
   const partner = usePartner();
+  const rideHook = useRide();
 
   useEffect(() => {
     partner.actions.getRidesHistory();
@@ -81,11 +83,24 @@ export default function RidesHistoryScene() {
                   />
                 )}
                 right={(props) => (
-                  <List.Icon
-                    {...props}
-                    icon={"chevron-right"}
-                    color={colors.primary}
-                  />
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Text style={{ fontWeight: "bold" }}>
+                      {`${
+                        ride?.finalPrice
+                          ? rideHook.actions.formatPrice(ride?.finalPrice) +
+                            " GNF"
+                          : ride?.maxPrice
+                          ? rideHook.actions.formatPrice(ride?.maxPrice) +
+                            " GNF"
+                          : "N/A"
+                      }`}
+                    </Text>
+                    <List.Icon
+                      {...props}
+                      icon={"chevron-right"}
+                      color={colors.primary}
+                    />
+                  </View>
                 )}
               />
               <Divider />

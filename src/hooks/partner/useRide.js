@@ -290,12 +290,12 @@ export default function useRide() {
       .catch((err) => console.log(err));
   };
 
-  const openMap = () => {
+  const openMap = (type) => {
     const scheme = Platform.select({
       ios: "maps:0,0?q=",
       android: "geo:0,0?q=",
     });
-    const latLng = `${request?.pickUp?.coordinates[1]},${request?.pickUp.coordinates[0]}`;
+    const latLng = `${request[type].coordinates[1]},${request[type].coordinates[0]}`;
     // const latLng = `9.546180211569874,-13.679201504435497`;
 
     const label = `${(request.client.firstName, request.client.lastName)}`;

@@ -64,10 +64,15 @@ export default function RidesHistoryScene() {
                 right={(props) => (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Text style={{ fontWeight: "bold" }}>
-                      {ride?.finalPrice
-                        ? rideHook.actions.formatPrice(ride?.finalPrice) +
-                          " GNF"
-                        : "N/A"}
+                      {`${
+                        ride?.finalPrice
+                          ? rideHook.actions.formatPrice(ride?.finalPrice) +
+                            " GNF"
+                          : ride?.maxPrice
+                          ? rideHook.actions.formatPrice(ride?.maxPrice) +
+                            " GNF"
+                          : "N/A"
+                      }`}
                     </Text>
                     <List.Icon
                       {...props}
