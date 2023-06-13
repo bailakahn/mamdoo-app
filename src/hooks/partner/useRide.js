@@ -51,8 +51,7 @@ export default function useRide() {
     return () => {
       subscription.remove();
       if (mockLocationInterval) clearInterval(mockLocationInterval);
-      if (expoLocationSubscription && expoLocationSubscription?.remove)
-        expoLocationSubscription.remove();
+      if (expoLocationSubscription) expoLocationSubscription.remove();
     };
   }, []);
 
@@ -68,6 +67,9 @@ export default function useRide() {
       appState.current === "active" &&
       nextAppState.match(/inactive|background/)
     ) {
+      if (expoLocationSubscription?.remove) {
+        expoLocationSubscription.remove();
+      }
     }
     appState.current = nextAppState;
   };
@@ -193,6 +195,10 @@ export default function useRide() {
         return;
       }
 
+      if (expoLocationSubscription?.remove) {
+        expoLocationSubscription.remove();
+      }
+
       const locationSubscription = await Location.watchPositionAsync(
         {
           accuracy: Location.Accuracy.Highest,
@@ -221,7 +227,7 @@ export default function useRide() {
     }
   };
 
-  const stopPositionUpdate = async () => {
+  const stopPositionUpdate = () => {
     try {
       if (ENV_NAME === "localhost") {
         if (mockLocationInterval) clearInterval(mockLocationInterval);
@@ -229,8 +235,10 @@ export default function useRide() {
         return;
       }
 
-      if (expoLocationSubscription && expoLocationSubscription?.remove) {
+      if (expoLocationSubscription) {
         expoLocationSubscription.remove();
+        expoLocationSubscription = null;
+        return;
       }
     } catch (error) {
       console.log(error);
