@@ -646,7 +646,10 @@ export default function Home({ navigation, route }) {
         </View>
       )}
 
-      <BottomSheet height={ride.bottomSheetHeight}>
+      <BottomSheet
+        height={ride.bottomSheetHeight}
+        isLoading={ride.rideIsLoading}
+      >
         {ride.step === 2 ? (
           <RideDetailView user={user} ride={ride} navigation={navigation} />
         ) : ride.step === 3 ? (

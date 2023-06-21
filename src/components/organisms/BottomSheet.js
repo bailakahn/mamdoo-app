@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Animated, PanResponder, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useTheme as useMamdooTheme } from "_hooks";
+import { LoadingV2 } from "_atoms";
 
 const BottomSheet = ({
   children,
@@ -9,6 +10,7 @@ const BottomSheet = ({
   style = {},
   showTopBar = true,
   topBarStyle = {},
+  isLoading = false,
 }) => {
   const { colors } = useTheme();
   const [position, setPosition] = useState(new Animated.Value(0));
@@ -49,25 +51,45 @@ const BottomSheet = ({
       }}
       //   {...panResponder.panHandlers}
     >
-      {showTopBar && (
+      {isLoading ? (
         <View
           style={{
-            ...{
-              alignSelf: "center",
-              width: 50,
-              height: 5,
-              borderRadius: 5,
-              backgroundColor: theme?.isDarkMode
-                ? colors.inputBoder
-                : "#e0e0e0",
-              marginTop: -5,
-              marginBottom: 5,
-            },
-            ...topBarStyle,
+            flexGrow: 1,
+            alignItems: "center",
+            justifyContent: "center",
           }}
-        />
+        >
+          <View
+            style={{
+              height: "20%",
+            }}
+          >
+            <LoadingV2 />
+          </View>
+        </View>
+      ) : (
+        <View>
+          {showTopBar && (
+            <View
+              style={{
+                ...{
+                  alignSelf: "center",
+                  width: 50,
+                  height: 5,
+                  borderRadius: 5,
+                  backgroundColor: theme?.isDarkMode
+                    ? colors.inputBoder
+                    : "#e0e0e0",
+                  marginTop: -5,
+                  marginBottom: 5,
+                },
+                ...topBarStyle,
+              }}
+            />
+          )}
+          {children}
+        </View>
       )}
-      {children}
     </Animated.View>
   );
 };

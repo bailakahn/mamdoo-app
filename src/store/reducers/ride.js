@@ -38,6 +38,7 @@ export default (state = ride, action) => {
         step: 1,
         mapHeight: "80%",
         bottomSheetHeight: "20%",
+        rideIsLoading: false,
       };
     // client no driver
     case types.NO_DRIVER:
@@ -54,6 +55,7 @@ export default (state = ride, action) => {
         nearByDrivers: 0,
         newRide: { ...defaultNewRide },
         newRideDetails: { ...defaultNewRideDetails },
+        rideIsLoading: false,
         step: 6,
         // no need to reset map because we are actually keeping the bottom sheet height to show info
         // mapHeight: "80%",
@@ -96,6 +98,7 @@ export default (state = ride, action) => {
         requestId: null,
         onGoingRide: false,
         nearByDrivers: 0,
+        rideIsLoading: false,
       };
     case types.SET_RIDE:
       AsyncStorage.setItem(
@@ -118,6 +121,7 @@ export default (state = ride, action) => {
         driver: null,
         requestId: null,
         driverArrived: false,
+        rideIsLoading: false,
         // onGoingRide: false
       };
     case types.SET_RIDE_CANCELED:
@@ -146,6 +150,7 @@ export default (state = ride, action) => {
         denied: false,
         onGoingRide: false,
         nearByDrivers: 0,
+        rideIsLoading: false,
       };
     case types.SET_ONGOING_RIDE:
       return {
@@ -259,6 +264,11 @@ export default (state = ride, action) => {
           ...state.driver,
           currentLocation: action.currentLocation,
         },
+      };
+    case types.SET_RIDE_LOADING:
+      return {
+        ...state,
+        rideIsLoading: action.rideIsLoading,
       };
     default:
       return state;

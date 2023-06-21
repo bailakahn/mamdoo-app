@@ -46,6 +46,7 @@ export default function useRide() {
       mapHeight,
       bottomSheetHeight,
       driverCurrentLocation,
+      rideIsLoading,
     },
     actions: {
       resetRide,
@@ -65,6 +66,7 @@ export default function useRide() {
       setCurrentRide,
       setDriverLocation,
       showRideReview,
+      setRideIsLoading,
     },
   } = useStore();
 
@@ -446,6 +448,8 @@ export default function useRide() {
       },
     });
 
+    setRideIsLoading(false);
+
     return { price: roundedFare, maxPrice: maxRoundedFare };
   };
 
@@ -546,6 +550,7 @@ export default function useRide() {
     countryData,
     validWorkingHours,
     driverCurrentLocation,
+    rideIsLoading,
     actions: {
       callDriver,
       cancelRide,
@@ -575,6 +580,7 @@ export default function useRide() {
       validateCountry,
       validateWorkingHours,
       setDriverLocation,
+      setRideIsLoading,
     },
   };
 }

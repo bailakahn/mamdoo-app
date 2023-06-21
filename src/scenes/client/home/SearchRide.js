@@ -207,6 +207,7 @@ function ModalScreen({ navigation }) {
                     }
 
                     if (input === "dropOff") {
+                      ride.actions.setRideIsLoading(true);
                       // check if pickUp is set
                       ride.actions.setStep(2);
                       location.actions.getDirections({

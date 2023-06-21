@@ -75,6 +75,7 @@ export default {
     mapHeight: "80%",
     bottomSheetHeight: "20%",
     driverCurrentLocation: null,
+    rideIsLoading: false,
   },
 };
 

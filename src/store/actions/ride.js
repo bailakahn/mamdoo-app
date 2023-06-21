@@ -71,5 +71,8 @@ export default function rideActions(state, dispatch) {
     setDriverLocation: (currentLocation) => {
       dispatch({ type: types.SET_DRIVER_LOCATION, currentLocation });
     },
+    setRideIsLoading: (rideIsLoading) => {
+      dispatch({ type: types.SET_RIDE_LOADING, rideIsLoading });
+    },
   };
 }
