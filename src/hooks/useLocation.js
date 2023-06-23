@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as Location from "expo-location";
 import { useApi } from "_api/google";
+import { useApi as useProvider } from "_api";
 import { lang } from "_utils/lang";
 import Constants from "expo-constants";
 import polyline from "@mapbox/polyline";
@@ -15,6 +16,7 @@ export default function useLocation() {
 
   const [status, requestPermission] = Location.useForegroundPermissions();
   const getRequest = useApi();
+  const providerRequest = useProvider();
 
   useEffect(() => {
     // if status is given or denied
@@ -124,6 +126,7 @@ export default function useLocation() {
     setStep,
     setBottomSheetHeight,
     step = 2,
+    requestId,
   }) => {
     try {
       const response = await getRequest({
@@ -154,8 +157,16 @@ export default function useLocation() {
         response.routes[0].legs[0].duration.value <= 180 &&
         !newRideDetails.notifiedArrival
       ) {
-        console.log("Driver is near by");
-        // send call to endpoint /rides/driverAlmostThere
+        console.log("Driver is near by", requestId);
+        providerRequest({
+          method: "POST",
+          endpoint: "rides/driverAlmostThere",
+          params: {
+            requestId,
+          },
+        }).catch((err) => {
+          console.log(err);
+        });
       }
 
       setNewRideDetails({

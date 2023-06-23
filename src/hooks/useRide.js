@@ -530,6 +530,7 @@ export default function useRide() {
 
   return {
     driver,
+    requestId,
     canCancel,
     driverArrived,
     canceled,

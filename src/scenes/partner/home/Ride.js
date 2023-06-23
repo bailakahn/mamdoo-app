@@ -186,7 +186,7 @@ export default function DriverOnTheWayScene() {
             </View>
           )} */}
 
-          <View style={{ marginTop: 20, flexDirection: "row" }}>
+          <View style={{ flexDirection: "row" }}>
             <Text
               style={{
                 fontWeight: "bold",
@@ -253,32 +253,44 @@ export default function DriverOnTheWayScene() {
             </View>
           )}
 
-          <View style={{ marginTop: 30 }}>
+          <View style={{ marginTop: 10 }}>
             {ride.driverArrived && (
-              <RoundButton
-                size={0.35}
-                shadow={{ size: 0.3 }}
-                color="grey"
-                text={
-                  <View
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <MaterialCommunityIcons
-                      size={40}
-                      name="google-maps"
-                      color={"#fff"}
-                    />
-                    <Text style={{ color: "#fff" }}>{t2("ride.openMap")}</Text>
+              <>
+                <View style={{ alignItems: "center" }}>
+                  <View style={{ marginBottom: 10, padding: 10 }}>
+                    <Text variant="titleMedium" style={{ fontWeight: "bold" }}>
+                      Destination: {ride.request.dropOff?.text}
+                    </Text>
                   </View>
-                }
-                onPress={() => ride.actions.openMap("dropOff")}
-              />
+                  <RoundButton
+                    size={0.35}
+                    shadow={{ size: 0.3 }}
+                    color="grey"
+                    text={
+                      <View
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <MaterialCommunityIcons
+                          size={40}
+                          name="google-maps"
+                          color={"#fff"}
+                        />
+                        <Text style={{ color: "#fff" }}>
+                          {t2("ride.openMap")}
+                        </Text>
+                      </View>
+                    }
+                    onPress={() => ride.actions.openMap("dropOff")}
+                  />
+                </View>
+              </>
             )}
           </View>
+
           <View style={{ marginTop: 10, flexDirection: "row" }}>
             <RoundButton
               size={0.35}

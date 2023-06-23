@@ -102,6 +102,7 @@ export default function Home({ navigation, route }) {
         newRideDetails: ride.newRideDetails,
         setNewRideDetails: ride.actions.setNewRideDetails,
         step: ride.step,
+        requestId: ride.requestId,
       });
     }
   }, [ride.driver]);
