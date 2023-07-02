@@ -1447,10 +1447,13 @@ const NoDriverView = ({ user, ride, navigation }) => {
             alignItems: "center",
           }}
         >
-          <View>
-            <Text variant="titleLarge">{t("ride.contactCustomerService")}</Text>
+          {/* <View>
+            <Text variant="titleMedium">{t("ride.noMamdoo")}</Text>
+          </View> */}
+          <View style={{ marginTop: 20 }}>
+            <Text variant="titleLarge">{t("ride.tryLater")}</Text>
           </View>
-          <View style={{ marginTop: 10, flexDirection: "row" }}>
+          {/* <View style={{ marginTop: 10, flexDirection: "row" }}>
             <Chip
               icon={"phone"}
               onPress={app.actions.call}
@@ -1460,8 +1463,8 @@ const NoDriverView = ({ user, ride, navigation }) => {
                 ? app.settings.phone
                 : app.settings.secondPhoneNumber
             }`}</Chip>
-          </View>
-          <View style={{ marginTop: 20, flexDirection: "row" }}>
+          </View> */}
+          {/* <View style={{ marginTop: 20, flexDirection: "row" }}>
             <Button
               {...Classes.callUsButtonContainer(colors)}
               mode="contained"
@@ -1469,12 +1472,12 @@ const NoDriverView = ({ user, ride, navigation }) => {
             >
               {t("ride.callUs")}
             </Button>
-          </View>
-          <View>
+          </View> */}
+          {/* <View>
             <Text variant="titleSmall">{t("ride.toFindYouADriver")}</Text>
-          </View>
+          </View> */}
         </View>
-        <View style={{ marginBottom: insets.bottom }}>
+        <View style={{ marginBottom: insets.bottom, marginTop: 20 }}>
           <View
             style={{
               flexDirection: "row",
