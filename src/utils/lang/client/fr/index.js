@@ -184,6 +184,7 @@ export default {
     rideDisabledTitle: "Course indisponible",
     rideDisabledMessage:
       "Si vous voyez ce message trop souvent contactez-nous au",
+    bike: "Information de la moto",
   },
   form: {
     fullName: "Prénom Nom",

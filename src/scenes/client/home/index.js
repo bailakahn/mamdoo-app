@@ -1125,6 +1125,27 @@ const DriverView = ({ user, ride, navigation }) => {
             >{`${ride.driver?.phoneNumber}`}</Chip>
           </View>
         </View>
+        {ride.driver?.cab && (
+          <View
+            style={{
+              width: "100%",
+              paddingLeft: 20,
+              paddingRight: 20,
+            }}
+          >
+            <Text
+              variant="titleSmall"
+              style={{
+                fontWeight: "bold",
+                ...(theme.isDarkMode && { color: "#000" }),
+              }}
+            >
+              {`${t("ride.bike")}: ${ride.driver?.cab.model}-${
+                ride.driver?.cab.licensePlate
+              }`}
+            </Text>
+          </View>
+        )}
         <View style={{ marginBottom: insets.bottom }}>
           <View
             style={{
@@ -1277,6 +1298,27 @@ const DriverArrivedView = ({ user, ride, navigation }) => {
             >{`${ride.driver?.phoneNumber}`}</Chip>
           </View>
         </View>
+        {ride.driver?.cab && (
+          <View
+            style={{
+              width: "100%",
+              paddingLeft: 20,
+              paddingRight: 20,
+            }}
+          >
+            <Text
+              variant="titleSmall"
+              style={{
+                fontWeight: "bold",
+                ...(theme.isDarkMode && { color: "#000" }),
+              }}
+            >
+              {`${t("ride.bike")}: ${ride.driver?.cab.model}-${
+                ride.driver?.cab.licensePlate
+              }`}
+            </Text>
+          </View>
+        )}
         <View style={{ marginBottom: insets.bottom, marginTop: 10 }}>
           <View
             style={{

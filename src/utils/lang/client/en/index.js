@@ -180,6 +180,7 @@ export default {
     rideSummaryTitle: "Ride Summary",
     rideDisabledTitle: "Can't make ride at this time",
     rideDisabledMessage: "If you see this message too often, please call us at",
+    bike: "Bike Info",
   },
   form: {
     fullName: "Full Name",
