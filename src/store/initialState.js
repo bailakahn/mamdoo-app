@@ -45,6 +45,7 @@ export default {
     backgroundPermission: "notLoaded",
     backgroundPermissionReady: false,
     appLaunched: false,
+    googleMapsSessionToken: null,
   },
   auth: {
     user: null,

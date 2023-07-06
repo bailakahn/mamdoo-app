@@ -35,9 +35,9 @@ function ModalScreen({ navigation }) {
   const refreshAsync = async () => {
     const currentLocation = await location.actions.getCurrentPosition();
 
-    const results = await location.actions.getPlace(
-      `${currentLocation?.latitude},${currentLocation?.longitude}`
-    );
+    // const results = await location.actions.getPlace(
+    //   `${currentLocation?.latitude},${currentLocation?.longitude}`
+    // );
 
     ride.actions.setNewRide({
       ...ride.newRide,
@@ -48,7 +48,7 @@ function ModalScreen({ navigation }) {
           latitude: currentLocation?.latitude,
           longitude: currentLocation?.longitude,
         },
-        placeId: results[0].place_id,
+        // placeId: results[0].place_id,
       },
     });
   };
@@ -187,9 +187,7 @@ function ModalScreen({ navigation }) {
                     const result = await location.actions.getPlaceDetails(
                       item.place_id
                     );
-                    console.log({
-                      main_text: item.structured_formatting.main_text,
-                    });
+
                     ride.actions.setNewRide({
                       ...ride.newRide,
                       [input]: {

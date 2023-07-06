@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import * as Location from "expo-location";
 import { useApi } from "_api/google";
+import { useStore } from "_store";
 import { useApi as useProvider } from "_api";
 import { lang } from "_utils/lang";
 import Constants from "expo-constants";
 import polyline from "@mapbox/polyline";
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
 
 const ENV_NAME = Constants.expoConfig.extra.envName;
 
@@ -13,6 +16,11 @@ export default function useLocation() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchPredictions, setSearchPredictions] = useState([]);
+
+  const {
+    main: { googleMapsSessionToken },
+    actions: { setGoogleMapsSessionToken },
+  } = useStore();
 
   const [status, requestPermission] = Location.useForegroundPermissions();
   const getRequest = useApi();
@@ -79,6 +87,12 @@ export default function useLocation() {
   };
 
   const getPredictions = async ({ input, location, user = {} }) => {
+    let sess = "";
+    if (!googleMapsSessionToken) {
+      sess = uuidv4();
+      setGoogleMapsSessionToken(sess);
+    }
+
     try {
       const { predictions } = await getRequest({
         method: "GET",
@@ -87,6 +101,7 @@ export default function useLocation() {
           location: location,
           input,
           language: lang,
+          sessiontoken: googleMapsSessionToken || sess,
           components:
             ENV_NAME !== "production" || user?.isAdmin
               ? "country:ca|country:gn|country:fr"
@@ -109,8 +124,12 @@ export default function useLocation() {
         endpoint: "place/details/json",
         params: {
           place_id: placeId,
+          sessiontoken: googleMapsSessionToken,
+          fields: "geometry",
         },
       });
+
+      setGoogleMapsSessionToken(null);
 
       return result;
     } catch (err) {

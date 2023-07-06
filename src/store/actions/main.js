@@ -77,5 +77,11 @@ export default function authActions(state, dispatch) {
         appLaunched,
       });
     },
+    setGoogleMapsSessionToken: (token) => {
+      dispatch({
+        type: types.SET_GOOGLE_MAPS_SESSION_TOKEN,
+        token,
+      });
+    },
   };
 }

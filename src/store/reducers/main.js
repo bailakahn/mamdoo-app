@@ -61,6 +61,11 @@ export default (state = main, action) => {
         ...state,
         appLaunched: action.appLaunched,
       };
+    case types.SET_GOOGLE_MAPS_SESSION_TOKEN:
+      return {
+        ...state,
+        googleMapsSessionToken: action.token,
+      };
     default:
       return state;
   }
