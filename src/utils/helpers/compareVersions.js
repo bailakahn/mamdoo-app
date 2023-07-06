@@ -1,4 +1,4 @@
-function compareVersions(version1, version2) {
+function compareVersions(version1 = "", version2 = "") {
   const v1 = version1.split(".").map(Number);
   const v2 = version2.split(".").map(Number);
 
