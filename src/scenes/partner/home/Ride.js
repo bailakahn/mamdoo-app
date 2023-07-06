@@ -205,90 +205,60 @@ export default function DriverOnTheWayScene() {
             </Text>
           </View>
 
-          {!ride.driverArrived && (
-            <View style={{ marginTop: 30, flexDirection: "row" }}>
-              <RoundButton
-                size={0.35}
-                shadow={{ size: 0.3 }}
-                color="error"
-                text={
-                  <View
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Icon size={40} name="clear" color={"#fff"} />
-                    <Text style={{ color: "#fff" }}>
-                      {t2("ride.cancelRide")}
-                    </Text>
-                  </View>
-                }
-                onPress={() => setVisible(true)}
-              />
-              <View style={{ marginRight: 50 }} />
-              <RoundButton
-                size={0.35}
-                shadow={{ size: 0.3 }}
-                color="grey"
-                text={
-                  <View
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <MaterialCommunityIcons
-                      size={40}
-                      name="google-maps"
-                      color={"#fff"}
-                    />
-                    <Text style={{ color: "#fff" }}>{t2("ride.openMap")}</Text>
-                  </View>
-                }
-                onPress={() => ride.actions.openMap("pickUp")}
-              />
+          {ride.driverArrived && (
+            <View style={{ alignItems: "center" }}>
+              <View style={{ marginBottom: 10, padding: 10 }}>
+                <Text variant="titleMedium" style={{ fontWeight: "bold" }}>
+                  Destination: {ride.request.dropOff?.text}
+                </Text>
+              </View>
             </View>
           )}
 
-          <View style={{ marginTop: 10 }}>
-            {ride.driverArrived && (
-              <>
-                <View style={{ alignItems: "center" }}>
-                  <View style={{ marginBottom: 10, padding: 10 }}>
-                    <Text variant="titleMedium" style={{ fontWeight: "bold" }}>
-                      Destination: {ride.request.dropOff?.text}
-                    </Text>
-                  </View>
-                  <RoundButton
-                    size={0.35}
-                    shadow={{ size: 0.3 }}
-                    color="grey"
-                    text={
-                      <View
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <MaterialCommunityIcons
-                          size={40}
-                          name="google-maps"
-                          color={"#fff"}
-                        />
-                        <Text style={{ color: "#fff" }}>
-                          {t2("ride.openMap")}
-                        </Text>
-                      </View>
-                    }
-                    onPress={() => ride.actions.openMap("dropOff")}
-                  />
+          <View style={{ marginTop: 30, flexDirection: "row" }}>
+            <RoundButton
+              size={0.35}
+              shadow={{ size: 0.3 }}
+              color="error"
+              text={
+                <View
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Icon size={40} name="clear" color={"#fff"} />
+                  <Text style={{ color: "#fff" }}>{t2("ride.cancelRide")}</Text>
                 </View>
-              </>
-            )}
+              }
+              onPress={() => setVisible(true)}
+            />
+            <View style={{ marginRight: 50 }} />
+            <RoundButton
+              size={0.35}
+              shadow={{ size: 0.3 }}
+              color="grey"
+              text={
+                <View
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    size={40}
+                    name="google-maps"
+                    color={"#fff"}
+                  />
+                  <Text style={{ color: "#fff" }}>{t2("ride.openMap")}</Text>
+                </View>
+              }
+              onPress={() =>
+                ride.actions.openMap(ride.driverArrived ? "dropOff" : "pickUp")
+              }
+            />
           </View>
 
           <View style={{ marginTop: 10, flexDirection: "row" }}>

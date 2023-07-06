@@ -145,6 +145,7 @@ export default function useRide() {
           // set ride to ongoing
           setCurrentRide({
             ...rideData,
+            driver: currentRide.driver,
             driverArrived: true,
             step: 5,
           });
