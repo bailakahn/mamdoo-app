@@ -29,7 +29,7 @@ export default function App() {
 
   return (
     <StoreProvider>
-      <NetworkProvider>
+      <NetworkProvider pingInterval={30000}>
         <OfflineNotice />
         <ErrorBoundary>
           <NavigationRoot />

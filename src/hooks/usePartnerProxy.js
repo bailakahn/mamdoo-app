@@ -1,27 +1,39 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+import { AppState, AppStateStatus } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import socketIOClient from "socket.io-client";
-// import { PROXY_URL } from "@env";
 import Constants from "expo-constants";
 import usePartner from "./usePartner";
 import { useStore } from "_store";
 import types from "_store/types";
 const PROXY_URL = Constants.expoConfig.extra.proxyUrl;
 const socketEvents = ["NEW_REQUEST", "RESET_REQUEST", "CANCEL_REQUEST"];
+
 export default function usePartnerProxy() {
   const { dispatch } = useStore();
   const navigation = useNavigation();
-
   const partner = usePartner();
+  const socketRef = useRef(null);
+  const appState = useRef(AppState.currentState);
 
-  useEffect(() => {
-    const socket = socketIOClient(PROXY_URL);
-    socket.on("connect", () => {
-      socket.emit("join", `${partner.partner.userId}`);
+  const checkSocketConnection = () => {
+    if (!socketRef.current.connected) {
+      reconnectSocket();
+    }
+  };
+
+  const reconnectSocket = () => {
+    socketRef.current = socketIOClient(PROXY_URL);
+    setupSocketEvents();
+  };
+
+  const setupSocketEvents = () => {
+    socketRef.current.on("connect", () => {
+      socketRef.current.emit("join", `${partner.partner.userId}`);
     });
 
     socketEvents.forEach((event) => {
-      socket.on(event, (data) => {
+      socketRef.current.on(event, (data) => {
         if (event === "FOUND_DRIVER") {
           dispatch({ type: "SET_CAN_CANCEL" });
           // TODO: set time out to 3 minutes
@@ -43,8 +55,36 @@ export default function usePartnerProxy() {
         dispatch({ type: event, data });
       });
     });
+  };
 
-    // CLEAN UP THE EFFECT
-    return () => socket.disconnect();
+  const handleAppStateChange = (nextAppState) => {
+    if (
+      appState.current.match(/inactive|background/) &&
+      nextAppState === "active"
+    ) {
+      // console.log("FOREGROUND => CHECKING SOCKET");
+      checkSocketConnection();
+    }
+    appState.current = nextAppState;
+  };
+
+  useEffect(() => {
+    reconnectSocket();
+
+    // CHECK SOCKET CONNECTION EVERY 5 SECONDS
+    const interval = setInterval(checkSocketConnection, 5000);
+
+    const subscription = AppState.addEventListener(
+      "change",
+      handleAppStateChange
+    );
+
+    return () => {
+      clearInterval(interval);
+      subscription.remove();
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+    };
   }, []);
 }

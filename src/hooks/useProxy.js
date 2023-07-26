@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import socketIOClient from "socket.io-client";
 import { useNavigation } from "@react-navigation/native";
-// import { PROXY_URL } from "@env";
+import { AppState } from "react-native";
 import Constants from "expo-constants";
 import useUser from "./useUser";
 import { useStore } from "_store";
 import types from "../store/types";
+
 const PROXY_URL = Constants.expoConfig.extra.proxyUrl;
+
 const socketEvents = [
   "FOUND_DRIVER",
   "DRIVER_ARRIVED",
@@ -20,18 +22,38 @@ const socketEvents = [
 export default function useProxy() {
   const { dispatch } = useStore();
   const navigation = useNavigation();
-
   const user = useUser();
+  const socketRef = useRef(null);
+  const appState = useRef(AppState.currentState);
 
-  useEffect(() => {
-    const socket = socketIOClient(PROXY_URL);
+  const handleAppStateChange = (nextAppState) => {
+    if (
+      appState.current.match(/inactive|background/) &&
+      nextAppState === "active"
+    ) {
+      checkSocketConnection();
+    }
+    appState.current = nextAppState;
+  };
 
-    socket.on("connect", () => {
-      socket.emit("join", `${user.user.userId}`);
+  const checkSocketConnection = () => {
+    if (!socketRef.current.connected) {
+      reconnectSocket();
+    }
+  };
+
+  const reconnectSocket = () => {
+    socketRef.current = socketIOClient(PROXY_URL);
+    setupSocketEvents();
+  };
+
+  const setupSocketEvents = () => {
+    socketRef.current.on("connect", () => {
+      socketRef.current.emit("join", `${user.user.userId}`);
     });
 
     socketEvents.forEach((event) => {
-      socket.on(event, (data) => {
+      socketRef.current.on(event, (data) => {
         if (event === "FOUND_DRIVER") {
           // console.log({ foundDriver: data });
           dispatch({ type: "SET_CAN_CANCEL" });
@@ -93,9 +115,24 @@ export default function useProxy() {
         dispatch({ type: event, data });
       });
     });
+  };
+
+  useEffect(() => {
+    reconnectSocket();
+
+    // Check socket connection every 5 seconds
+    const interval = setInterval(checkSocketConnection, 5000);
+
+    // Listen for app state changes
+    const subscription = AppState.addEventListener(
+      "change",
+      handleAppStateChange
+    );
 
     return () => {
-      socket.disconnect();
+      clearInterval(interval);
+      subscription.remove();
+      if (socketRef.current) socketRef.current.disconnect();
     };
   }, []);
 }
