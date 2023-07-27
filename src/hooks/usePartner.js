@@ -413,7 +413,7 @@ export default function usePartner() {
       });
   };
 
-  const saveTime = (time) => {
+  const saveTime = (time) =>
     getRequest({
       method: "POST",
       endpoint: "drivers/savetime",
@@ -423,7 +423,6 @@ export default function usePartner() {
     }).catch((err) => {
       console.log(err);
     });
-  };
 
   return {
     formPartner,
