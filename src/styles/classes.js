@@ -281,11 +281,12 @@ export const goButton = (colors) => ({
 });
 
 export const statusNoticeView = (colors) => ({
-  flexDirection: "row",
-  width: Mixins.width(1, true),
+  // flexDirection: "row",
+  // width: Mixins.width(1, true),
   justifyContent: "center",
   alignItems: "center",
   marginBottom: 20,
+  padding: 5,
 });
 
 export const modalContent = (colors) => ({
@@ -329,10 +330,21 @@ export const buttonShadow = (colors, size) => ({
 export const driverWelcomeNoticeView = (colors, isOnline) => ({
   width: Mixins.width(0.85, true),
   borderWidth: 1,
-  borderColor: !isOnline ? colors.accent : colors.primary,
+  borderColor: isOnline ? colors.primary : colors.error,
   borderRadius: 10,
   padding: 20,
   marginTop: 50,
+});
+
+export const driverOnlineNoticeView = (colors, isOnline) => ({
+  width: Mixins.width(0.85, true),
+  borderWidth: 1,
+  borderColor: isOnline ? colors.primary : colors.error,
+  backgroundColor: isOnline ? colors.primary : colors.error,
+  borderRadius: 10,
+  padding: 20,
+  marginTop: 50,
+  alignItems: "center",
 });
 
 export const notice = (colors, color) => ({

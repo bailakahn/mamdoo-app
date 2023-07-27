@@ -7,7 +7,12 @@ import usePartner from "./usePartner";
 import { useStore } from "_store";
 import types from "_store/types";
 const PROXY_URL = Constants.expoConfig.extra.proxyUrl;
-const socketEvents = ["NEW_REQUEST", "RESET_REQUEST", "CANCEL_REQUEST"];
+const socketEvents = [
+  "NEW_REQUEST",
+  "RESET_REQUEST",
+  "CANCEL_REQUEST",
+  "ONLINE_STATUS_CHANGE",
+];
 
 export default function usePartnerProxy() {
   const { dispatch } = useStore();

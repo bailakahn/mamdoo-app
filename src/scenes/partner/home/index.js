@@ -159,8 +159,8 @@ export default function AccountScene({}) {
             >
               <Text style={{ fontSize: 20, fontWeight: "bold" }}>
                 {partner.partner.isOnline
-                  ? t2("home.onlineWelcomeText")
-                  : t2("home.offlineWelcomeText")}
+                  ? t2("home.offlineNotice")
+                  : t2("home.onlineNotice")}
               </Text>
             </View>
           </View>
@@ -190,7 +190,7 @@ export default function AccountScene({}) {
             </View>
           )}
           <View style={[Classes.bottonView(colors)]}>
-            <RoundButton
+            {/* <RoundButton
               disabled={partner.partner?.isBlocked}
               size={0.35}
               color={!partner.partner.isOnline ? "primary" : "error"}
@@ -216,19 +216,19 @@ export default function AccountScene({}) {
               }
               onPress={partner.actions.changeStatus}
               shadow={{ size: 0.3 }}
-            />
-          </View>
-          <View style={Classes.statusNoticeView(colors)}>
-            <Icon
-              name="info-outline"
-              color={!partner.partner.isOnline ? colors.primary : colors.accent}
-              size={30}
-            />
-            <Text style={{ fontSize: 20, marginLeft: 10 }}>
-              {!partner.partner.isOnline
-                ? t2("home.goNotice")
-                : t2("home.stopNotice")}
-            </Text>
+            /> */}
+            <View
+              style={Classes.driverOnlineNoticeView(
+                colors,
+                partner.partner.isOnline
+              )}
+            >
+              <Text style={{ fontSize: 20, fontWeight: "bold", color: "#fff" }}>
+                {partner.partner.isOnline
+                  ? t2("home.online")
+                  : t2("home.offline")}
+              </Text>
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>

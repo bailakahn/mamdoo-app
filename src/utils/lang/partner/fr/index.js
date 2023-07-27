@@ -153,12 +153,16 @@ export default {
   },
   home: {
     go: "COMMENCER",
-    goNotice: "Recevoir les demandes de courses",
+    onlineNotice:
+      "Si vous ête en service, appelez votre manager pour qu'il vous mette en ligne!",
     stop: "ARRETER",
-    stopNotice: "Ne plus recevoir de courses",
+    offlineNotice:
+      "Si vous n'ête pas en service, appelez votre gestionaire pour qu'il vous mette hors ligne!",
     welcome: "Bienvenue sur Mamdoo",
     onlineWelcomeText:
       "Vous êtes en ligne, Vous allez bientot recevoir des demandes de courses",
+    online: "En Ligne",
+    offline: "Hors Ligne",
     offlineWelcomeText:
       "Vous n'êtes pas en ligne. appuyez sur `COMMENCER` pour recevoir des demande de course",
     reloadButton: "Recharger",
