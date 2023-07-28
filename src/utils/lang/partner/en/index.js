@@ -156,10 +156,9 @@ export default {
   },
   home: {
     go: "GO",
-    offlineNotice:
-      "If you are on service, call your manager to put you online!",
+    onlineNotice: "If you are on service, call your manager to put you online!",
     stop: "STOP",
-    onlineNotice: "If you are offline, call your manager to put you offline!",
+    offlineNotice: "If you are offline, call your manager to put you offline!",
     welcome: "Welcome On Mamdoo",
     onlineWelcomeText:
       "You are online, You will be receiving ride requests soon",
