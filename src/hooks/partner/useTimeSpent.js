@@ -3,7 +3,7 @@ import { AppState } from "react-native";
 import { differenceInSeconds } from "date-fns";
 
 // used only for dev to debug
-const saveUserTimeSpent = async (time, from = "") => {
+const saveUserTimeSpent = (time, from = "") => {
   console.log(`[${from}]Time spent in the app: ${time}`);
 };
 
@@ -39,6 +39,7 @@ export default function useTimeSpent(isOnline, saveTime) {
         if (!isSaving.current) {
           const endTime = Date.now();
           const timeSpent = differenceInSeconds(endTime, startTime.current); // time spent in seconds
+          saveUserTimeSpent(timeSpent, "UNMOUNT");
           saveTime(timeSpent);
         }
       }
@@ -76,6 +77,7 @@ export default function useTimeSpent(isOnline, saveTime) {
         const endTime = Date.now();
         const timeSpent = differenceInSeconds(endTime, startTime.current); // time spent in seconds
         startTime.current = Date.now(); // reset start time
+        saveUserTimeSpent(timeSpent, "INTERVAL");
         await saveTime(timeSpent);
         isSaving.current = false;
       }, 300000);
@@ -106,6 +108,7 @@ export default function useTimeSpent(isOnline, saveTime) {
       if (!isSaving.current) {
         const endTime = Date.now();
         const timeSpent = differenceInSeconds(endTime, startTime.current); // time spent in seconds
+        saveUserTimeSpent(timeSpent, "BACKGROUND");
         await saveTime(timeSpent);
       }
     }
