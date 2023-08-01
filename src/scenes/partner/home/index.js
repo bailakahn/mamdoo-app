@@ -29,7 +29,6 @@ export default function AccountScene({}) {
 
   useEffect(() => {
     ride.actions.bootstrapAsync();
-    if (partner) partner.actions.updateLocation();
   }, []);
 
   const acceptRequest = async () => {
