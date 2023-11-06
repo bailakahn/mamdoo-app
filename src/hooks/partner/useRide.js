@@ -348,6 +348,29 @@ export default function useRide() {
       });
   };
 
+  const searchRides = (setShowSearchDialog) => {
+    setIsLoading(true);
+    setShowSearchDialog(false);
+    getRequest({
+      method: "GET",
+      endpoint: "rides/searchRides",
+    })
+      .then(({ success, rideId }) => {
+        console.log({ rideId });
+        if (rideId) {
+          dispatch({ type: types.NEW_REQUEST, data: { requestId: rideId } });
+        } else {
+          setShowSearchDialog(true);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   const onDriverArrived = () => {
     setIsLoading(true);
     stopPositionUpdate();
@@ -462,6 +485,7 @@ export default function useRide() {
       onEndRide,
       formatPrice,
       bootstrapAsync,
+      searchRides,
     },
   };
 }

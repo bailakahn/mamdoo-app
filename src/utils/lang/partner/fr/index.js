@@ -162,10 +162,15 @@ export default {
     onlineWelcomeText:
       "Vous êtes en ligne, Vous allez bientot recevoir des demandes de courses",
     online: "En Ligne",
+    youAreOnline: "Vous êtes en ligne!",
+    youAreOffline: "Vous êtes hors ligne!",
+    searchRides: "Rechercher des courses",
     offline: "Hors Ligne",
     offlineWelcomeText:
       "Vous n'êtes pas en ligne. appuyez sur `COMMENCER` pour recevoir des demande de course",
     reloadButton: "Recharger",
+    noRidesTitle: "Aucune course",
+    noRidesContent: "Réessayer dans quelques minutes!",
     call: "Appeler",
     callUs: "Appeler nous",
     close: "Fermer",

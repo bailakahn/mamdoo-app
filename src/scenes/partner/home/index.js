@@ -1,7 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useKeepAwake } from "expo-keep-awake";
-import { View, ScrollView, SafeAreaView } from "react-native";
-import { Headline, useTheme, Portal, Text, Modal } from "react-native-paper";
+import { View, ScrollView, SafeAreaView, TouchableOpacity } from "react-native";
+import {
+  Headline,
+  useTheme,
+  Portal,
+  Text,
+  Modal,
+  Dialog,
+} from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
@@ -16,6 +23,25 @@ import { useRide, useLocation } from "_hooks/partner";
 import { RoundButton, Button, LoadingV2 } from "_atoms";
 import { Info } from "_molecules";
 
+const SearchDialog = ({ visible, setVisible }) => {
+  const hideDialog = () => setVisible(false);
+
+  return (
+    <Portal>
+      <Dialog visible={visible} onDismiss={hideDialog}>
+        <Dialog.Title>{t2("home.noRidesTitle")}</Dialog.Title>
+
+        <Dialog.Content>
+          <Text variant="bodyMedium">{t2("home.noRidesContent")}</Text>
+        </Dialog.Content>
+        <Dialog.Actions>
+          <Button onPress={() => setVisible(false)}>Ok</Button>
+        </Dialog.Actions>
+      </Dialog>
+    </Portal>
+  );
+};
+
 export default function AccountScene({}) {
   const { colors } = useTheme();
   usePartnerProxy();
@@ -26,6 +52,7 @@ export default function AccountScene({}) {
   const partner = usePartner();
   const location = useLocation();
   const app = useApp();
+  const [showSearchDialog, setShowSearchDialog] = useState(false);
 
   useEffect(() => {
     ride.actions.bootstrapAsync();
@@ -128,6 +155,10 @@ export default function AccountScene({}) {
           />
         )}
       </Portal>
+      <SearchDialog
+        visible={showSearchDialog}
+        setVisible={setShowSearchDialog}
+      />
       <SafeAreaView
         style={{
           flex: 1,
@@ -136,6 +167,22 @@ export default function AccountScene({}) {
           justifyContent: "center",
         }}
       >
+        <View
+          style={[
+            Classes.driverConnectionStatusContainer,
+            {
+              backgroundColor: partner.partner.isOnline
+                ? colors.primary
+                : "#F1853F",
+            },
+          ]}
+        >
+          <Text style={Classes.text}>
+            {partner.partner.isOnline
+              ? t2("home.youAreOnline")
+              : t2("home.youAreOffline")}
+          </Text>
+        </View>
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
@@ -216,18 +263,21 @@ export default function AccountScene({}) {
               onPress={partner.actions.changeStatus}
               shadow={{ size: 0.3 }}
             /> */}
-            <View
-              style={Classes.driverOnlineNoticeView(
-                colors,
-                partner.partner.isOnline
-              )}
-            >
-              <Text style={{ fontSize: 20, fontWeight: "bold", color: "#fff" }}>
-                {partner.partner.isOnline
-                  ? t2("home.online")
-                  : t2("home.offline")}
-              </Text>
-            </View>
+            {partner.partner.isOnline && (
+              <TouchableOpacity
+                style={Classes.driverOnlineNoticeView(
+                  colors,
+                  partner.partner.isOnline
+                )}
+                onPress={() => ride.actions.searchRides(setShowSearchDialog)}
+              >
+                <Text
+                  style={{ fontSize: 20, fontWeight: "bold", color: "#fff" }}
+                >
+                  {t2("home.searchRides")}
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
         </ScrollView>
       </SafeAreaView>

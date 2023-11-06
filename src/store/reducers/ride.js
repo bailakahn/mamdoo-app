@@ -6,6 +6,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default (state = ride, action) => {
   switch (action.type) {
     case types.FOUND_DRIVER:
+      if (state.driver) {
+        return state;
+      }
       AsyncStorage.setItem(
         "@mamdoo-current-ride",
         JSON.stringify({

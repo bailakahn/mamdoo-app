@@ -163,10 +163,15 @@ export default {
     onlineWelcomeText:
       "You are online, You will be receiving ride requests soon",
     online: "Online",
+    youAreOnline: "You are online",
+    youAreOffline: "You are offline",
+    searchRides: "Search Rides",
     offline: "OffLine",
     offlineWelcomeText:
       "You are offline, click on `GO` to start receiving ride requests",
     reloadButton: "Reload",
+    noRidesTitle: "No rides available",
+    noRidesContent: "Try again in few minutes!",
     call: "Call",
     callUs: "Call Us",
     close: "Close",

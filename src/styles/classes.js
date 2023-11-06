@@ -511,6 +511,15 @@ export const offlineContainer = {
   zIndex: 2,
 };
 
+export const driverConnectionStatusContainer = {
+  height: Mixins.scaleSize(50),
+  justifyContent: "center",
+  alignItems: "center",
+  flexDirection: "row",
+  width: Mixins.width(),
+  zIndex: 2,
+};
+
 export const text = (colors) => ({
   color: colors.text,
 });
