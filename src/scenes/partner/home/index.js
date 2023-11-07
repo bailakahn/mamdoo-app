@@ -8,6 +8,9 @@ import {
   Text,
   Modal,
   Dialog,
+  Card,
+  Avatar,
+  IconButton,
 } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Classes } from "_styles";
@@ -208,6 +211,24 @@ export default function AccountScene({}) {
                   ? t2("home.offlineNotice")
                   : t2("home.onlineNotice")}
               </Text>
+            </View>
+
+            <View
+              style={Classes.driverWelcomeNoticeView(
+                colors,
+                partner.partner.isOnline
+              )}
+            >
+              <Card.Title
+                title={t2("home.dailyCommission")}
+                subtitle={
+                  <Text
+                    variant="titleLarge"
+                    style={{ fontWeight: "bold" }}
+                  >{`${ride.commission} GNF`}</Text>
+                }
+                left={(props) => <Avatar.Icon {...props} icon="percent" />}
+              />
             </View>
           </View>
           {partner.partner?.isBlocked && (

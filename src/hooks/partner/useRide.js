@@ -24,6 +24,7 @@ export default function useRide() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [info, setInfo] = useState(false);
+  const [commission, setCommission] = useState(0);
   // const [mockLocationInterval, setMockLocationInterval] = useState(null);
 
   const {
@@ -43,6 +44,7 @@ export default function useRide() {
   } = useStore();
 
   useEffect(() => {
+    getCommission();
     const subscription = AppState.addEventListener(
       "change",
       handleAppStateChange
@@ -371,6 +373,19 @@ export default function useRide() {
       });
   };
 
+  const getCommission = () => {
+    getRequest({
+      method: "GET",
+      endpoint: "rides/getDailyCommission",
+    })
+      .then(({ success, commission }) => {
+        setCommission(formatPrice(commission));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const onDriverArrived = () => {
     setIsLoading(true);
     stopPositionUpdate();
@@ -470,7 +485,9 @@ export default function useRide() {
     info,
     isLoading,
     ridePrice,
+    commission,
     actions: {
+      getCommission,
       resetRequest,
       acceptRequest,
       denyRequest,

@@ -172,6 +172,7 @@ export default {
     reloadButton: "Reload",
     noRidesTitle: "No rides available",
     noRidesContent: "Try again in few minutes!",
+    dailyCommission: "Daily Commission",
     call: "Call",
     callUs: "Call Us",
     close: "Close",

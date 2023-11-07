@@ -171,6 +171,7 @@ export default {
     reloadButton: "Recharger",
     noRidesTitle: "Aucune course",
     noRidesContent: "Réessayer dans quelques minutes!",
+    dailyCommission: "Commission journalière",
     call: "Appeler",
     callUs: "Appeler nous",
     close: "Fermer",
