@@ -4,7 +4,6 @@ import * as ImagePicker from "expo-image-picker";
 export default function useUpload() {
   useEffect(() => {
     (async () => {
-      // if (Constants.platform.ios) {
       const cameraRollStatus =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
       const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
@@ -14,7 +13,6 @@ export default function useUpload() {
       ) {
         alert("Sorry, we need these permissions to make this work!");
       }
-      // }
     })();
   }, []);
 
