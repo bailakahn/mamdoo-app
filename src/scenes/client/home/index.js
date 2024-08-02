@@ -907,7 +907,7 @@ const RideDetailView = ({ user, ride, navigation }) => {
                         style={{ marginRight: 10, justifyContent: "center" }}
                       >
                         <Image
-                          source={require(`_assets/bike.png`)}
+                          source={require("_assets/bike.png")}
                           cacheKey="motorbike"
                           style={{ width: 50, height: 50 }}
                           resizeMode="contain"
