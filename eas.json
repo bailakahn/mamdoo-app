@@ -5,12 +5,17 @@
   },
   "build": {
     "base": {
-      "node": "16.10.0",
+      "node": "18.18.0",
       "yarn": "1.22.10"
     },
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "ENV_NAME": "dev",
+        "PROXY_URL": "http://192.168.2.68:3001",
+        "PROVIDER_URL": "http://192.168.2.68:3005/",
+      }
     },
     "staging": {
       "extends": "base",

@@ -1,23 +1,46 @@
 import "dotenv/config";
+
+const getBundleId = () => {
+  if (process.env.ENV_NAME === "production") {
+    return "com.mamdoo.app";
+  }
+
+  if (process.env.ENV_NAME === "staging") {
+    return `com.mamdoo.app-staging`;
+  }
+
+  return `com.mamdoo.app.dev`;
+};
+
+const getAppName = () => {
+  if (process.env.ENV_NAME === "production") {
+    return "Mamdoo";
+  }
+
+  if (process.env.ENV_NAME === "staging") {
+    return `Mamdoo (staging)`;
+  }
+
+  return `Mamdoo (Dev)`;
+};
+
+const bundleId = getBundleId();
+
 const IS_PROD = process.env.ENV_NAME === "production";
 
 module.exports = ({ config }) => ({
   ...config,
-  name: IS_PROD ? "Mamdoo" : `Mamdoo (${process.env.ENV_NAME})`,
+  name: getAppName(),
   ios: {
     ...config.ios,
-    bundleIdentifier: IS_PROD
-      ? "com.mamdoo.app"
-      : `com.mamdoo.app-${process.env.ENV_NAME}`,
+    bundleIdentifier: bundleId,
     config: {
       googleMapsApiKey: "AIzaSyAOms3z5wGZja5MI8bZdgJ8C6ccOYaY78M",
     },
   },
   android: {
     ...config.android,
-    package: IS_PROD
-      ? "com.mamdoo.app"
-      : `com.mamdoo.app_${process.env.ENV_NAME}`,
+    package: bundleId,
     // serviceAccountKeyPath: process.env.SERVICE_ACCOUNT_KEY,
     googleServicesFile: IS_PROD
       ? "./google-services-prod.json"

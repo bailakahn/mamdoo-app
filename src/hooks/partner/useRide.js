@@ -167,7 +167,7 @@ export default function useRide() {
   const startPositionUpdate = async (request) => {
     try {
       // mock driver movement
-      if (ENV_NAME === "localhost") {
+      if (ENV_NAME === "localhost" || ENV_NAME === "dev") {
         let i = 0;
         const {
           coords: { latitude, longitude },
@@ -231,7 +231,7 @@ export default function useRide() {
 
   const stopPositionUpdate = () => {
     try {
-      if (ENV_NAME === "localhost") {
+      if (ENV_NAME === "localhost" || ENV_NAME === "dev") {
         if (mockLocationInterval) clearInterval(mockLocationInterval);
         mockLocationInterval = null;
         return;

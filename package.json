@@ -33,6 +33,7 @@
     "expo-application": "5.9.1",
     "expo-av": "14.0.7",
     "expo-constants": "16.0.2",
+    "expo-dev-client": "~4.0.26",
     "expo-device": "6.0.2",
     "expo-file-system": "17.0.1",
     "expo-image-picker": "15.0.7",
@@ -48,7 +49,7 @@
     "i18n-js": "^3.8.0",
     "install": "^0.13.0",
     "lodash": "^4.17.21",
-    "lottie-ios": "3.4.0",
+    "lottie-ios": "4.4.1",
     "lottie-react-native": "6.7.0",
     "moment": "^2.29.1",
     "react": "18.2.0",
@@ -85,6 +86,6 @@
   "private": true,
   "version": "0.0.0",
   "engines": {
-    "node": "18.17.1"
+    "node": "18.18.0"
   }
 }
