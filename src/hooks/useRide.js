@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Linking, Platform, Alert, AppState } from "react-native";
-import Constants from "expo-constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useStore } from "_store";
 import { t, lang } from "_utils/lang";
@@ -9,8 +8,6 @@ import { useNavigation } from "@react-navigation/native";
 import useLocation from "./useLocation";
 import useApp from "./useApp";
 import rideStatuses from "../constants/rideStatuses";
-
-const ENV_NAME = Constants.expoConfig.extra.envName;
 
 export default function useRide() {
   const getRequest = useApi();
@@ -494,7 +491,9 @@ export default function useRide() {
       location.location || (await location.actions.getCurrentPosition());
 
     const validCountries =
-      ENV_NAME != "production" || user?.isAdmin ? ["gn", "ca", "fr"] : ["gn"];
+      process.env.EXPO_PUBLIC_ENV_NAME != "production" || user?.isAdmin
+        ? ["gn", "ca", "fr"]
+        : ["gn"];
 
     getCountry(latitude, longitude)
       .then((data) => {

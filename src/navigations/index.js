@@ -21,11 +21,8 @@ import { LoadingV2 } from "_atoms";
 import LocationDisclosure from "_components/organisms/LocationDisclosure";
 import MaintenanceMode from "_organisms/MaintenanceMode";
 import ForceUpdate from "_organisms/ForceUpdate";
-import Constants from "expo-constants";
 import * as Application from "expo-application";
 import compareVersions from "../utils/helpers/compareVersions";
-
-const ENV_NAME = Constants.expoConfig.extra.envName;
 
 MaterialCommunityIcons.loadFont("home", { family: "material-community" });
 MaterialCommunityIcons.loadFont("account-settings", {
@@ -116,7 +113,6 @@ export default function NavigationRoot({ mode }) {
     return <LoadingV2 color={"#25C0D2"} />;
 
   if (
-    // ENV_NAME === "production" &&
     compareVersions(
       Application.nativeApplicationVersion,
       settings?.minimumCompatibleVersion

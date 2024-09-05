@@ -1,12 +1,11 @@
 import React, { useEffect, useRef } from "react";
-import { AppState, AppStateStatus } from "react-native";
+import { AppState } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import socketIOClient from "socket.io-client";
-import Constants from "expo-constants";
 import usePartner from "./usePartner";
 import { useStore } from "_store";
 import types from "_store/types";
-const PROXY_URL = Constants.expoConfig.extra.proxyUrl;
+const PROXY_URL = process.env.EXPO_PUBLIC_PROXY_URL;
 const socketEvents = [
   "NEW_REQUEST",
   "RESET_REQUEST",

@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Platform, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Constants from "expo-constants";
 import * as Application from "expo-application";
 import { useStore } from "_store";
 import { t, lang } from "_utils/lang"; // without this line it didn't work
 
-// const PROVIDER_URL = Constants.expoConfig.extra.providerUrl;
 const PROVIDER_URL = "https://maps.googleapis.com/maps/api/";
 
 var alertShown = false;

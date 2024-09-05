@@ -52,9 +52,6 @@ module.exports = ({ config }) => ({
     },
   },
   extra: {
-    proxyUrl: process.env.PROXY_URL,
-    providerUrl: process.env.PROVIDER_URL,
-    envName: process.env.ENV_NAME,
     eas: {
       projectId: "d5f35f0a-c9a3-4205-b081-4273e1801997",
     },

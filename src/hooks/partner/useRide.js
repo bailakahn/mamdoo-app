@@ -10,8 +10,6 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import rideStatuses from "../../constants/rideStatuses";
 import types from "_store/types";
-import Constants from "expo-constants";
-const ENV_NAME = Constants.expoConfig.extra.envName;
 
 let mockLocationInterval = null;
 let expoLocationSubscription = null;
@@ -167,7 +165,10 @@ export default function useRide() {
   const startPositionUpdate = async (request) => {
     try {
       // mock driver movement
-      if (ENV_NAME === "localhost" || ENV_NAME === "dev") {
+      if (
+        process.env.EXPO_PUBLIC_ENV_NAME === "localhost" ||
+        process.env.EXPO_PUBLIC_ENV_NAME === "dev"
+      ) {
         let i = 0;
         const {
           coords: { latitude, longitude },
@@ -231,7 +232,10 @@ export default function useRide() {
 
   const stopPositionUpdate = () => {
     try {
-      if (ENV_NAME === "localhost" || ENV_NAME === "dev") {
+      if (
+        process.env.EXPO_PUBLIC_ENV_NAME === "localhost" ||
+        process.env.EXPO_PUBLIC_ENV_NAME === "dev"
+      ) {
         if (mockLocationInterval) clearInterval(mockLocationInterval);
         mockLocationInterval = null;
         return;

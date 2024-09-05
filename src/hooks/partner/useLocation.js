@@ -5,9 +5,6 @@ import * as TaskManager from "expo-task-manager";
 import { useApi } from "_api";
 import { t2 } from "_utils/lang";
 import { useStore } from "_store";
-// import { ENV_NAME } from "@env";
-import Constants from "expo-constants";
-const ENV_NAME = Constants.expoConfig.extra.envName;
 
 const TASK_FETCH_LOCATION = "TASK_FETCH_LOCATION";
 var request = null;
@@ -44,7 +41,8 @@ export default function useLocation() {
   useEffect(() => {
     if (statusForeground) {
       if (statusForeground.status === Location.PermissionStatus.GRANTED) {
-        if (ENV_NAME === "production") requestBackgroundPermission();
+        if (process.env.EXPO_PUBLIC_ENV_NAME === "production")
+          requestBackgroundPermission();
 
         getCurrentPosition();
       } else if (statusForeground.status === Location.PermissionStatus.DENIED) {
@@ -81,7 +79,6 @@ export default function useLocation() {
 
   useEffect(() => {
     if (
-      // ENV_NAME !== "production" &&
       statusForeground &&
       statusForeground.status !== Location.PermissionStatus.UNDETERMINED
     )

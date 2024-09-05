@@ -17,6 +17,18 @@ const CachedImage = (props) => {
 
   const componentIsMounted = useRef(true);
 
+  const loadImageAsBase64 = async (fileURI) => {
+    try {
+      const fileBase64 = await FileSystem.readAsStringAsync(fileURI, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      return `data:image/png;base64,${fileBase64}`; // Adjust MIME type if necessary
+    } catch (error) {
+      console.error("Error reading file as base64:", error);
+    }
+  };
+
   useEffect(() => {
     const loadImage = async ({ fileURI }) => {
       try {
@@ -28,9 +40,11 @@ const CachedImage = (props) => {
             setImgURI(null);
             await FileSystem.downloadAsync(uri, fileURI);
           }
-          if (componentIsMounted.current) {
-            setImgURI(fileURI);
-          }
+        }
+
+        const base64Image = await loadImageAsBase64(fileURI);
+        if (componentIsMounted.current) {
+          setImgURI(base64Image);
         }
       } catch (err) {
         console.log(); // eslint-disable-line no-console

@@ -17,9 +17,6 @@ import { useApp } from "_hooks";
 import MaintenanceMode from "_organisms/MaintenanceMode";
 import LocationDenied from "_components/organisms/LocationDenied";
 import { useStore } from "_store";
-// import { ENV_NAME } from "@env";
-import Constants from "expo-constants";
-const ENV_NAME = Constants.expoConfig.extra.envName;
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -41,15 +38,9 @@ export default function MainTabs({ role }) {
   if (!partner.partnerLoaded || isLoading) return <LoadingV2 />;
 
   // if user don't give location permission then don't allow access to app
-  // console.log({
-  //     grantStatus,
-  //     grantBackgroundStatus,
-  //     ENV_NAME,
-  //     cd: ENV_NAME !== "localhost" && grantBackgroundStatus !== "granted"
-  // });
   if (
     grantStatus === Location.PermissionStatus.DENIED ||
-    (ENV_NAME === "production" &&
+    (process.env.EXPO_PUBLIC_ENV_NAME === "production" &&
       grantBackgroundStatus === Location.PermissionStatus.DENIED)
   )
     return <LocationDenied />;

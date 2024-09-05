@@ -4,12 +4,9 @@ import { useApi } from "_api/google";
 import { useStore } from "_store";
 import { useApi as useProvider } from "_api";
 import { lang } from "_utils/lang";
-import Constants from "expo-constants";
 import polyline from "@mapbox/polyline";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-
-const ENV_NAME = Constants.expoConfig.extra.envName;
 
 export default function useLocation() {
   const [location, setLocation] = useState(null);
@@ -103,7 +100,7 @@ export default function useLocation() {
           language: lang,
           sessiontoken: googleMapsSessionToken || sess,
           components:
-            ENV_NAME !== "production" || user?.isAdmin
+            process.env.EXPO_PUBLIC_ENV_NAME !== "production" || user?.isAdmin
               ? "country:ca|country:gn|country:fr"
               : "country:gn",
         },

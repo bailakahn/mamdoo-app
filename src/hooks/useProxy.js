@@ -2,12 +2,11 @@ import React, { useEffect, useRef } from "react";
 import socketIOClient from "socket.io-client";
 import { useNavigation } from "@react-navigation/native";
 import { AppState } from "react-native";
-import Constants from "expo-constants";
 import useUser from "./useUser";
 import { useStore } from "_store";
 import types from "../store/types";
 
-const PROXY_URL = Constants.expoConfig.extra.proxyUrl;
+const PROXY_URL = process.env.EXPO_PUBLIC_PROXY_URL;
 
 const socketEvents = [
   "FOUND_DRIVER",
