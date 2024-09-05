@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "872033021115",
+    "project_id": "mamdoo-dev",
+    "storage_bucket": "mamdoo-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:872033021115:android:ef9fa7c2a3885ad92b4d9e",
+        "android_client_info": {
+          "package_name": "com.mamdoo.app.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZ3PF0dplBiQT6Q2y-R_NGvjMGy3m7glQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

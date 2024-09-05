@@ -12,6 +12,18 @@ const getBundleId = () => {
   return `com.mamdoo.app.dev`;
 };
 
+const getGoogleService = () => {
+  if (process.env.ENV_NAME === "production") {
+    return "./google-services-prod.json";
+  }
+
+  if (process.env.ENV_NAME === "staging") {
+    return "./google-services-staging.json";
+  }
+
+  return "./google-services-dev.json";
+};
+
 const getAppName = () => {
   if (process.env.ENV_NAME === "production") {
     return "Mamdoo";
@@ -26,7 +38,7 @@ const getAppName = () => {
 
 const bundleId = getBundleId();
 
-const IS_PROD = process.env.ENV_NAME === "production";
+// const IS_PROD = process.env.ENV_NAME === "production";
 
 module.exports = ({ config }) => ({
   ...config,
@@ -42,9 +54,7 @@ module.exports = ({ config }) => ({
     ...config.android,
     package: bundleId,
     // serviceAccountKeyPath: process.env.SERVICE_ACCOUNT_KEY,
-    googleServicesFile: IS_PROD
-      ? "./google-services-prod.json"
-      : "./google-services-staging.json",
+    googleServicesFile: getGoogleService(),
     config: {
       googleMaps: {
         apiKey: "AIzaSyAOms3z5wGZja5MI8bZdgJ8C6ccOYaY78M",
