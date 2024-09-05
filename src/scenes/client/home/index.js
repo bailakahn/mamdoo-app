@@ -1012,7 +1012,16 @@ const DriverSearchView = ({ user, ride, navigation }) => {
             alignSelf: "center",
           }}
         >
-          <LottieView ref={animation} source={PinAnimation} />
+          <LottieView
+            ref={animation}
+            source={PinAnimation}
+            style={{
+              flex: 1,
+              width: Mixins.width(0.7, true),
+            }}
+            autoPlay
+            loop
+          />
         </View>
       </ScrollView>
     </View>
