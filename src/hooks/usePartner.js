@@ -3,17 +3,24 @@ import { t2, t } from "_utils/lang";
 import { useApi } from "_api";
 import { useStore } from "_store";
 import useLocation from "./partner/useLocation";
+import useApp from "./useApp";
 
 export default function usePartner() {
   const getRequest = useApi();
   const location = useLocation();
+  const app = useApp();
 
   const [formPartner, setFormPartner] = useState({
     firstName: "",
     lastName: "",
     phoneNumber: "",
     pin: "",
-    cab: { model: "", licensePlate: "", owner: false },
+    cab: {
+      cabTypeId: app.cabTypes[0]?._id,
+      model: "",
+      licensePlate: "",
+      owner: false,
+    },
     municipality: "Ratoma",
     neighborhood: "",
     base: "",
@@ -86,6 +93,12 @@ export default function usePartner() {
     if (/\d/.test(formPartner.cab.model) || !formPartner.cab.model.length) {
       setIsLoading(false);
       setFormError(t2("errors.cabModel"));
+      return;
+    }
+
+    if (!formPartner.cab.cabTypeId) {
+      setIsLoading(false);
+      setFormError(t2("errors.cabType"));
       return;
     }
 

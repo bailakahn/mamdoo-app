@@ -40,6 +40,12 @@ import { t, lang } from "_utils/lang";
 import { defaultNewRide } from "_store/initialState";
 import PopConfirm from "_organisms/PopConfirm";
 import { Mixins } from "../../../styles";
+import { cabType } from "_styles";
+// Image mapping
+const images = {
+  bike: require("_assets/bike.png"),
+  car: require("_assets/car.png"),
+};
 
 const LATITUDE_DELTA = 0.005;
 const LONGITUDE_DELTA = 0.005;
@@ -416,29 +422,31 @@ export default function Home({ navigation, route }) {
         {ride.step === 1 &&
           Array.isArray(ride.mapDrivers) &&
           !!ride.mapDrivers.length &&
-          ride.mapDrivers.map(({ currentLocation }, index) => (
-            <Marker
-              key={index}
-              coordinate={{
-                latitude: parseFloat(currentLocation.coordinates[1]) || 0,
-                longitude: parseFloat(currentLocation.coordinates[0]) || 0,
-              }}
-            >
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
+          ride.mapDrivers.map(({ cab, currentLocation }, index) => {
+            return (
+              <Marker
+                key={index}
+                coordinate={{
+                  latitude: parseFloat(currentLocation.coordinates[1]) || 0,
+                  longitude: parseFloat(currentLocation.coordinates[0]) || 0,
                 }}
               >
-                <Image
-                  source={require("_assets/motorbike.png")}
-                  cacheKey="motorbike"
-                  style={{ width: 50, height: 50 }}
-                  resizeMode="contain"
-                />
-              </View>
-            </Marker>
-          ))}
+                <View
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Image
+                    source={images[cab?.cabType?.name] || images["bike"]}
+                    cacheKey={cab?.cabType?.name}
+                    style={{ width: 50, height: 50 }}
+                    resizeMode="contain"
+                  />
+                </View>
+              </Marker>
+            );
+          })}
 
         {[2, 3, 4, 5].includes(ride.step) &&
           !!Object.keys(ride.newRide.pickUp.location).length && (
@@ -552,8 +560,10 @@ export default function Home({ navigation, route }) {
               }}
             >
               <Image
-                source={require("_assets/motorbike.png")}
-                cacheKey="motirbike"
+                source={
+                  images[ride.driver?.cab?.cabType?.name] || images["bike"]
+                }
+                cacheKey={ride.driver?.cab?.cabType?.name}
                 style={{ width: 50, height: 50 }}
                 resizeMode="contain"
               />
@@ -814,43 +824,21 @@ const RideDetailView = ({ user, ride, navigation }) => {
     >
       <View
         style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
+          alignItems: "center",
           marginLeft: 10,
           marginRight: 10,
         }}
       >
-        <View style={{ flexDirection: "row" }}>
+        <View style={{}}>
           <Text
             style={{
               ...Classes.text(colors),
-              fontSize: 15,
+              fontSize: 20,
               fontWeight: "bold",
             }}
           >
-            {t("home.distance")}
+            {t("home.chooseRide")}
           </Text>
-          <Text style={{ fontSize: 15 }}>
-            {ride.newRideDetails?.distance.text}
-          </Text>
-        </View>
-
-        <View style={{ flexDirection: "row" }}>
-          <Text
-            style={{
-              ...Classes.text(colors),
-              fontSize: 15,
-              fontWeight: "bold",
-              marginLeft: 5,
-            }}
-          >
-            {t("home.estimatedTime")}
-          </Text>
-          {ride.newRideDetails?.distance && (
-            <Text style={{ fontSize: 15 }}>
-              {ride.newRideDetails?.duration.text}
-            </Text>
-          )}
         </View>
       </View>
       <View style={{ width: "100%", marginTop: 10 }}>
@@ -870,17 +858,28 @@ const RideDetailView = ({ user, ride, navigation }) => {
             }}
           >
             {ride.cabTypes.map((cabType, index) => (
-              <View
+              <TouchableOpacity
                 key={index}
                 style={{
                   width: "100%",
-                  backgroundColor: "#E9FDFF",
                   borderRadius: 10,
                   paddingLeft: 10,
                   marginTop: 10,
+                  ...(ride.newRide.cabTypeId === cabType._id && {
+                    backgroundColor: "#E9FDFF",
+                    borderWidth: 3,
+                    borderColor: colors.primary,
+                  }),
+                }}
+                onPress={() => {
+                  ride.actions.setNewRide({
+                    ...ride.newRide,
+                    ...ride.ridePrices[cabType.name],
+                    cabTypeId: cabType._id,
+                  });
                 }}
               >
-                <TouchableOpacity>
+                <View>
                   <List.Item
                     title={
                       <Text
@@ -907,8 +906,8 @@ const RideDetailView = ({ user, ride, navigation }) => {
                         style={{ marginRight: 10, justifyContent: "center" }}
                       >
                         <Image
-                          source={require("_assets/bike.png")}
-                          cacheKey="motorbike"
+                          source={images[cabType.name] || images["bike"]}
+                          cacheKey={cabType.name}
                           style={{ width: 50, height: 50 }}
                           resizeMode="contain"
                         />
@@ -924,7 +923,7 @@ const RideDetailView = ({ user, ride, navigation }) => {
                               ...(theme.isDarkMode && { color: "#000" }),
                             }}
                           >
-                            {`${ride.newRide.price.text}`}
+                            {`${ride.ridePrices[cabType.name]?.price?.text}`}
                           </Text>
                         </View>
                         <View style={{ alignItems: "center" }}>
@@ -946,21 +945,21 @@ const RideDetailView = ({ user, ride, navigation }) => {
                               ...(theme.isDarkMode && { color: "#000" }),
                             }}
                           >
-                            {`${ride.newRide.maxPrice.text}`}
+                            {`${ride.ridePrices[cabType.name]?.maxPrice?.text}`}
                           </Text>
                         </View>
                       </View>
                     )}
                   />
-                </TouchableOpacity>
-              </View>
+                </View>
+              </TouchableOpacity>
             ))}
 
             <View style={{ marginBottom: insets.bottom }}>
               <Button
                 {...Classes.buttonContainer(colors)}
                 mode="contained"
-                disabled={!ride.newRide.price?.value}
+                disabled={Object.keys(ride.ridePrices).length === 0}
                 onPress={() => {
                   // ride.actions.setStep(3);
                   ride.actions.makeRideRequest(navigation, null, user.user);

@@ -132,6 +132,7 @@ export default {
     firstName: "Le prénom n'est pas valide",
     lastName: "Le nom de famille n'est pas valide",
     phoneNumber: "Le numéro de téléphone n'est pas valide",
+    cabType: "Veuillez choisir un type de véhicule",
     cabModel: "La marque n'est pas valide",
     password: "Le mot de passe n'est pas valide",
     passwordRegex:
@@ -216,6 +217,7 @@ export default {
     lastName: "Nom de famille",
     phoneNumber: "Numéro de téléphone",
     phoneNumberPlaceholder: "Exemple: 622442233",
+    cabType: "Type de véhicule",
     cabModel: "Marque",
     licensePlate: "Plaque d'immatriculation",
     licensePlatePlaceholder: "Exemple: 1111A ou 1111AB",

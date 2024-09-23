@@ -107,6 +107,7 @@ export default {
     to: "Où allez-vous ?",
     noResultFound: "Aucun resultat!",
     distance: "Distance: ",
+    chooseRide: "Choisir une course",
     estimatedTime: "Temps estimé: ",
     currentPosition: "Votre position",
   },

@@ -21,6 +21,11 @@ export default (state = main, action) => {
         ...state,
         settings: action.settings,
       };
+    case types.SET_AUTH_CAB_TYPES:
+      return {
+        ...state,
+        cabTypes: action.cabTypes,
+      };
     case types.APP_LOADED:
       return {
         ...state,

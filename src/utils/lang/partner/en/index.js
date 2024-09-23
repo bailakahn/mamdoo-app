@@ -140,6 +140,7 @@ export default {
     passwordRegex:
       "The password must have at least 8 letters and contain letters and numbers",
     cabModel: "The cab model is not valid",
+    cabType: "Please choose a cab type",
     licensePlate: "The license plate is not valid",
     duplicateClient: "A client with this phone number already exists",
     unsuportedPhoneNumber: "This phone number is not supported",
@@ -216,6 +217,7 @@ export default {
     lastName: "Last Name",
     phoneNumber: "Phone Number",
     phoneNumberPlaceholder: "Ex: 622442233",
+    cabType: "Cab Type",
     cabModel: "Cab Model",
     licensePlate: "License Plate",
     licensePlatePlaceholder: "1111A or 1111AB",

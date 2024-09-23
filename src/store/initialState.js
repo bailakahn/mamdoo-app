@@ -17,6 +17,7 @@ const defaultNewRide = {
     text: "",
     value: 0,
   },
+  cabTypeId: null,
 };
 
 const defaultNewRideDetails = {
@@ -46,6 +47,7 @@ export default {
     backgroundPermissionReady: false,
     appLaunched: false,
     googleMapsSessionToken: null,
+    cabTypes: [],
   },
   auth: {
     user: null,

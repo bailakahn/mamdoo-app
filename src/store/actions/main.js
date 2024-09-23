@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import types from "../types";
 
-export default function authActions(state, dispatch) {
+export default function mainActions(state, dispatch) {
   return {
     setApp: (app) => {
       dispatch({
@@ -43,6 +43,12 @@ export default function authActions(state, dispatch) {
       dispatch({
         type: types.SET_SETTINGS,
         settings,
+      });
+    },
+    setAuthCabTypes: (cabTypes) => {
+      dispatch({
+        type: types.SET_AUTH_CAB_TYPES,
+        cabTypes,
       });
     },
     setBackgroundPermission: (status) => {

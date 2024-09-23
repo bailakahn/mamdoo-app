@@ -12,7 +12,7 @@ import {
 import { useTheme, Text, TextInput, Switch } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import { Classes } from "_styles";
-import { t2, t } from "_utils/lang";
+import { t2, t, lang } from "_utils/lang";
 import { usePartner, useApp } from "_hooks";
 import { Button, RoundButton, LoadingV2, Image } from "_atoms";
 
@@ -167,6 +167,38 @@ export default function Register({ navigation }) {
                   </Text>
                 </View>
                 <View>
+                  <View
+                    style={{
+                      marginTop: 20,
+                      marginBottom: 20,
+                    }}
+                  >
+                    <View style={{ marginBottom: 10 }}>
+                      <Text style={{ fontSize: 20 }}>{t2("form.cabType")}</Text>
+                    </View>
+                    <Picker
+                      selectedValue={partner.formPartner?.cab?.cabTypeId}
+                      onValueChange={(itemValue, itemIndex) =>
+                        partner.actions.setFormPartner({
+                          ...partner.formPartner,
+                          cab: {
+                            ...partner.formPartner.cab,
+                            cabTypeId: itemValue,
+                          },
+                        })
+                      }
+                      // mode="dropdown"
+                      style={{ backgroundColor: "lightgrey" }}
+                    >
+                      {app.cabTypes.map(({ description, _id }) => (
+                        <Picker.Item
+                          key={_id}
+                          label={description[lang || "fr"]}
+                          value={_id}
+                        />
+                      ))}
+                    </Picker>
+                  </View>
                   <TextInput
                     style={Classes.formInput(colors)}
                     outlineStyle={{ borderRadius: 10 }}

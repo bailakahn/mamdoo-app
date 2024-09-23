@@ -108,6 +108,7 @@ export default {
     to: "Where are you going ?",
     noResultFound: "No result were found!",
     distance: "Distance: ",
+    chooseRide: "Choose a Ride",
     estimatedTime: "Estimted Time: ",
     currentPosition: "Your location",
   },

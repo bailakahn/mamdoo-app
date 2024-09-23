@@ -5,6 +5,7 @@ import {
   ScrollView,
   SafeAreaView,
   KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { useTheme, Text, TextInput } from "react-native-paper";
 import { Classes } from "_styles";

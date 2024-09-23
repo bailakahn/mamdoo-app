@@ -52,8 +52,8 @@ const Main = () => {
               style={{
                 fontSize: 20,
                 textAlign: "center",
+                // alignItems: "center",
                 fontWeight: "bold",
-                paddingRight: 50,
                 color: colors.primary,
               }}
             >
@@ -77,7 +77,6 @@ const Main = () => {
                 fontSize: 20,
                 textAlign: "center",
                 fontWeight: "bold",
-                paddingRight: 50,
                 color: colors.text,
               }}
             >

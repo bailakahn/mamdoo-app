@@ -8,12 +8,13 @@ export default function useApp() {
   const getRequest = useApi();
 
   const {
-    main: { app, appLoaded, settings },
+    main: { app, appLoaded, settings, cabTypes },
     actions: {
       getApp,
       setApp,
       removeApp,
       setSettings,
+      setAuthCabTypes,
       getAppLaunched,
       setAppLaunched,
     },
@@ -23,6 +24,7 @@ export default function useApp() {
     if (!appLoaded) {
       getApp();
       getSettings();
+      getCabTypes();
       getAppLaunched();
       // setAppLaunched(false);
     }
@@ -39,6 +41,20 @@ export default function useApp() {
     });
 
     setSettings(result);
+
+    return result;
+  };
+
+  const getCabTypes = async () => {
+    console.log("Getting Cab Types ...");
+    const result = await getRequest({
+      method: "GET",
+      endpoint: "app/getcabtypes",
+    }).catch((err) => {
+      console.log(err);
+    });
+
+    setAuthCabTypes(result);
 
     return result;
   };
@@ -87,6 +103,7 @@ export default function useApp() {
   return {
     app,
     settings,
+    cabTypes,
     appLoaded,
     actions: {
       setApp,

@@ -17,6 +17,7 @@ export default function useRide() {
   const appState = useRef(AppState.currentState);
 
   const [mapDrivers, setMapDrivers] = useState([]);
+  const [ridePrices, setRidePrices] = useState({});
   const [policeStations, setPoliceStations] = useState(null);
   const [endedRide, setEndedRide] = useState(null);
   const [validCountry, setValidCountry] = useState(true);
@@ -255,6 +256,7 @@ export default function useRide() {
           requestId,
           retryCount,
           maxRetries,
+          cabTypeId: newRide.cabTypeId,
         },
       }).catch((err) => {
         console.log(err);
@@ -417,38 +419,54 @@ export default function useRide() {
   };
 
   const calculateFare = (distanceKm, timeMin) => {
-    const perKmRate = Number(cabTypes[0].pricePerKm);
-    const perMinRate = Number(cabTypes[0].pricePerMin);
-    const minFare = Number(cabTypes[0].minFare);
+    setRidePrices({});
+    let tmpRidePrices = {};
+    for (let cabType of cabTypes) {
+      const perKmRate = Number(cabType.pricePerKm);
+      const perMinRate = Number(cabType.pricePerMin);
+      const minFare = Number(cabType.minFare);
 
-    const distanceCharge = perKmRate * (Number(distanceKm) / 1000);
-    const timeCharge = perMinRate * (Number(timeMin) / 60);
+      const distanceCharge = perKmRate * (Number(distanceKm) / 1000);
+      const timeCharge = perMinRate * (Number(timeMin) / 60);
 
-    // calculate maxdistanceRange
-    const maxDistanceCharge = perKmRate * (Number(distanceKm + 2000) / 1000);
-    const maxTimeCharge = perMinRate * (Number(timeMin + 5) / 60);
-    const maxTotalFare = maxDistanceCharge + maxTimeCharge;
+      // calculate maxdistanceRange
+      const maxDistanceCharge = perKmRate * (Number(distanceKm + 2000) / 1000);
+      const maxTimeCharge = perMinRate * (Number(timeMin + 5) / 60);
+      const maxTotalFare = maxDistanceCharge + maxTimeCharge;
 
-    const totalFare = distanceCharge + timeCharge;
+      const totalFare = distanceCharge + timeCharge;
 
-    let roundedFare = Math.ceil(totalFare / 1000) * 1000;
-    let maxRoundedFare = Math.ceil(maxTotalFare / 1000) * 1000;
+      let roundedFare = Math.ceil(totalFare / 1000) * 1000;
+      let maxRoundedFare = Math.ceil(maxTotalFare / 1000) * 1000;
 
-    roundedFare = roundedFare < minFare ? minFare : roundedFare;
-    maxRoundedFare = maxRoundedFare < minFare ? minFare : maxRoundedFare;
+      roundedFare = roundedFare < minFare ? minFare : roundedFare;
+      maxRoundedFare = maxRoundedFare < minFare ? minFare : maxRoundedFare;
 
+      tmpRidePrices = {
+        ...tmpRidePrices,
+        [cabType.name]: {
+          price: {
+            text: `${formatPrice(roundedFare)} GNF`,
+            value: roundedFare,
+          },
+          maxPrice: {
+            text: `${formatPrice(maxRoundedFare)} GNF`,
+            value: maxRoundedFare,
+          },
+        },
+      };
+    }
+
+    setRidePrices({ ...tmpRidePrices });
     setNewRide({
       ...newRide,
-      price: { text: `${formatPrice(roundedFare)} GNF`, value: roundedFare },
-      maxPrice: {
-        text: `${formatPrice(maxRoundedFare)} GNF`,
-        value: maxRoundedFare,
-      },
+      ...tmpRidePrices[cabTypes.find((cabType) => !!cabType.default)?.name],
+      cabTypeId: cabTypes.find((cabType) => !!cabType.default)?._id,
     });
 
     setRideIsLoading(false);
 
-    return { price: roundedFare, maxPrice: maxRoundedFare };
+    // return { price: roundedFare, maxPrice: maxRoundedFare };
   };
 
   function formatPrice(price) {
@@ -552,6 +570,7 @@ export default function useRide() {
     validWorkingHours,
     driverCurrentLocation,
     rideIsLoading,
+    ridePrices,
     actions: {
       callDriver,
       cancelRide,
