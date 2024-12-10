@@ -1,12 +1,12 @@
 import "dotenv/config";
 
-const getBundleId = () => {
+const getBundleId = (delimiter = "-") => {
   if (process.env.ENV_NAME === "production") {
     return "com.mamdoo.app";
   }
 
   if (process.env.ENV_NAME === "staging") {
-    return `com.mamdoo.app-staging`;
+    return `com.mamdoo.app${delimiter}staging`;
   }
 
   return `com.mamdoo.app.dev`;
@@ -36,8 +36,6 @@ const getAppName = () => {
   return `Mamdoo (Dev)`;
 };
 
-const bundleId = getBundleId();
-
 // const IS_PROD = process.env.ENV_NAME === "production";
 
 module.exports = ({ config }) => ({
@@ -45,14 +43,14 @@ module.exports = ({ config }) => ({
   name: getAppName(),
   ios: {
     ...config.ios,
-    bundleIdentifier: bundleId,
+    bundleIdentifier: getBundleId(),
     config: {
       googleMapsApiKey: "AIzaSyAOms3z5wGZja5MI8bZdgJ8C6ccOYaY78M",
     },
   },
   android: {
     ...config.android,
-    package: bundleId,
+    package: getBundleId("_"),
     // serviceAccountKeyPath: process.env.SERVICE_ACCOUNT_KEY,
     googleServicesFile: getGoogleService(),
     config: {
