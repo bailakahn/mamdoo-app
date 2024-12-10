@@ -164,6 +164,10 @@ export default function ReviewScreen({ navigation, route }) {
               <TextInput
                 style={{
                   // ...Classes.formInput(colors),
+                  width: Mixins.width(0.93, true),
+                  // height: Mixins.width(0.2, true),
+                  // fontSize: 20,
+                  marginBottom: 20,
                   alignContent: "flex-start",
                   justifyContent: "flex-start",
                   backgroundColor: colors.background,
