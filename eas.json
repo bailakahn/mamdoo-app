@@ -35,9 +35,9 @@
       "extends": "base",
       "channel": "production",
       "env": {
-        "ENV_NAME": "production",
-        "PROXY_URL": "https://prod-mamdoo-proxy.herokuapp.com",
-        "PROVIDER_URL": "https://prod-mamdoo-provider.herokuapp.com/"
+        "EXPO_PUBLIC_ENV_NAME": "production",
+        "EXPO_PUBLIC_PROXY_URL": "https://prod-mamdoo-proxy.herokuapp.com",
+        "EXPO_PUBLIC_PROVIDER_URL": "https://prod-mamdoo-provider.herokuapp.com/"
       },
       "autoIncrement": true
     }
