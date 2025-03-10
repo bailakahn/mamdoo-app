@@ -5,25 +5,25 @@
   },
   "build": {
     "base": {
-      "node": "18.18.0",
+      "node": "18.20.7",
       "yarn": "1.22.10"
     },
     "development": {
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "ENV_NAME": "dev",
-        "PROXY_URL": "http://192.168.2.68:3001",
-        "PROVIDER_URL": "http://192.168.2.68:3005/",
+        "EXPO_PUBLIC_ENV_NAME": "dev",
+        "EXPO_PUBLIC_PROXY_URL": "http://192.168.92.71:3001",
+        "EXPO_PUBLIC_PROVIDER_URL": "http://192.168.92.71:3005/",
       }
     },
     "staging": {
       "extends": "base",
       "channel": "staging",
       "env": {
-        "ENV_NAME": "staging",
-        "PROXY_URL": "https://staging-mamdoo-proxy.herokuapp.com",
-        "PROVIDER_URL": "https://staging-mamdoo-provider.herokuapp.com/",
+        "EXPO_PUBLIC_ENV_NAME": "staging",
+        "EXPO_PUBLIC_PROXY_URL": "https://staging-mamdoo-proxy.herokuapp.com",
+        "EXPO_PUBLIC_PROVIDER_URL": "https://staging-mamdoo-provider.herokuapp.com/",
         "SERVICE_ACCOUNT_KEY": "credentials/staging.json"
       },
       "distribution": "internal",

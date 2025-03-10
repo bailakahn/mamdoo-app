@@ -123,6 +123,26 @@ export default {
     continue: "Continuer",
     logout: "Se déconnecter",
     optional: "Optionnel",
+    disclosureTitle: "Divulgation importante",
+    disclosureSubTitle: "Collecte de données personnelles et sensibles",
+    collectedDataTitle: "Données collectées",
+    collectedDataDescription:
+      "Mamdoo collecte et télécharge votre permis de conduire, l'immatriculation de votre véhicule et votre photo de profil afin de vérifier votre identité et l'éligibilité de votre véhicule.",
+    whyWeCollectTitle: "Pourquoi Nous Collectons Ces Données",
+    whyWeCollectDescription: `Nous collectons ces informations pour :`,
+    whyWeCollectDescription1:
+      "Garantir que seuls les conducteurs titulaires d’un permis valide opèrent sur Mamdoo.",
+    whyWeCollectDescription2:
+      "Vérifier que votre véhicule répond aux normes légales et opérationnelles.",
+    whyWeCollectDescription3:
+      "Aider les passagers à vous reconnaître pour plus de sécurité et de confiance.",
+    dataUsageTitle: "Comment Vos Données Sont Utilisées",
+    dataUsageDescription:
+      "Vos données sont stockées de manière sécurisée et utilisées uniquement pour la vérification et la conformité. Nous ne les partageons pas avec des tiers, sauf si la loi ou les autorités réglementaires l'exigent.",
+    accept: "Accepter",
+    decline: "Refuser",
+    consentDescription:
+      "En appuyant sur 'Accepter', vous acceptez de fournir ces documents pour vérification. Vous pouvez refuser, mais cela vous empêchera de finaliser votre inscription en tant que conducteur Mamdoo.",
   },
   errors: {
     crashErrorTitle: "Oops, Quelque chose s'est mal passé",

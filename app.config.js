@@ -1,11 +1,11 @@
 import "dotenv/config";
 
 const getBundleId = (delimiter = "-") => {
-  if (process.env.ENV_NAME === "production") {
+  if (process.env.EXPO_PUBLIC_ENV_NAME === "production") {
     return "com.mamdoo.app";
   }
 
-  if (process.env.ENV_NAME === "staging") {
+  if (process.env.EXPO_PUBLIC_ENV_NAME === "staging") {
     return `com.mamdoo.app${delimiter}staging`;
   }
 
@@ -13,11 +13,11 @@ const getBundleId = (delimiter = "-") => {
 };
 
 const getGoogleService = () => {
-  if (process.env.ENV_NAME === "production") {
+  if (process.env.EXPO_PUBLIC_ENV_NAME === "production") {
     return "./google-services-prod.json";
   }
 
-  if (process.env.ENV_NAME === "staging") {
+  if (process.env.EXPO_PUBLIC_ENV_NAME === "staging") {
     return "./google-services-staging.json";
   }
 
@@ -25,18 +25,16 @@ const getGoogleService = () => {
 };
 
 const getAppName = () => {
-  if (process.env.ENV_NAME === "production") {
+  if (process.env.EXPO_PUBLIC_ENV_NAME === "production") {
     return "Mamdoo";
   }
 
-  if (process.env.ENV_NAME === "staging") {
+  if (process.env.EXPO_PUBLIC_ENV_NAME === "staging") {
     return `Mamdoo (staging)`;
   }
 
   return `Mamdoo (Dev)`;
 };
-
-// const IS_PROD = process.env.ENV_NAME === "production";
 
 module.exports = ({ config }) => ({
   ...config,

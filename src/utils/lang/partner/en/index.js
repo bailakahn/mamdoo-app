@@ -123,6 +123,24 @@ export default {
     continue: "Continue",
     logout: "Log Out",
     optional: "Optional",
+    disclosureTitle: "Prominent Disclosure",
+    disclosureSubTitle: "Collection of Personal and Sensitive Data",
+    collectedDataTitle: "What We Collect",
+    collectedDataDescription:
+      "Mamdoo collects and uploads your driver's license, vehicle registration, and profile picture to verify your identity and vehicle eligibility.",
+    whyWeCollectTitle: "Why We Collect It",
+    whyWeCollectDescription: `We collect this information to: `,
+    whyWeCollectDescription1: "Ensure only licensed drivers operate on Mamdoo.",
+    whyWeCollectDescription2:
+      "Confirm your vehicle meets legal and operational standards.",
+    whyWeCollectDescription3: "Help riders recognize you for safety and trust.",
+    dataUsageTitle: "How Your Data Is Used",
+    dataUsageDescription:
+      "Your data is securely stored and used only for verification and compliance. We do not share it with third parties, except as required by law or regulatory authorities.",
+    accept: "Accept",
+    decline: "Decline",
+    consentDescription:
+      "By tapping 'Accept', you agree to provide these documents for verification. You may decline, but this will prevent you from completing your Mamdoo driver registration.",
   },
   errors: {
     crashErrorTitle: "Oops, Something Went Wrong",

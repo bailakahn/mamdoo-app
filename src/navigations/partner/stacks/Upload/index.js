@@ -7,139 +7,156 @@ import { t2 } from "_utils/lang";
 const Stack = createStackNavigator();
 
 import {
-    NotActiveScene,
-    UploadScene,
-    UploadInstructionsScene,
-    ProfilePictureScene,
-    DriverLicenseScene,
-    CabLicenseScene,
-    ConfirmationScene
+  NotActiveScene,
+  UploadScene,
+  UploadInstructionsScene,
+  DisclosureScene,
+  ProfilePictureScene,
+  DriverLicenseScene,
+  CabLicenseScene,
+  ConfirmationScene,
 } from "_scenes/partner";
 
 export default function HomeStack({ role }) {
-    const partner = usePartner();
-    const { colors } = useTheme();
+  const partner = usePartner();
+  const { colors } = useTheme();
 
-    useEffect(() => {
-        partner.actions.refresh();
-    }, []);
+  useEffect(() => {
+    partner.actions.refresh();
+  }, []);
 
-    return (
-        <Stack.Navigator
-            initialRouteName="NotActive"
-            screenOptions={{ gestureEnabled: false }}
-        >
-            <Stack.Screen
-                name="NotActive"
-                component={NotActiveScene}
-                options={({ navigation }) => ({
-                    headerStyle: {
-                        borderBottomWidth: 1,
-                        backgroundColor: colors.background
-                    },
-                    headerTitleStyle: {
-                        // color: "#000"
-                    },
-                    headerShown: false,
-                    title: ""
-                })}
-            />
+  return (
+    <Stack.Navigator
+      initialRouteName="NotActive"
+      screenOptions={{ gestureEnabled: false }}
+    >
+      <Stack.Screen
+        name="NotActive"
+        component={NotActiveScene}
+        options={({ navigation }) => ({
+          headerStyle: {
+            borderBottomWidth: 1,
+            backgroundColor: colors.background,
+          },
+          headerTitleStyle: {
+            // color: "#000"
+          },
+          headerShown: false,
+          title: "",
+        })}
+      />
 
-            <Stack.Screen
-                name="UploadInstructions"
-                component={UploadInstructionsScene}
-                options={({ navigation }) => ({
-                    headerStyle: {
-                        borderBottomWidth: 1,
-                        backgroundColor: colors.background
-                    },
-                    headerTitleStyle: {
-                        // color: "#000"
-                    },
-                    title: "",
-                    headerBackTitle: t2("main.back")
-                })}
-            />
+      <Stack.Screen
+        name="UploadInstructions"
+        component={UploadInstructionsScene}
+        options={({ navigation }) => ({
+          headerStyle: {
+            borderBottomWidth: 1,
+            backgroundColor: colors.background,
+          },
+          headerTitleStyle: {
+            // color: "#000"
+          },
+          title: "",
+          headerBackTitle: t2("main.back"),
+        })}
+      />
 
-            <Stack.Screen
-                name="Upload"
-                component={UploadScene}
-                options={({ navigation }) => ({
-                    headerStyle: {
-                        borderBottomWidth: 1,
-                        backgroundColor: colors.background
-                    },
-                    headerTitleStyle: {
-                        // color: "#000"
-                    },
-                    title: "",
-                    headerBackTitle: t2("main.back")
-                })}
-            />
+      <Stack.Screen
+        name="Disclosure"
+        component={DisclosureScene}
+        options={({ navigation }) => ({
+          headerStyle: {
+            borderBottomWidth: 1,
+            backgroundColor: colors.background,
+          },
+          headerTitleStyle: {
+            // color: "#000"
+          },
+          title: "",
+          headerBackTitle: t2("main.back"),
+        })}
+      />
 
-            <Stack.Screen
-                name="ProfilePicture"
-                component={ProfilePictureScene}
-                options={({ navigation }) => ({
-                    headerStyle: {
-                        borderBottomWidth: 1,
-                        backgroundColor: colors.background
-                    },
-                    headerTitleStyle: {
-                        // color: "#000"
-                    },
-                    title: "",
-                    headerBackTitle: t2("main.back")
-                })}
-            />
+      <Stack.Screen
+        name="Upload"
+        component={UploadScene}
+        options={({ navigation }) => ({
+          headerStyle: {
+            borderBottomWidth: 1,
+            backgroundColor: colors.background,
+          },
+          headerTitleStyle: {
+            // color: "#000"
+          },
+          title: "",
+          headerBackTitle: t2("main.back"),
+        })}
+      />
 
-            <Stack.Screen
-                name="DriverLicense"
-                component={DriverLicenseScene}
-                options={({ navigation }) => ({
-                    headerStyle: {
-                        borderBottomWidth: 1,
-                        backgroundColor: colors.background
-                    },
-                    headerTitleStyle: {
-                        // color: "#000"
-                    },
-                    title: "",
-                    headerBackTitle: t2("main.back")
-                })}
-            />
+      <Stack.Screen
+        name="ProfilePicture"
+        component={ProfilePictureScene}
+        options={({ navigation }) => ({
+          headerStyle: {
+            borderBottomWidth: 1,
+            backgroundColor: colors.background,
+          },
+          headerTitleStyle: {
+            // color: "#000"
+          },
+          title: "",
+          headerBackTitle: t2("main.back"),
+        })}
+      />
 
-            <Stack.Screen
-                name="CabLicense"
-                component={CabLicenseScene}
-                options={({ navigation }) => ({
-                    headerStyle: {
-                        borderBottomWidth: 1,
-                        backgroundColor: colors.background
-                    },
-                    headerTitleStyle: {
-                        // color: "#000"
-                    },
-                    title: "",
-                    headerBackTitle: t2("main.back")
-                })}
-            />
+      <Stack.Screen
+        name="DriverLicense"
+        component={DriverLicenseScene}
+        options={({ navigation }) => ({
+          headerStyle: {
+            borderBottomWidth: 1,
+            backgroundColor: colors.background,
+          },
+          headerTitleStyle: {
+            // color: "#000"
+          },
+          title: "",
+          headerBackTitle: t2("main.back"),
+        })}
+      />
 
-            <Stack.Screen
-                name="Confirmation"
-                component={ConfirmationScene}
-                options={({ navigation }) => ({
-                    headerStyle: {
-                        borderBottomWidth: 1,
-                        backgroundColor: colors.background
-                    },
-                    headerTitleStyle: {
-                        // color: "#000"
-                    },
-                    headerShown: false,
-                    title: ""
-                })}
-            />
-        </Stack.Navigator>
-    );
+      <Stack.Screen
+        name="CabLicense"
+        component={CabLicenseScene}
+        options={({ navigation }) => ({
+          headerStyle: {
+            borderBottomWidth: 1,
+            backgroundColor: colors.background,
+          },
+          headerTitleStyle: {
+            // color: "#000"
+          },
+          title: "",
+          headerBackTitle: t2("main.back"),
+        })}
+      />
+
+      <Stack.Screen
+        name="Confirmation"
+        component={ConfirmationScene}
+        options={({ navigation }) => ({
+          headerStyle: {
+            borderBottomWidth: 1,
+            backgroundColor: colors.background,
+          },
+          headerTitleStyle: {
+            // color: "#000"
+          },
+          headerShown: false,
+          title: "",
+        })}
+      />
+    </Stack.Navigator>
+  );
 }

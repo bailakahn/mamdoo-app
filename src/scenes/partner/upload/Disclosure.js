@@ -26,6 +26,7 @@ export default function ForgotPassword({ navigation }) {
           style={{
             ...Classes.centeredViewUpload(colors),
             marginTop: 20,
+            // alignItems: "center",
           }}
         >
           <Text
@@ -34,7 +35,7 @@ export default function ForgotPassword({ navigation }) {
               fontWeight: "900",
             }}
           >
-            {t2("upload.uploadDocumentsTipsTitle")}
+            {t2("upload.disclosureTitle")}
           </Text>
 
           <Text
@@ -43,7 +44,7 @@ export default function ForgotPassword({ navigation }) {
               marginTop: 10,
             }}
           >
-            {t2("upload.uploadDocumentsTipsDescription")}
+            {t2("upload.disclosureSubTitle")}
           </Text>
         </View>
         <View
@@ -54,36 +55,51 @@ export default function ForgotPassword({ navigation }) {
         >
           <ScrollView style={Classes.uploadInstructions(colors)}>
             <List.Item
-              title={t2("upload.tipOneTitle")}
-              description={t2("upload.tipOneDescription")}
+              title={t2("upload.collectedDataTitle")}
+              description={t2("upload.collectedDataDescription")}
               titleNumberOfLines={5}
               descriptionNumberOfLines={15}
               descriptionStyle={{ marginTop: 5 }}
               left={(props) => (
                 <List.Icon
                   {...props}
-                  icon={"file-star"}
+                  icon={"file-upload"}
                   color={colors.primary}
                 />
               )}
             />
             <List.Item
-              title={t2("upload.tipTwoTitle")}
-              description={t2("upload.tipTwoDescription")}
+              title={t2("upload.whyWeCollectTitle")}
+              description={
+                <Text>
+                  <Text>
+                    {t2("upload.whyWeCollectDescription")} {"\n"}
+                  </Text>
+                  <Text>
+                    {"\u2022"} {t2("upload.whyWeCollectDescription1")} {"\n"}
+                  </Text>
+                  <Text>
+                    {"\u2022"} {t2("upload.whyWeCollectDescription2")} {"\n"}
+                  </Text>
+                  <Text>
+                    {"\u2022"} {t2("upload.whyWeCollectDescription3")}
+                  </Text>
+                </Text>
+              }
               titleNumberOfLines={5}
               descriptionNumberOfLines={15}
               descriptionStyle={{ marginTop: 5 }}
               left={(props) => (
                 <List.Icon
                   {...props}
-                  icon={"vector-square"}
+                  icon={"file-question"}
                   color={colors.primary}
                 />
               )}
             />
             <List.Item
-              title={t2("upload.tipThreeTitle")}
-              description={t2("upload.tipThreeDescription")}
+              title={t2("upload.dataUsageTitle")}
+              description={t2("upload.dataUsageDescription")}
               titleNumberOfLines={5}
               descriptionNumberOfLines={15}
               descriptionStyle={{ marginTop: 5 }}
@@ -95,33 +111,43 @@ export default function ForgotPassword({ navigation }) {
                 />
               )}
             />
-            <List.Item
-              title={t2("upload.tipFourTitle")}
-              description={t2("upload.tipFourDescription")}
-              titleNumberOfLines={5}
-              descriptionNumberOfLines={15}
-              descriptionStyle={{ marginTop: 5 }}
-              left={(props) => (
-                <List.Icon
-                  {...props}
-                  icon={"cloud-upload"}
-                  color={colors.primary}
-                />
-              )}
-            />
           </ScrollView>
         </View>
-        <View style={Classes.bottonView(colors)}>
-          <Button
-            mode="contained"
-            onPress={() => {
-              navigation.navigate("Disclosure");
+
+        <View
+          style={{
+            ...Classes.centeredViewUpload(colors),
+            // alignItems: "center",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 15,
+              marginTop: 10,
             }}
-            color={colors.primary}
-            {...Classes.buttonContainer(colors)}
           >
-            {t2("upload.understood")}
-          </Button>
+            {t2("upload.consentDescription")}
+          </Text>
+        </View>
+        <View style={Classes.bottonView(colors)}>
+          <View>
+            <Button
+              {...Classes.buttonContainer(colors)}
+              mode="contained"
+              onPress={() => navigation.navigate("Upload")}
+            >
+              {t2("upload.accept")}
+            </Button>
+          </View>
+          <View>
+            <Button
+              {...Classes.logoutButtonContainer(colors)}
+              mode="contained"
+              onPress={() => navigation.navigate("NotActive")}
+            >
+              {t2("upload.decline")}
+            </Button>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

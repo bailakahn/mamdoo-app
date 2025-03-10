@@ -42,7 +42,8 @@
         "NSLocationUsageDescription": "Activer votre position nous permet de vous envoyer des chauffeurs qui sont à proximité.",
         "UIBackgroundModes": [
           "location"
-        ]
+        ],
+        "ITSAppUsesNonExemptEncryption": false
       },
       "bundleIdentifier": "com.mamdoo.app",
       "buildNumber": "0.0.7"
