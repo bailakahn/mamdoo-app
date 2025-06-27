@@ -249,6 +249,7 @@ export default function useRide() {
               newRide.dropOff.location.longitude,
               newRide.dropOff.location.latitude,
             ],
+            placeId: newRide.placeId,
           },
           duration: newRideDetails?.duration?.value,
           distance: newRideDetails?.distance?.value,
@@ -342,7 +343,6 @@ export default function useRide() {
 
   const reviewRide = ({ rating, note, price }) => {
     if (!reviewRequestId) return;
-
     getRequest({
       method: "POST",
       endpoint: "rides/review",

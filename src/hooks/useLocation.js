@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import * as Location from "expo-location";
 import { useApi } from "_api/google";
 import { useStore } from "_store";
@@ -13,6 +13,7 @@ export default function useLocation() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchPredictions, setSearchPredictions] = useState([]);
+  const [recentPlaces, setRecentPlaces] = useState([]);
 
   const {
     main: { googleMapsSessionToken },
@@ -22,6 +23,7 @@ export default function useLocation() {
   const [status, requestPermission] = Location.useForegroundPermissions();
   const getRequest = useApi();
   const providerRequest = useProvider();
+  const deadPrefixes = useRef(new Set());
 
   useEffect(() => {
     // if status is given or denied
@@ -84,51 +86,128 @@ export default function useLocation() {
   };
 
   const getPredictions = async ({ input, location, user = {} }) => {
-    let sess = "";
-    if (!googleMapsSessionToken) {
-      sess = uuidv4();
-      setGoogleMapsSessionToken(sess);
-    }
-
     try {
-      const { predictions } = await getRequest({
+      const trimmedInput = input.trim();
+
+      // 👇 Reusable helper for Google fallback
+      const callGoogle = async () => {
+        const { predictions } = await getRequest({
+          method: "GET",
+          endpoint: "place/autocomplete/json",
+          params: {
+            location,
+            input,
+            language: lang,
+            sessiontoken: googleMapsSessionToken || sess,
+            components:
+              process.env.EXPO_PUBLIC_ENV_NAME !== "production" || user?.isAdmin
+                ? "country:ca|country:gn|country:fr"
+                : "country:gn",
+          },
+        });
+
+        setSearchPredictions(predictions);
+        return predictions;
+      };
+
+      // 🧠 Clear dead prefixes if input got shorter
+      for (let prefix of deadPrefixes.current) {
+        if (!trimmedInput.startsWith(prefix)) {
+          deadPrefixes.current.clear();
+          break;
+        }
+      }
+
+      // ⛔️ Known dead prefix → skip DB
+      for (let prefix of deadPrefixes.current) {
+        if (trimmedInput.startsWith(prefix)) {
+          return await callGoogle();
+        }
+      }
+
+      // 🔍 First try your own backend
+      const localResults = await providerRequest({
         method: "GET",
-        endpoint: "place/autocomplete/json",
-        params: {
-          location: location,
-          input,
-          language: lang,
-          sessiontoken: googleMapsSessionToken || sess,
-          components:
-            process.env.EXPO_PUBLIC_ENV_NAME !== "production" || user?.isAdmin
-              ? "country:ca|country:gn|country:fr"
-              : "country:gn",
-        },
+        endpoint: "places/autocomplete", // your new API
+        params: { q: input },
       });
 
-      setSearchPredictions(predictions);
+      if (localResults?.length) {
+        const visitedPlaceIds = new Set(
+          recentPlaces.map((p) => p.placeId.toString())
+        );
 
-      return predictions;
+        // Format them similarly to Google’s predictions
+        const formatted = localResults.map((item) => ({
+          ...item,
+          placeId: item._id,
+          structured_formatting: {
+            main_text: item.text,
+            secondary_text: item.description || "",
+          },
+          source: "db",
+          visited: visitedPlaceIds.has(item._id.toString()), // ✅ flag if previously visited
+        }));
+
+        setSearchPredictions(formatted);
+        return formatted;
+      }
+
+      // ❌ No DB match → mark prefix
+      deadPrefixes.current.add(trimmedInput);
+
+      let sess = "";
+      if (!googleMapsSessionToken) {
+        sess = uuidv4();
+        setGoogleMapsSessionToken(sess);
+      }
+
+      // 🌍 Fallback to Google
+      return await callGoogle();
     } catch (err) {
       console.log(err);
     }
   };
 
-  const getPlaceDetails = async (placeId) => {
+  const getPlaceDetails = async (place = {}) => {
     try {
+      // If it's a local place, return coordinates directly
+      if (place.source === "db") {
+        // No need since we ar eonly saving client history after ride is complete
+        // await saveLocationHistory(place._id);
+        return {
+          geometry: {
+            location: {
+              lat: place.coordinates[1],
+              lng: place.coordinates[0],
+            },
+          },
+          placeId: place._id,
+        };
+      }
+
+      console.log({ place: place.placeId });
+
       const { result } = await getRequest({
         method: "GET",
         endpoint: "place/details/json",
         params: {
-          place_id: placeId,
+          place_id: place.placeId,
           sessiontoken: googleMapsSessionToken,
-          fields: "geometry",
+          fields: "geometry,name,address_components",
         },
       });
 
+      console.log({ result });
+      // Reset session token
       setGoogleMapsSessionToken(null);
 
-      return result;
+      const newPlaceId = await saveNewPlace(place, result);
+
+      // No need since we ar eonly saving client history after ride is complete
+      // newPlaceId && (await saveLocationHistory(newPlaceId));
+
+      return { ...result, placeId: newPlaceId };
     } catch (err) {
       console.log(err);
     }
@@ -259,9 +338,97 @@ export default function useLocation() {
     }
   };
 
+  const getCityAndCountryCode = (address_components) => {
+    let city = "";
+    let countryCode = "";
+
+    for (const component of address_components) {
+      if (
+        component.types.includes("locality") ||
+        component.types.includes("administrative_area_level_1") ||
+        component.types.includes("postal_town")
+      ) {
+        city ||= component.long_name;
+      }
+
+      if (component.types.includes("country")) {
+        countryCode = component.short_name; // e.g., "GN"
+      }
+    }
+
+    return { city, countryCode };
+  };
+
+  const getLocationHistory = async () => {
+    const localResults = await providerRequest({
+      method: "GET",
+      endpoint: "places/gethistory", // your new API
+    });
+
+    const formatted = localResults.map((item) => ({
+      ...item,
+      placeId: item._id,
+      structured_formatting: {
+        main_text: item.text,
+        secondary_text: item.description || "",
+      },
+      source: "db",
+      visited: true,
+    }));
+
+    setRecentPlaces(formatted);
+  };
+
+  const saveLocationHistory = async (placeId) => {
+    try {
+      await providerRequest({
+        method: "POST",
+        endpoint: "places/newhistory",
+        params: {
+          placeId,
+        },
+      });
+    } catch (error) {
+      console.error("Could not save location history");
+    }
+  };
+
+  const saveNewPlace = async (place, result) => {
+    try {
+      const { city, countryCode } = getCityAndCountryCode(
+        result?.address_components || []
+      );
+
+      // Send to backend to save
+      const {
+        place: { _id: newPlaceId = null },
+      } = await providerRequest({
+        method: "POST",
+        endpoint: "places/new", // your new API
+        params: {
+          text: result.name,
+          description: place?.structured_formatting?.secondary_text,
+          type: "Point",
+          coordinates: [
+            result.geometry.location.lng,
+            result.geometry.location.lat,
+          ],
+          googlePlaceId: place.placeId,
+          city,
+          countryCode,
+        },
+      });
+
+      return newPlaceId || null;
+    } catch (error) {
+      console.error("Could not save new place", error);
+    }
+  };
+
   return {
     location,
     searchPredictions,
+    recentPlaces,
     grantStatus: status?.status,
     error,
     isLoading,
@@ -273,6 +440,7 @@ export default function useLocation() {
       getPlaceDetails,
       getDirections,
       getDistanceMatrix,
+      getLocationHistory,
     },
   };
 }

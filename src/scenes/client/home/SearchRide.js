@@ -56,6 +56,7 @@ function ModalScreen({ navigation }) {
   useEffect(() => {
     dropOffRef.current.focus();
     refreshAsync();
+    location.actions.getLocationHistory();
   }, []);
 
   return (
@@ -180,23 +181,30 @@ function ModalScreen({ navigation }) {
             </View> */}
             <FlatList
               keyboardShouldPersistTaps={"always"}
-              data={location.searchPredictions}
+              data={
+                location.searchPredictions.length
+                  ? location.searchPredictions
+                  : location.recentPlaces
+              }
               renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={async () => {
-                    const result = await location.actions.getPlaceDetails(
-                      item.place_id
-                    );
+                    // second place_id here is in case we are getting an element from google
+                    const result = await location.actions.getPlaceDetails({
+                      ...item,
+                      placeId: item?.placeId || item?.place_id,
+                    });
 
                     ride.actions.setNewRide({
                       ...ride.newRide,
+                      placeId: result?.placeId,
                       [input]: {
-                        text: item.structured_formatting.main_text,
+                        text: item?.structured_formatting?.main_text,
                         location: {
                           latitude: result.geometry.location.lat,
                           longitude: result.geometry.location.lng,
                         },
-                        placeId: item.place_id,
+                        placeId: result?.placeId,
                       },
                     });
 
@@ -223,13 +231,13 @@ function ModalScreen({ navigation }) {
                   <List.Item
                     title={item.structured_formatting.main_text}
                     description={
-                      item.structured_formatting.secondary_text &&
+                      item?.structured_formatting?.secondary_text &&
                       item.structured_formatting.secondary_text.length > 52
                         ? item.structured_formatting.secondary_text.substring(
                             0,
                             52 - 3
                           ) + "..."
-                        : item.structured_formatting.secondary_text
+                        : item?.structured_formatting?.secondary_text || "..."
                     }
                     titleStyle={{ fontWeight: "500", marginBottom: 3 }}
                     style={{
@@ -238,9 +246,9 @@ function ModalScreen({ navigation }) {
                     }}
                     left={() => (
                       <MaterialCommunityIcons
-                        name="map-marker"
+                        name={item?.visited ? "clock-outline" : "map-marker"}
                         size={20}
-                        color={colors.primary}
+                        color={item?.visited ? "grey" : colors.primary}
                       />
                     )}
                   />
