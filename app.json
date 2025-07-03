@@ -2,7 +2,7 @@
   "expo": {
     "name": "Mamdoo",
     "slug": "mamdoo",
-    "version": "0.0.19",
+    "version": "0.0.20",
     "orientation": "portrait",
     "icon": "./assets/mamdoo-icon-blank.png",
     "notification": {
