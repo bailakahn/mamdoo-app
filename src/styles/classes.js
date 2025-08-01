@@ -1,6 +1,5 @@
 import * as Mixins from "./mixins";
 import { Platform, StatusBar } from "react-native";
-import { color } from "react-native-reanimated";
 export const container = (colors) => ({
   flex: 1,
   backgroundColor: colors.background,
