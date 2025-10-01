@@ -33,7 +33,9 @@ function ModalScreen({ navigation }) {
   const [input, setInput] = useState("dropOff");
 
   const refreshAsync = async () => {
-    const currentLocation = await location.actions.getCurrentPosition();
+    const currentLocation = location?.location
+      ? location.location
+      : await location.actions.getCurrentPosition();
 
     // const results = await location.actions.getPlace(
     //   `${currentLocation?.latitude},${currentLocation?.longitude}`
