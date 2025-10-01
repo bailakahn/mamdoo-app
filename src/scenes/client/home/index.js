@@ -40,11 +40,13 @@ import { t, lang } from "_utils/lang";
 import { defaultNewRide } from "_store/initialState";
 import PopConfirm from "_organisms/PopConfirm";
 import { Mixins } from "../../../styles";
-import { cabType } from "_styles";
+import { removeCachedImage } from "../../../utils/helpers/removeCachedImage";
+
 // Image mapping
 const images = {
-  bike: require("_assets/bike.png"),
-  car: require("_assets/car.png"),
+  bike: require("_assets/bike2.png"),
+  car: require("_assets/car2.png"),
+  tuk: require("_assets/tuk.png"),
 };
 
 const LATITUDE_DELTA = 0.005;
@@ -131,6 +133,12 @@ export default function Home({ navigation, route }) {
       });
     }
   }, [ride.step]);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     await removeCachedImage("car");
+  //   })();
+  // }, []);
 
   const mapRegion = useMemo(() => {
     if (ride.newRideDetails?.polyline?.length) {
@@ -411,9 +419,9 @@ export default function Home({ navigation, route }) {
             }}
           >
             <Image
-              source={require("_assets/client.png")}
-              cacheKey={"client"}
-              style={{ width: 50, height: 50 }}
+              source={require("_assets/client2.png")}
+              cacheKey={"client2"}
+              style={{ width: 80, height: 80 }}
               resizeMode="contain"
             />
           </Marker>
@@ -886,7 +894,10 @@ const RideDetailView = ({ user, ride, navigation }) => {
                         variant="titleLarge"
                         style={{
                           fontWeight: "bold",
-                          ...(theme.isDarkMode && { color: "#000" }),
+                          ...(theme.isDarkMode &&
+                            ride.newRide.cabTypeId === cabType._id && {
+                              color: "#000",
+                            }),
                         }}
                       >
                         {cabType.description[lang || "fr"]}
@@ -895,7 +906,10 @@ const RideDetailView = ({ user, ride, navigation }) => {
                     description={
                       <Text
                         style={{
-                          ...(theme.isDarkMode && { color: "#000" }),
+                          ...(theme.isDarkMode &&
+                            ride.newRide.cabTypeId === cabType._id && {
+                              color: "#000",
+                            }),
                         }}
                       >
                         {ride.newRideDetails?.duration.text}
@@ -907,8 +921,8 @@ const RideDetailView = ({ user, ride, navigation }) => {
                       >
                         <Image
                           source={images[cabType.name] || images["bike"]}
-                          cacheKey={cabType.name}
-                          style={{ width: 50, height: 50 }}
+                          cacheKey={`${cabType.name}_v2`}
+                          style={{ width: 70, height: 70 }}
                           resizeMode="contain"
                         />
                       </View>
@@ -920,7 +934,10 @@ const RideDetailView = ({ user, ride, navigation }) => {
                             variant="titleMedium"
                             style={{
                               fontWeight: "bold",
-                              ...(theme.isDarkMode && { color: "#000" }),
+                              ...(theme.isDarkMode &&
+                                ride.newRide.cabTypeId === cabType._id && {
+                                  color: "#000",
+                                }),
                             }}
                           >
                             {`${ride.ridePrices[cabType.name]?.price?.text}`}
@@ -931,7 +948,10 @@ const RideDetailView = ({ user, ride, navigation }) => {
                             variant="titleMedium"
                             style={{
                               fontWeight: "bold",
-                              ...(theme.isDarkMode && { color: "#000" }),
+                              ...(theme.isDarkMode &&
+                                ride.newRide.cabTypeId === cabType._id && {
+                                  color: "#000",
+                                }),
                             }}
                           >
                             à
@@ -942,7 +962,10 @@ const RideDetailView = ({ user, ride, navigation }) => {
                             variant="titleMedium"
                             style={{
                               fontWeight: "bold",
-                              ...(theme.isDarkMode && { color: "#000" }),
+                              ...(theme.isDarkMode &&
+                                ride.newRide.cabTypeId === cabType._id && {
+                                  color: "#000",
+                                }),
                             }}
                           >
                             {`${ride.ridePrices[cabType.name]?.maxPrice?.text}`}
