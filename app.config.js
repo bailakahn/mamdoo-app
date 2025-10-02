@@ -46,10 +46,11 @@ module.exports = ({ config }) => ({
       googleMapsApiKey: "AIzaSyAOms3z5wGZja5MI8bZdgJ8C6ccOYaY78M",
     },
     entitlements: {
-      "aps-environment":
-        process.env.EXPO_PUBLIC_ENV_NAME === "dev"
-          ? "development"
-          : process.env.EXPO_PUBLIC_ENV_NAME,
+      "aps-environment": ["dev", "staging"].includes(
+        process.env.EXPO_PUBLIC_ENV_NAME
+      )
+        ? "development"
+        : "production",
     },
   },
   android: {

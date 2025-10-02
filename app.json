@@ -50,7 +50,8 @@
         "UIBackgroundModes": [
           "location"
         ],
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "CFBundleAllowMixedLocalizations": true
       },
       "bundleIdentifier": "com.mamdoo.app",
       "buildNumber": "0.0.7"
