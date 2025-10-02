@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { View, SafeAreaView, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
   useTheme,
   Text,
@@ -200,8 +201,8 @@ export default function Upload({ navigation }) {
             onPress={() => setVisible(true)}
             disabled={
               !partner.uploadDocuments?.profilePicture ||
-              !partner.uploadDocuments?.driverLicenseFront ||
-              !partner.uploadDocuments?.driverLicenseBack ||
+              // !partner.uploadDocuments?.driverLicenseFront ||
+              // !partner.uploadDocuments?.driverLicenseBack ||
               !partner.uploadDocuments?.cabLicense
             }
           >

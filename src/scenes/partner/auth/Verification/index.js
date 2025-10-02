@@ -3,10 +3,10 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  SafeAreaView,
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme, Text, TextInput } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";

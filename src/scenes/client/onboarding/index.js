@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { View, SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import { View, ScrollView, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Text, useTheme, Button } from "react-native-paper";
 import { useVideoPlayer, VideoView } from "expo-video";
 import { useEvent } from "expo";
@@ -163,7 +164,6 @@ export default function Onboarding() {
               height: Mixins.height(0.5, true),
             }}
             player={player}
-            allowsFullscreen
             allowsPictureInPicture
           />
           <View style={styles.controlsContainer}>

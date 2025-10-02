@@ -19,7 +19,7 @@ export default function useUpload() {
   const takePhoto = async (callback) => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ["images"],
       aspect: [4, 3],
       base64: true,
     });
@@ -32,7 +32,7 @@ export default function useUpload() {
   const pickImage = async (callback) => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ["images"],
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,

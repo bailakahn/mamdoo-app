@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
-import { View, ScrollView, SafeAreaView } from "react-native";
+import { View, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme, Text } from "react-native-paper";
 import LottieView from "lottie-react-native";
 import { Classes } from "_styles";

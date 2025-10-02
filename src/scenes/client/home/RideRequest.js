@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
-import { View, SafeAreaView, ScrollView, Platform } from "react-native";
+import { View, ScrollView, Platform } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Text, useTheme } from "react-native-paper";
 import { Classes } from "_styles";
 import Icon from "@expo/vector-icons/MaterialIcons";

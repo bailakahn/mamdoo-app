@@ -1,11 +1,12 @@
 import React, { useMemo, useEffect, useRef, useState } from "react";
-import MapView, {
-  PROVIDER_GOOGLE,
-  Marker,
-  Polyline,
-  AnimatedRegion,
-} from "react-native-maps";
-import { View, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from "react-native-maps";
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  Platform,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   useTheme,
@@ -16,7 +17,6 @@ import {
   Modal,
   Portal,
   Button as OriginalButton,
-  Headline,
   List,
 } from "react-native-paper";
 import LottieView from "lottie-react-native";
@@ -80,6 +80,8 @@ export default function Home({ navigation, route }) {
   const destinationMarkerRef = useRef();
   const mapRef = useRef();
 
+  const [tracks, setTracks] = useState(true);
+
   useEffect(() => {
     if ((ride.canceled && route?.params?.driverId) || ride.denied) {
       ride.actions.makeRideRequest(
@@ -135,9 +137,7 @@ export default function Home({ navigation, route }) {
   }, [ride.step]);
 
   // useEffect(() => {
-  //   (async () => {
-  //     await removeCachedImage("car");
-  //   })();
+  //   removeCachedImage("car_v2");
   // }, []);
 
   const mapRegion = useMemo(() => {
@@ -421,12 +421,15 @@ export default function Home({ navigation, route }) {
             <Image
               source={require("_assets/client2.png")}
               cacheKey={"client2"}
-              style={{ width: 80, height: 80 }}
+              style={
+                Platform.OS === "android"
+                  ? { width: 40, height: 40 }
+                  : { width: 80, height: 80 }
+              }
               resizeMode="contain"
             />
           </Marker>
         )}
-        {/* <Marker.Animated ref={animatedDriverRef} coordinate={animatedDriver} /> */}
         {ride.step === 1 &&
           Array.isArray(ride.mapDrivers) &&
           !!ride.mapDrivers.length &&
@@ -448,7 +451,7 @@ export default function Home({ navigation, route }) {
                   <Image
                     source={images[cab?.cabType?.name] || images["bike"]}
                     cacheKey={cab?.cabType?.name}
-                    style={{ width: 50, height: 50 }}
+                    style={{ width: 40, height: 40 }}
                     resizeMode="contain"
                   />
                 </View>
@@ -473,28 +476,34 @@ export default function Home({ navigation, route }) {
                   justifyContent: "center",
                 }}
               >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    backgroundColor: theme.isDarkMode
-                      ? colors.background
-                      : "#fff",
-                    padding: 5,
-                    marginBottom: 5,
-                  }}
-                >
-                  <Text variant="titleMedium">{ride.newRide.pickUp.text}</Text>
-                  <MaterialCommunityIcons
-                    name="chevron-right"
-                    size={20}
-                    color="gray"
-                  />
-                </View>
+                {Platform.OS === "ios" && (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      backgroundColor: theme.isDarkMode
+                        ? colors.background
+                        : "#fff",
+                      padding: 5,
+                      marginBottom: 5,
+                    }}
+                  >
+                    <Text variant="titleSmall">{ride.newRide.pickUp.text}</Text>
+                    <MaterialCommunityIcons
+                      name="chevron-right"
+                      size={20}
+                      color="gray"
+                    />
+                  </View>
+                )}
                 <Image
-                  source={require("_assets/dot.png")}
-                  cacheKey="dot"
-                  style={{ width: 30, height: 30 }}
+                  source={require("_assets/client2.png")}
+                  cacheKey="client2"
+                  style={
+                    Platform.OS === "android"
+                      ? { width: 40, height: 40 }
+                      : { width: 60, height: 60 }
+                  }
                   resizeMode="contain"
                 />
               </View>
@@ -523,28 +532,36 @@ export default function Home({ navigation, route }) {
                   justifyContent: "center",
                 }}
               >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    backgroundColor: theme.isDarkMode
-                      ? colors.background
-                      : "#fff",
-                    padding: 5,
-                    marginBottom: 5,
-                  }}
-                >
-                  <Text variant="titleMedium">{ride.newRide.dropOff.text}</Text>
-                  <MaterialCommunityIcons
-                    name="chevron-right"
-                    size={20}
-                    color="gray"
-                  />
-                </View>
+                {Platform.OS === "ios" && (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      backgroundColor: theme.isDarkMode
+                        ? colors.background
+                        : "#fff",
+                      padding: 5,
+                      marginBottom: 5,
+                    }}
+                  >
+                    <Text variant="titleMedium">
+                      {ride.newRide.dropOff.text}
+                    </Text>
+                    <MaterialCommunityIcons
+                      name="chevron-right"
+                      size={20}
+                      color="gray"
+                    />
+                  </View>
+                )}
                 <Image
                   source={require("_assets/destination.png")}
                   cacheKey="destination"
-                  style={{ width: 50, height: 50 }}
+                  style={
+                    Platform.OS === "android"
+                      ? { width: 40, height: 40 }
+                      : { width: 50, height: 50 }
+                  }
                   resizeMode="contain"
                 />
               </View>
@@ -572,7 +589,7 @@ export default function Home({ navigation, route }) {
                   images[ride.driver?.cab?.cabType?.name] || images["bike"]
                 }
                 cacheKey={ride.driver?.cab?.cabType?.name}
-                style={{ width: 50, height: 50 }}
+                style={{ width: 40, height: 40 }}
                 resizeMode="contain"
               />
             </View>
@@ -691,13 +708,14 @@ const WelcomeView = ({ user, ride, navigation }) => {
   const { colors } = useTheme();
   const app = useApp();
   const theme = useMamdooTheme();
+  const insets = useSafeAreaInsets();
 
   return (
     <View
       style={{
-        // flex: 1,
         alignItems: "center",
         overflow: "hidden",
+        marginBottom: insets.bottom,
       }}
     >
       <View>
@@ -732,7 +750,6 @@ const WelcomeView = ({ user, ride, navigation }) => {
             style={{
               alignItems: "center",
               marginTop: 20,
-              marginBottom: 10,
             }}
           >
             <TouchableOpacity

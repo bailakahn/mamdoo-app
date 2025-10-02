@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
-import { View, useColorScheme, ScrollView, SafeAreaView } from "react-native";
+import { View, useColorScheme, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme, Text } from "react-native-paper";
 import LottieView from "lottie-react-native";
 import Icon from "@expo/vector-icons/MaterialIcons";
@@ -51,6 +52,7 @@ export default function DriverOnTheWayScene() {
         alignItems: "center",
         justifyContent: "center",
       }}
+      edges={"bottom"}
     >
       <ScrollView
         contentContainerStyle={{
@@ -169,14 +171,6 @@ export default function DriverOnTheWayScene() {
             loop
             source={ride.driverArrived ? ReadyAmimation : avatarAnimation}
           />
-
-          {/* {ride.driverArrived && (
-            <View>
-              <Text variant="titleMedium" style={{ fontWeight: "bold" }}>
-                Destination: {ride.request.dropOff?.text}
-              </Text>
-            </View>
-          )} */}
 
           <View style={{ flexDirection: "row" }}>
             <Text

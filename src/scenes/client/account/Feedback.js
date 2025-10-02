@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import {
   View,
   Keyboard,
-  SafeAreaView,
   KeyboardAvoidingView,
   ScrollView,
   Platform,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Text, useTheme, Headline, TextInput } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
@@ -124,7 +124,7 @@ export default function FeedbackScreen({ navigation }) {
                 maxLength={200}
                 numberOfLines={4}
                 onSubmitEditing={() => Keyboard.dismiss()}
-                blurOnSubmit={true}
+                submitBehavior={"blurAndSubmit"}
               />
             </View>
           </View>

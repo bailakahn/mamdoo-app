@@ -1,6 +1,6 @@
 import React from "react";
-import { View, Text, SafeAreaView } from "react-native";
-// import { useNetworkState } from "expo-network";
+import { View, Text } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import * as Network from "expo-network";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";

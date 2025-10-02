@@ -6,8 +6,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   Linking,
-  SafeAreaView,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme, TextInput, Text } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";

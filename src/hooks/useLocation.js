@@ -20,7 +20,9 @@ export default function useLocation() {
     actions: { setGoogleMapsSessionToken },
   } = useStore();
 
-  const [status, requestPermission] = Location.useForegroundPermissions();
+  const [status, requestPermission] = Location.useForegroundPermissions({
+    request: true,
+  });
   const getRequest = useApi();
   const providerRequest = useProvider();
   const deadPrefixes = useRef(new Set());
@@ -33,7 +35,7 @@ export default function useLocation() {
 
   useEffect(() => {
     let isMounted = true;
-    requestPermission();
+    // requestPermission();
 
     if (status && status.granted)
       Location.getCurrentPositionAsync({
@@ -58,6 +60,13 @@ export default function useLocation() {
   }, []);
 
   const getCurrentPosition = async () => {
+    const last = await Location.getLastKnownPositionAsync({ maxAge: 120000 });
+    if (last) {
+      const { latitude, longitude } = last.coords;
+      setLocation({ latitude, longitude });
+      return { latitude, longitude };
+    }
+
     let {
       coords: { latitude, longitude },
     } = await Location.getCurrentPositionAsync({

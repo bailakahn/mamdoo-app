@@ -3,15 +3,14 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  SafeAreaView,
   KeyboardAvoidingView,
   ScrollView,
   Platform,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Text,
   useTheme,
-  Headline,
   TextInput,
   List,
   Divider,
@@ -128,9 +127,9 @@ export default function ReviewScreen({ navigation, route }) {
               </View>
 
               <View>
-                <Headline style={Classes.text(colors)}>
+                <Text variant="headlineSmall" style={Classes.text(colors)}>
                   {t("rating.rateText") + " ?"}
-                </Headline>
+                </Text>
               </View>
 
               <View>
@@ -171,20 +170,16 @@ export default function ReviewScreen({ navigation, route }) {
             <View style={{ marginTop: 20, marginBottom: 20 }}>
               <TextInput
                 style={{
-                  // ...Classes.formInput(colors),
                   width: Mixins.width(0.93, true),
-                  // height: Mixins.width(0.2, true),
-                  // fontSize: 20,
                   marginBottom: 20,
                   alignContent: "flex-start",
                   justifyContent: "flex-start",
                   backgroundColor: colors.background,
                 }}
                 outlineStyle={{ borderRadius: 10 }}
-                // mode="outlined"
+                mode="outlined"
                 multiline
                 label={t("rating.addComment")}
-                // placeholder={t("rating.addComment")}
                 left={
                   <TextInput.Icon
                     icon={"comment-processing-outline"}
@@ -196,7 +191,7 @@ export default function ReviewScreen({ navigation, route }) {
                 maxLength={200}
                 numberOfLines={2}
                 onSubmitEditing={() => Keyboard.dismiss()}
-                blurOnSubmit={true}
+                submitBehavior={"blurAndSubmit"}
               />
             </View>
             <Button

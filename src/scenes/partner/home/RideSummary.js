@@ -1,5 +1,6 @@
 import React from "react";
-import { View, SafeAreaView, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Text, useTheme, Avatar, List, Divider } from "react-native-paper";
 import { useRide } from "_hooks/partner";
 import { Classes } from "_styles";

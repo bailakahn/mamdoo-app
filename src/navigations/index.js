@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { ScrollView, SafeAreaView } from "react-native";
+import { ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import {
   Provider as PaperProvider,

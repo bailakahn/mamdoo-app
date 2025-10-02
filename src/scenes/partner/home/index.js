@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useKeepAwake } from "expo-keep-awake";
-import { View, ScrollView, SafeAreaView, TouchableOpacity } from "react-native";
+import { View, ScrollView, TouchableOpacity } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Headline,
   useTheme,

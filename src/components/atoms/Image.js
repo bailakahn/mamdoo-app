@@ -1,88 +1,60 @@
 import React, { useEffect, useState, useRef } from "react";
-
 import { Image, View, ActivityIndicator } from "react-native";
-
-import * as FileSystem from "expo-file-system";
-
+import { File, Paths } from "expo-file-system";
 import PropTypes from "prop-types";
 
 const CachedImage = (props) => {
   const { source, cacheKey, style = {} } = props;
 
-  const uri = Image.resolveAssetSource(source).uri;
+  // Resolve the original image URI (local asset or remote)
+  const originalUri = Image.resolveAssetSource(source)?.uri;
 
-  const filesystemURI = `${FileSystem.cacheDirectory}${cacheKey}`;
+  // Represent the cached file as a File object
+  const cachedFile = new File(Paths.cache, cacheKey);
 
-  const [imgURI, setImgURI] = useState(filesystemURI);
-
-  const componentIsMounted = useRef(true);
-
-  const loadImageAsBase64 = async (fileURI) => {
-    try {
-      const fileBase64 = await FileSystem.readAsStringAsync(fileURI, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-
-      return `data:image/png;base64,${fileBase64}`; // Adjust MIME type if necessary
-    } catch (error) {
-      console.error("Error reading file as base64:", error);
-    }
-  };
+  const [uriToShow, setUriToShow] = useState(null);
+  const mounted = useRef(true);
 
   useEffect(() => {
-    const loadImage = async ({ fileURI }) => {
+    mounted.current = true;
+
+    const load = async () => {
       try {
-        // Use the cached image if it exists
-        const metadata = await FileSystem.getInfoAsync(fileURI);
-        if (!metadata.exists) {
-          // download to cache
-          if (componentIsMounted.current) {
-            setImgURI(null);
-            await FileSystem.downloadAsync(uri, fileURI);
-          }
+        // If not cached yet, download to our deterministic file
+        if (!cachedFile.exists) {
+          // Ensure parent cache dir exists is handled by FileSystem internally;
+          // download with idempotent overwrite semantics
+          await File.downloadFileAsync(originalUri, cachedFile, {
+            idempotent: true,
+          });
         }
 
-        const base64Image = await loadImageAsBase64(fileURI);
-        if (componentIsMounted.current) {
-          setImgURI(base64Image);
-        }
-      } catch (err) {
-        console.log(); // eslint-disable-line no-console
-        setImgURI(uri);
+        // After download (or if it already existed), just use the file URI
+        if (mounted.current) setUriToShow(cachedFile.uri);
+      } catch (e) {
+        // Fallback to the original source if anything goes wrong
+        if (mounted.current) setUriToShow(originalUri);
       }
     };
 
-    loadImage({ fileURI: filesystemURI });
+    if (originalUri) load();
 
     return () => {
-      componentIsMounted.current = false;
+      mounted.current = false;
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [originalUri, cacheKey]);
 
-  return (
-    <>
-      {imgURI ? (
-        <Image
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          {...props}
-          style={style}
-          source={{
-            uri: imgURI,
-          }}
-        />
-      ) : (
-        <View
-          style={{ ...style, alignItems: "center", justifyContent: "center" }}
-        >
-          <ActivityIndicator size={33} />
-        </View>
-      )}
-    </>
+  return uriToShow ? (
+    <Image {...props} style={style} source={{ uri: uriToShow }} />
+  ) : (
+    <View style={{ ...style, alignItems: "center", justifyContent: "center" }}>
+      <ActivityIndicator size={33} />
+    </View>
   );
 };
 
 CachedImage.propTypes = {
-  source: PropTypes.number.isRequired,
+  source: PropTypes.oneOfType([PropTypes.number, PropTypes.object]).isRequired,
   cacheKey: PropTypes.string.isRequired,
 };
 

@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  SafeAreaView,
-  ScrollView,
-  Platform,
-  TouchableOpacity,
-} from "react-native";
+import { View, ScrollView, Platform, TouchableOpacity } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Text, useTheme, List, Divider } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";

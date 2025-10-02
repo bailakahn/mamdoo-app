@@ -3,9 +3,9 @@ import {
   View,
   Image as RNImage,
   ScrollView,
-  SafeAreaView,
   TouchableOpacity,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme, Text } from "react-native-paper";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";

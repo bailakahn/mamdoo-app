@@ -1,5 +1,6 @@
 import React from "react";
-import { SafeAreaView, View, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme, Text } from "react-native-paper";
 import _ from "lodash";
 import { Classes } from "_styles";

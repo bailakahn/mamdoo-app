@@ -5,8 +5,8 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme, Text, TextInput, FAB } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";

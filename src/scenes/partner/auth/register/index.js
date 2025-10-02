@@ -6,9 +6,9 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Linking,
-  SafeAreaView,
   TextInput as TI,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme, Text, TextInput, Switch } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import { Classes } from "_styles";

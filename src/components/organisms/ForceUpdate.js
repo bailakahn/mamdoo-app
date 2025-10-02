@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import {
   View,
-  SafeAreaView,
   ScrollView,
   Platform,
   Linking,
   Image as RNImage,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme, Text } from "react-native-paper";
 import { Classes } from "_styles";
 import { Button, Image } from "_atoms";
