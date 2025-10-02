@@ -5,7 +5,7 @@
   },
   "build": {
     "base": {
-      "node": "20.x",
+      "node": "20.19.5",
       "yarn": "1.22.22"
     },
     "development": {
