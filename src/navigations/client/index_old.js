@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import HomeStack from "./stacks/Home";
 import AccountStack from "./stacks/Account";
 import AuthtStack from "./stacks/Auth";

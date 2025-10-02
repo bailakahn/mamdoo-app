@@ -9,8 +9,8 @@ import {
 import { Text, useTheme, List, Divider } from "react-native-paper";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import Icon from "@expo/vector-icons/MaterialIcons";
 import {
   useProxy,
   useRequest,

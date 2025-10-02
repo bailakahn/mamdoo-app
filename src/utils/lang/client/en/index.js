@@ -86,6 +86,7 @@ export default {
     notificationPermission: "Please give access to push notificatons!",
     notificationVirtualDevice:
       "Must use physical device for Push Notifications!",
+    projectIdNotFound: "Project ID not found",
     incompatibleAppVersionTitle: "Incompatible App Version",
     incompatibleAppVersion: "Please update your application!",
   },

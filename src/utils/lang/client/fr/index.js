@@ -85,6 +85,7 @@ export default {
       "Veuillez autoriser les notifications pour avoir les mises à jour en temps reel!",
     notificationVirtualDevice:
       "Vous devez utiliser un appreil physique pour recevoir les notifications!",
+    projectIdNotFound: "ID du projet introuvable",
     incompatibleAppVersionTitle: "Version incompatible",
     incompatibleAppVersion: "Veuillez mettre à jour votre application!",
   },

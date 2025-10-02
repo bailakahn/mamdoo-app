@@ -17,7 +17,7 @@ import {
   Divider,
   Avatar,
 } from "react-native-paper";
-import { AirbnbRating } from "@rneui/themed";
+import { Rating } from "_molecules";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { useRide } from "_hooks";
@@ -134,7 +134,14 @@ export default function ReviewScreen({ navigation, route }) {
               </View>
 
               <View>
-                <AirbnbRating
+                <Rating
+                  containerStyle={{
+                    marginTop: 10,
+                  }}
+                  textStyle={{
+                    fontSize: 25,
+                    fontWeight: "bold",
+                  }}
                   reviews={[
                     t("rating.terrible"),
                     t("rating.bad"),
@@ -155,6 +162,7 @@ export default function ReviewScreen({ navigation, route }) {
                   reviewColor={ratingColor}
                   selectedColor={ratingColor}
                   defaultRating={5}
+                  iconSize={50}
                 />
               </View>
             </View>

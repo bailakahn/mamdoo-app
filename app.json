@@ -31,6 +31,13 @@
           "photosPermission": "Mamdoo a besoin d'accéder a vos photos pour pouvoir ajouter vos pièces d'identité.",
           "cameraPermission": "Mamdoo a besoin d'accéder a votre caméra pour pouvoir ajouter vos pièces d'identité."
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/mamdoo-icon.png",
+          "enableBackgroundRemoteNotifications": false
+        }
       ]
     ],
     "ios": {

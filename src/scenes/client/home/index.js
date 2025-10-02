@@ -21,8 +21,8 @@ import {
 } from "react-native-paper";
 import LottieView from "lottie-react-native";
 import PinAnimation from "_assets/animation/dots.json";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   useLocation,
   useRide,

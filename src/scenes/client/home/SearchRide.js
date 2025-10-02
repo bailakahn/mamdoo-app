@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useTheme, Text, Divider, TextInput, List } from "react-native-paper";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import {

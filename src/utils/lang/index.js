@@ -1,4 +1,4 @@
-import * as Localization from "expo-localization";
+import { getLocales } from "expo-localization";
 import i18n from "i18n-js";
 import clientFr from "./client/fr";
 import clientEn from "./client/en";
@@ -9,7 +9,9 @@ import partnerEn from "./partner/en";
 
 i18n.fallbacks = true;
 
-i18n.locale = Localization.locale.includes("fr") ? "fr" : "en";
+const locales = getLocales();
+
+i18n.locale = locales[0]?.languageCode || "en";
 
 export const t = (scope, options) => {
   i18n.translations = {

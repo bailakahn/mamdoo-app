@@ -8,11 +8,11 @@ import {
   Platform,
 } from "react-native";
 import { Text, useTheme, Headline, TextInput } from "react-native-paper";
-import { AirbnbRating } from "@rneui/themed";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
 import { useFeedback } from "_hooks";
 import { Button } from "_atoms";
+import { Rating } from "_molecules";
 import { Mixins } from "../../../styles";
 
 export default function FeedbackScreen({ navigation }) {
@@ -67,7 +67,14 @@ export default function FeedbackScreen({ navigation }) {
               }}
             >
               <Text style={{ fontSize: 20 }}>{t("feedback.rating")}</Text>
-              <AirbnbRating
+              <Rating
+                containerStyle={{
+                  marginTop: 10,
+                }}
+                textStyle={{
+                  fontSize: 25,
+                  fontWeight: "bold",
+                }}
                 reviews={[
                   t("rating.terrible"),
                   t("rating.bad"),
@@ -91,6 +98,7 @@ export default function FeedbackScreen({ navigation }) {
                 }}
                 reviewColor={ratingColor}
                 selectedColor={ratingColor}
+                iconSize={50}
               />
             </View>
 

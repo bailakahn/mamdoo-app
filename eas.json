@@ -9,12 +9,13 @@
       "yarn": "1.22.10"
     },
     "development": {
+      "extends": "base",
       "developmentClient": true,
       "distribution": "internal",
       "env": {
         "EXPO_PUBLIC_ENV_NAME": "dev",
         "EXPO_PUBLIC_PROXY_URL": "http://192.168.92.71:3001",
-        "EXPO_PUBLIC_PROVIDER_URL": "http://192.168.92.71:3005/",
+        "EXPO_PUBLIC_PROVIDER_URL": "http://192.168.92.71:3005/"
       }
     },
     "staging": {

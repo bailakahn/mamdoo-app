@@ -6,9 +6,9 @@ import {
   MD3LightTheme as DefaultTheme,
   MD3DarkTheme as DarkTheme,
 } from "react-native-paper";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import FontAwesome from "react-native-vector-icons/Ionicons";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import Icon from "@expo/vector-icons/MaterialIcons";
 import { useStore } from "_store";
 import { useApp, useTheme } from "_hooks";
 import _ from "lodash";
@@ -44,7 +44,7 @@ MaterialCommunityIcons.loadFont("location-exit", {
   family: "material-community",
 });
 
-FontAwesome.loadFont("ios-information-circle-outline");
+Ionicons.loadFont("information-circle-outline");
 
 Icon.loadFont("clear");
 Icon.loadFont("check");

@@ -12,7 +12,7 @@ import {
   Avatar,
   IconButton,
 } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import Icon from "@expo/vector-icons/MaterialIcons";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import {

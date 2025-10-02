@@ -1,17 +1,9 @@
 import React, { useRef, useEffect, useState } from "react";
-import {
-  View,
-  Image,
-  Platform,
-  useColorScheme,
-  ScrollView,
-  SafeAreaView,
-  StatusBar,
-} from "react-native";
+import { View, useColorScheme, ScrollView, SafeAreaView } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import LottieView from "lottie-react-native";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon from "@expo/vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import LightAvatar from "_assets/animation/light-avatar.json";

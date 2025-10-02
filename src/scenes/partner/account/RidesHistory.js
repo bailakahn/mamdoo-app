@@ -69,7 +69,7 @@ export default function RidesHistoryScene() {
                     : "Inconu"
                 }
                 description={date(ride.createdAt).format(
-                  lang === "fr" ? "D MMM YYYY, HH:mm:ss" : "YYYY MMM Do, HH:mm"
+                  lang === "fr" ? "YYYY MMM Do HH:mm" : "YYYY MMM Do HH:mm"
                 )}
                 left={(props) => (
                   <List.Icon

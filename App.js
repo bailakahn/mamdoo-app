@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Platform } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { NetworkProvider } from "react-native-offline";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StoreProvider } from "_store";
 import NavigationRoot from "_navigations";
@@ -29,15 +28,13 @@ export default function App() {
 
   return (
     <StoreProvider>
-      <NetworkProvider pingInterval={30000}>
-        <OfflineNotice />
-        <ErrorBoundary>
-          <NavigationRoot />
-        </ErrorBoundary>
-        {Platform.OS === "ios" && (
-          <StatusBar style={isDarkMode ? "light" : "dark"} />
-        )}
-      </NetworkProvider>
+      <OfflineNotice />
+      <ErrorBoundary>
+        <NavigationRoot />
+      </ErrorBoundary>
+      {Platform.OS === "ios" && (
+        <StatusBar style={isDarkMode ? "light" : "dark"} />
+      )}
     </StoreProvider>
   );
 }

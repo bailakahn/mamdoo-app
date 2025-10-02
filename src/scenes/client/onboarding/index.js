@@ -1,12 +1,16 @@
-import React, { useState, useRef } from "react";
-import { View, SafeAreaView, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { View, SafeAreaView, ScrollView, StyleSheet } from "react-native";
 import { Text, useTheme, Button } from "react-native-paper";
-import { Video, ResizeMode } from "expo-av";
-import { Image, LoadingV2 } from "_atoms";
+import { useVideoPlayer, VideoView } from "expo-video";
+import { useEvent } from "expo";
+import { Image } from "_atoms";
 import { useApp } from "_hooks";
 import * as Mixins from "../../../styles/mixins";
 import { Classes } from "_styles";
 import { t } from "_utils/lang";
+
+const videoSource =
+  "https://dwfhhymkzgxdd.cloudfront.net/videos/demos/demo.mp4";
 
 export default function Onboarding() {
   const { colors } = useTheme();
@@ -136,8 +140,14 @@ export default function Onboarding() {
   );
 
   const VideoDemo = () => {
-    const video = useRef(null);
-    const [status, setStatus] = useState({});
+    const player = useVideoPlayer(videoSource, (player) => {
+      player.loop = true;
+      player.play();
+    });
+
+    const { isPlaying } = useEvent(player, "playingChange", {
+      isPlaying: player.playing,
+    });
 
     return (
       <View
@@ -146,28 +156,28 @@ export default function Onboarding() {
           justifyContent: "center",
         }}
       >
-        <View
-          style={{
-            flexGrow: 1,
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Video
-            ref={video}
+        <View style={styles.contentContainer}>
+          <VideoView
             style={{
               width: Mixins.width(0.5, true),
               height: Mixins.height(0.5, true),
             }}
-            source={{
-              uri: "https://dwfhhymkzgxdd.cloudfront.net/videos/demos/demo.mp4",
-            }}
-            shouldPlay
-            useNativeControls
-            resizeMode={ResizeMode.CONTAIN}
-            isLooping
-            onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+            player={player}
+            allowsFullscreen
+            allowsPictureInPicture
           />
+          <View style={styles.controlsContainer}>
+            <Button
+              title={isPlaying ? "Pause" : "Play"}
+              onPress={() => {
+                if (isPlaying) {
+                  player.pause();
+                } else {
+                  player.play();
+                }
+              }}
+            />
+          </View>
         </View>
         <View style={{ marginTop: 20, alignItems: "center" }}>
           <View>
@@ -181,27 +191,6 @@ export default function Onboarding() {
               {t("main.onboardingVideoTitle")}
             </Text>
           </View>
-
-          {/* <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 20,
-            }}
-          >
-            <Button
-              icon={status.isPlaying ? "pause" : "play"}
-              mode="contained"
-              onPress={() =>
-                status.isPlaying
-                  ? video.current.pauseAsync()
-                  : video.current.playAsync()
-              }
-            >
-              {status.isPlaying ? "Pause" : "Jouer"}
-            </Button>
-          </View> */}
         </View>
       </View>
     );
@@ -264,3 +253,16 @@ export default function Onboarding() {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  contentContainer: {
+    flex: 1,
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 50,
+  },
+  controlsContainer: {
+    padding: 10,
+  },
+});
