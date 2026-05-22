@@ -81,24 +81,37 @@ export default (state = ride, action) => {
         ...state,
         driverArrived: true,
       };
-    case types.NEW_REQUEST:
+    case types.NEW_REQUEST: {
       if (state.request) return state;
+      const requestPreview = {
+        price: action.data.price,
+        dropOffText: action.data.dropOffText,
+        distance: action.data.distance,
+        duration: action.data.duration,
+        clientRideCount: action.data.clientRideCount,
+        clientAvgRating: action.data.clientAvgRating,
+        clientName: action.data.clientName || "",
+      };
       AsyncStorage.setItem(
         "@mamdoo-current-ride",
         JSON.stringify({
           ...state,
           ...(!state.request?._id && { requestId: action.data.requestId }),
+          requestPreview,
         })
       );
       return {
         ...state,
         ...(!state.request?._id && { requestId: action.data.requestId }),
+        requestPreview,
       };
+    }
     case types.RESET_REQUEST:
       // AsyncStorage.removeItem("@mamdoo-current-ride");
       return {
         ...state,
         requestId: null,
+        requestPreview: null,
         onGoingRide: false,
         nearByDrivers: 0,
         rideIsLoading: false,

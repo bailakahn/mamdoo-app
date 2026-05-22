@@ -62,6 +62,7 @@ export default {
     canCancel: false,
     driverArrived: false,
     request: null,
+    requestPreview: null,
     ridePrice: 0,
     canceled: false,
     denied: false,

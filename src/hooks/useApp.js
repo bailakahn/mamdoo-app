@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Linking, Platform, Alert } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useStore } from "_store";
 import { useApi } from "_api";
 import { t } from "_utils/lang";
@@ -10,28 +11,22 @@ export default function useApp() {
   const {
     main: { app, appLoaded, settings, cabTypes },
     actions: {
-      getApp,
       setApp,
       removeApp,
       setSettings,
       setAuthCabTypes,
-      getAppLaunched,
       setAppLaunched,
     },
   } = useStore();
 
   useEffect(() => {
     if (!appLoaded) {
-      getApp();
       getSettings();
       getCabTypes();
-      getAppLaunched();
-      // setAppLaunched(false);
     }
   }, []);
 
   const getSettings = async () => {
-    console.log("Getting Settings...");
     const result = await getRequest({
       method: "GET",
       endpoint: "app/getsettings",
@@ -40,6 +35,9 @@ export default function useApp() {
       console.log(err);
     });
 
+    if (result && !result.error) {
+      AsyncStorage.setItem("@mamdoo-settings", JSON.stringify(result));
+    }
     setSettings(result);
 
     return result;

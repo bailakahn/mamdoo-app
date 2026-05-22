@@ -177,8 +177,7 @@ export default {
     onlineNotice:
       "Si vous ête en service, appelez votre manager pour qu'il vous mette en ligne!",
     stop: "ARRETER",
-    offlineNotice:
-      "Si vous n'ête pas en service, appelez votre gestionaire pour qu'il vous mette hors ligne!",
+    offlineNotice: "Vous êtes hors ligne",
     welcome: "Bienvenue sur Mamdoo",
     onlineWelcomeText:
       "Vous êtes en ligne, Vous allez bientot recevoir des demandes de courses",
@@ -193,6 +192,13 @@ export default {
     noRidesTitle: "Aucune course",
     noRidesContent: "Réessayer dans quelques minutes!",
     dailyCommission: "Commission journalière",
+    goodMorning: "Bonjour",
+    goodAfternoon: "Bon après-midi",
+    goodEvening: "Bonsoir",
+    todayEarnings: "Gains",
+    tripsToday: "Courses",
+    rating: "Note",
+    acceptanceRate: "Taux d'acceptation",
     call: "Appeler",
     callUs: "Appeler nous",
     close: "Fermer",
@@ -201,7 +207,7 @@ export default {
   },
   ride: {
     mamdoo: "Mamdoo",
-    newRide: "Nouvelle demande de course",
+    newRide: "Nouvelle course",
     newRideDescription:
       "Un utilisateur vient d'effectuer une demande de course",
     acceptRide: "Accepter",
@@ -213,6 +219,7 @@ export default {
     callToCancel: "Appelez pour annuler la course",
     openMap: "Ouvrir la carte",
     rideCanceled: "Le client a annulé la course.",
+    rideCanceledTitle: "Course annulée",
     endRide: "Terminer",
     arrived: "Je suis arrivé",
     clientOnHisWay:
@@ -230,6 +237,16 @@ export default {
     done: "Terminer",
     price: "Prix: ",
     rideSummaryTitle: "Resumé de la course",
+    destination: "Destination",
+    fare: "Prix",
+    distance: "Distance",
+    enRoute: "En route vers le client",
+    ongoingRide: "En course",
+    tripCompleted: "Course terminée !",
+    rateClient: "Comment était le client ?",
+    doneAndGoHome: "Terminer et rentrer",
+    cancelRideLink: "Annuler la course",
+    newClient: "Nouveau client",
   },
   form: {
     fullName: "Prénom Nom",
@@ -273,6 +290,7 @@ export default {
   },
   account: {
     changeApp: "Changer d'application",
+    switchToClient: "Passer en mode passager",
     viewProfile: "Voir votre profil",
     ridesHistory: "Historique de courses",
     logout: "Se déconnecter",
@@ -310,11 +328,26 @@ export default {
     client: "Client",
     status: "Status",
     noRides: "Aucune course",
+    cabType: "Type de véhicule",
+    completed: "Terminées",
+    canceled: "Annulées",
+    noCompletedRides: "Aucune course terminée",
+    noCanceledRides: "Aucune course annulée",
+    canceledByYou: "Annulée par vous",
+    canceledByClient: "Annulée par le client",
   },
   pending: {
     title: "Vérification en cours",
     description:
       "Nos équipes vérifient votre compte. La vérification peut prendre jusqu'à 5 jours ouvrables",
     contactUs: "Contactez-nous",
+  },
+  rating: {
+    terrible: "Terrible",
+    bad: "Mauvais",
+    okay: "Correct",
+    good: "Bien",
+    great: "Excellent !",
+    addComment: "Ajouter un commentaire (optionnel)",
   },
 };

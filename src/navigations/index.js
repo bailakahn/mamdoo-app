@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
-import { ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
+import * as SplashScreen from "expo-splash-screen";
 import { NavigationContainer } from "@react-navigation/native";
 import {
   Provider as PaperProvider,
@@ -62,12 +64,9 @@ export default function NavigationRoot({ mode }) {
     actions: {
       setBackgroundPermission,
       removeBackgroundPermission,
-      getBackgroundPermission,
+      bootstrapStore,
     },
   } = useStore();
-
-  // removeBackgroundPermission();
-  // const colorScheme = useColorScheme();
 
   const themeMode = (mamdooTheme.isDarkMode && DarkTheme) || DefaultTheme;
 
@@ -81,9 +80,15 @@ export default function NavigationRoot({ mode }) {
   };
 
   useEffect(() => {
-    getBackgroundPermission();
-    // removeBackgroundPermission();
+    bootstrapStore();
   }, []);
+
+  // Hide the OS splash screen once all startup gates are satisfied.
+  useEffect(() => {
+    if (appLoaded && mamdooTheme.darkModeLoaded && backgroundPermissionReady && !_.isEmpty(settings)) {
+      SplashScreen.hideAsync();
+    }
+  }, [appLoaded, mamdooTheme.darkModeLoaded, backgroundPermissionReady, settings]);
 
   // console.log({ backgroundPermission, app });
   // const [ready, setIsReady] = useState(false);
@@ -111,7 +116,7 @@ export default function NavigationRoot({ mode }) {
     !backgroundPermissionReady ||
     _.isEmpty(settings)
   )
-    return <LoadingV2 color={"#25C0D2"} />;
+    return null;
 
   if (
     compareVersions(
@@ -150,6 +155,7 @@ export default function NavigationRoot({ mode }) {
 
   return (
     <PaperProvider theme={{ ...theme }}>
+      <StatusBar style={mamdooTheme.isDarkMode ? "light" : "dark"} />
       <NavigationContainer ref={navigationRef} theme={theme}>
         {!app ? (
           <AppEntry />

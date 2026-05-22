@@ -57,6 +57,18 @@ export default (state = main, action) => {
         ...state,
         backgroundPermission: "notLoaded",
       };
+    case types.BOOTSTRAP:
+      return {
+        ...state,
+        app: action.app,
+        appLoaded: true,
+        isDarkMode: action.isDarkMode,
+        darkModeLoaded: true,
+        backgroundPermission: action.backgroundPermission,
+        backgroundPermissionReady: true,
+        appLaunched: action.appLaunched,
+        settings: action.settings || state.settings,
+      };
     case types.SET_APP_LAUNCHED:
       AsyncStorage.setItem(
         "@mamdoo-app-launched",

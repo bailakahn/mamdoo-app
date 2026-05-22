@@ -1,40 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Platform } from "react-native";
-import { StatusBar } from "expo-status-bar";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SplashScreen from "expo-splash-screen";
 import { StoreProvider } from "_store";
 import NavigationRoot from "_navigations";
 import OfflineNotice from "_components/organisms/OfflineNotice";
 import ErrorBoundary from "_components/organisms/ErrorBoundary";
-import { LoadingV2 } from "_atoms";
-import { Colors } from "./src/styles";
+import React from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+
+// Keep the OS splash screen visible until NavigationRoot is ready.
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  useEffect(() => {
-    const bootstrapAsync = async () => {
-      const darkMode = await AsyncStorage.getItem("@mamdoo-dark-mode");
-
-      setIsDarkMode(darkMode === "true");
-      setIsLoading(false);
-    };
-
-    bootstrapAsync();
-  }, []);
-
-  if (isLoading) return <LoadingV2 color={Colors.colors.light.primary} />;
-
   return (
-    <StoreProvider>
-      <OfflineNotice />
-      <ErrorBoundary>
-        <NavigationRoot />
-      </ErrorBoundary>
-      {Platform.OS === "ios" && (
-        <StatusBar style={isDarkMode ? "light" : "dark"} />
-      )}
-    </StoreProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <StoreProvider>
+        <OfflineNotice />
+        <ErrorBoundary>
+          <NavigationRoot />
+        </ErrorBoundary>
+      </StoreProvider>
+    </GestureHandlerRootView>
   );
 }

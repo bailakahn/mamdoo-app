@@ -6,7 +6,8 @@ import { useTimeSpent } from "_hooks/partner";
 
 const Stack = createStackNavigator();
 
-import { HomeScene, Ride, RideSummaryScene } from "_scenes/partner";
+import { HomeScene, Ride, RideSummaryScene, ProfileScene, RidesHistoryScene, RideDetailScene } from "_scenes/partner";
+import { t2 } from "_utils/lang";
 
 export default function HomeStack({ role }) {
   const partner = usePartner();
@@ -74,14 +75,25 @@ export default function HomeStack({ role }) {
       <Stack.Screen
         name="RideSummary"
         component={RideSummaryScene}
-        options={({ navigation }) => ({
-          headerStyle: {
-            borderBottomWidth: 1,
-          },
-          headerTitleStyle: {
-            // color: "#000"
-          },
-        })}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="Profile"
+        component={ProfileScene}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="RidesHistory"
+        component={RidesHistoryScene}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="RideDetail"
+        component={RideDetailScene}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

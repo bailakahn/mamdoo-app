@@ -1,10 +1,13 @@
 export default {
   main: {
-    iAmAClient: "Client",
+    iAmAClient: "Je suis passager",
+    clientSubtitle: "Réservez une course en quelques secondes",
+    partnerSubtitle: "Démarrez votre activité de chauffeur",
+    howDoYouWantToTravel: "Comment souhaitez-vous voyager ?",
     bookABike: "Commander une moto",
     start: "Commencer",
     iam: "Je suis un",
-    iAmAPartner: "Chauffeur",
+    iAmAPartner: "Je suis conducteur",
     mamdooUse: "Comment voulez-vous utiliser Mamdoo ?",
     iWantMoreClients: "Je veux plus de clients",
     noInternetConnection: "Pas de connexion internet",
@@ -187,6 +190,12 @@ export default {
     rideDisabledMessage:
       "Si vous voyez ce message trop souvent contactez-nous au",
     bike: "Information de la moto",
+    newDriver: "Nouveau motard",
+    openMap: "Carte",
+    doneAndGoHome: "Terminé",
+    tripCompleted: "Course terminée !",
+    driverNearby: "Votre Mamdoo est presque là !",
+    price: "Prix",
   },
   form: {
     fullName: "Prénom Nom",
@@ -215,6 +224,7 @@ export default {
   },
   account: {
     changeApp: "Changer d'application",
+    switchToDriver: "Passer en mode conducteur",
     viewProfile: "Voir votre profil",
     ridesHistory: "Historique de courses",
     logout: "Se déconnecter",
@@ -255,6 +265,13 @@ export default {
     mamdoo: "Mamdoo",
     status: "Status",
     noRides: "Aucune course",
+    cabType: "Type de véhicule",
+    completed: "Terminées",
+    canceled: "Annulées",
+    noCompletedRides: "Aucune course terminée",
+    noCanceledRides: "Aucune course annulée",
+    canceledByYou: "Annulée par vous",
+    canceledByDriver: "Annulée par le conducteur",
   },
   feedback: {
     title: "Formulaire de retour",

@@ -8,66 +8,42 @@ import {
   ProfileScene,
   RidesHistoryScene,
   FeedbackScene,
+  RideDetailScene,
 } from "_scenes/client";
 
 import { t } from "_utils/lang";
+
 export default function AccountStack({ role }) {
   return (
     <Stack.Navigator initialRouteName="Account">
       <Stack.Screen
         name="Account"
         component={AccountScene}
-        options={({ navigation }) => ({
-          headerStyle: {
-            borderBottomWidth: 1,
-          },
-          headerTitleStyle: {
-            // color: "#000"
-          },
-          title: t("screens.account"),
-        })}
+        options={{ title: t("screens.account") }}
       />
 
       <Stack.Screen
         name="Profile"
         component={ProfileScene}
-        options={({ navigation }) => ({
-          headerStyle: {
-            borderBottomWidth: 1,
-          },
-          headerTitleStyle: {
-            // color: "#000"
-          },
-          title: t("screens.profile"),
-        })}
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
         name="RidesHistory"
         component={RidesHistoryScene}
-        options={({ navigation }) => ({
-          headerStyle: {
-            borderBottomWidth: 1,
-          },
-          headerTitleStyle: {
-            // color: "#000"
-          },
-          title: t("screens.ridesHistory"),
-        })}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="RideDetail"
+        component={RideDetailScene}
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
         name="Feedback"
         component={FeedbackScene}
-        options={({ navigation }) => ({
-          headerStyle: {
-            borderBottomWidth: 1,
-          },
-          headerTitleStyle: {
-            // color: "#000"
-          },
-          title: t("screens.feedback"),
-        })}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

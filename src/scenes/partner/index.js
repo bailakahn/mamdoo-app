@@ -17,6 +17,7 @@ export { default as ConfirmationScene } from "./upload/Confirmation";
 export { default as AccountScene } from "./account";
 export { default as ProfileScene } from "./account/Profile";
 export { default as RidesHistoryScene } from "./account/RidesHistory";
+export { default as RideDetailScene } from "./account/RideDetail";
 
 // PENDING
 export { default as PendingScene } from "./pending";

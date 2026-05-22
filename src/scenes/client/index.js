@@ -16,6 +16,7 @@ export { default as VerificationScene } from "./auth/Verification";
 export { default as AccountScene } from "./account";
 export { default as ProfileScene } from "./account/Profile";
 export { default as RidesHistoryScene } from "./account/RidesHistory";
+export { default as RideDetailScene } from "./account/RideDetail";
 export { default as FeedbackScene } from "./account/Feedback";
 
 // ONGOARDING

@@ -41,10 +41,10 @@ export default function AccountScene({ navigation, route }) {
         },
       },
       {
-        title: t("account.changeApp"),
-        icon: "compare-horizontal",
+        title: t("account.switchToDriver"),
+        icon: "steering",
         onPress: () => {
-          app.actions.removeApp();
+          app.actions.setApp("partner");
         },
       },
       {

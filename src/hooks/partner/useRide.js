@@ -11,6 +11,17 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import rideStatuses from "../../constants/rideStatuses";
 import types from "_store/types";
 
+function haversineMeters(lat1, lng1, lat2, lng2) {
+  const R = 6371000;
+  const toRad = (d) => (d * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
 let mockLocationInterval = null;
 let expoLocationSubscription = null;
 export default function useRide() {
@@ -19,14 +30,20 @@ export default function useRide() {
   const navigation = useNavigation();
   const appState = useRef(AppState.currentState);
 
+  const autoArrivedRef = useRef(false);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [info, setInfo] = useState(false);
   const [commission, setCommission] = useState(0);
+  const [tripsToday, setTripsToday] = useState(0);
+  const [rating, setRating] = useState(0);
+  const [acceptanceRate, setAcceptanceRate] = useState(null);
+  const [totalRides, setTotalRides] = useState(0);
   // const [mockLocationInterval, setMockLocationInterval] = useState(null);
 
   const {
-    ride: { canCancel, driverArrived, request, requestId, canceled, ridePrice },
+    ride: { canCancel, driverArrived, request, requestId, requestPreview, canceled, ridePrice },
     auth: { partner },
     actions: {
       resetRide,
@@ -182,14 +199,32 @@ export default function useRide() {
 
         const iId = setInterval(() => {
           if (directions[i]) {
+            const coord = directions[i];
             getRequest({
               method: "POST",
               endpoint: "rides/updateDriverLocation",
-              params: {
-                clientId: request?.client?._id,
-                currentLocation: directions[i],
-              },
+              params: { clientId: request?.client?._id, currentLocation: coord },
             }).catch((err) => {});
+
+            // Auto-arrival in dev mode
+            if (!autoArrivedRef.current && request?.pickUp?.coordinates) {
+              const distM = haversineMeters(
+                coord.latitude, coord.longitude,
+                request.pickUp.coordinates[1], request.pickUp.coordinates[0]
+              );
+              if (distM < 100) {
+                autoArrivedRef.current = true;
+                clearInterval(mockLocationInterval);
+                mockLocationInterval = null;
+                getRequest({
+                  method: "POST",
+                  endpoint: "rides/driverArrived",
+                  params: { requestId: request._id, driverId: partner.userId },
+                })
+                  .then(() => { dispatch({ type: types.DRIVER_ARRIVED }); setInfo(true); })
+                  .catch(() => { autoArrivedRef.current = false; });
+              }
+            }
           }
           i++;
         }, 1000);
@@ -208,19 +243,46 @@ export default function useRide() {
           distanceInterval: 50,
         },
         (currentLocation) => {
+          const { latitude, longitude } = currentLocation.coords;
+
           getRequest({
             method: "POST",
             endpoint: "rides/updateDriverLocation",
             params: {
               clientId: request?.client?._id,
-              currentLocation: {
-                latitude: currentLocation.coords.latitude,
-                longitude: currentLocation.coords.longitude,
-              },
+              currentLocation: { latitude, longitude },
             },
           }).catch((err) => {
             setError(err.code);
           });
+
+          // Auto-arrival: trigger when driver is within 100m of the pickup point
+          if (!autoArrivedRef.current && request?.pickUp?.coordinates) {
+            const distM = haversineMeters(
+              latitude, longitude,
+              request.pickUp.coordinates[1],
+              request.pickUp.coordinates[0]
+            );
+            if (distM < 100) {
+              autoArrivedRef.current = true;
+              if (expoLocationSubscription) {
+                expoLocationSubscription.remove();
+                expoLocationSubscription = null;
+              }
+              getRequest({
+                method: "POST",
+                endpoint: "rides/driverArrived",
+                params: { requestId: request._id, driverId: partner.userId },
+              })
+                .then(() => {
+                  dispatch({ type: types.DRIVER_ARRIVED });
+                  setInfo(true);
+                })
+                .catch(() => {
+                  autoArrivedRef.current = false;
+                });
+            }
+          }
         }
       );
 
@@ -252,6 +314,7 @@ export default function useRide() {
   };
 
   const acceptRequest = (driverLocation) => {
+    autoArrivedRef.current = false;
     setIsLoading(true);
     getRequest({
       method: "POST",
@@ -382,8 +445,12 @@ export default function useRide() {
       method: "GET",
       endpoint: "rides/getDailyCommission",
     })
-      .then(({ success, commission }) => {
+      .then(({ commission, tripsToday, rating, acceptanceRate, totalRides }) => {
         setCommission(formatPrice(commission));
+        setTripsToday(tripsToday ?? 0);
+        setRating(rating ?? 0);
+        setAcceptanceRate(acceptanceRate ?? null);
+        setTotalRides(totalRides ?? 0);
       })
       .catch((err) => {
         console.log(err);
@@ -482,6 +549,7 @@ export default function useRide() {
   return {
     requestId,
     request,
+    requestPreview,
     canCancel,
     driverArrived,
     canceled,
@@ -490,6 +558,10 @@ export default function useRide() {
     isLoading,
     ridePrice,
     commission,
+    tripsToday,
+    rating,
+    acceptanceRate,
+    totalRides,
     actions: {
       getCommission,
       resetRequest,
@@ -507,6 +579,22 @@ export default function useRide() {
       formatPrice,
       bootstrapAsync,
       searchRides,
+      reviewRide,
     },
   };
+
+  function reviewRide({ rating, note }) {
+    if (!request?._id) return;
+    getRequest({
+      method: "POST",
+      endpoint: "rides/review",
+      params: {
+        requestId: request._id,
+        rating,
+        note: note || "",
+      },
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
 }

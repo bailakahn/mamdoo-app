@@ -89,5 +89,23 @@ export default function mainActions(state, dispatch) {
         token,
       });
     },
+    bootstrapStore: () => {
+      Promise.all([
+        AsyncStorage.getItem("@mamdoo-selected-app"),
+        AsyncStorage.getItem("@mamdoo-dark-mode"),
+        AsyncStorage.getItem("@mamdoo-background-permission"),
+        AsyncStorage.getItem("@mamdoo-app-launched"),
+        AsyncStorage.getItem("@mamdoo-settings"),
+      ]).then(([app, darkMode, backgroundPermission, appLaunched, cachedSettings]) => {
+        dispatch({
+          type: types.BOOTSTRAP,
+          app: app ?? null,
+          isDarkMode: darkMode === "true",
+          backgroundPermission: backgroundPermission ?? "notLoaded",
+          appLaunched: appLaunched === "true",
+          settings: cachedSettings ? JSON.parse(cachedSettings) : null,
+        });
+      });
+    },
   };
 }
