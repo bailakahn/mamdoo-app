@@ -1,215 +1,213 @@
 import React, { useState } from "react";
-import { View, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  useTheme,
-  Text,
-  List,
-  Divider,
-  Dialog,
-  Portal,
-  Paragraph,
-} from "react-native-paper";
-import { Classes } from "_styles";
+import { View, ScrollView, TouchableOpacity, Modal, Pressable, StyleSheet } from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTheme, Text } from "react-native-paper";
+import Icon from "@expo/vector-icons/MaterialIcons";
 import { t2 } from "_utils/lang";
 import { Button, LoadingV2 } from "_atoms";
 import { usePartner } from "_hooks";
+import UploadHeader from "./UploadHeader";
+
+const DOCS = [
+  {
+    icon: "person",
+    titleKey: "profilePicture",
+    route: "ProfilePicture",
+    doneCheck: (docs) => !!docs?.profilePicture,
+    optional: false,
+  },
+  {
+    icon: "badge",
+    titleKey: "driverLicense",
+    route: "DriverLicense",
+    doneCheck: (docs) => !!(docs?.driverLicenseFront && docs?.driverLicenseBack),
+    optional: true,
+  },
+  {
+    icon: "directions-car",
+    titleKey: "cabLicense",
+    route: "CabLicense",
+    doneCheck: (docs) => !!docs?.cabLicense,
+    optional: false,
+  },
+];
 
 export default function Upload({ navigation }) {
   const { colors } = useTheme();
   const partner = usePartner();
+  const insets = useSafeAreaInsets();
   const [visible, setVisible] = useState(false);
 
-  const UploadConfirmation = () => (
-    <Portal>
-      <Dialog
-        style={{ backgroundColor: colors.background }}
+  if (partner.isLoading) return <LoadingV2 />;
+
+  const canSubmit =
+    partner.uploadDocuments?.profilePicture && partner.uploadDocuments?.cabLicense;
+
+  return (
+    <SafeAreaView style={[styles.screen, { backgroundColor: colors.background }]} edges={["top", "bottom"]}>
+      <Modal
         visible={visible}
-        onDismiss={() => setVisible(false)}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setVisible(false)}
       >
-        <Dialog.Title>{t2("upload.uploadDocuments")}</Dialog.Title>
-        <Dialog.Content>
-          <Paragraph>{t2("upload.uploadDocumentsConfirmation")}</Paragraph>
-        </Dialog.Content>
-        <Dialog.Actions>
-          <Button onPress={() => setVisible(false)} style={{ marginRight: 50 }}>
-            <Text variant="titleLarge" style={{ color: colors.text }}>
+        <Pressable style={styles.backdrop} onPress={() => setVisible(false)}>
+          <View
+            style={[styles.sheet, { backgroundColor: colors.background, paddingBottom: Math.max(insets.bottom + 16, 24) }]}
+            onStartShouldSetResponder={() => true}
+          >
+            <View style={styles.handle} />
+            <Text style={[styles.sheetTitle, { color: colors.text }]}>{t2("upload.uploadDocuments")}</Text>
+            <Text style={styles.sheetBody}>{t2("upload.uploadDocumentsConfirmation")}</Text>
+
+            <Button
+              mode="contained"
+              onPress={() => {
+                setVisible(false);
+                partner.actions.uploadDocumentsToS3(navigation);
+              }}
+              style={styles.sheetBtn}
+              contentStyle={styles.btnContent}
+            >
+              {t2("upload.send")}
+            </Button>
+
+            <Button
+              mode="outlined"
+              onPress={() => setVisible(false)}
+              style={[styles.sheetCancelBtn, { borderColor: "#E5E7EB" }]}
+              contentStyle={styles.btnContent}
+              textColor={colors.text}
+            >
               {t2("upload.cancel")}
-            </Text>
-          </Button>
-          <Button
-            mode="text"
-            onPress={() => {
-              setVisible(false);
-              partner.actions.uploadDocumentsToS3(navigation);
-            }}
-          >
-            <Text variant="titleLarge" style={{ color: colors.primary }}>
-              {t2("upload.upload")}
-            </Text>
-          </Button>
-        </Dialog.Actions>
-      </Dialog>
-    </Portal>
-  );
+            </Button>
+          </View>
+        </Pressable>
+      </Modal>
 
-  return partner.isLoading ? (
-    <LoadingV2 />
-  ) : (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: colors.background,
-        alignItems: "center",
-      }}
-    >
+      <UploadHeader title={t2("upload.mandatoyStepsTitle")} navigation={navigation} />
+
       <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          alignItems: "center",
-        }}
+        contentContainerStyle={styles.scroll}
+        showsVerticalScrollIndicator={false}
       >
-        <UploadConfirmation />
-        <View
-          style={{
-            flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <View
-            style={{
-              ...Classes.centeredViewUpload(colors),
-              alignItems: "center",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 25,
-                fontWeight: "bold",
-              }}
+        <Text style={[styles.sectionHint, { color: "#9CA3AF" }]}>{t2("upload.mandatoyStepsDescription")}</Text>
+
+        {DOCS.map(({ icon, titleKey, route, doneCheck, optional }) => {
+          const done = doneCheck(partner.uploadDocuments);
+          return (
+            <TouchableOpacity
+              key={route}
+              style={[
+                styles.docRow,
+                {
+                  borderColor: done ? colors.primary : "#E5E7EB",
+                  backgroundColor: done ? colors.primary + "08" : colors.background,
+                },
+              ]}
+              onPress={() => navigation.navigate(route)}
+              activeOpacity={0.7}
             >
-              {t2("upload.mandatoyStepsTitle")}
-            </Text>
-
-            <Text
-              style={{
-                fontSize: 15,
-                marginTop: 10,
-              }}
-            >
-              {t2("upload.mandatoyStepsDescription")}
-            </Text>
-          </View>
-
-          <View
-            style={{
-              ...Classes.centeredView(colors),
-              marginTop: 20,
-            }}
-          >
-            <View style={Classes.uploadDocuments(colors)}>
-              <View style={{ marginBottom: 20 }}>
-                <List.Item
-                  title={t2("upload.profilePicture")}
-                  titleNumberOfLines={5}
-                  left={(props) => (
-                    <List.Icon
-                      {...props}
-                      icon={"camera"}
-                      color={colors.primary}
-                    />
-                  )}
-                  right={(props) => (
-                    <List.Icon
-                      {...props}
-                      icon={
-                        partner?.uploadDocuments?.profilePicture
-                          ? "checkbox-marked-circle"
-                          : "chevron-right"
-                      }
-                      color={colors.primary}
-                    />
-                  )}
-                  onPress={() => navigation.navigate("ProfilePicture")}
-                />
-                <Divider />
-              </View>
-              <View style={{ marginBottom: 20 }}>
-                <List.Item
-                  title={`${t2("upload.driverLicense")} (${t2(
-                    "upload.optional"
-                  )})`}
-                  titleNumberOfLines={5}
-                  left={(props) => (
-                    <List.Icon
-                      {...props}
-                      icon={"card-account-details"}
-                      color={colors.primary}
-                    />
-                  )}
-                  right={(props) => (
-                    <List.Icon
-                      {...props}
-                      icon={
-                        partner?.uploadDocuments?.driverLicenseFront &&
-                        partner?.uploadDocuments?.driverLicenseBack
-                          ? "checkbox-marked-circle"
-                          : "chevron-right"
-                      }
-                      color={colors.primary}
-                    />
-                  )}
-                  onPress={() => navigation.navigate("DriverLicense")}
-                />
-                <Divider />
+              <View style={[styles.docIcon, { backgroundColor: colors.primary + "18" }]}>
+                <Icon name={icon} size={22} color={colors.primary} />
               </View>
 
-              <View style={{ marginBottom: 20 }}>
-                <List.Item
-                  title={t2("upload.cabLicense")}
-                  titleNumberOfLines={5}
-                  left={(props) => (
-                    <List.Icon
-                      {...props}
-                      icon={"file-document"}
-                      color={colors.primary}
-                    />
-                  )}
-                  right={(props) => (
-                    <List.Icon
-                      {...props}
-                      icon={
-                        partner?.uploadDocuments?.cabLicense
-                          ? "checkbox-marked-circle"
-                          : "chevron-right"
-                      }
-                      color={colors.primary}
-                    />
-                  )}
-                  onPress={() => navigation.navigate("CabLicense")}
-                />
-                <Divider />
+              <View style={styles.docMeta}>
+                <Text style={[styles.docTitle, { color: colors.text }]}>
+                  {t2(`upload.${titleKey}`)}
+                  {optional ? (
+                    <Text style={styles.optionalTag}> ({t2("upload.optional")})</Text>
+                  ) : null}
+                </Text>
+                {done ? (
+                  <Text style={[styles.doneLabel, { color: colors.primary }]}>
+                    {"✓ "}{t2("upload.docComplete")}
+                  </Text>
+                ) : (
+                  <Text style={styles.pendingLabel}>{t2("upload.docPending")}</Text>
+                )}
               </View>
-            </View>
-          </View>
-        </View>
-        <View style={Classes.bottonView(colors)}>
-          <Button
-            {...Classes.buttonContainer(colors)}
-            mode="contained"
-            onPress={() => setVisible(true)}
-            disabled={
-              !partner.uploadDocuments?.profilePicture ||
-              // !partner.uploadDocuments?.driverLicenseFront ||
-              // !partner.uploadDocuments?.driverLicenseBack ||
-              !partner.uploadDocuments?.cabLicense
-            }
-          >
-            {t2("upload.uploadDocuments")}
-          </Button>
-        </View>
+
+              <Icon
+                name={done ? "check-circle" : "chevron-right"}
+                size={24}
+                color={done ? colors.primary : "#D1D5DB"}
+              />
+            </TouchableOpacity>
+          );
+        })}
       </ScrollView>
+
+      <View style={styles.footer}>
+        <Button
+          mode="contained"
+          onPress={() => setVisible(true)}
+          disabled={!canSubmit}
+          style={styles.btn}
+          contentStyle={styles.btnContent}
+        >
+          {t2("upload.uploadDocuments")}
+        </Button>
+      </View>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: { flex: 1 },
+
+  backdrop: {
+    flex: 1,
+    backgroundColor: "transparent",
+    justifyContent: "flex-end",
+  },
+  sheet: {
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    paddingHorizontal: 24,
+    paddingTop: 12,
+  },
+  handle: {
+    width: 40,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: "#E5E7EB",
+    alignSelf: "center",
+    marginBottom: 24,
+  },
+  sheetTitle: { fontSize: 18, fontWeight: "700", marginBottom: 8 },
+  sheetBody: { fontSize: 14, color: "#9CA3AF", lineHeight: 20, marginBottom: 24 },
+  sheetBtn: { borderRadius: 14, marginBottom: 12 },
+  sheetCancelBtn: { borderRadius: 14 },
+
+  scroll: { paddingHorizontal: 24, paddingTop: 16, paddingBottom: 16 },
+
+  sectionHint: { fontSize: 14, lineHeight: 20, marginBottom: 20 },
+
+  docRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 14,
+    borderWidth: 1.5,
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 14,
+  },
+  docIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    justifyContent: "center",
+    alignItems: "center",
+    flexShrink: 0,
+  },
+  docMeta: { flex: 1 },
+  docTitle: { fontSize: 15, fontWeight: "600" },
+  optionalTag: { fontSize: 13, fontWeight: "400", color: "#9CA3AF" },
+  doneLabel: { fontSize: 13, fontWeight: "500", marginTop: 2 },
+  pendingLabel: { fontSize: 13, color: "#9CA3AF", marginTop: 2 },
+
+  footer: { paddingHorizontal: 24, paddingTop: 12, paddingBottom: 16 },
+  btn: { borderRadius: 14 },
+  btnContent: { height: 56 },
+});

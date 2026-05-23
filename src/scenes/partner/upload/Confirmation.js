@@ -1,82 +1,67 @@
 import React, { useRef, useEffect } from "react";
-import { View, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View, StyleSheet } from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme, Text } from "react-native-paper";
 import LottieView from "lottie-react-native";
-import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 import { Button } from "_atoms";
-import { usePartner, useTheme as useMamdooTheme } from "_hooks";
-import ReadyAmimation from "_assets/animation/ready.json";
-import * as Mixins from "../../../styles/mixins";
+import { usePartner } from "_hooks";
+import ReadyAnimation from "_assets/animation/ready.json";
 
 export default function Confirmation() {
   const { colors } = useTheme();
-  const theme = useMamdooTheme();
   const partner = usePartner();
-
-  const animation = useRef();
+  const insets = useSafeAreaInsets();
+  const animation = useRef(null);
 
   useEffect(() => {
-    if (animation.current) animation.current.play();
+    animation.current?.play();
   }, []);
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: colors.background,
-        alignItems: "center",
-      }}
-    >
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          alignItems: "center",
-        }}
-      >
-        <View
-          style={{
-            flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <LottieView
-            ref={animation}
-            style={[
-              Classes.animation(colors),
-              {
-                width: 200,
-                height: 200,
-              },
-            ]}
-            autoPlay
-            loop
-            source={ReadyAmimation}
-          />
+    <SafeAreaView style={[styles.screen, { backgroundColor: colors.background }]} edges={["top"]}>
+      <View style={styles.center}>
+        <LottieView
+          ref={animation}
+          source={ReadyAnimation}
+          style={styles.lottie}
+          autoPlay
+          loop
+        />
+        <Text style={[styles.title, { color: colors.text }]}>{t2("upload.uploadConfirmation")}</Text>
+        <Text style={styles.subtitle}>{t2("upload.timeToValidate")}</Text>
+      </View>
 
-          <View>
-            <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-              {t2("upload.uploadConfirmation")}
-            </Text>
-          </View>
-        </View>
-        <View style={Classes.bottonView(colors)}>
-          <Button
-            {...Classes.buttonContainer(colors)}
-            mode="contained"
-            onPress={() =>
-              partner.actions.setPartner({
-                ...partner.partner,
-                active: true,
-              })
-            }
-          >
-            {t2("upload.continue")}
-          </Button>
-        </View>
-      </ScrollView>
+      <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom + 16, 24) }]}>
+        <Button
+          mode="contained"
+          onPress={() => partner.actions.setPartner({ ...partner.partner, active: true })}
+          style={styles.btn}
+          contentStyle={styles.btnContent}
+        >
+          {t2("upload.continue")}
+        </Button>
+      </View>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: { flex: 1 },
+
+  center: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 32,
+  },
+
+  lottie: { width: 220, height: 220 },
+
+  title: { fontSize: 24, fontWeight: "700", textAlign: "center", marginTop: 24, marginBottom: 12 },
+  subtitle: { fontSize: 15, color: "#9CA3AF", textAlign: "center", lineHeight: 22 },
+
+  footer: { paddingHorizontal: 24, paddingTop: 12 },
+  btn: { borderRadius: 14 },
+  btnContent: { height: 56 },
+});

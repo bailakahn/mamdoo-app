@@ -1,158 +1,133 @@
 import React from "react";
-import {
-  View,
-  Image as RNImage,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import { View, Image as RNImage, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme, Text } from "react-native-paper";
-import { Classes } from "_styles";
+import Icon from "@expo/vector-icons/MaterialIcons";
 import { t2 } from "_utils/lang";
-import { Button, Image } from "_atoms";
+import { Button } from "_atoms";
 import { usePartner } from "_hooks";
 import useUpload from "../../../../hooks/partner/useUpload";
-import * as Mixins from "../../../../styles/mixins";
+import UploadHeader from "../UploadHeader";
 
 export default function CabLicense({ navigation }) {
   const { colors } = useTheme();
   const partner = usePartner();
   const upload = useUpload();
 
+  const hasPhoto = !!partner.uploadDocuments.cabLicense;
+
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: colors.background,
-        alignItems: "center",
-      }}
-    >
+    <SafeAreaView style={[styles.screen, { backgroundColor: colors.background }]} edges={["top", "bottom"]}>
+      <UploadHeader title={t2("upload.cabLicense")} navigation={navigation} />
+
       <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          alignItems: "center",
-        }}
+        contentContainerStyle={styles.scroll}
+        showsVerticalScrollIndicator={false}
       >
-        {partner.uploadDocuments.cabLicense ? (
-          <View
-            style={{
-              alignItems: "center",
-              flexGrow: 1,
-              justifyContent: "center",
-            }}
-          >
-            <View style={{ alignItems: "center", marginTop: 20 }}>
-              <RNImage
-                source={{
-                  uri: partner.uploadDocuments?.cabLicense?.uri,
-                }}
-                style={Classes.profilePicture(colors)}
-              />
-            </View>
+        {hasPhoto ? (
+          <View style={styles.previewWrap}>
+            <RNImage
+              source={{ uri: partner.uploadDocuments.cabLicense.uri }}
+              style={styles.preview}
+              resizeMode="cover"
+            />
+            <Text style={[styles.previewLabel, { color: "#9CA3AF" }]}>
+              {t2("upload.cabLicense")}
+            </Text>
           </View>
         ) : (
-          <View>
-            <View
-              style={{
-                width: Mixins.width(0.95, true),
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: "bold",
-                }}
-              >
-                {t2("upload.cabLicenseTitle")}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 15,
-                  marginTop: 20,
-                }}
-              >
-                {t2("upload.cabLicenseDescription")}
-              </Text>
-              <ScrollView style={Classes.uploadInstructions(colors)}>
-                <View style={{ alignItems: "center", marginTop: 30 }}>
-                  <Image
-                    source={require("_assets/registration.png")}
-                    cacheKey="registration"
-                    style={{
-                      width: Mixins.width(0.6, true),
-                      height: Mixins.height(0.2, true),
-                    }}
-                    resizeMode="contain"
-                  />
-                </View>
-              </ScrollView>
+          <>
+            <View style={styles.iconWrap}>
+              <View style={[styles.iconCircle, { backgroundColor: colors.primary + "18" }]}>
+                <Icon name="directions-car" size={40} color={colors.primary} />
+              </View>
             </View>
-          </View>
+
+            <Text style={styles.subtitle}>{t2("upload.cabLicenseDescription")}</Text>
+
+            <View style={[styles.tipBox, { borderColor: "#E5E7EB", backgroundColor: colors.primary + "06" }]}>
+              <Icon name="info-outline" size={18} color={colors.primary} style={{ marginTop: 1 }} />
+              <Text style={[styles.tipText, { color: colors.text }]}>{t2("upload.cabLicenseDescription")}</Text>
+            </View>
+          </>
         )}
-        <View style={Classes.bottonView(colors)}>
-          {partner.uploadDocuments.cabLicense ? (
-            <View>
-              <View style={{ marginTop: 30 }}>
-                <Button
-                  {...Classes.buttonContainer(colors)}
-                  mode="contained"
-                  onPress={() => navigation.navigate("Upload")}
-                >
-                  {t2("upload.useThisPicture")}
-                </Button>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  marginTop: 30,
-                }}
-              >
-                <TouchableOpacity
-                  style={{ marginLeft: 10 }}
-                  onPress={() => {
-                    partner.actions.setUploadDocuments({
-                      ...partner.uploadDocuments,
-                      cabLicense: null,
-                    });
-                  }}
-                >
-                  <Text style={{ color: colors.error, fontSize: 20 }}>
-                    {t2("upload.takeAgain")}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          ) : (
-            <View
-              style={{
-                alignItems: "center",
-              }}
-            >
-              <Button
-                {...Classes.buttonContainer(colors)}
-                mode="contained"
-                // onPress={handlePresentModalPress}
-                onPress={() =>
-                  upload.actions.takePhoto((result) => {
-                    partner.actions.setUploadDocuments({
-                      ...partner.uploadDocuments,
-                      cabLicense: {
-                        uri: result.uri,
-                        base64: result.base64,
-                      },
-                    });
-                  })
-                }
-              >
-                {t2("upload.profilePictureTake")}
-              </Button>
-            </View>
-          )}
-        </View>
       </ScrollView>
+
+      <View style={styles.footer}>
+        {hasPhoto ? (
+          <>
+            <Button
+              mode="contained"
+              onPress={() => navigation.navigate("Upload")}
+              style={styles.btn}
+              contentStyle={styles.btnContent}
+            >
+              {t2("upload.useThisPicture")}
+            </Button>
+            <TouchableOpacity
+              onPress={() =>
+                partner.actions.setUploadDocuments({ ...partner.uploadDocuments, cabLicense: null })
+              }
+              style={styles.retakeBtn}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            >
+              <Text style={[styles.retakeText, { color: colors.error }]}>{t2("upload.takeAgain")}</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <Button
+            mode="contained"
+            onPress={() =>
+              upload.actions.takePhoto((result) =>
+                partner.actions.setUploadDocuments({
+                  ...partner.uploadDocuments,
+                  cabLicense: { uri: result.uri, base64: result.base64 },
+                })
+              )
+            }
+            style={styles.btn}
+            contentStyle={styles.btnContent}
+          >
+            {t2("upload.cabLicenseTake")}
+          </Button>
+        )}
+      </View>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: { flex: 1 },
+  scroll: { paddingHorizontal: 24, paddingTop: 16, paddingBottom: 16 },
+
+  previewWrap: { alignItems: "center", paddingTop: 32 },
+  preview: { width: "100%", height: 220, borderRadius: 16 },
+  previewLabel: { fontSize: 14, marginTop: 16 },
+
+  iconWrap: { alignItems: "center", marginBottom: 16 },
+  iconCircle: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  subtitle: { fontSize: 15, color: "#9CA3AF", lineHeight: 22, marginBottom: 24 },
+
+  tipBox: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: 10,
+    borderWidth: 1,
+    borderRadius: 14,
+    padding: 14,
+  },
+  tipText: { fontSize: 13, lineHeight: 18, flex: 1 },
+
+  footer: { paddingHorizontal: 24, paddingTop: 12, paddingBottom: 16 },
+  btn: { borderRadius: 14 },
+  btnContent: { height: 56 },
+  retakeBtn: { alignItems: "center", marginTop: 16 },
+  retakeText: { fontSize: 14, fontWeight: "500" },
+});

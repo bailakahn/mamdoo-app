@@ -1,95 +1,75 @@
 import React from "react";
-import { View, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View, ScrollView, StyleSheet, Image } from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { Text, useTheme } from "react-native-paper";
-import { Image, Button } from "_atoms";
+import { Button } from "_atoms";
 import { useApp, usePartner } from "_hooks";
-import * as Mixins from "../../../styles/mixins";
-import { Classes } from "_styles";
 import { t2 } from "_utils/lang";
 
-export default function Onboarding() {
+export default function Pending() {
   const { colors } = useTheme();
   const app = useApp();
   const partner = usePartner();
+  const insets = useSafeAreaInsets();
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: colors.background,
-        alignItems: "center",
-      }}
-    >
+    <SafeAreaView style={[styles.screen, { backgroundColor: colors.background }]} edges={["top"]}>
       <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          width: Mixins.width(0.9, true),
-          padding: 5,
-        }}
+        contentContainerStyle={styles.scroll}
+        showsVerticalScrollIndicator={false}
       >
-        <View
-          style={{
-            flexGrow: 1,
-            justifyContent: "center",
-          }}
-        >
-          <View style={{ alignItems: "center" }}>
-            <Image
-              source={require("_assets/pending.png")}
-              cacheKey={"pending"}
-              resizeMode="contain"
-              style={{
-                width: Mixins.width(0.7, true),
-                height: Mixins.height(0.5, true),
-              }}
-            />
-          </View>
-          <View style={{ alignItems: "center" }}>
-            <View style={{}}>
-              <Text
-                variant="headlineLarge"
-                style={{
-                  color: colors.primary,
-                  fontWeight: "bold",
-                }}
-              >
-                {t2("pending.title")}
-              </Text>
-            </View>
-            <View style={{ marginTop: 20 }}>
-              <Text variant="titleLarge" style={{ textAlign: "left" }}>
-                {t2("pending.description")}
-              </Text>
-            </View>
-            <View style={{ marginTop: 10 }}>
-              <Button
-                // mode="contained"
-                onPress={() => {
-                  app.actions.call();
-                }}
-              >
-                <Text style={{ color: colors.primary }} variant="titleLarge">
-                  {t2("pending.contactUs")}
-                </Text>
-              </Button>
-            </View>
-          </View>
-        </View>
-        <View style={Classes.bottonView(colors)}>
-          <View style={{ alignItems: "center" }}>
-            <Button
-              {...Classes.logoutPendingButtonContainer(colors)}
-              mode="contained"
-              onPress={() => {
-                partner.actions.logout();
-              }}
-            >
-              {t2("upload.logout")}
-            </Button>
-          </View>
+        <View style={styles.center}>
+          <Image
+            source={require("_assets/pending.png")}
+            style={styles.illustration}
+            resizeMode="contain"
+          />
+
+          <Text style={[styles.title, { color: colors.primary }]}>
+            {t2("pending.title")}
+          </Text>
+          <Text style={styles.description}>{t2("pending.description")}</Text>
+
+          <Button
+            mode="outlined"
+            onPress={() => app.actions.call()}
+            style={[styles.contactBtn, { borderColor: colors.primary }]}
+            contentStyle={styles.btnContent}
+          >
+            {t2("pending.contactUs")}
+          </Button>
         </View>
       </ScrollView>
+
+      <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom + 16, 24) }]}>
+        <Button
+          mode="outlined"
+          onPress={() => partner.actions.logout()}
+          style={[styles.logoutBtn, { borderColor: colors.error + "60" }]}
+          contentStyle={styles.btnContent}
+          textColor={colors.error}
+        >
+          {t2("upload.logout")}
+        </Button>
+      </View>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: { flex: 1 },
+  scroll: { flexGrow: 1, paddingHorizontal: 24, paddingTop: 32, paddingBottom: 16 },
+
+  center: { flex: 1, alignItems: "center", justifyContent: "center" },
+
+  illustration: { width: 220, height: 220, marginBottom: 32 },
+
+  title: { fontSize: 24, fontWeight: "700", textAlign: "center", marginBottom: 16 },
+  description: { fontSize: 15, color: "#9CA3AF", textAlign: "center", lineHeight: 22, marginBottom: 32 },
+
+  contactBtn: { borderRadius: 14, width: "100%" },
+  logoutBtn: { borderRadius: 14 },
+  btnContent: { height: 56 },
+
+  footer: { paddingHorizontal: 24, paddingTop: 12 },
+});

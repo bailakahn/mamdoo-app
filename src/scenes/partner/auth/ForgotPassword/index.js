@@ -1,123 +1,162 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
+  TextInput as RNTextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
   ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Keyboard,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useTheme, Text, TextInput } from "react-native-paper";
-import { Classes } from "_styles";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTheme, Text } from "react-native-paper";
+import Icon from "@expo/vector-icons/MaterialIcons";
 import { t, t2 } from "_utils/lang";
-import { Button, LoadingV2, Image } from "_atoms";
+import { Button, LoadingV2 } from "_atoms";
 import { usePartner } from "_hooks";
 
 export default function ForgotPassword({ navigation }) {
   const { colors } = useTheme();
   const partner = usePartner();
+  const insets = useSafeAreaInsets();
+  const [phoneFocused, setPhoneFocused] = useState(false);
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
 
-  return partner.isLoading ? (
-    <LoadingV2 />
-  ) : (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: colors.background,
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+  useEffect(() => {
+    const showEvent = Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+    const hideEvent = Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+    const show = Keyboard.addListener(showEvent, () => setKeyboardVisible(true));
+    const hide = Keyboard.addListener(hideEvent, () => setKeyboardVisible(false));
+    return () => { show.remove(); hide.remove(); };
+  }, []);
+
+  if (partner.isLoading) return <LoadingV2 />;
+
+  return (
+    <SafeAreaView style={[styles.screen, { backgroundColor: colors.background }]} edges={["top"]}>
       <KeyboardAvoidingView
-        {...(Platform.OS === "ios"
-          ? {
-              enabled: true,
-              behavior: "padding",
-              keyboardVerticalOffset: 5,
-            }
-          : {})}
+        style={{ flex: 1 }}
+        behavior="padding"
+        keyboardVerticalOffset={Platform.OS === "ios" ? 8 : 0}
       >
         <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-          }}
+          contentContainerStyle={styles.scroll}
           keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
         >
-          <View
-            style={{
-              ...Classes.container(colors),
-              justifyContent: "flex-start",
-            }}
+          {/* Back */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Login")}
+            style={styles.backBtn}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
-            <View style={{ marginBottom: 25 }}>
-              <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-                {t2("main.forgotPassword")}
-              </Text>
-            </View>
+            <Icon name="arrow-back" size={24} color={colors.text} />
+          </TouchableOpacity>
 
-            <View style={Classes.centeredLargeText(colors)}>
-              <Text style={{ textAlign: "left", fontSize: 20 }}>
-                {t2("main.forgotPasswordText")}
-              </Text>
-            </View>
-
-            <View style={{ marginTop: 10 }}>
-              <TextInput
-                style={Classes.formInput(colors)}
-                outlineStyle={{ borderRadius: 10 }}
-                mode="outlined"
-                label={t2("form.phoneNumber")}
-                placeholder={t2("form.phoneNumberPlaceholder")}
-                value={partner.forgotPinUser.phoneNumber}
-                onChangeText={(phoneNumber) =>
-                  partner.actions.setForgotPinUser({
-                    ...partner.forgotPinUser,
-                    phoneNumber,
-                  })
-                }
-                maxLength={9}
-                keyboardType="number-pad"
-                returnKeyType="done"
-              />
-            </View>
-            <View style={Classes.error(colors)}>
-              {partner.forgotPinError && (
-                <Text style={Classes.errorText(colors)}>
-                  {partner.forgotPinError}
-                </Text>
-              )}
+          {/* Icon */}
+          <View style={styles.iconWrap}>
+            <View style={[styles.iconCircle, { backgroundColor: colors.primary + "18" }]}>
+              <Icon name="lock-reset" size={36} color={colors.primary} />
             </View>
           </View>
-          <View style={Classes.bottonView(colors)}>
-            <View>
-              <Button
-                {...Classes.buttonContainer(colors)}
-                mode="contained"
-                onPress={() => {
-                  partner.actions.sendForgotPinVerification(navigation);
-                }}
-              >
-                {t2("main.resetPassword")}
-              </Button>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                marginTop: 30,
-              }}
-            >
-              <TouchableOpacity
-                style={{ marginLeft: 10 }}
-                onPress={() => navigation.navigate("Login")}
-              >
-                <Text style={{ color: colors.accent, fontSize: 20 }}>
-                  {t("form.backToLogin")}
-                </Text>
-              </TouchableOpacity>
-            </View>
+
+          <Text style={[styles.title, { color: colors.text }]}>{t2("main.forgotPassword")}</Text>
+          <Text style={styles.subtitle}>{t2("main.forgotPasswordText")}</Text>
+
+          {/* Phone */}
+          <View
+            style={[
+              styles.phoneWrap,
+              { borderColor: phoneFocused ? colors.primary : "#D1D5DB", borderWidth: phoneFocused ? 2 : 1 },
+            ]}
+          >
+            <Text style={[styles.phonePrefix, { color: colors.text }]}>+224</Text>
+            <View style={styles.phoneDivider} />
+            <RNTextInput
+              style={[styles.phoneField, { color: colors.text }]}
+              placeholder={t2("form.phoneNumberPlaceholder")}
+              placeholderTextColor="#9CA3AF"
+              value={partner.forgotPinUser.phoneNumber}
+              onChangeText={(phoneNumber) =>
+                partner.actions.setForgotPinUser({ ...partner.forgotPinUser, phoneNumber })
+              }
+              onFocus={() => setPhoneFocused(true)}
+              onBlur={() => setPhoneFocused(false)}
+              maxLength={9}
+              keyboardType="number-pad"
+              returnKeyType="done"
+            />
           </View>
+
+          {partner.forgotPinError ? (
+            <Text style={[styles.errorText, { color: colors.error }]}>
+              {partner.forgotPinError}
+            </Text>
+          ) : null}
         </ScrollView>
+
+        <View style={[styles.footer, { paddingBottom: keyboardVisible ? 20 : Math.max(insets.bottom + 16, 24) }]}>
+          <Button
+            mode="contained"
+            onPress={() => partner.actions.sendForgotPinVerification(navigation)}
+            disabled={!partner.forgotPinUser.phoneNumber}
+            style={styles.btn}
+            contentStyle={styles.btnContent}
+          >
+            {t2("main.resetPassword")}
+          </Button>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Login")}
+            style={styles.backLink}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <Text style={[styles.backLinkText, { color: colors.primary }]}>
+              {t("form.backToLogin")}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: { flex: 1 },
+  scroll: { flexGrow: 1, paddingHorizontal: 24, paddingTop: 8 },
+
+  backBtn: { width: 40, height: 40, justifyContent: "center", marginBottom: 16 },
+
+  iconWrap: { alignItems: "center", marginBottom: 28 },
+  iconCircle: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  title: { fontSize: 28, fontWeight: "700", textAlign: "center", marginBottom: 8 },
+  subtitle: { fontSize: 15, color: "#9CA3AF", textAlign: "center", lineHeight: 22, marginBottom: 32 },
+
+  phoneWrap: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 14,
+    height: 56,
+    marginBottom: 8,
+  },
+  phonePrefix: { paddingHorizontal: 16, fontSize: 15, fontWeight: "600" },
+  phoneDivider: { width: 1, height: 32, backgroundColor: "#E5E7EB" },
+  phoneField: { flex: 1, paddingHorizontal: 14, fontSize: 16 },
+
+  errorText: { fontSize: 14, marginTop: 4 },
+
+  footer: { paddingHorizontal: 24, paddingTop: 12 },
+  btn: { borderRadius: 14 },
+  btnContent: { height: 56 },
+
+  backLink: { alignItems: "center", marginTop: 16 },
+  backLinkText: { fontSize: 14, fontWeight: "500" },
+});

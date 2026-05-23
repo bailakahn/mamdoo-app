@@ -1,281 +1,161 @@
-import React, { useRef, useCallback, useMemo, useState } from "react";
-import {
-  View,
-  Image as RNImage,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import React from "react";
+import { View, Image as RNImage, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme, Text } from "react-native-paper";
-import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-  BottomSheetBackdrop,
-} from "@gorhom/bottom-sheet";
-import { Classes } from "_styles";
+import Icon from "@expo/vector-icons/MaterialIcons";
 import { t2 } from "_utils/lang";
-import { Button, Image } from "_atoms";
+import { Button } from "_atoms";
 import { usePartner } from "_hooks";
 import useUpload from "../../../../hooks/partner/useUpload";
-import * as Mixins from "../../../../styles/mixins";
+import UploadHeader from "../UploadHeader";
+
+function PhotoSlot({ label, uri, onCamera, onGallery, onClear, colors }) {
+  const done = !!uri;
+
+  return (
+    <View style={[styles.slot, { borderColor: done ? colors.primary : "#E5E7EB" }]}>
+      <Text style={[styles.slotLabel, { color: colors.text }]}>{label}</Text>
+
+      {done ? (
+        <>
+          <RNImage source={{ uri }} style={styles.slotPreview} resizeMode="cover" />
+          <TouchableOpacity onPress={onClear} style={styles.retakeBtn} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+            <Text style={[styles.retakeText, { color: colors.error }]}>{t2("upload.takeAgain")}</Text>
+          </TouchableOpacity>
+        </>
+      ) : (
+        <View style={styles.slotActions}>
+          <TouchableOpacity
+            style={[styles.sourceBtn, { borderColor: colors.primary + "60", backgroundColor: colors.primary + "08" }]}
+            onPress={onCamera}
+          >
+            <Icon name="camera-alt" size={22} color={colors.primary} />
+            <Text style={[styles.sourceBtnText, { color: colors.primary }]}>{t2("upload.fromCamera")}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.sourceBtn, { borderColor: colors.primary + "60", backgroundColor: colors.primary + "08" }]}
+            onPress={onGallery}
+          >
+            <Icon name="photo-library" size={22} color={colors.primary} />
+            <Text style={[styles.sourceBtnText, { color: colors.primary }]}>{t2("upload.fromGallery")}</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+    </View>
+  );
+}
 
 export default function DriverLicense({ navigation }) {
   const { colors } = useTheme();
   const partner = usePartner();
   const upload = useUpload();
-  let name = "";
-  // ref
-  const bottomSheetModalRef = useRef(null);
 
-  // variables
-  const snapPoints = useMemo(() => ["25%", "25%"], []);
+  const { driverLicenseFront, driverLicenseBack } = partner.uploadDocuments;
+  const bothDone = !!(driverLicenseFront && driverLicenseBack);
 
-  // callbacks
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
+  const capture = (field, useCam) => {
+    const action = useCam ? upload.actions.takePhoto : upload.actions.pickImage;
+    action((result) =>
+      partner.actions.setUploadDocuments({
+        ...partner.uploadDocuments,
+        [field]: { uri: result.uri, base64: result.base64 },
+      })
+    );
+  };
 
-  const handleSheetChanges = useCallback((index) => {}, []);
+  const clear = (field) =>
+    partner.actions.setUploadDocuments({ ...partner.uploadDocuments, [field]: null });
 
-  const BottomView = () => (
-    <BottomSheetModalProvider>
-      <BottomSheetModal
-        ref={bottomSheetModalRef}
-        index={1}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-        handleStyle={{ backgroundColor: colors.overlap }}
-        handleIndicatorStyle={{ backgroundColor: colors.text }}
-        backdropComponent={BottomSheetBackdrop}
-      >
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: colors.overlap,
-            width: Mixins.width(1, true),
-            alignItems: "center",
-          }}
-        >
-          <View style={{ marginTop: 10 }}>
-            <Button
-              {...Classes.callButtonContainer(colors)}
-              mode="contained"
-              onPress={() =>
-                upload.actions.takePhoto((result) => {
-                  partner.actions.setUploadDocuments({
-                    ...partner.uploadDocuments,
-                    [name]: {
-                      uri: result.uri,
-                      base64: result.base64,
-                    },
-                  });
-                })
-              }
-            >
-              {t2("upload.fromCamera")}
-            </Button>
-          </View>
-          <View style={{ marginTop: 10 }}>
-            <Button
-              {...Classes.callButtonContainer(colors)}
-              mode="contained"
-              onPress={() =>
-                upload.actions.pickImage((result) => {
-                  partner.actions.setUploadDocuments({
-                    ...partner.uploadDocuments,
-                    [name]: {
-                      uri: result.uri,
-                      base64: result.base64,
-                    },
-                  });
-                })
-              }
-            >
-              {t2("upload.fromGallery")}
-            </Button>
-          </View>
-        </View>
-      </BottomSheetModal>
-    </BottomSheetModalProvider>
-  );
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: colors.background,
-        alignItems: "center",
-      }}
-    >
+    <SafeAreaView style={[styles.screen, { backgroundColor: colors.background }]} edges={["top", "bottom"]}>
+      <UploadHeader title={t2("upload.driverLicense")} navigation={navigation} />
+
       <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          alignItems: "center",
-        }}
+        contentContainerStyle={styles.scroll}
+        showsVerticalScrollIndicator={false}
       >
-        {partner.uploadDocuments.driverLicenseFront &&
-        partner.uploadDocuments.driverLicenseBack ? (
-          <View
-            style={{
-              alignItems: "center",
-              flexGrow: 1,
-              justifyContent: "center",
-            }}
-          >
-            <View style={{ alignItems: "center", marginTop: 20 }}>
-              <RNImage
-                source={{
-                  uri: partner.uploadDocuments?.driverLicenseFront?.uri,
-                }}
-                style={{
-                  width: Mixins.width(0.6, true),
-                  height: Mixins.height(0.2, true),
-                }}
-                resizeMode="contain"
-              />
-              <RNImage
-                source={{
-                  uri: partner.uploadDocuments?.driverLicenseBack?.uri,
-                }}
-                style={{
-                  width: Mixins.width(0.6, true),
-                  height: Mixins.height(0.2, true),
-                  marginTop: 20,
-                }}
-                resizeMode="contain"
-              />
-            </View>
+        <View style={styles.iconWrap}>
+          <View style={[styles.iconCircle, { backgroundColor: colors.primary + "18" }]}>
+            <Icon name="badge" size={40} color={colors.primary} />
           </View>
-        ) : (
-          <View>
-            <View
-              style={{
-                width: Mixins.width(0.95, true),
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 25,
-                  fontWeight: "bold",
-                }}
-              >
-                {t2("upload.driverLicenceTitle")}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 15,
-                  marginTop: 20,
-                }}
-              >
-                {t2("upload.driverLicenceDescription")}
-              </Text>
-              <ScrollView style={Classes.uploadInstructions(colors)}>
-                <View
-                  style={{
-                    flexDirection: "column",
-                    alignItems: "center",
-                    marginTop: 30,
-                  }}
-                >
-                  <Image
-                    source={require("_assets/driver-license-front.png")}
-                    cacheKey={"driver-license-front"}
-                    style={{
-                      width: Mixins.width(0.6, true),
-                      height: Mixins.height(0.2, true),
-                    }}
-                    resizeMode="contain"
-                  />
-                  <Image
-                    source={require("_assets/driver-license-back.png")}
-                    cacheKey="driver-license-back"
-                    style={{
-                      width: Mixins.width(0.6, true),
-                      height: Mixins.height(0.2, true),
-                    }}
-                    resizeMode="contain"
-                  />
-                </View>
-              </ScrollView>
-            </View>
-          </View>
-        )}
-        <View style={Classes.bottonView(colors)}>
-          {partner.uploadDocuments.driverLicenseBack &&
-          partner.uploadDocuments.driverLicenseFront ? (
-            <View>
-              <View style={{ marginTop: 30 }}>
-                <Button
-                  {...Classes.buttonContainer(colors)}
-                  mode="contained"
-                  onPress={() => navigation.navigate("Upload")}
-                >
-                  {t2("upload.useThisPicture")}
-                </Button>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  marginTop: 30,
-                }}
-              >
-                <TouchableOpacity
-                  style={{ marginLeft: 10 }}
-                  onPress={() => {
-                    partner.actions.setUploadDocuments({
-                      ...partner.uploadDocuments,
-                      driverLicenseFront: null,
-                      driverLicenseBack: null,
-                    });
-                  }}
-                >
-                  <Text style={{ color: colors.error, fontSize: 20 }}>
-                    {t2("upload.takeAgain")}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          ) : (
-            <View>
-              <View
-                style={{
-                  alignItems: "center",
-                }}
-              >
-                <Button
-                  {...Classes.buttonContainer(colors)}
-                  mode="contained"
-                  onPress={() => {
-                    handlePresentModalPress();
-                    name = "driverLicenseFront";
-                  }}
-                >
-                  {t2("upload.driverLicenceFront")}
-                </Button>
-              </View>
-              <View
-                style={{
-                  alignItems: "center",
-                }}
-              >
-                <Button
-                  {...Classes.buttonContainer(colors)}
-                  mode="contained"
-                  onPress={() => {
-                    handlePresentModalPress();
-                    name = "driverLicenseBack";
-                  }}
-                >
-                  {t2("upload.driverLicenceBack")}
-                </Button>
-              </View>
-            </View>
-          )}
         </View>
-        <BottomView />
+
+        <Text style={styles.subtitle}>{t2("upload.driverLicenceDescription")}</Text>
+
+        <PhotoSlot
+          label={t2("upload.driverLicenceFront")}
+          uri={driverLicenseFront?.uri}
+          onCamera={() => capture("driverLicenseFront", true)}
+          onGallery={() => capture("driverLicenseFront", false)}
+          onClear={() => clear("driverLicenseFront")}
+          colors={colors}
+        />
+
+        <PhotoSlot
+          label={t2("upload.driverLicenceBack")}
+          uri={driverLicenseBack?.uri}
+          onCamera={() => capture("driverLicenseBack", true)}
+          onGallery={() => capture("driverLicenseBack", false)}
+          onClear={() => clear("driverLicenseBack")}
+          colors={colors}
+        />
       </ScrollView>
+
+      <View style={styles.footer}>
+        <Button
+          mode="contained"
+          onPress={() => navigation.navigate("Upload")}
+          disabled={!bothDone}
+          style={styles.btn}
+          contentStyle={styles.btnContent}
+        >
+          {t2("upload.useThisPicture")}
+        </Button>
+      </View>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: { flex: 1 },
+  scroll: { paddingHorizontal: 24, paddingTop: 16, paddingBottom: 16 },
+
+  iconWrap: { alignItems: "center", marginBottom: 16 },
+  iconCircle: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  subtitle: { fontSize: 15, color: "#9CA3AF", lineHeight: 22, marginBottom: 24 },
+
+  slot: {
+    borderWidth: 1.5,
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 16,
+  },
+  slotLabel: { fontSize: 15, fontWeight: "600", marginBottom: 12 },
+  slotPreview: { width: "100%", height: 160, borderRadius: 10 },
+  retakeBtn: { alignItems: "center", marginTop: 12 },
+  retakeText: { fontSize: 14, fontWeight: "500" },
+
+  slotActions: { flexDirection: "row", gap: 12 },
+  sourceBtn: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    borderWidth: 1,
+    borderRadius: 12,
+    paddingVertical: 14,
+  },
+  sourceBtnText: { fontSize: 13, fontWeight: "600" },
+
+  footer: { paddingHorizontal: 24, paddingTop: 12, paddingBottom: 16 },
+  btn: { borderRadius: 14 },
+  btnContent: { height: 56 },
+});

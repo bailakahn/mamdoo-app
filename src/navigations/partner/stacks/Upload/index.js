@@ -49,97 +49,37 @@ export default function HomeStack({ role }) {
       <Stack.Screen
         name="UploadInstructions"
         component={UploadInstructionsScene}
-        options={({ navigation }) => ({
-          headerStyle: {
-            borderBottomWidth: 1,
-            backgroundColor: colors.background,
-          },
-          headerTitleStyle: {
-            // color: "#000"
-          },
-          title: "",
-          headerBackTitle: t2("main.back"),
-        })}
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
         name="Disclosure"
         component={DisclosureScene}
-        options={({ navigation }) => ({
-          headerStyle: {
-            borderBottomWidth: 1,
-            backgroundColor: colors.background,
-          },
-          headerTitleStyle: {
-            // color: "#000"
-          },
-          title: "",
-          headerBackTitle: t2("main.back"),
-        })}
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
         name="Upload"
         component={UploadScene}
-        options={({ navigation }) => ({
-          headerStyle: {
-            borderBottomWidth: 1,
-            backgroundColor: colors.background,
-          },
-          headerTitleStyle: {
-            // color: "#000"
-          },
-          title: "",
-          headerBackTitle: t2("main.back"),
-        })}
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
         name="ProfilePicture"
         component={ProfilePictureScene}
-        options={({ navigation }) => ({
-          headerStyle: {
-            borderBottomWidth: 1,
-            backgroundColor: colors.background,
-          },
-          headerTitleStyle: {
-            // color: "#000"
-          },
-          title: "",
-          headerBackTitle: t2("main.back"),
-        })}
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
         name="DriverLicense"
         component={DriverLicenseScene}
-        options={({ navigation }) => ({
-          headerStyle: {
-            borderBottomWidth: 1,
-            backgroundColor: colors.background,
-          },
-          headerTitleStyle: {
-            // color: "#000"
-          },
-          title: "",
-          headerBackTitle: t2("main.back"),
-        })}
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
         name="CabLicense"
         component={CabLicenseScene}
-        options={({ navigation }) => ({
-          headerStyle: {
-            borderBottomWidth: 1,
-            backgroundColor: colors.background,
-          },
-          headerTitleStyle: {
-            // color: "#000"
-          },
-          title: "",
-          headerBackTitle: t2("main.back"),
-        })}
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen

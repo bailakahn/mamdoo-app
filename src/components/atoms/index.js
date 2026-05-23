@@ -3,3 +3,4 @@ export { default as RoundButton } from "./RoundButton";
 export { default as Button } from "./Button";
 export { default as TextInput } from "./TextInput";
 export { default as Image } from "./Image";
+export { default as OtpInput } from "./OtpInput";
