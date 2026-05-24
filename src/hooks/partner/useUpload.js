@@ -1,53 +1,45 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
+import * as ImageManipulator from "expo-image-manipulator";
+
+const compress = async (uri) => {
+  const result = await ImageManipulator.manipulateAsync(
+    uri,
+    [{ resize: { width: 1600 } }],
+    { compress: 0.8, format: ImageManipulator.SaveFormat.JPEG }
+  );
+  return result.uri;
+};
 
 export default function useUpload() {
   useEffect(() => {
     (async () => {
-      const cameraRollStatus =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-      const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
-      if (
-        cameraRollStatus.status !== "granted" ||
-        cameraStatus.status !== "granted"
-      ) {
-        alert("Sorry, we need these permissions to make this work!");
-      }
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+      await ImagePicker.requestCameraPermissionsAsync();
     })();
   }, []);
 
   const takePhoto = async (callback) => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchCameraAsync({
+    const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ["images"],
-      aspect: [4, 3],
-      base64: true,
+      quality: 1,
     });
-
     if (!result.canceled) {
-      callback(result.assets[0]);
+      const uri = await compress(result.assets[0].uri);
+      callback({ uri });
     }
   };
 
   const pickImage = async (callback) => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"],
-      allowsEditing: true,
-      aspect: [4, 3],
       quality: 1,
-      base64: true,
     });
-
     if (!result.canceled) {
-      callback(result.assets[0]);
+      const uri = await compress(result.assets[0].uri);
+      callback({ uri });
     }
   };
 
-  return {
-    actions: {
-      takePhoto,
-      pickImage,
-    },
-  };
+  return { actions: { takePhoto, pickImage } };
 }

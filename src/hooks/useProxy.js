@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import socketIOClient from "socket.io-client";
 import { useNavigation } from "@react-navigation/native";
 import { AppState } from "react-native";
@@ -15,7 +15,7 @@ const socketEvents = [
   "END_RIDE",
   "REQUEST_DENIED",
   "NO_DRIVER",
-  "DRIVER_LOCATION_UPDATE",
+  "DRIVER_LOCATION",
 ];
 
 export default function useProxy() {
@@ -28,110 +28,83 @@ export default function useProxy() {
   const handleAppStateChange = (nextAppState) => {
     if (
       appState.current.match(/inactive|background/) &&
-      nextAppState === "active"
+      nextAppState === "active" &&
+      socketRef.current &&
+      !socketRef.current.connected
     ) {
-      checkSocketConnection();
+      socketRef.current.connect();
     }
     appState.current = nextAppState;
   };
 
-  const checkSocketConnection = () => {
-    if (!socketRef.current.connected) {
-      reconnectSocket();
-    }
-  };
+  useEffect(() => {
+    const socket = socketIOClient(PROXY_URL, {
+      reconnection: true,
+      reconnectionAttempts: Infinity,
+      reconnectionDelay: 500,
+      reconnectionDelayMax: 3000,
+      timeout: 10000,
+    });
+    socketRef.current = socket;
 
-  const reconnectSocket = () => {
-    socketRef.current = socketIOClient(PROXY_URL);
-    setupSocketEvents();
-  };
-
-  const setupSocketEvents = () => {
-    socketRef.current.on("connect", () => {
-      socketRef.current.emit("join", `${user.user.userId}`);
+    socket.on("connect", () => {
+      socket.emit("join", `${user.user.userId}`);
     });
 
     socketEvents.forEach((event) => {
-      socketRef.current.on(event, (data) => {
+      socket.on(event, (data) => {
         if (event === "FOUND_DRIVER") {
-          // console.log({ foundDriver: data });
-          dispatch({ type: "SET_CAN_CANCEL" });
-          dispatch({ type: "SET_RIDE_STEP", step: 4 });
+          dispatch({ type: types.SET_CAN_CANCEL });
+          dispatch({ type: types.SET_RIDE_STEP, step: 4 });
         }
 
-        if (event === "DRIVER_LOCATION_UPDATE") {
-          // console.log({ data });
+        if (event === "DRIVER_LOCATION") {
           dispatch({
             type: types.SET_DRIVER_LOCATION,
-            currentLocation: data.currentLocation,
+            currentLocation: {
+              type: "Point",
+              coordinates: [data.lng, data.lat],
+            },
           });
           return;
         }
 
-        if (event == "CANCEL_REQUEST") {
+        if (event === "CANCEL_REQUEST") {
           dispatch({ type: event });
           dispatch({ type: types.SET_RIDE_CANCELED, canceled: true });
           dispatch({ type: types.SET_RIDE_STEP, step: 3 });
           dispatch({ type: types.SET_BOTTOM_SHEET_HEIGHT, height: 35 });
-          navigation.navigate("Home", {
-            driverId: data.driverId,
-          });
+          navigation.navigate("Home", { driverId: data.driverId });
           return;
         }
 
-        if (event == "END_RIDE") {
+        if (event === "END_RIDE") {
           dispatch({ type: types.RESET_RIDE });
           dispatch({ type: types.REQUEST_DENIED, denied: false });
-          dispatch({
-            type: types.SHOW_RIDE_REVIEW,
-            reviewRequestId: data.requestId,
-          });
+          dispatch({ type: types.SHOW_RIDE_REVIEW, reviewRequestId: data.requestId });
           navigation.navigate("Review");
           return;
         }
 
-        if (event == "REQUEST_DENIED") {
+        if (event === "REQUEST_DENIED") {
           dispatch({ type: types.SET_RIDE_STEP, step: 6 });
           dispatch({ type: types.SET_BOTTOM_SHEET_HEIGHT, height: 35 });
           return;
         }
 
-        // if (event == "NO_DRIVER") {
-        // dispatch({
-        //   type: types.SET_RIDE_REQUEST_MESSAGE,
-        //   rideRequestMessage: false,
-        // });
-        // navigation.navigate("Home", {
-        //   noDriver: data?.noDriver,
-        //   requestId: data?.requestId,
-        // });
-        // dispatch({ type: types.SET_RIDE_STEP, step: 6 });
-        // }
-
-        if (event == "DRIVER_ARRIVED") {
-          dispatch({ type: "SET_RIDE_STEP", step: 5 });
+        if (event === "DRIVER_ARRIVED") {
+          dispatch({ type: types.SET_RIDE_STEP, step: 5 });
         }
+
         dispatch({ type: event, data });
       });
     });
-  };
 
-  useEffect(() => {
-    reconnectSocket();
-
-    // Check socket connection every 5 seconds
-    const interval = setInterval(checkSocketConnection, 5000);
-
-    // Listen for app state changes
-    const subscription = AppState.addEventListener(
-      "change",
-      handleAppStateChange
-    );
+    const subscription = AppState.addEventListener("change", handleAppStateChange);
 
     return () => {
-      clearInterval(interval);
       subscription.remove();
-      if (socketRef.current) socketRef.current.disconnect();
+      socket.disconnect();
     };
   }, []);
 }

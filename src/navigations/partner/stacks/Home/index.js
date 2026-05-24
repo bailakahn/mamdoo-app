@@ -7,38 +7,26 @@ import { useTimeSpent } from "_hooks/partner";
 const Stack = createStackNavigator();
 
 import { HomeScene, Ride, RideSummaryScene, ProfileScene, RidesHistoryScene, RideDetailScene } from "_scenes/partner";
-import { t2 } from "_utils/lang";
 
 export default function HomeStack({ role }) {
   const partner = usePartner();
   const appState = useRef(AppState.currentState);
   useTimeSpent(partner.partner.isOnline, partner.actions.saveTime);
 
-  // function to handle application state and refresh user information
   const _handleAppStateChange = async (nextAppState) => {
     if (
       appState.current.match(/inactive|background/) &&
       nextAppState === "active"
     ) {
       partner.actions.refresh();
-      if (partner) partner.actions.updateLocation();
     }
-
     appState.current = nextAppState;
   };
 
   useEffect(() => {
-    const subscription = AppState.addEventListener(
-      "change",
-      _handleAppStateChange
-    );
-
+    const subscription = AppState.addEventListener("change", _handleAppStateChange);
     partner.actions.refresh();
-    if (partner) partner.actions.updateLocation();
-
-    return () => {
-      subscription.remove();
-    };
+    return () => { subscription.remove(); };
   }, []);
 
   return (

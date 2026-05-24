@@ -31,6 +31,8 @@ export default function usePartner() {
   const [ridesHistory, setRidesHistory] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isTogglingStatus, setIsTogglingStatus] = useState(false);
+  const [statusToggleError, setStatusToggleError] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
   const [verificationError, setVerificationError] = useState(false);
   const [uploadError, setUploadError] = useState(false);
@@ -45,8 +47,8 @@ export default function usePartner() {
   const [forgotPinError, setForgotPinError] = useState(false);
 
   const {
-    auth: { partner, partnerLoaded, uploadDocuments },
-    actions: { getPartner, setPartner, removePartner, setUploadDocuments },
+    auth: { partner, partnerLoaded, uploadDocuments, documentsSubmitted },
+    actions: { getPartner, setPartner, removePartner, setUploadDocuments, setUploadDocument, setDocumentsSubmitted },
   } = useStore();
 
   useEffect(() => {
@@ -162,24 +164,23 @@ export default function usePartner() {
   };
 
   const changeStatus = () => {
-    setIsLoading(true);
-    setPartner({ ...partner, isOnline: !partner.isOnline });
+    const originalIsOnline = partner.isOnline;
+    setIsTogglingStatus(true);
+    setPartner({ ...partner, isOnline: !originalIsOnline });
 
     getRequest({
       method: "POST",
       endpoint: "drivers/status",
-      params: auth,
     })
       .then(({ isOnline }) => {
         setPartner({ ...partner, isOnline });
       })
-      .catch((err) => {
-        console.log(err);
-        setPartner({ ...partner, isOnline: !partner.isOnline });
-        // setFormError(t(err.code));
+      .catch(() => {
+        setPartner({ ...partner, isOnline: originalIsOnline });
+        setStatusToggleError(true);
       })
       .finally(() => {
-        setIsLoading(false);
+        setIsTogglingStatus(false);
       });
   };
 
@@ -403,27 +404,73 @@ export default function usePartner() {
       });
   };
 
-  const uploadDocumentsToS3 = (navigation) => {
-    setIsLoading(true);
-    getRequest({
-      method: "POST",
-      endpoint: "drivers/uploadDocuments",
-      params: Object.keys(uploadDocuments).reduce((acc, key) => {
-        acc[key] = "data:image/jpeg;base64," + uploadDocuments[key]?.base64;
-        return acc;
-      }, {}),
-    })
-      .then((data) => {
-        // setPartner({ ...partner, ...data });
-        navigation.navigate("Confirmation");
-      })
-      .catch((err) => {
-        console.log(err);
-        setUploadError(t("errors.crashErrorTitle"));
-      })
-      .finally(() => {
-        setIsLoading(false);
+  const loadDocumentState = async () => {
+    try {
+      const data = await getRequest({
+        method: "GET",
+        endpoint: "drivers/documents",
       });
+      const DOC_KEYS = ["profilePicture", "driverLicenseFront", "driverLicenseBack", "cabLicense"];
+      DOC_KEYS.forEach((key) => {
+        const doc = data.documents?.[key];
+        setUploadDocument(key, {
+          uri: null,
+          status: doc?.s3Key ? "uploaded" : "idle",
+          s3Key: doc?.s3Key || null,
+        });
+      });
+      if (data.documentsStatus === "pending_review" || data.documentsStatus === "approved") {
+        setDocumentsSubmitted(true);
+      }
+    } catch {
+      // fail silently — show whatever is in local state
+    }
+  };
+
+  const uploadDocument = async (documentType, localUri) => {
+    setUploadDocument(documentType, { uri: localUri, status: "uploading", s3Key: null });
+    try {
+      const { url, key } = await getRequest({
+        method: "POST",
+        endpoint: "drivers/requestUploadUrl",
+        params: { documentType },
+      });
+
+      const fileResponse = await fetch(localUri);
+      const blob = await fileResponse.blob();
+      const s3Response = await fetch(url, {
+        method: "PUT",
+        headers: { "Content-Type": "image/jpeg" },
+        body: blob,
+      });
+      if (!s3Response.ok) throw new Error(`S3 ${s3Response.status}`);
+
+      await getRequest({
+        method: "PATCH",
+        endpoint: `drivers/documents/${documentType}`,
+        params: { s3Key: key },
+      });
+
+      setUploadDocument(documentType, { uri: localUri, status: "uploaded", s3Key: key });
+    } catch {
+      setUploadDocument(documentType, { uri: localUri, status: "error", s3Key: null });
+    }
+  };
+
+  const submitDocuments = async (navigation) => {
+    setIsLoading(true);
+    try {
+      await getRequest({
+        method: "POST",
+        endpoint: "drivers/submitDocuments",
+      });
+      setDocumentsSubmitted(true);
+      navigation.navigate("Confirmation");
+    } catch {
+      setUploadError(t2("errors.crashErrorTitle"));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const saveTime = (time) =>
@@ -449,7 +496,10 @@ export default function usePartner() {
     forgotPinUser,
     forgotPinError,
     isLoading,
+    isTogglingStatus,
+    statusToggleError,
     uploadDocuments,
+    documentsSubmitted,
     uploadError,
     actions: {
       savePartner,
@@ -471,8 +521,11 @@ export default function usePartner() {
       sendForgotPinVerification,
       resetPin,
       setIsLoading,
+      setStatusToggleError,
       setUploadDocuments,
-      uploadDocumentsToS3,
+      loadDocumentState,
+      uploadDocument,
+      submitDocuments,
       setPartner,
       saveTime,
     },

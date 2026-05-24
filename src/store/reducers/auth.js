@@ -49,6 +49,19 @@ export default (state = auth, action) => {
         ...state,
         uploadDocuments: action.documents,
       };
+    case types.SET_UPLOAD_DOCUMENT:
+      return {
+        ...state,
+        uploadDocuments: {
+          ...state.uploadDocuments,
+          [action.key]: action.document,
+        },
+      };
+    case types.SET_DOCUMENTS_SUBMITTED:
+      return {
+        ...state,
+        documentsSubmitted: action.value,
+      };
     default:
       return state;
   }

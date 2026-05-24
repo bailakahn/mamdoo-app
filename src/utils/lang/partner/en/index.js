@@ -6,6 +6,7 @@ export default {
     iAmAPartner: "Driver",
     iWantMoreClients: "I want more clients",
     noInternetConnection: "No Internet Connection",
+    backOnline: "You're back online",
     locationPermission: "Location Permission",
     locationDisclosureTitle: "Location Disclosure",
     locationDisclosureText:
@@ -66,6 +67,9 @@ export default {
     addDocuments: "Add Documents",
     docComplete: "Completed",
     docPending: "Tap to add",
+    docUploading: "Uploading...",
+    docError: "Failed — tap to retry",
+    docSubmitted: "Submitted for review",
     uploadDocumentsTipsTitle: "Tips for uploading your documents",
     uploadDocumentsTipsDescription:
       "Follow these tips to ensure that you successfully upload your documents the first time.",
@@ -174,6 +178,7 @@ export default {
     pinValidation: "Make sure your two pin codes is identical",
     internal: "Oops, Something Went Wrong",
     userBlocked: "This account is blocked!",
+    featureDisabled: "You cannot change your online status at this time. Please contact your manager.",
   },
   home: {
     go: "GO",
@@ -187,6 +192,11 @@ export default {
     youAreOnline: "You are online",
     youAreOffline: "You are offline",
     searchRides: "Search Rides",
+    goOnline: "Go Online",
+    goOffline: "Go Offline",
+    goOfflineConfirmTitle: "Go offline?",
+    goOfflineConfirmBody: "You won't receive any ride requests while offline.",
+    goOfflineConfirm: "Yes, go offline",
     offline: "OffLine",
     offlineWelcomeText:
       "You are offline, click on `GO` to start receiving ride requests",
@@ -339,10 +349,14 @@ export default {
     canceledByClient: "Canceled by client",
   },
   pending: {
+    badge: "Under Review",
     title: "Verification in Progress",
-    description:
-      "Our teams are checking your application. Note that this process can take up to 5 business days. If you have concerns, please contact us.",
-    contactUs: "Contact us",
+    description: "Our team is reviewing your documents. This usually takes up to 5 business days.",
+    nextStepsTitle: "What happens next",
+    pendingStepOne: "Our team reviews your submitted documents for completeness and validity.",
+    pendingStepTwo: "You will receive a notification once your account has been approved.",
+    pendingStepThree: "Once approved, you can start accepting rides immediately.",
+    contactUs: "Contact Support",
   },
   rating: {
     terrible: "Terrible",

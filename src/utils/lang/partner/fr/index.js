@@ -6,6 +6,7 @@ export default {
     iAmAPartner: "Chauffeur",
     iWantMoreClients: "Je veux plus de clients",
     noInternetConnection: "Pas de connexion internet",
+    backOnline: "Connexion rétablie",
     locationPermission: "Permission de localisation",
     locationDisclosureText:
       "Mamdoo collecte les données de votre emplacement en arrière plan même lorsque l'application est fermée ou non utilisée pour vous envoyer des courses en temps réel.",
@@ -65,6 +66,9 @@ export default {
     addDocuments: "Ajouter vos documents",
     docComplete: "Complété",
     docPending: "Appuyer pour ajouter",
+    docUploading: "Envoi en cours...",
+    docError: "Échec — appuyer pour réessayer",
+    docSubmitted: "Soumis pour vérification",
     uploadDocumentsTipsTitle: "Instructions de téléchargement",
     uploadDocumentsTipsDescription: "Pour télécharger vos documents, veuillez.",
     tipOneTitle: "Utiliser des documents originaux",
@@ -173,6 +177,7 @@ export default {
     pinValidation: "Verifiez que vos deux codes pin son identiques",
     internal: "Oops, Quelque chose s'est mal passé",
     userBlocked: "Ce compte est bloqué!",
+    featureDisabled: "Vous ne pouvez pas modifier votre statut en ligne pour le moment. Veuillez contacter votre responsable.",
   },
   home: {
     go: "COMMENCER",
@@ -187,6 +192,11 @@ export default {
     youAreOnline: "Vous êtes en ligne!",
     youAreOffline: "Vous êtes hors ligne!",
     searchRides: "Rechercher des courses",
+    goOnline: "Passer en ligne",
+    goOffline: "Passer hors ligne",
+    goOfflineConfirmTitle: "Passer hors ligne ?",
+    goOfflineConfirmBody: "Vous ne recevrez aucune demande de course hors ligne.",
+    goOfflineConfirm: "Oui, passer hors ligne",
     offline: "Hors Ligne",
     offlineWelcomeText:
       "Vous n'êtes pas en ligne. appuyez sur `COMMENCER` pour recevoir des demande de course",
@@ -341,10 +351,14 @@ export default {
     canceledByClient: "Annulée par le client",
   },
   pending: {
+    badge: "En cours de vérification",
     title: "Vérification en cours",
-    description:
-      "Nos équipes vérifient votre compte. La vérification peut prendre jusqu'à 5 jours ouvrables",
-    contactUs: "Contactez-nous",
+    description: "Notre équipe examine vos documents. Ce processus peut prendre jusqu'à 5 jours ouvrables.",
+    nextStepsTitle: "Prochaines étapes",
+    pendingStepOne: "Notre équipe vérifie l'exhaustivité et la validité de vos documents soumis.",
+    pendingStepTwo: "Vous recevrez une notification dès que votre compte sera approuvé.",
+    pendingStepThree: "Une fois approuvé, vous pourrez commencer à accepter des courses immédiatement.",
+    contactUs: "Contacter le support",
   },
   rating: {
     terrible: "Terrible",

@@ -8,6 +8,9 @@ import polyline from "@mapbox/polyline";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 
+// Minimum time (ms) between client location pushes while searching/waiting
+const CLIENT_SEARCH_THROTTLE_MS = 20_000;
+
 export default function useLocation() {
   const [location, setLocation] = useState(null);
   const [error, setError] = useState(null);
@@ -17,6 +20,7 @@ export default function useLocation() {
 
   const {
     main: { googleMapsSessionToken },
+    ride: { step: rideStep },
     actions: { setGoogleMapsSessionToken },
   } = useStore();
 
@@ -26,6 +30,8 @@ export default function useLocation() {
   const getRequest = useApi();
   const providerRequest = useProvider();
   const deadPrefixes = useRef(new Set());
+  const searchLocationSubRef = useRef(null);
+  const lastSearchSentRef = useRef(0);
 
   useEffect(() => {
     // if status is given or denied
@@ -58,6 +64,52 @@ export default function useLocation() {
       isMounted = false;
     };
   }, []);
+
+  // While the client is searching (step 2) or waiting for driver (step 3),
+  // push their location every 20s / 30m so dispatch uses a fresh position.
+  // Stops the moment a driver is confirmed (step 4+).
+  useEffect(() => {
+    const isSearching = rideStep === 2 || rideStep === 3;
+
+    if (!isSearching || !status?.granted) {
+      if (searchLocationSubRef.current) {
+        searchLocationSubRef.current.remove();
+        searchLocationSubRef.current = null;
+      }
+      return;
+    }
+
+    let active = true;
+    Location.watchPositionAsync(
+      { accuracy: Location.Accuracy.Balanced, distanceInterval: 30 },
+      (fix) => {
+        if (!active) return;
+        const { latitude, longitude } = fix.coords;
+        setLocation({ latitude, longitude });
+
+        const now = Date.now();
+        if (now - lastSearchSentRef.current < CLIENT_SEARCH_THROTTLE_MS) return;
+        lastSearchSentRef.current = now;
+
+        providerRequest({
+          method: "POST",
+          endpoint: "user/updateLocation",
+          params: { coordinates: [longitude, latitude], type: "Point" },
+        }).catch(() => {});
+      }
+    ).then((sub) => {
+      if (active) searchLocationSubRef.current = sub;
+      else sub.remove();
+    }).catch(() => {});
+
+    return () => {
+      active = false;
+      if (searchLocationSubRef.current) {
+        searchLocationSubRef.current.remove();
+        searchLocationSubRef.current = null;
+      }
+    };
+  }, [rideStep, status?.granted]);
 
   const getCurrentPosition = async () => {
     const last = await Location.getLastKnownPositionAsync({ maxAge: 120000 });

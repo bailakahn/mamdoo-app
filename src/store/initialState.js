@@ -54,7 +54,13 @@ export default {
     userLoaded: false,
     partner: null,
     partnerLoaded: false,
-    uploadDocuments: {},
+    uploadDocuments: {
+      profilePicture:     { uri: null, status: "idle", s3Key: null },
+      driverLicenseFront: { uri: null, status: "idle", s3Key: null },
+      driverLicenseBack:  { uri: null, status: "idle", s3Key: null },
+      cabLicense:         { uri: null, status: "idle", s3Key: null },
+    },
+    documentsSubmitted: false,
   },
   ride: {
     driver: null,

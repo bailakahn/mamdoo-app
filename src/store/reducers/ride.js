@@ -91,6 +91,9 @@ export default (state = ride, action) => {
         clientRideCount: action.data.clientRideCount,
         clientAvgRating: action.data.clientAvgRating,
         clientName: action.data.clientName || "",
+        pickupCoordinates: Array.isArray(action.data.coordinates)
+          ? { latitude: action.data.coordinates[1], longitude: action.data.coordinates[0] }
+          : action.data.coordinates || null,
       };
       AsyncStorage.setItem(
         "@mamdoo-current-ride",

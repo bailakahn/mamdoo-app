@@ -4,20 +4,21 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
   Animated,
   Dimensions,
   Pressable,
   Platform,
+  Modal as RNModal,
 } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Marker, Polyline } from "react-native-maps";
 import {
   useTheme,
   Portal,
   Text,
   Modal,
-  Dialog,
   Divider,
   Switch,
 } from "react-native-paper";
@@ -33,7 +34,8 @@ import {
   useApp,
   useTheme as useMamdooTheme,
 } from "_hooks";
-import { useRide, useLocation } from "_hooks/partner";
+import { useRide, useLocation, useDriverLocation, MOCK_LOCATION_ENABLED, MOCK_COORDS } from "_hooks/partner";
+import { useApi } from "_api";
 import { Button, LoadingV2, Image } from "_atoms";
 import { Info } from "_molecules";
 
@@ -42,6 +44,35 @@ const SCREEN_HEIGHT = Dimensions.get("window").height;
 const DRAWER_WIDTH = SCREEN_WIDTH * 0.78;
 const COUNTDOWN_SECONDS = 30;
 const LATITUDE_DELTA = 0.005;
+const REQUEST_MODAL_H = 380; // approximate modal sheet height — used for mapPadding
+
+function buildLinearRoute(from, to, steps = 60) {
+  const result = [];
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    result.push({
+      latitude: from.latitude + (to.latitude - from.latitude) * t,
+      longitude: from.longitude + (to.longitude - from.longitude) * t,
+    });
+  }
+  return result;
+}
+
+function computeMapRegion(lat1, lng1, lat2, lng2) {
+  if ([lat1, lng1, lat2, lng2].some(isNaN)) return null;
+  const minLat = Math.min(lat1, lat2);
+  const maxLat = Math.max(lat1, lat2);
+  const minLng = Math.min(lng1, lng2);
+  const maxLng = Math.max(lng1, lng2);
+  const latSpan = Math.max(maxLat - minLat, 0.003);
+  const lngSpan = Math.max(maxLng - minLng, 0.003);
+  return {
+    latitude: (minLat + maxLat) / 2,
+    longitude: (minLng + maxLng) / 2,
+    latitudeDelta: latSpan * 1.6,
+    longitudeDelta: lngSpan * 1.6,
+  };
+}
 
 // ── Stat card ────────────────────────────────────────────────────────────────
 const StatCard = ({ icon, value, label, colors, iconColor, isDarkMode }) => {
@@ -91,20 +122,38 @@ const DrawerItem = ({ icon, label, onPress, destructive, colors, right }) => (
   </TouchableOpacity>
 );
 
-// ── No-rides dialog ──────────────────────────────────────────────────────────
-const SearchDialog = ({ visible, setVisible }) => (
-  <Portal>
-    <Dialog visible={visible} onDismiss={() => setVisible(false)}>
-      <Dialog.Title>{t2("home.noRidesTitle")}</Dialog.Title>
-      <Dialog.Content>
-        <Text variant="bodyMedium">{t2("home.noRidesContent")}</Text>
-      </Dialog.Content>
-      <Dialog.Actions>
-        <Button onPress={() => setVisible(false)}>Ok</Button>
-      </Dialog.Actions>
-    </Dialog>
-  </Portal>
-);
+// ── No-rides bottom sheet ─────────────────────────────────────────────────────
+const SearchDialog = ({ visible, setVisible }) => {
+  const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
+  return (
+    <RNModal visible={visible} transparent animationType="slide" onRequestClose={() => setVisible(false)}>
+      <Pressable style={styles.rnModalBackdrop} onPress={() => setVisible(false)}>
+        <View
+          style={[styles.rnModalSheet, { backgroundColor: colors.background, paddingBottom: Math.max(insets.bottom + 16, 24) }]}
+          onStartShouldSetResponder={() => true}
+        >
+          <View style={styles.handle} />
+          <View style={styles.noRidesIconWrap}>
+            <View style={[styles.noRidesIconCircle, { backgroundColor: colors.primary + "18" }]}>
+              <Icon name="search-off" size={36} color={colors.primary} />
+            </View>
+          </View>
+          <Text style={[styles.noRidesTitle, { color: colors.text }]}>{t2("home.noRidesTitle")}</Text>
+          <Text style={styles.noRidesBody}>{t2("home.noRidesContent")}</Text>
+          <Button
+            mode="contained"
+            onPress={() => setVisible(false)}
+            style={styles.noRidesBtn}
+            contentStyle={styles.noRidesBtnContent}
+          >
+            {t2("main.close")}
+          </Button>
+        </View>
+      </Pressable>
+    </RNModal>
+  );
+};
 
 // ── Main scene ───────────────────────────────────────────────────────────────
 export default function HomeScene() {
@@ -113,7 +162,7 @@ export default function HomeScene() {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
 
-  usePartnerProxy();
+  const { emitLocation } = usePartnerProxy();
   useNotifications();
   useLanguage();
   useKeepAwake();
@@ -122,12 +171,34 @@ export default function HomeScene() {
   const partner = usePartner();
   const location = useLocation();
   const app = useApp();
+  const getRequest = useApi();
+
+  const isOnline = partner.partner?.isOnline;
+  const hasActiveRide = !!ride.request;
+  const driverState = !isOnline ? "offline" : hasActiveRide ? "active" : "idle";
+
+  const [mockDriverRoute, setMockDriverRoute] = useState([]);
+
+  useDriverLocation({
+    driverState,
+    emitLocation,
+    postLocation: (payload) =>
+      getRequest({ method: "POST", endpoint: "drivers/locationIdle", params: payload }).catch(() => {}),
+    driverId: partner.partner?.userId,
+    clientId: ride.request?.client?._id,
+    onLocation: driverState === "active"
+      ? ({ latitude, longitude }) => ride.actions.checkAutoArrival(latitude, longitude)
+      : undefined,
+    mockRoute: mockDriverRoute,
+  });
 
   const [showSearchDialog, setShowSearchDialog] = useState(false);
+  const [showOfflineConfirm, setShowOfflineConfirm] = useState(false);
   const [countdown, setCountdown] = useState(COUNTDOWN_SECONDS);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [panelHeight, setPanelHeight] = useState(0);
   const [isAccepting, setIsAccepting] = useState(false);
+  const [requestPolyline, setRequestPolyline] = useState([]);
   const drawerAnim = useRef(new Animated.Value(-DRAWER_WIDTH)).current;
   const mapRef = useRef(null);
   const locationRef = useRef(location.location);
@@ -144,6 +215,27 @@ export default function HomeScene() {
   useEffect(() => {
     ride.actions.bootstrapAsync();
   }, []);
+
+  // ── mock route: when driver accepts a ride, build route from mock position to pickup ──
+  useEffect(() => {
+    if (!MOCK_LOCATION_ENABLED || !hasActiveRide) {
+      setMockDriverRoute([]);
+      return;
+    }
+    const coords = ride.request?.pickUp?.coordinates;
+    if (!coords) return;
+    const dest = { latitude: coords[1], longitude: coords[0] };
+    // Set a straight-line route immediately so mock driver starts moving right away.
+    // getDirections may replace this with a road-following route if it succeeds.
+    setMockDriverRoute(buildLinearRoute(MOCK_COORDS, dest, 60));
+    ride.actions
+      .getDirections(
+        `${MOCK_COORDS.latitude},${MOCK_COORDS.longitude}`,
+        `${dest.latitude},${dest.longitude}`
+      )
+      .then((route) => { if (route?.length) setMockDriverRoute(route); })
+      .catch(() => {});
+  }, [hasActiveRide]);
 
   // ── Animate map to driver location once both GPS and panel height are known ──
   // Using initialRegion on MapView so Android doesn't show Africa → fallback → GPS
@@ -184,6 +276,35 @@ export default function HomeScene() {
       }
     }, [])
   );
+
+  // ── draw polyline from driver to pickup when a new request arrives ──
+  useEffect(() => {
+    if (!ride.requestId || !ride.requestPreview?.pickupCoordinates || !locationRef.current) {
+      setRequestPolyline([]);
+      return;
+    }
+    const { latitude: dLat, longitude: dLng } = locationRef.current;
+    const { latitude: pLat, longitude: pLng } = ride.requestPreview.pickupCoordinates;
+    const fallback = [{ latitude: dLat, longitude: dLng }, { latitude: pLat, longitude: pLng }];
+
+    const applyRoute = (coords) => {
+      setRequestPolyline(coords);
+      const lats = coords.map((p) => p.latitude);
+      const lngs = coords.map((p) => p.longitude);
+      const region = computeMapRegion(
+        Math.min(...lats), Math.min(...lngs),
+        Math.max(...lats), Math.max(...lngs)
+      );
+      setTimeout(() => {
+        if (region) mapRef.current?.animateToRegion(region, 600);
+      }, 400);
+    };
+
+    ride.actions
+      .getDirections(`${dLat},${dLng}`, `${pLat},${pLng}`)
+      .then((coords) => applyRoute(coords?.length ? coords : fallback))
+      .catch(() => applyRoute(fallback));
+  }, [ride.requestId]);
 
   // ── countdown timer for ride request ──
   useEffect(() => {
@@ -255,8 +376,24 @@ export default function HomeScene() {
     }
   };
 
+  // ── online status toggle ──
+  const canToggleOnline = app.settings?.driverSelfOnline !== false;
+
+  const handleToggleStatus = () => {
+    if (!canToggleOnline || partner.isTogglingStatus) return;
+    if (isOnline) {
+      setShowOfflineConfirm(true);
+    } else {
+      partner.actions.changeStatus();
+    }
+  };
+
+  const confirmGoOffline = () => {
+    setShowOfflineConfirm(false);
+    partner.actions.changeStatus();
+  };
+
   // ── derived values ──
-  const isOnline = partner.partner?.isOnline;
   const firstName = partner.partner?.firstName || "";
   const lastName = partner.partner?.lastName || "";
   const initials =
@@ -307,150 +444,16 @@ export default function HomeScene() {
 
   return (
     <>
-      {/* ── Ride request modal ───────────────────────────────────────────── */}
       <Portal>
-        <Modal
-          visible={!!ride.requestId}
-          onDismiss={ride.actions.denyRequest}
-          style={{ justifyContent: "flex-end" }}
-          contentContainerStyle={{
-            backgroundColor: colors.background,
-            borderTopLeftRadius: 24,
-            borderTopRightRadius: 24,
-            paddingBottom: 34,
-          }}
-        >
-          <View style={styles.handle} />
-
-          <View style={styles.modalHeader}>
-            <Text variant="titleLarge" style={{ fontWeight: "bold", color: colors.text, flex: 1 }}>
-              {t2("ride.newRide")}
-            </Text>
-            <View
-              style={[
-                styles.countdownChip,
-                { backgroundColor: countdown <= 10 ? "#FEE2E2" : colors.primary + "18" },
-              ]}
-            >
-              <Icon name="timer" size={14} color={countdownColor} />
-              <Text style={{ marginLeft: 4, color: countdownColor, fontWeight: "bold", fontSize: 14 }}>
-                {countdown}s
-              </Text>
-            </View>
-          </View>
-
-          <Divider />
-
-          <View style={styles.destinationRow}>
-            <View style={styles.destinationIcon}>
-              <Icon name="location-on" size={22} color={colors.error} />
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.destinationLabel}>{t2("ride.destination")}</Text>
-              <Text variant="bodyLarge" style={{ fontWeight: "600", color: colors.text }} numberOfLines={2}>
-                {preview?.dropOffText || "—"}
-              </Text>
-            </View>
-          </View>
-
-          <Divider />
-
-          <View style={styles.statsRow}>
-            <View style={{ flex: 1, alignItems: "center" }}>
-              <Icon name="payments" size={22} color={colors.primary} />
-              <Text style={styles.statLabel}>{t2("ride.fare")}</Text>
-              <Text style={{ fontSize: 20, fontWeight: "bold", color: colors.text, marginTop: 3 }}>
-                {priceText || "—"}
-              </Text>
-            </View>
-            <View style={{ width: 1, backgroundColor: "#E5E7EB", marginVertical: 4 }} />
-            <View style={{ flex: 1, alignItems: "center" }}>
-              <Icon name="route" size={22} color={colors.primary} />
-              <Text style={styles.statLabel}>{t2("ride.distance")}</Text>
-              <Text style={{ fontSize: 20, fontWeight: "bold", color: colors.text, marginTop: 3 }}>
-                {distanceText || "—"}
-              </Text>
-            </View>
-          </View>
-
-          {/* Client info row — name + rating + rides */}
-          {(preview?.clientName || preview?.clientAvgRating != null || preview?.clientRideCount != null) && (
-            <>
-              <Divider />
-              <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 24, paddingVertical: 14 }}>
-                {/* Initials avatar */}
-                {preview?.clientName ? (
-                  <View style={{
-                    width: 36, height: 36, borderRadius: 18,
-                    backgroundColor: colors.primary,
-                    justifyContent: "center", alignItems: "center",
-                    marginRight: 12, flexShrink: 0,
-                  }}>
-                    <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 13 }}>
-                      {preview.clientName.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2)}
-                    </Text>
-                  </View>
-                ) : null}
-
-                {/* Name — truncates before stats */}
-                <Text
-                  style={{ flex: 1, fontWeight: "600", color: colors.text, fontSize: 14 }}
-                  numberOfLines={1}
-                >
-                  {preview?.clientName || ""}
-                </Text>
-
-                {/* Rating */}
-                {preview?.clientAvgRating != null && (
-                  <View style={{ flexDirection: "row", alignItems: "center", marginLeft: 10 }}>
-                    <Icon name="star" size={14} color="#F59E0B" />
-                    <Text style={{ marginLeft: 3, fontSize: 13, fontWeight: "600", color: colors.text }}>
-                      {preview.clientAvgRating}
-                    </Text>
-                  </View>
-                )}
-
-                {/* Rides */}
-                {preview?.clientRideCount != null && (
-                  <View style={{ flexDirection: "row", alignItems: "center", marginLeft: 10 }}>
-                    <Icon name="directions-car" size={14} color="#9CA3AF" />
-                    <Text style={{ marginLeft: 3, fontSize: 13, color: preview.clientRideCount === 0 ? colors.primary : "#9CA3AF", fontWeight: preview.clientRideCount === 0 ? "600" : "400" }}>
-                      {preview.clientRideCount === 0
-                        ? t2("ride.newClient")
-                        : String(preview.clientRideCount)}
-                    </Text>
-                  </View>
-                )}
-              </View>
-            </>
-          )}
-
-          <Divider />
-
-          <View style={{ paddingHorizontal: 24, paddingTop: 16, gap: 10 }}>
-            <Button
-              mode="contained"
-              onPress={acceptRequest}
-              icon="check"
-              loading={isAccepting}
-              disabled={isAccepting}
-              style={{ borderRadius: 12 }}
-              contentStyle={{ height: 52 }}
-            >
-              {t2("ride.acceptRide")}
-            </Button>
-            <Button mode="outlined" onPress={ride.actions.denyRequest} icon="close"
-              style={{ borderRadius: 12, borderColor: colors.error }}
-              contentStyle={{ height: 52 }} textColor={colors.error}>
-              {t2("ride.denyRide")}
-            </Button>
-          </View>
-        </Modal>
-
         {ride.error && (
           <Info visible={ride.error} text={t2(ride.error)}
             onDismiss={() => ride.actions.setError(false)}
             onClose={() => ride.actions.setError(false)} />
+        )}
+        {partner.statusToggleError && (
+          <Info visible={partner.statusToggleError} text={t2("errors.featureDisabled")}
+            onDismiss={() => partner.actions.setStatusToggleError(false)}
+            onClose={() => partner.actions.setStatusToggleError(false)} />
         )}
         {ride.canceled && (
           <Modal
@@ -489,6 +492,41 @@ export default function HomeScene() {
 
       <SearchDialog visible={showSearchDialog} setVisible={setShowSearchDialog} />
 
+      {/* ── Go offline confirmation sheet ────────────────────────────── */}
+      <RNModal visible={showOfflineConfirm} transparent animationType="slide" onRequestClose={() => setShowOfflineConfirm(false)}>
+        <Pressable style={styles.rnModalBackdrop} onPress={() => setShowOfflineConfirm(false)}>
+          <View
+            style={[styles.rnModalSheet, { backgroundColor: colors.background, paddingBottom: Math.max(insets.bottom + 16, 24) }]}
+            onStartShouldSetResponder={() => true}
+          >
+            <View style={styles.handle} />
+            <Text style={[styles.offlineSheetTitle, { color: colors.text }]}>
+              {t2("home.goOfflineConfirmTitle")}
+            </Text>
+            <Text style={styles.offlineSheetBody}>{t2("home.goOfflineConfirmBody")}</Text>
+            <View style={{ gap: 12 }}>
+              <Button
+                mode="contained"
+                onPress={confirmGoOffline}
+                style={[styles.offlineSheetBtn, { backgroundColor: colors.error }]}
+                contentStyle={styles.offlineSheetBtnContent}
+              >
+                {t2("home.goOfflineConfirm")}
+              </Button>
+              <Button
+                mode="outlined"
+                onPress={() => setShowOfflineConfirm(false)}
+                style={[styles.offlineSheetCancelBtn, { borderColor: "#E5E7EB" }]}
+                contentStyle={styles.offlineSheetBtnContent}
+                textColor={colors.text}
+              >
+                {t2("upload.cancel")}
+              </Button>
+            </View>
+          </View>
+        </Pressable>
+      </RNModal>
+
       {/* ── Main screen ─────────────────────────────────────────────────── */}
       <View style={{ flex: 1 }}>
 
@@ -498,6 +536,7 @@ export default function HomeScene() {
           style={StyleSheet.absoluteFill}
           provider={PROVIDER_GOOGLE}
           initialRegion={mapRegion}
+          mapPadding={{ top: 80, bottom: ride.requestId ? REQUEST_MODAL_H : 0 }}
           customMapStyle={mamdooTheme.isDarkMode ? darkMapStyle : []}
           onMapReady={() => {
             if (mapRef.current && locationRef.current) {
@@ -527,6 +566,22 @@ export default function HomeScene() {
               />
             </Marker>
           )}
+          {ride.requestId && ride.requestPreview?.pickupCoordinates && (
+            <Marker coordinate={ride.requestPreview.pickupCoordinates}>
+              <View style={{
+                width: 16, height: 16, borderRadius: 8,
+                backgroundColor: colors.primary,
+                borderWidth: 2.5, borderColor: "#fff",
+                shadowColor: "#000", shadowOpacity: 0.3, shadowRadius: 4, elevation: 4,
+              }} />
+            </Marker>
+          )}
+          {requestPolyline.length > 0 && (
+            <>
+              <Polyline coordinates={requestPolyline} strokeWidth={8} strokeColor={colors.primary + "40"} />
+              <Polyline coordinates={requestPolyline} strokeWidth={4} strokeColor={colors.primary} />
+            </>
+          )}
         </MapView>
 
         {/* Top bar: avatar button (left) + status chip (center) */}
@@ -540,14 +595,31 @@ export default function HomeScene() {
               <MaterialCommunityIcons name="menu" size={26} color="#fff" />
             </TouchableOpacity>
 
-            {/* Status chip — centred, content-sized */}
+            {/* Status chip — tappable only when driverSelfOnline setting is enabled */}
             <View style={styles.statusChipWrapper}>
-              <View style={[styles.statusChip, { backgroundColor: isOnline ? colors.primary : "#F1853F" }]}>
-                <View style={styles.statusDot} />
-                <Text style={styles.statusText}>
-                  {isOnline ? t2("home.youAreOnline") : t2("home.youAreOffline")}
-                </Text>
-              </View>
+              {canToggleOnline ? (
+                <TouchableOpacity
+                  onPress={handleToggleStatus}
+                  activeOpacity={0.8}
+                  style={[styles.statusChip, { backgroundColor: isOnline ? colors.primary : "#F1853F" }]}
+                >
+                  {partner.isTogglingStatus ? (
+                    <ActivityIndicator size="small" color="#fff" style={{ marginRight: 8 }} />
+                  ) : (
+                    <View style={styles.statusDot} />
+                  )}
+                  <Text style={styles.statusText}>
+                    {isOnline ? t2("home.youAreOnline") : t2("home.youAreOffline")}
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <View style={[styles.statusChip, { backgroundColor: isOnline ? colors.primary : "#F1853F" }]}>
+                  <View style={styles.statusDot} />
+                  <Text style={styles.statusText}>
+                    {isOnline ? t2("home.youAreOnline") : t2("home.youAreOffline")}
+                  </Text>
+                </View>
+              )}
             </View>
 
             {/* Spacer to balance the avatar button */}
@@ -627,13 +699,46 @@ export default function HomeScene() {
 
           <View style={{ paddingHorizontal: 24, paddingTop: 16, paddingBottom: Math.max(insets.bottom + 12, 24) }}>
             {isOnline ? (
+              <>
+                <TouchableOpacity
+                  onPress={() => ride.actions.searchRides(setShowSearchDialog)}
+                  style={[styles.searchButton, { backgroundColor: colors.primary }]}
+                >
+                  <Text style={{ color: "#fff", fontSize: 16, fontWeight: "700" }}>
+                    {t2("home.searchRides")}
+                  </Text>
+                </TouchableOpacity>
+                {canToggleOnline && (
+                  <TouchableOpacity
+                    onPress={handleToggleStatus}
+                    disabled={partner.isTogglingStatus}
+                    style={styles.goOfflineLink}
+                    hitSlop={{ top: 8, bottom: 8, left: 16, right: 16 }}
+                  >
+                    {partner.isTogglingStatus ? (
+                      <ActivityIndicator size="small" color="#9CA3AF" />
+                    ) : (
+                      <Text style={styles.goOfflineLinkText}>{t2("home.goOffline")}</Text>
+                    )}
+                  </TouchableOpacity>
+                )}
+              </>
+            ) : canToggleOnline ? (
               <TouchableOpacity
-                onPress={() => ride.actions.searchRides(setShowSearchDialog)}
-                style={[styles.searchButton, { backgroundColor: colors.primary }]}
+                onPress={handleToggleStatus}
+                disabled={partner.isTogglingStatus}
+                style={[styles.goOnlineButton, { backgroundColor: partner.isTogglingStatus ? colors.primary + "70" : colors.primary }]}
               >
-                <Text style={{ color: "#fff", fontSize: 16, fontWeight: "700" }}>
-                  {t2("home.searchRides")}
-                </Text>
+                {partner.isTogglingStatus ? (
+                  <ActivityIndicator size="small" color="#fff" />
+                ) : (
+                  <>
+                    <Icon name="power-settings-new" size={20} color="#fff" style={{ marginRight: 8 }} />
+                    <Text style={{ color: "#fff", fontSize: 16, fontWeight: "700" }}>
+                      {t2("home.goOnline")}
+                    </Text>
+                  </>
+                )}
               </TouchableOpacity>
             ) : (
               <View style={[styles.offlinePlaceholder, { backgroundColor: colors.primary + "18" }]}>
@@ -644,6 +749,134 @@ export default function HomeScene() {
             )}
           </View>
         </View>
+
+        {/* ── Ride request panel ───────────────────────────────────────────── */}
+        {!!ride.requestId && (
+          <View style={[styles.requestPanel, { backgroundColor: colors.background }]}>
+            <View style={styles.handle} />
+
+            <View style={styles.modalHeader}>
+              <Text variant="titleLarge" style={{ fontWeight: "bold", color: colors.text, flex: 1 }}>
+                {t2("ride.newRide")}
+              </Text>
+              <View
+                style={[
+                  styles.countdownChip,
+                  { backgroundColor: countdown <= 10 ? "#FEE2E2" : colors.primary + "18" },
+                ]}
+              >
+                <Icon name="timer" size={14} color={countdownColor} />
+                <Text style={{ marginLeft: 4, color: countdownColor, fontWeight: "bold", fontSize: 14 }}>
+                  {countdown}s
+                </Text>
+              </View>
+            </View>
+
+            <Divider />
+
+            <View style={styles.destinationRow}>
+              <View style={styles.destinationIcon}>
+                <Icon name="location-on" size={22} color={colors.error} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.destinationLabel}>{t2("ride.destination")}</Text>
+                <Text variant="bodyLarge" style={{ fontWeight: "600", color: colors.text }} numberOfLines={2}>
+                  {preview?.dropOffText || "—"}
+                </Text>
+              </View>
+            </View>
+
+            <Divider />
+
+            <View style={styles.statsRow}>
+              <View style={{ flex: 1, alignItems: "center" }}>
+                <Icon name="payments" size={22} color={colors.primary} />
+                <Text style={styles.statLabel}>{t2("ride.fare")}</Text>
+                <Text style={{ fontSize: 20, fontWeight: "bold", color: colors.text, marginTop: 3 }}>
+                  {priceText || "—"}
+                </Text>
+              </View>
+              <View style={{ width: 1, backgroundColor: "#E5E7EB", marginVertical: 4 }} />
+              <View style={{ flex: 1, alignItems: "center" }}>
+                <Icon name="route" size={22} color={colors.primary} />
+                <Text style={styles.statLabel}>{t2("ride.distance")}</Text>
+                <Text style={{ fontSize: 20, fontWeight: "bold", color: colors.text, marginTop: 3 }}>
+                  {distanceText || "—"}
+                </Text>
+              </View>
+            </View>
+
+            {(preview?.clientName || preview?.clientAvgRating != null || preview?.clientRideCount != null) && (
+              <>
+                <Divider />
+                <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 24, paddingVertical: 14 }}>
+                  {preview?.clientName ? (
+                    <View style={{
+                      width: 36, height: 36, borderRadius: 18,
+                      backgroundColor: colors.primary,
+                      justifyContent: "center", alignItems: "center",
+                      marginRight: 12, flexShrink: 0,
+                    }}>
+                      <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 13 }}>
+                        {preview.clientName.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2)}
+                      </Text>
+                    </View>
+                  ) : null}
+                  <Text
+                    style={{ flex: 1, fontWeight: "600", color: colors.text, fontSize: 14 }}
+                    numberOfLines={1}
+                  >
+                    {preview?.clientName || ""}
+                  </Text>
+                  {preview?.clientAvgRating != null && (
+                    <View style={{ flexDirection: "row", alignItems: "center", marginLeft: 10 }}>
+                      <Icon name="star" size={14} color="#F59E0B" />
+                      <Text style={{ marginLeft: 3, fontSize: 13, fontWeight: "600", color: colors.text }}>
+                        {preview.clientAvgRating}
+                      </Text>
+                    </View>
+                  )}
+                  {preview?.clientRideCount != null && (
+                    <View style={{ flexDirection: "row", alignItems: "center", marginLeft: 10 }}>
+                      <Icon name="directions-car" size={14} color="#9CA3AF" />
+                      <Text style={{ marginLeft: 3, fontSize: 13, color: preview.clientRideCount === 0 ? colors.primary : "#9CA3AF", fontWeight: preview.clientRideCount === 0 ? "600" : "400" }}>
+                        {preview.clientRideCount === 0
+                          ? t2("ride.newClient")
+                          : String(preview.clientRideCount)}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+              </>
+            )}
+
+            <Divider />
+
+            <View style={{ paddingHorizontal: 24, paddingTop: 16, paddingBottom: Math.max(insets.bottom + 16, 24), flexDirection: "row", gap: 10 }}>
+              <Button
+                mode="outlined"
+                onPress={ride.actions.denyRequest}
+                icon="close"
+                style={{ flex: 1, borderRadius: 12, borderColor: colors.error }}
+                contentStyle={{ height: 52 }}
+                textColor={colors.error}
+              >
+                {t2("ride.denyRide")}
+              </Button>
+              <Button
+                mode="contained"
+                onPress={acceptRequest}
+                icon="check"
+                loading={isAccepting}
+                disabled={isAccepting}
+                style={{ flex: 1, borderRadius: 12 }}
+                contentStyle={{ height: 52 }}
+              >
+                {t2("ride.acceptRide")}
+              </Button>
+            </View>
+          </View>
+        )}
 
         {/* ── Drawer overlay ────────────────────────────────────────────── */}
         {drawerOpen && (
@@ -824,6 +1057,19 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 12,
   },
+  requestPanel: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
+    elevation: 16,
+  },
   modalHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -888,6 +1134,39 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  goOnlineButton: {
+    borderRadius: 14,
+    height: 54,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  goOfflineLink: {
+    alignItems: "center",
+    marginTop: 14,
+    height: 20,
+    justifyContent: "center",
+  },
+  goOfflineLinkText: {
+    fontSize: 13,
+    fontWeight: "500",
+    color: "#9CA3AF",
+  },
+  rnModalBackdrop: { flex: 1, backgroundColor: "transparent", justifyContent: "flex-end" },
+  rnModalSheet: { borderTopLeftRadius: 24, borderTopRightRadius: 24, paddingHorizontal: 24, paddingTop: 12 },
+
+  noRidesIconWrap: { alignItems: "center", marginTop: 8, marginBottom: 20 },
+  noRidesIconCircle: { width: 80, height: 80, borderRadius: 40, justifyContent: "center", alignItems: "center" },
+  noRidesTitle: { fontSize: 18, fontWeight: "700", textAlign: "center", marginBottom: 8 },
+  noRidesBody: { fontSize: 14, color: "#9CA3AF", textAlign: "center", lineHeight: 20, marginBottom: 24 },
+  noRidesBtn: { borderRadius: 14 },
+  noRidesBtnContent: { height: 56 },
+
+  offlineSheetTitle: { fontSize: 18, fontWeight: "700", marginBottom: 8, marginTop: 8 },
+  offlineSheetBody: { fontSize: 14, color: "#9CA3AF", lineHeight: 20, marginBottom: 24 },
+  offlineSheetBtn: { borderRadius: 14 },
+  offlineSheetCancelBtn: { borderRadius: 14 },
+  offlineSheetBtnContent: { height: 56 },
   drawerBackdrop: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(0,0,0,0.45)",

@@ -11,6 +11,7 @@ export default {
     mamdooUse: "Comment voulez-vous utiliser Mamdoo ?",
     iWantMoreClients: "Je veux plus de clients",
     noInternetConnection: "Pas de connexion internet",
+    backOnline: "Connexion rétablie",
     locationPermission: "Permission de localisation",
     locationNeeded:
       "Nous avons besoin de pouvoir vous localiser pour vous donner le meilleur service! Activez la localisation dans vos paramètres pour utiliser Mamdoo.",

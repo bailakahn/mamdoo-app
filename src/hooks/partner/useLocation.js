@@ -5,6 +5,7 @@ import * as TaskManager from "expo-task-manager";
 import { useApi } from "_api";
 import { t2 } from "_utils/lang";
 import { useStore } from "_store";
+import { MOCK_LOCATION_ENABLED, MOCK_COORDS } from "./mockLocation";
 
 const TASK_FETCH_LOCATION = "TASK_FETCH_LOCATION";
 var request = null;
@@ -27,6 +28,11 @@ export default function useLocation() {
     Location.useBackgroundPermissions();
 
   useEffect(() => {
+    if (MOCK_LOCATION_ENABLED) {
+      setLocation(MOCK_COORDS);
+      setIsLoading(false);
+      return;
+    }
     requestForegroundPermission();
 
     if (statusForeground?.status === Location.PermissionStatus.GRANTED)
@@ -58,10 +64,9 @@ export default function useLocation() {
     ) {
       Location.startLocationUpdatesAsync(TASK_FETCH_LOCATION, {
         activityType: Location.ActivityType.AutomotiveNavigation,
-        accuracy: Location.Accuracy.Highest,
-        distanceInterval: 2000, // 2KM // minimum change (in meters) betweens updates
-        deferredUpdatesInterval: 600000, //10 minutes // minimum interval (in milliseconds) between updates
-        // foregroundService is how you get the task to be updated as often as would be if the app was open
+        accuracy: Location.Accuracy.Balanced,
+        distanceInterval: 100,       // fire after moving 100m (was 2000m)
+        deferredUpdatesInterval: 15000, // at most every 15s (was 600000ms / 10min)
         foregroundService: {
           notificationTitle: "Using your location",
           notificationBody:
@@ -86,6 +91,10 @@ export default function useLocation() {
   }, [statusForeground]);
 
   const getCurrentPosition = async () => {
+    if (MOCK_LOCATION_ENABLED) {
+      setLocation(MOCK_COORDS);
+      return MOCK_COORDS;
+    }
     let {
       coords: { latitude, longitude },
     } = await Location.getCurrentPositionAsync({});
@@ -111,19 +120,22 @@ TaskManager.defineTask(
       console.error(error);
       return;
     }
+    // Only send if the driver is online and the fix is accurate enough
+    if (!request || !partner?.isOnline) return;
     const [location] = locations;
+    if (!location || location.coords.accuracy > 50) return;
     try {
-      // console.log("Update Loacation", location.coords);
-
-      if (request && partner)
-        request({
-          method: "POST",
-          endpoint: "user/updateDriverLocation",
-          params: {
-            coordinates: [location.coords.longitude, location.coords.latitude],
-            type: "Point",
-          },
-        });
+      request({
+        method: "POST",
+        endpoint: "drivers/locationIdle",
+        params: {
+          lat: location.coords.latitude,
+          lng: location.coords.longitude,
+          heading: location.coords.heading ?? null,
+          accuracy: location.coords.accuracy,
+          timestamp: location.timestamp,
+        },
+      });
     } catch (err) {
       console.error(err);
     }

@@ -23,7 +23,6 @@ function haversineMeters(lat1, lng1, lat2, lng2) {
 }
 
 let mockLocationInterval = null;
-let expoLocationSubscription = null;
 export default function useRide() {
   const getRequest = useApi();
   const getGoogleRequest = useGoogleApi();
@@ -68,7 +67,6 @@ export default function useRide() {
     return () => {
       subscription.remove();
       if (mockLocationInterval) clearInterval(mockLocationInterval);
-      if (expoLocationSubscription) expoLocationSubscription.remove();
     };
   }, []);
 
@@ -78,15 +76,6 @@ export default function useRide() {
       nextAppState === "active"
     ) {
       bootstrapAsync();
-    } else if (
-      //   appState.current.match(/active/) &&
-      //   nextAppState === "background"
-      appState.current === "active" &&
-      nextAppState.match(/inactive|background/)
-    ) {
-      if (expoLocationSubscription?.remove) {
-        expoLocationSubscription.remove();
-      }
     }
     appState.current = nextAppState;
   };
@@ -124,7 +113,6 @@ export default function useRide() {
             driverArrived: false,
           });
           setIsLoading(false);
-          startPositionUpdate(currentRide);
           navigation.navigate("DriverOnTheWay");
         } else if (currentRide.status === rideStatuses.ONGOING) {
           // set ride to ongoing
@@ -179,137 +167,29 @@ export default function useRide() {
     }
   };
 
-  const startPositionUpdate = async (request) => {
-    try {
-      // mock driver movement
-      if (
-        process.env.EXPO_PUBLIC_ENV_NAME === "localhost" ||
-        process.env.EXPO_PUBLIC_ENV_NAME === "dev"
-      ) {
-        let i = 0;
-        const {
-          coords: { latitude, longitude },
-        } = await Location.getCurrentPositionAsync({});
+  // Called by useDriverLocation (via the home navigator's onLocation callback)
+  // on every accepted GPS fix while the driver has an active ride.
+  // Triggers automatic arrival when within 100m of the pickup point.
+  const checkAutoArrival = (latitude, longitude) => {
+    if (autoArrivedRef.current) return;
+    const currentRequest = request;
+    if (!currentRequest?.pickUp?.coordinates) return;
 
-        const directions =
-          (await getDirections(
-            `${latitude},${longitude}`,
-            `${request?.pickUp?.coordinates[1]},${request?.pickUp.coordinates[0]}`
-          )) || [];
+    const distM = haversineMeters(
+      latitude, longitude,
+      currentRequest.pickUp.coordinates[1],
+      currentRequest.pickUp.coordinates[0]
+    );
 
-        const iId = setInterval(() => {
-          if (directions[i]) {
-            const coord = directions[i];
-            getRequest({
-              method: "POST",
-              endpoint: "rides/updateDriverLocation",
-              params: { clientId: request?.client?._id, currentLocation: coord },
-            }).catch((err) => {});
-
-            // Auto-arrival in dev mode
-            if (!autoArrivedRef.current && request?.pickUp?.coordinates) {
-              const distM = haversineMeters(
-                coord.latitude, coord.longitude,
-                request.pickUp.coordinates[1], request.pickUp.coordinates[0]
-              );
-              if (distM < 100) {
-                autoArrivedRef.current = true;
-                clearInterval(mockLocationInterval);
-                mockLocationInterval = null;
-                getRequest({
-                  method: "POST",
-                  endpoint: "rides/driverArrived",
-                  params: { requestId: request._id, driverId: partner.userId },
-                })
-                  .then(() => { dispatch({ type: types.DRIVER_ARRIVED }); setInfo(true); })
-                  .catch(() => { autoArrivedRef.current = false; });
-              }
-            }
-          }
-          i++;
-        }, 1000);
-
-        mockLocationInterval = iId;
-        return;
-      }
-
-      if (expoLocationSubscription?.remove) {
-        expoLocationSubscription.remove();
-      }
-
-      const locationSubscription = await Location.watchPositionAsync(
-        {
-          accuracy: Location.Accuracy.Highest,
-          distanceInterval: 50,
-        },
-        (currentLocation) => {
-          const { latitude, longitude } = currentLocation.coords;
-
-          getRequest({
-            method: "POST",
-            endpoint: "rides/updateDriverLocation",
-            params: {
-              clientId: request?.client?._id,
-              currentLocation: { latitude, longitude },
-            },
-          }).catch((err) => {
-            setError(err.code);
-          });
-
-          // Auto-arrival: trigger when driver is within 100m of the pickup point
-          if (!autoArrivedRef.current && request?.pickUp?.coordinates) {
-            const distM = haversineMeters(
-              latitude, longitude,
-              request.pickUp.coordinates[1],
-              request.pickUp.coordinates[0]
-            );
-            if (distM < 100) {
-              autoArrivedRef.current = true;
-              if (expoLocationSubscription) {
-                expoLocationSubscription.remove();
-                expoLocationSubscription = null;
-              }
-              getRequest({
-                method: "POST",
-                endpoint: "rides/driverArrived",
-                params: { requestId: request._id, driverId: partner.userId },
-              })
-                .then(() => {
-                  dispatch({ type: types.DRIVER_ARRIVED });
-                  setInfo(true);
-                })
-                .catch(() => {
-                  autoArrivedRef.current = false;
-                });
-            }
-          }
-        }
-      );
-
-      expoLocationSubscription = locationSubscription;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const stopPositionUpdate = () => {
-    try {
-      if (
-        process.env.EXPO_PUBLIC_ENV_NAME === "localhost" ||
-        process.env.EXPO_PUBLIC_ENV_NAME === "dev"
-      ) {
-        if (mockLocationInterval) clearInterval(mockLocationInterval);
-        mockLocationInterval = null;
-        return;
-      }
-
-      if (expoLocationSubscription) {
-        expoLocationSubscription.remove();
-        expoLocationSubscription = null;
-        return;
-      }
-    } catch (error) {
-      console.log(error);
+    if (distM < 100) {
+      autoArrivedRef.current = true;
+      getRequest({
+        method: "POST",
+        endpoint: "rides/driverArrived",
+        params: { requestId: currentRequest._id, driverId: partner.userId },
+      })
+        .then(() => { dispatch({ type: types.DRIVER_ARRIVED }); setInfo(true); })
+        .catch(() => { autoArrivedRef.current = false; });
     }
   };
 
@@ -326,7 +206,6 @@ export default function useRide() {
         setOnGoingRide();
         setRide(ride);
         setCanCancel();
-        startPositionUpdate(ride);
         // TODO: set time out to 3 minutes
         // setTimeout(() => {
         //     setCanCancel();
@@ -459,7 +338,6 @@ export default function useRide() {
 
   const onDriverArrived = () => {
     setIsLoading(true);
-    stopPositionUpdate();
     getRequest({
       method: "POST",
       endpoint: "rides/driverArrived",
@@ -580,6 +458,8 @@ export default function useRide() {
       bootstrapAsync,
       searchRides,
       reviewRide,
+      checkAutoArrival,
+      getDirections,
     },
   };
 

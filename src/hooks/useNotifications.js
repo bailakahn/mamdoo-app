@@ -1,12 +1,12 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Alert, Platform } from "react-native";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import { useApi } from "_api";
+import { useStore } from "_store";
+import * as RootNavigation from "_navigations/RootNavigation";
 import { t } from "_utils/lang";
 import Constants from "expo-constants";
-
-const acceptedEvents = ["NEW_REQUEST"];
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -17,60 +17,63 @@ Notifications.setNotificationHandler({
   }),
 });
 
+// Phase 3: navigate to the right screen on notification tap
+const navigateForEvent = (event, app) => {
+  if (event === "END_RIDE" && app === "client") {
+    RootNavigation.navigate("Review");
+    return;
+  }
+  RootNavigation.navigate("Home");
+};
+
 export default function useNotification() {
   const getRequest = useApi();
-  const [notification, setNotification] = useState(false);
-  const [expoPushToken, setExpoPushToken] = useState("");
-  const [channels, setChannels] = useState([]);
-  // const notificationListener = useRef(null);
-  const responseListener = useRef(null);
-
+  const { main: { app } } = useStore();
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
+  const processedNotificationId = useRef(null);
 
+  // Phase 3: handle notification tap (foreground, background, killed-app)
   useEffect(() => {
+    if (!lastNotificationResponse) return;
+
+    const id = lastNotificationResponse.notification.request.identifier;
+    if (processedNotificationId.current === id) return;
+    processedNotificationId.current = id;
+
+    const data = lastNotificationResponse.notification?.request?.content?.data;
     if (
-      lastNotificationResponse &&
-      lastNotificationResponse.notification?.request?.content?.data &&
-      lastNotificationResponse.actionIdentifier ===
-        Notifications.DEFAULT_ACTION_IDENTIFIER &&
-      acceptedEvents.includes(
-        lastNotificationResponse.notification.request.content.data?.event
-      )
-    ) {
+      !data?.event ||
+      lastNotificationResponse.actionIdentifier !== Notifications.DEFAULT_ACTION_IDENTIFIER
+    ) return;
+
+    navigateForEvent(data.event, app);
+
+    // Re-deliver the socket event via server (works for killed-app cold launch)
+    if (data.topic) {
       getRequest({
         method: "POST",
         endpoint: "notifications/handleNotifications",
-        params: lastNotificationResponse.notification.request.content.data,
-      });
+        params: data,
+      }).catch(() => {});
     }
   }, [lastNotificationResponse]);
 
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => {
-      setExpoPushToken(token);
-      saveNotificationToken(token);
+      if (token) saveNotificationToken(token);
     });
 
-    if (Platform.OS === "android") {
-      Notifications.getNotificationChannelsAsync().then((value) =>
-        setChannels(value ?? [])
-      );
-    }
+    // Phase 1: foreground notifications are handled by real-time socket
+    const notificationListener = Notifications.addNotificationReceivedListener(() => {});
 
-    const notificationListener = Notifications.addNotificationReceivedListener(
-      (notification) => {
-        setNotification(notification);
-      }
-    );
-
-    const responseListener =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response);
-      });
+    // Phase 1: catch mid-session token rotations (reinstall, OS upgrade)
+    const tokenListener = Notifications.addPushTokenListener(({ data: token }) => {
+      if (token) saveNotificationToken(token);
+    });
 
     return () => {
       notificationListener.remove();
-      responseListener.remove();
+      tokenListener.remove();
     };
   }, []);
 
@@ -79,59 +82,66 @@ export default function useNotification() {
       method: "POST",
       endpoint: "notifications/saveToken",
       params: { token },
-    }).catch((err) => {
-      console.log(err);
-    });
+    }).catch(() => {});
   };
 }
 
 async function registerForPushNotificationsAsync() {
-  let token;
-
+  // Phase 4: three Android channels for priority tiering
   if (Platform.OS === "android") {
-    Notifications.setNotificationChannelAsync("default", {
-      name: "default",
+    await Notifications.setNotificationChannelAsync("ride-critical", {
+      name: "Ride Requests",
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
-      lightColor: "#FF231F7C",
+      lightColor: "#00a9b1",
+      sound: "default",
+      enableVibrate: true,
+      lockscreenVisibility: Notifications.AndroidNotificationVisibility.PUBLIC,
+    });
+
+    await Notifications.setNotificationChannelAsync("ride-status", {
+      name: "Ride Status",
+      importance: Notifications.AndroidImportance.HIGH,
+      sound: "default",
+      enableVibrate: true,
+      lockscreenVisibility: Notifications.AndroidNotificationVisibility.PUBLIC,
+    });
+
+    await Notifications.setNotificationChannelAsync("general", {
+      name: "General",
+      importance: Notifications.AndroidImportance.DEFAULT,
+      sound: null,
     });
   }
 
-  if (Device.isDevice) {
-    const { status: existingStatus } =
-      await Notifications.getPermissionsAsync();
-
-    let finalStatus = existingStatus;
-
-    if (existingStatus !== "granted") {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-
-    if (finalStatus !== "granted") {
-      Alert.alert(t("errors.notificationPermission"));
-      return;
-    }
-
-    try {
-      const projectId =
-        Constants?.expoConfig?.extra?.eas?.projectId ??
-        Constants?.easConfig?.projectId;
-
-      if (!projectId) {
-        throw new Error(t("errors.projectIdNotFound"));
-      }
-      token = (
-        await Notifications.getExpoPushTokenAsync({
-          projectId,
-        })
-      ).data;
-    } catch (e) {
-      Alert.alert(`${e}`);
-    }
-  } else {
+  if (!Device.isDevice) {
     Alert.alert(t("errors.notificationVirtualDevice"));
+    return;
   }
 
-  return token;
+  const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  let finalStatus = existingStatus;
+
+  if (existingStatus !== "granted") {
+    const { status } = await Notifications.requestPermissionsAsync();
+    finalStatus = status;
+  }
+
+  if (finalStatus !== "granted") {
+    Alert.alert(t("errors.notificationPermission"));
+    return;
+  }
+
+  try {
+    const projectId =
+      Constants?.expoConfig?.extra?.eas?.projectId ??
+      Constants?.easConfig?.projectId;
+
+    if (!projectId) throw new Error(t("errors.projectIdNotFound"));
+
+    const { data: token } = await Notifications.getExpoPushTokenAsync({ projectId });
+    return token;
+  } catch (e) {
+    Alert.alert(`${e}`);
+  }
 }

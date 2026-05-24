@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
+    flexShrink: 0,
   },
   docLabel: { fontSize: 15, fontWeight: "500", flex: 1 },
 

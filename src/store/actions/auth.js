@@ -50,6 +50,12 @@ export default function authActions(state, dispatch) {
         },
         setUploadDocuments: (documents) => {
             dispatch({ type: types.SET_UPLOAD_DOCUMENTS, documents });
-        }
+        },
+        setUploadDocument: (key, document) => {
+            dispatch({ type: types.SET_UPLOAD_DOCUMENT, key, document });
+        },
+        setDocumentsSubmitted: (value) => {
+            dispatch({ type: types.SET_DOCUMENTS_SUBMITTED, value });
+        },
     };
 }

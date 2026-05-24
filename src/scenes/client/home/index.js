@@ -4,7 +4,6 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
-  ScrollView,
   Platform,
   Animated,
   Dimensions,
@@ -51,14 +50,31 @@ const RECENT_PLACES_COUNT = 2;
 // Height of the fixed booking footer (top padding + button + bottom padding, excluding insets)
 const FOOTER_H = 68;
 
-const SHEET_SNAPS = {
-  0: [SCREEN_HEIGHT * 0.36, SCREEN_HEIGHT * 0.58],
-  2: [SCREEN_HEIGHT * 0.40, SCREEN_HEIGHT * 0.70],
-  3: [SCREEN_HEIGHT * 0.28],
-  4: [SCREEN_HEIGHT * 0.30, SCREEN_HEIGHT * 0.55],
-  5: [SCREEN_HEIGHT * 0.30, SCREEN_HEIGHT * 0.55],
-  6: [SCREEN_HEIGHT * 0.22],
-};
+// Android: insets.bottom reports 0 on edge-to-edge builds so we use fixed
+// pixel heights calibrated to actual content + 64dp (48 nav bar + 16 gap).
+// iOS keeps the original percentage-based snaps — do not change them.
+//
+// Android: initial snaps are set slightly BELOW measured content height so the
+// sheet starts with content just slightly clipped (no empty space at bottom),
+// then onLayout springs it up to the exact fit.  Steps 4 and 5 use a shared
+// handleDriverContentHeight callback; step 3 uses the same callback.
+const SHEET_SNAPS = Platform.OS === "android"
+  ? {
+      0: [SCREEN_HEIGHT * 0.36, SCREEN_HEIGHT * 0.58],
+      2: [SCREEN_HEIGHT * 0.40, SCREEN_HEIGHT * 0.70],
+      3: [250],
+      4: [280],
+      5: [280],
+      6: [260],
+    }
+  : {
+      0: [SCREEN_HEIGHT * 0.36, SCREEN_HEIGHT * 0.58],
+      2: [SCREEN_HEIGHT * 0.40, SCREEN_HEIGHT * 0.70],
+      3: [SCREEN_HEIGHT * 0.28],
+      4: [SCREEN_HEIGHT * 0.30, SCREEN_HEIGHT * 0.55],
+      5: [SCREEN_HEIGHT * 0.30, SCREEN_HEIGHT * 0.55],
+      6: [SCREEN_HEIGHT * 0.22],
+    };
 
 const getSnaps = (step) => SHEET_SNAPS[step] ?? SHEET_SNAPS[0];
 
@@ -204,6 +220,18 @@ export default function Home({ navigation, route }) {
     setSheetSnapHeight(targetH);
   }, []);
 
+  const lastDriverContentHRef = useRef(0);
+  const handleDriverContentHeight = useCallback((h) => {
+    if (Platform.OS !== "android" || !h || h <= 0) return;
+    if (Math.abs(h - lastDriverContentHRef.current) < 4) return;
+    lastDriverContentHRef.current = h;
+    const PILL_H = 25;
+    const snapH = PILL_H + h;
+    snapRef.current = [snapH];
+    Animated.spring(sheetHeightAnim, { toValue: snapH, useNativeDriver: false, friction: 8, tension: 50 }).start();
+    setSheetSnapHeight(snapH);
+  }, []);
+
   const openDrawer = useCallback(() => {
     setDrawerOpen(true);
     Animated.spring(drawerAnim, { toValue: 0, useNativeDriver: true, friction: 9, tension: 60 }).start();
@@ -264,6 +292,7 @@ export default function Home({ navigation, route }) {
   useEffect(() => {
     const snaps = getSnaps(ride.step);
     snapRef.current = snaps;
+    lastDriverContentHRef.current = 0;
     Animated.spring(sheetHeightAnim, {
       toValue: snaps[0],
       useNativeDriver: false,
@@ -313,7 +342,7 @@ export default function Home({ navigation, route }) {
       );
       if (region) mapRef.current?.animateToRegion(region, 600);
     }, 400);
-  }, [!!ride.newRideDetails?.polyline?.length]);
+  }, [ride.newRideDetails?.polyline?.length]);
 
   // Track driver movement: bearing, smooth animation, route trimming, live ETA, proximity
   useEffect(() => {
@@ -359,13 +388,6 @@ export default function Home({ navigation, route }) {
 
     // Proximity detection: show "almost here" banner when within 300m
     setDriverIsNearby(distM < 300);
-
-    // Map camera: fit driver + pickup
-    const region = computeMapRegion(
-      driverLat, driverLng,
-      parseFloat(pickup.latitude), parseFloat(pickup.longitude)
-    );
-    if (region) mapRef.current?.animateToRegion(region, 600);
   }, [ride.driver?.currentLocation?.coordinates]);
 
   // Reset driver-approach state when leaving step 4
@@ -575,8 +597,7 @@ export default function Home({ navigation, route }) {
 
         {/* dropOff marker: label card above dot */}
         {[2, 3, 5].includes(ride.step) &&
-          !!Object.keys(ride.newRide.dropOff.location).length &&
-          !ride.driver && (
+          !!Object.keys(ride.newRide.dropOff.location).length && (
             <Marker
               coordinate={{
                 latitude: parseFloat(ride.newRide.dropOff.location.latitude) || 0,
@@ -640,28 +661,6 @@ export default function Home({ navigation, route }) {
             </>
           )}
       </MapView>
-      {ride.driverArrived && (
-        <TouchableOpacity
-          style={{
-            // height: ride.mapHeight,
-            backgroundColor: "rgba(255, 255, 255, 0.5)",
-            zIndex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-            ...StyleSheet.absoluteFillObject,
-          }}
-          onPress={() => {
-            ride.actions.openMap();
-          }}
-        >
-          <Text variant="titleLarge" style={{ fontWeight: "bold" }}>
-            {t("ride.ongoingRide")}
-          </Text>
-          <Text variant="titleLarge" style={{ fontWeight: "bold" }}>
-            {t("ride.clickToOpenTheMap")}
-          </Text>
-        </TouchableOpacity>
-      )}
       {/* MENU */}
       {!ride.driver && (
         <TouchableOpacity
@@ -814,7 +813,7 @@ export default function Home({ navigation, route }) {
           }} />
         </View>
 
-        <View style={{ flex: 1, paddingBottom: ride.step === 2 ? FOOTER_H + insets.bottom : insets.bottom }}>
+        <View style={{ flex: 1, paddingBottom: ride.step === 2 ? FOOTER_H + insets.bottom : 0 }}>
           {ride.rideIsLoading ? (
             <View style={{ height: 80, alignItems: "center", justifyContent: "center", backgroundColor: "transparent" }}>
               <ActivityIndicator animating size="large" color={colors.primary} />
@@ -822,11 +821,11 @@ export default function Home({ navigation, route }) {
           ) : ride.step === 2 ? (
             <RideDetailView user={user} ride={ride} navigation={navigation} onContentHeight={handleRideDetailHeight} />
           ) : ride.step === 3 ? (
-            <DriverSearchView ride={ride} />
+            <DriverSearchView ride={ride} onContentHeight={handleDriverContentHeight} />
           ) : ride.step === 4 ? (
-            <DriverView ride={ride} liveEta={liveEta} driverIsNearby={driverIsNearby} />
+            <DriverView ride={ride} liveEta={liveEta} driverIsNearby={driverIsNearby} onContentHeight={handleDriverContentHeight} />
           ) : ride.step === 5 ? (
-            <DriverArrivedView ride={ride} />
+            <DriverArrivedView ride={ride} onContentHeight={handleDriverContentHeight} />
           ) : ride.step === 6 ? (
             <NoDriverView user={user} ride={ride} navigation={navigation} />
           ) : (
@@ -1171,13 +1170,16 @@ const PulseRing = ({ delay = 0, size = 60, color }) => {
   );
 };
 
-const DriverSearchView = ({ ride }) => {
+const DriverSearchView = ({ ride, onContentHeight }) => {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const RING_SIZE = 50;
 
   return (
-    <View style={{ paddingHorizontal: 20, paddingTop: 8, paddingBottom: Math.max(insets.bottom + 8, 16) }}>
+    <View
+      onLayout={onContentHeight ? (e) => onContentHeight(e.nativeEvent.layout.height) : undefined}
+      style={{ paddingHorizontal: 20, paddingTop: 8, paddingBottom: Platform.OS === "android" ? Math.max(insets.bottom, 48) : Math.max(insets.bottom + 8, 16) }}
+    >
       <Text variant="titleLarge" style={{ fontWeight: "bold", color: colors.text }}>
         {`${t("ride.driverSearch")}...`}
       </Text>
@@ -1196,7 +1198,7 @@ const DriverSearchView = ({ ride }) => {
   );
 };
 
-const DriverView = ({ ride, liveEta, driverIsNearby }) => {
+const DriverView = ({ ride, liveEta, driverIsNearby, onContentHeight }) => {
   const { colors } = useTheme();
   const [visible, setVisible] = useState(false);
   const theme = useMamdooTheme();
@@ -1210,7 +1212,10 @@ const DriverView = ({ ride, liveEta, driverIsNearby }) => {
   const etaLabel = liveEta ?? ride.newRideDetails?.duration?.text;
 
   return (
-    <View style={{ paddingHorizontal: 16, paddingBottom: Math.max(insets.bottom + 8, 16) }}>
+    <View
+      onLayout={onContentHeight ? (e) => onContentHeight(e.nativeEvent.layout.height) : undefined}
+      style={{ paddingHorizontal: 16, paddingBottom: Platform.OS === "android" ? Math.max(insets.bottom, 48) : Math.max(insets.bottom + 8, 16) }}
+    >
       {/* Phase header */}
       <View style={driverCardStyles.header}>
         <Text style={[driverCardStyles.phaseLabel, { color: colors.text }]}>
@@ -1353,7 +1358,7 @@ const DriverView = ({ ride, liveEta, driverIsNearby }) => {
   );
 };
 
-const DriverArrivedView = ({ ride }) => {
+const DriverArrivedView = ({ ride, onContentHeight }) => {
   const { colors } = useTheme();
   const [visible, setVisible] = useState(false);
   const theme = useMamdooTheme();
@@ -1366,8 +1371,10 @@ const DriverArrivedView = ({ ride }) => {
   const isNewDriver = driver.rideCount === 0;
 
   return (
-    <View style={{ paddingHorizontal: 16, paddingBottom: Math.max(insets.bottom + 8, 16) }}>
-      {/* Phase header */}
+    <View
+      onLayout={onContentHeight ? (e) => onContentHeight(e.nativeEvent.layout.height) : undefined}
+      style={{ paddingHorizontal: 16, paddingBottom: Platform.OS === "android" ? Math.max(insets.bottom, 48) : Math.max(insets.bottom + 8, 16) }}
+    >
       <View style={driverCardStyles.header}>
         <Text style={[driverCardStyles.phaseLabel, { color: colors.text }]}>
           {`${driver.firstName} ${t("ride.driverArrived")}`}
@@ -1522,97 +1529,34 @@ const DriverArrivedView = ({ ride }) => {
 
 const NoDriverView = ({ user, ride, navigation }) => {
   const { colors } = useTheme();
-  const app = useApp();
   const insets = useSafeAreaInsets();
+  const bottomPad = Platform.OS === "android" ? Math.max(insets.bottom, 48) : Math.max(insets.bottom + 8, 16);
 
   return (
-    <View
-      style={
-        {
-          // flex: 1,
-        }
-      }
-    >
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          paddingLeft: 10,
-          paddingRight: 10,
-        }}
-      >
-        <View style={{ flexDirection: "row", alignItems: "baseline" }}>
-          <Text variant="titleLarge" style={{ fontWeight: "bold" }}>
-            {t("home.noDriver")}
-          </Text>
-        </View>
+    <View style={{ flex: 1, paddingBottom: bottomPad }}>
+      <View style={{ flexDirection: "row", justifyContent: "center", paddingHorizontal: 10 }}>
+        <Text variant="titleLarge" style={{ fontWeight: "bold" }}>
+          {t("home.noDriver")}
+        </Text>
       </View>
       <View style={{ width: "100%", marginTop: 10 }}>
         <Divider style={{ height: 2, backgroundColor: "#e0e0e0" }} />
       </View>
-
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-        }}
-      >
-        <View
-          style={{
-            marginTop: 10,
-            alignItems: "center",
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text variant="titleLarge" style={{ textAlign: "center" }}>{t("ride.tryLater")}</Text>
+      </View>
+      <View style={{ flexDirection: "row", justifyContent: "space-evenly", marginTop: 10 }}>
+        <Button
+          {...Classes.endRideButtonContainer(colors)}
+          mode="outlined"
+          onPress={() => {
+            navigation.setParams({ driverId: null });
+            ride.actions.resetRide();
           }}
         >
-          {/* <View>
-            <Text variant="titleMedium">{t("ride.noMamdoo")}</Text>
-          </View> */}
-          <View style={{ marginTop: 20 }}>
-            <Text variant="titleLarge">{t("ride.tryLater")}</Text>
-          </View>
-          {/* <View style={{ marginTop: 10, flexDirection: "row" }}>
-            <Chip
-              icon={"phone"}
-              onPress={app.actions.call}
-              textStyle={{ fontSize: 20 }}
-            >{`${
-              app.actions.isWorkingHours()
-                ? app.settings.phone
-                : app.settings.secondPhoneNumber
-            }`}</Chip>
-          </View> */}
-          {/* <View style={{ marginTop: 20, flexDirection: "row" }}>
-            <Button
-              {...Classes.callUsButtonContainer(colors)}
-              mode="contained"
-              onPress={app.actions.call}
-            >
-              {t("ride.callUs")}
-            </Button>
-          </View> */}
-          {/* <View>
-            <Text variant="titleSmall">{t("ride.toFindYouADriver")}</Text>
-          </View> */}
-        </View>
-        <View style={{ marginBottom: insets.bottom, marginTop: 20 }}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-evenly",
-              marginTop: 10,
-            }}
-          >
-            <Button
-              {...Classes.endRideButtonContainer(colors)}
-              mode="outlined"
-              onPress={() => {
-                navigation.setParams({ driverId: null });
-                ride.actions.resetRide();
-              }}
-            >
-              {t("ride.end")}
-            </Button>
-          </View>
-        </View>
-      </ScrollView>
+          {t("ride.end")}
+        </Button>
+      </View>
     </View>
   );
 };

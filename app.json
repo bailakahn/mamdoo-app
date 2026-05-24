@@ -36,7 +36,7 @@
         "expo-notifications",
         {
           "icon": "./assets/mamdoo-icon.png",
-          "enableBackgroundRemoteNotifications": false
+          "enableBackgroundRemoteNotifications": true
         }
       ]
     ],
@@ -48,7 +48,8 @@
         "NSLocationAlwaysAndWhenInUseUsageDescription": "Accéder à votre position lorsque l'application est fermée ou en arrière plan nous permet de vous trouver des courses lorsque vous êtes en mouvement.",
         "NSLocationUsageDescription": "Activer votre position nous permet de vous envoyer des chauffeurs qui sont à proximité.",
         "UIBackgroundModes": [
-          "location"
+          "location",
+          "remote-notification"
         ],
         "ITSAppUsesNonExemptEncryption": false,
         "CFBundleAllowMixedLocalizations": true
