@@ -281,6 +281,7 @@ export default function useLocation() {
     setNewRideDetails,
     setStep,
     setBottomSheetHeight,
+    setRideIsLoading,
     step = 2,
     requestId,
   }) => {
@@ -296,6 +297,7 @@ export default function useLocation() {
       });
 
       if (!response.routes || !response.routes.length) {
+        setRideIsLoading?.(false);
         setStep && setStep(6);
         setBottomSheetHeight && setBottomSheetHeight(35);
         return;
@@ -337,6 +339,7 @@ export default function useLocation() {
       });
     } catch (err) {
       console.log(err);
+      setRideIsLoading?.(false);
     }
   };
 

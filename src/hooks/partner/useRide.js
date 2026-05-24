@@ -30,6 +30,8 @@ export default function useRide() {
   const appState = useRef(AppState.currentState);
 
   const autoArrivedRef = useRef(false);
+  const bootstrapRunning = useRef(false);
+  const hasBootstrapped = useRef(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -81,59 +83,61 @@ export default function useRide() {
   };
 
   const bootstrapAsync = async () => {
+    if (bootstrapRunning.current) return;
+    bootstrapRunning.current = true;
+    const isFirstRun = !hasBootstrapped.current;
     setIsLoading(true);
 
-    let rideData = await AsyncStorage.getItem("@mamdoo-current-ride");
-    if (rideData) {
+    try {
+      // Check for a pending ride summary first — driver left app on RideSummary
+      // before tapping "Done". The key is written by onEndRide and cleared by resetRide.
+      const pendingSummaryRaw = await AsyncStorage.getItem("@mamdoo-partner-pending-summary");
+      if (pendingSummaryRaw) {
+        const { ridePrice: savedPrice } = JSON.parse(pendingSummaryRaw);
+        const rideRaw = await AsyncStorage.getItem("@mamdoo-current-ride");
+        if (rideRaw) setCurrentRide(JSON.parse(rideRaw));
+        setRidePrice(savedPrice);
+        // Only navigate on cold start. On foreground resume the driver is
+        // already on RideSummary — navigating again would duplicate the screen.
+        if (isFirstRun) navigation.navigate("RideSummary");
+        return;
+      }
+
+      let rideData = await AsyncStorage.getItem("@mamdoo-current-ride");
+      if (!rideData) return;
+
       rideData = JSON.parse(rideData);
 
       if (!rideData?.request?._id) {
         await AsyncStorage.removeItem("@mamdoo-current-ride");
-        setIsLoading(false);
         return;
       }
 
-      try {
-        const currentRide = await getRequest({
-          method: "GET",
-          endpoint: "rides/getride",
-          params: { rideId: rideData.request._id },
-        });
+      const currentRide = await getRequest({
+        method: "GET",
+        endpoint: "rides/getride",
+        params: { rideId: rideData.request._id },
+      });
 
-        if (!currentRide) {
-          await AsyncStorage.removeItem("@mamdoo-current-ride");
-          setIsLoading(false);
-          return;
-        }
-
-        if (currentRide.status === rideStatuses.ACCEPTED) {
-          // set ride to accepted
-          setCurrentRide({
-            ...rideData,
-            driverArrived: false,
-          });
-          setIsLoading(false);
-          navigation.navigate("DriverOnTheWay");
-        } else if (currentRide.status === rideStatuses.ONGOING) {
-          // set ride to ongoing
-          setCurrentRide({
-            ...rideData,
-            driverArrived: true,
-          });
-          setIsLoading(false);
-
-          navigation.navigate("DriverOnTheWay");
-        } else {
-          // clear ride
-          await AsyncStorage.removeItem("@mamdoo-current-ride");
-          setIsLoading(false);
-        }
-      } catch (error) {
-        setIsLoading(false);
-
-        console.log(error);
+      if (!currentRide) {
+        await AsyncStorage.removeItem("@mamdoo-current-ride");
+        return;
       }
-    } else {
+
+      if (currentRide.status === rideStatuses.ACCEPTED) {
+        setCurrentRide({ ...rideData, driverArrived: false });
+        navigation.navigate("DriverOnTheWay");
+      } else if (currentRide.status === rideStatuses.ONGOING) {
+        setCurrentRide({ ...rideData, driverArrived: true });
+        navigation.navigate("DriverOnTheWay");
+      } else {
+        await AsyncStorage.removeItem("@mamdoo-current-ride");
+      }
+    } catch (_err) {
+      // Network failure: leave state as-is; next foreground resume will retry.
+    } finally {
+      bootstrapRunning.current = false;
+      hasBootstrapped.current = true;
       setIsLoading(false);
     }
   };
@@ -374,14 +378,21 @@ export default function useRide() {
           },
         })
           .then(({ finalPrice }) => {
+            AsyncStorage.setItem(
+              "@mamdoo-partner-pending-summary",
+              JSON.stringify({ ridePrice: finalPrice })
+            );
             setRidePrice(finalPrice);
-            // setRide({ ...request, status: rideStatuses.COMPLETED });
             navigation.navigate("RideSummary");
           })
           .catch((err) => {
             console.log(err);
-            setRidePrice(request?.maxPrice);
-            // setRide({ ...request, status: rideStatuses.COMPLETED });
+            const fallbackPrice = request?.maxPrice ?? 0;
+            AsyncStorage.setItem(
+              "@mamdoo-partner-pending-summary",
+              JSON.stringify({ ridePrice: fallbackPrice })
+            );
+            setRidePrice(fallbackPrice);
             navigation.navigate("RideSummary");
           })
           .finally(() => {

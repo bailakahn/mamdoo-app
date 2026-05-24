@@ -4,7 +4,9 @@ import { useNavigation } from "@react-navigation/native";
 import { AppState } from "react-native";
 import useUser from "./useUser";
 import { useStore } from "_store";
+import { useApi } from "_api";
 import types from "../store/types";
+import rideStatuses from "../constants/rideStatuses";
 
 const PROXY_URL = process.env.EXPO_PUBLIC_PROXY_URL;
 
@@ -19,11 +21,16 @@ const socketEvents = [
 ];
 
 export default function useProxy() {
-  const { dispatch } = useStore();
+  const { dispatch, ride } = useStore();
   const navigation = useNavigation();
   const user = useUser();
+  const getRequest = useApi();
   const socketRef = useRef(null);
   const appState = useRef(AppState.currentState);
+  // Keep a ref to the latest ride state so the socket "connect" closure
+  // can read it without going stale (the effect only runs once on mount).
+  const rideRef = useRef(ride);
+  useEffect(() => { rideRef.current = ride; });
 
   const handleAppStateChange = (nextAppState) => {
     if (
@@ -49,6 +56,40 @@ export default function useProxy() {
 
     socket.on("connect", () => {
       socket.emit("join", `${user.user.userId}`);
+
+      // Re-sync state for any events missed while the socket was disconnected.
+      // Skipped on the very first connect (requestId is null) — bootstrapAsync
+      // in useRide already handles the cold-start restore.
+      const { requestId, newRequestId, driverArrived, step } = rideRef.current;
+      const rideId = requestId || newRequestId;
+      if (!rideId) return;
+
+      getRequest({
+        method: "GET",
+        endpoint: "rides/getride",
+        params: { rideId },
+      })
+        .then((currentRide) => {
+          if (!currentRide) return;
+          if (
+            currentRide.status === rideStatuses.ONGOING &&
+            step < 5
+          ) {
+            // Driver arrived while we were disconnected.
+            dispatch({ type: types.DRIVER_ARRIVED, data: {} });
+            dispatch({ type: types.SET_RIDE_STEP, step: 5 });
+          } else if (currentRide.status === rideStatuses.COMPLETED) {
+            // Ride ended while we were disconnected.
+            dispatch({ type: types.RESET_RIDE });
+            dispatch({ type: types.REQUEST_DENIED, denied: false });
+            dispatch({
+              type: types.SHOW_RIDE_REVIEW,
+              reviewRequestId: currentRide._id,
+            });
+            dispatch({ type: types.SET_PENDING_NAVIGATION, screen: "Review" });
+          }
+        })
+        .catch(() => {});
     });
 
     socketEvents.forEach((event) => {

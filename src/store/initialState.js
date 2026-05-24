@@ -86,6 +86,10 @@ export default {
     bottomSheetHeight: "20%",
     driverCurrentLocation: null,
     rideIsLoading: false,
+    // true from initial mount until the first bootstrapAsync completes —
+    // prevents the home screen from flashing step 1 before state is restored
+    rideBootstrapping: true,
+    pendingNavigation: null,
   },
 };
 

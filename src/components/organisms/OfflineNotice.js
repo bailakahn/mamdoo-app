@@ -16,6 +16,10 @@ export default function OfflineNotice() {
   const [visible, setVisible] = useState(false);
   const [isBackOnline, setIsBackOnline] = useState(false);
   const wasOfflineRef = useRef(false);
+  // Only track offline→online transitions after the first confirmed online state.
+  // Prevents the "back online" banner from firing on startup when expo-network
+  // briefly emits isConnected:false before resolving the real network state.
+  const hasEverBeenOnlineRef = useRef(false);
   const lingerTimer = useRef(null);
 
   const slideIn = () => {
@@ -41,18 +45,27 @@ export default function OfflineNotice() {
     clearTimeout(lingerTimer.current);
 
     if (!network.isConnected) {
-      wasOfflineRef.current = true;
-      setIsBackOnline(false);
-      setVisible(true);
-      slideIn();
-    } else if (wasOfflineRef.current) {
-      setIsBackOnline(true);
-      lingerTimer.current = setTimeout(() => {
-        slideOut(() => {
-          setVisible(false);
-          wasOfflineRef.current = false;
-        });
-      }, BACK_ONLINE_LINGER_MS);
+      // Only flag as offline if we've had at least one confirmed online state.
+      // Ignores the transient false emitted by expo-network on startup/resume.
+      if (hasEverBeenOnlineRef.current) {
+        wasOfflineRef.current = true;
+        setIsBackOnline(false);
+        setVisible(true);
+        slideIn();
+      }
+    } else {
+      // isConnected === true: mark that we've had a confirmed online state.
+      hasEverBeenOnlineRef.current = true;
+      if (wasOfflineRef.current) {
+        // Genuinely back online after a real outage — show the banner.
+        setIsBackOnline(true);
+        lingerTimer.current = setTimeout(() => {
+          slideOut(() => {
+            setVisible(false);
+            wasOfflineRef.current = false;
+          });
+        }, BACK_ONLINE_LINGER_MS);
+      }
     }
 
     return () => clearTimeout(lingerTimer.current);

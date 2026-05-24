@@ -248,6 +248,15 @@ export default function Home({ navigation, route }) {
     navigation.navigate("AccountStack", { screen });
   }, [drawerAnim, navigation]);
 
+  // Once bootstrap completes and sets pendingNavigation, navigate immediately.
+  // Using useEffect ensures the navigator is mounted and ready before we call navigate().
+  useEffect(() => {
+    if (ride.pendingNavigation) {
+      navigation.navigate(ride.pendingNavigation);
+      ride.actions.setPendingNavigation(null);
+    }
+  }, [ride.pendingNavigation]);
+
   useEffect(() => {
     if ((ride.canceled && route?.params?.driverId) || ride.denied) {
       ride.actions.makeRideRequest(
@@ -511,7 +520,10 @@ export default function Home({ navigation, route }) {
     }
   };
 
-  if (!location.location) return <LoadingV2 />;
+  // Hold the loading screen until both GPS and the bootstrap API call are done.
+  // This prevents the home screen from flashing step 1 before the ride state
+  // is restored from the server — the same invisible transition Uber uses.
+  if (ride.rideBootstrapping || !location.location) return <LoadingV2 />;
 
   return (
     <View
@@ -910,6 +922,7 @@ const WelcomeView = ({ user, ride, navigation, location, onContentHeight }) => {
       setNewRideDetails: ride.actions.setNewRideDetails,
       setStep: ride.actions.setStep,
       setBottomSheetHeight: ride.actions.setBottomSheetHeight,
+      setRideIsLoading: ride.actions.setRideIsLoading,
     });
   };
 

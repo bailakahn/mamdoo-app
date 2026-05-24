@@ -74,5 +74,11 @@ export default function rideActions(state, dispatch) {
     setRideIsLoading: (rideIsLoading) => {
       dispatch({ type: types.SET_RIDE_LOADING, rideIsLoading });
     },
+    setRideBootstrapping: (value) => {
+      dispatch({ type: types.SET_RIDE_BOOTSTRAPPING, value });
+    },
+    setPendingNavigation: (screen) => {
+      dispatch({ type: types.SET_PENDING_NAVIGATION, screen });
+    },
   };
 }

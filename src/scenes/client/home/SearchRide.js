@@ -211,6 +211,7 @@ function ModalScreen({ navigation }) {
                       setNewRideDetails: ride.actions.setNewRideDetails,
                       setStep: ride.actions.setStep,
                       setBottomSheetHeight: ride.actions.setBottomSheetHeight,
+                      setRideIsLoading: ride.actions.setRideIsLoading,
                     });
                     navigation.navigate("Home");
                   }

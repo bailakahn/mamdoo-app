@@ -24,6 +24,10 @@ export default function useRide() {
   const [countryData, setCountryData] = useState({});
   const [validWorkingHours, setValidWorkingHours] = useState(true);
 
+  // Prevent concurrent bootstrapAsync calls and track first-run to manage loading gate.
+  const bootstrapRunning = useRef(false);
+  const hasBootstrapped = useRef(false);
+
   const {
     ride: {
       driver,
@@ -45,6 +49,8 @@ export default function useRide() {
       bottomSheetHeight,
       driverCurrentLocation,
       rideIsLoading,
+      rideBootstrapping,
+      pendingNavigation,
     },
     actions: {
       resetRide,
@@ -65,6 +71,8 @@ export default function useRide() {
       setDriverLocation,
       showRideReview,
       setRideIsLoading,
+      setRideBootstrapping,
+      setPendingNavigation,
     },
   } = useStore();
 
@@ -102,71 +110,89 @@ export default function useRide() {
   };
 
   const bootstrapAsync = async () => {
-    let rideData = await AsyncStorage.getItem("@mamdoo-current-ride");
-    // console.log({ rideData });
-    if (rideData) {
+    // Prevent overlapping calls (e.g. rapid foreground/background transitions).
+    if (bootstrapRunning.current) return;
+    bootstrapRunning.current = true;
+    const isFirstRun = !hasBootstrapped.current;
+
+    try {
+      // Check for an unreviewed ride first. This key is written when a ride
+      // ends and cleared only when the user submits or dismisses the review.
+      // If it exists, the ride is already over — skip the active-ride check
+      // and go straight to the review screen.
+      const pendingReviewId = await AsyncStorage.getItem("@mamdoo-pending-review");
+      if (pendingReviewId) {
+        showRideReview(pendingReviewId);
+        // Navigate only on cold start. On foreground resume the user is already
+        // on the Review screen, so pushing it again would double-stack it.
+        if (isFirstRun) setPendingNavigation("Review");
+        return;
+      }
+
+      let rideData = await AsyncStorage.getItem("@mamdoo-current-ride");
+
+      if (!rideData) return;
+
       rideData = JSON.parse(rideData);
-      if (!rideData.requestId && !rideData.newRequestId) {
-        // console.log("Clear");
+
+      // Drop persisted data that is older than 8 hours — stale enough to be
+      // unreliable (server will have cleaned it up anyway).
+      const EIGHT_HOURS_MS = 8 * 60 * 60 * 1000;
+      if (rideData.savedAt && Date.now() - rideData.savedAt > EIGHT_HOURS_MS) {
         await AsyncStorage.removeItem("@mamdoo-current-ride");
         return;
       }
 
-      try {
-        const currentRide = await getRequest({
-          method: "GET",
-          endpoint: "rides/getride",
-          params: { rideId: rideData.requestId || rideData.newRequestId },
-        });
-
-        // console.log({ rideData });
-
-        if (!currentRide) {
-          await AsyncStorage.removeItem("@mamdoo-current-ride");
-          return;
-        }
-
-        if (currentRide.status === rideStatuses.REQUEST) {
-          // set ride to accepted
-          setCurrentRide({
-            ...rideData,
-            step: 3,
-          });
-        } else if (currentRide.status === rideStatuses.ACCEPTED) {
-          // set ride to accepted
-          setCurrentRide({
-            ...rideData,
-            driver: currentRide.driver,
-            step: 4,
-          });
-        } else if (currentRide.status === rideStatuses.ONGOING) {
-          // set ride to ongoing
-          setCurrentRide({
-            ...rideData,
-            driver: currentRide.driver,
-            driverArrived: true,
-            step: 5,
-          });
-        } else if (currentRide.status === rideStatuses.COMPLETED) {
-          resetRide();
-          setRideDenied(false);
-          showRideReview(currentRide._id);
-          // dispatch({ type: types.RESET_RIDE });
-          // dispatch({ type: types.REQUEST_DENIED, denied: false });
-          // dispatch({
-          //   type: types.SHOW_RIDE_REVIEW,
-          //   reviewRequestId: data.requestId,
-          // });
-          navigation.navigate("Review");
-          // clear ride
-          // await AsyncStorage.removeItem("@mamdoo-current-ride");
-        }
-        // console.log(currentRide);
-      } catch (error) {
-        console.log(error);
+      if (!rideData.requestId && !rideData.newRequestId) {
+        await AsyncStorage.removeItem("@mamdoo-current-ride");
+        return;
       }
+
+      const currentRide = await getRequest({
+        method: "GET",
+        endpoint: "rides/getride",
+        params: { rideId: rideData.requestId || rideData.newRequestId },
+      });
+
+      if (!currentRide) {
+        // Server has no record → stale local data, discard it.
+        await AsyncStorage.removeItem("@mamdoo-current-ride");
+        return;
+      }
+
+      if (currentRide.status === rideStatuses.REQUEST) {
+        setCurrentRide({ ...rideData, step: 3 });
+      } else if (currentRide.status === rideStatuses.ACCEPTED) {
+        setCurrentRide({ ...rideData, driver: currentRide.driver, step: 4 });
+      } else if (currentRide.status === rideStatuses.ONGOING) {
+        setCurrentRide({
+          ...rideData,
+          driver: currentRide.driver,
+          driverArrived: true,
+          step: 5,
+        });
+      } else if (currentRide.status === rideStatuses.COMPLETED) {
+        resetRide();
+        setRideDenied(false);
+        showRideReview(currentRide._id);
+        // Use pendingNavigation instead of a direct navigate() call —
+        // on cold start the navigator may not be mounted yet, so the
+        // HomeScene reads this flag and navigates once it's ready.
+        setPendingNavigation("Review");
+      } else {
+        // CANCELED, VOID, NO_DRIVER, etc. — clean up.
+        await AsyncStorage.removeItem("@mamdoo-current-ride");
+      }
+    } catch (_err) {
+      // Network failure: leave store and storage as-is.
+      // The next foreground resume will retry automatically.
+    } finally {
+      bootstrapRunning.current = false;
+      hasBootstrapped.current = true;
+      // Only lower the loading gate on the very first run.
+      // Subsequent silent re-syncs (foreground resume) must not re-trigger the gate.
+      if (isFirstRun) setRideBootstrapping(false);
     }
-    // console.log({ rideData });
   };
 
   const openMap = () => {
@@ -571,6 +597,8 @@ export default function useRide() {
     driverCurrentLocation,
     rideIsLoading,
     ridePrices,
+    rideBootstrapping,
+    pendingNavigation,
     actions: {
       callDriver,
       cancelRide,
@@ -601,6 +629,7 @@ export default function useRide() {
       validateWorkingHours,
       setDriverLocation,
       setRideIsLoading,
+      setPendingNavigation,
     },
   };
 }

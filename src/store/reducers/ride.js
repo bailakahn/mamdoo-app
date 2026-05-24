@@ -3,20 +3,22 @@ import types from "../types";
 import * as RootNavigation from "_navigations/RootNavigation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+// Single helper so every persist call writes savedAt automatically.
+// Pass only the fields that differ from state to keep the payload small.
+const persistRide = (state, overrides = {}) => {
+  AsyncStorage.setItem(
+    "@mamdoo-current-ride",
+    JSON.stringify({ ...state, ...overrides, savedAt: Date.now() })
+  );
+};
+
 export default (state = ride, action) => {
   switch (action.type) {
     case types.FOUND_DRIVER:
       if (state.driver) {
         return state;
       }
-      AsyncStorage.setItem(
-        "@mamdoo-current-ride",
-        JSON.stringify({
-          ...state,
-          driver: action.data.driver,
-          requestId: action.data.requestId,
-        })
-      );
+      persistRide(state, { driver: action.data.driver, requestId: action.data.requestId });
       return {
         ...state,
         driver: action.data.driver,
@@ -24,6 +26,7 @@ export default (state = ride, action) => {
       };
     case types.RESET_RIDE:
       AsyncStorage.removeItem("@mamdoo-current-ride");
+      AsyncStorage.removeItem("@mamdoo-partner-pending-summary");
       return {
         ...state,
         driver: null,
@@ -42,6 +45,7 @@ export default (state = ride, action) => {
         mapHeight: "80%",
         bottomSheetHeight: "20%",
         rideIsLoading: false,
+        pendingNavigation: null,
       };
     // client no driver
     case types.NO_DRIVER:
@@ -70,13 +74,7 @@ export default (state = ride, action) => {
         canCancel: !state.canCancel,
       };
     case types.DRIVER_ARRIVED:
-      AsyncStorage.setItem(
-        "@mamdoo-current-ride",
-        JSON.stringify({
-          ...state,
-          driverArrived: true,
-        })
-      );
+      persistRide(state, { driverArrived: true });
       return {
         ...state,
         driverArrived: true,
@@ -95,14 +93,10 @@ export default (state = ride, action) => {
           ? { latitude: action.data.coordinates[1], longitude: action.data.coordinates[0] }
           : action.data.coordinates || null,
       };
-      AsyncStorage.setItem(
-        "@mamdoo-current-ride",
-        JSON.stringify({
-          ...state,
-          ...(!state.request?._id && { requestId: action.data.requestId }),
-          requestPreview,
-        })
-      );
+      persistRide(state, {
+        ...(!state.request?._id && { requestId: action.data.requestId }),
+        requestPreview,
+      });
       return {
         ...state,
         ...(!state.request?._id && { requestId: action.data.requestId }),
@@ -120,13 +114,7 @@ export default (state = ride, action) => {
         rideIsLoading: false,
       };
     case types.SET_RIDE:
-      AsyncStorage.setItem(
-        "@mamdoo-current-ride",
-        JSON.stringify({
-          ...state,
-          request: action.request,
-        })
-      );
+      persistRide(state, { request: action.request });
       return {
         ...state,
         request: action.request,
@@ -177,23 +165,21 @@ export default (state = ride, action) => {
         onGoingRide: !state?.onGoingRide,
       };
     case types.SHOW_RIDE_REVIEW:
+      if (action.reviewRequestId) {
+        AsyncStorage.setItem("@mamdoo-pending-review", action.reviewRequestId);
+      }
       return {
         ...state,
         reviewRequestId: action.reviewRequestId,
       };
     case types.HIDE_RIDE_REVIEW:
+      AsyncStorage.removeItem("@mamdoo-pending-review");
       return {
         ...state,
         reviewRequestId: false,
       };
     case types.SET_NEW_REQUEST_ID:
-      AsyncStorage.setItem(
-        "@mamdoo-current-ride",
-        JSON.stringify({
-          ...state,
-          newRequestId: action.newRequestId,
-        })
-      );
+      persistRide(state, { newRequestId: action.newRequestId });
       return {
         ...state,
         newRequestId: action.newRequestId,
@@ -214,16 +200,7 @@ export default (state = ride, action) => {
         step: action.step,
       };
     case types.SET_NEW_RIDE:
-      AsyncStorage.setItem(
-        "@mamdoo-current-ride",
-        JSON.stringify({
-          ...state,
-          newRide: {
-            ...state.newRide,
-            ...action.newRide,
-          },
-        })
-      );
+      persistRide(state, { newRide: { ...state.newRide, ...action.newRide } });
       return {
         ...state,
         newRide: {
@@ -232,16 +209,7 @@ export default (state = ride, action) => {
         },
       };
     case types.SET_NEW_RIDE_DETAILS:
-      AsyncStorage.setItem(
-        "@mamdoo-current-ride",
-        JSON.stringify({
-          ...state,
-          newRideDetails: {
-            ...state.newRideDetails,
-            ...action.newRideDetails,
-          },
-        })
-      );
+      persistRide(state, { newRideDetails: { ...state.newRideDetails, ...action.newRideDetails } });
       return {
         ...state,
         newRideDetails: {
@@ -288,6 +256,16 @@ export default (state = ride, action) => {
       return {
         ...state,
         rideIsLoading: action.rideIsLoading,
+      };
+    case types.SET_RIDE_BOOTSTRAPPING:
+      return {
+        ...state,
+        rideBootstrapping: action.value,
+      };
+    case types.SET_PENDING_NAVIGATION:
+      return {
+        ...state,
+        pendingNavigation: action.screen,
       };
     default:
       return state;
