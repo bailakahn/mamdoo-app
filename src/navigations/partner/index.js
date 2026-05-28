@@ -6,7 +6,7 @@ import VerificationStack from "./stacks/Verification";
 import PendingStack from "./stacks/Pending";
 import UploadStack from "./stacks/Upload";
 import { useTheme } from "@react-navigation/native";
-import { usePartner } from "_hooks";
+import { usePartner, useNotifications } from "_hooks";
 import { useLocation } from "_hooks/partner";
 import { LoadingV2 } from "_atoms";
 import { useApp } from "_hooks";
@@ -20,8 +20,18 @@ export default function MainTabs({ role }) {
     partner.partner
   );
   const app = useApp();
+  useNotifications();
 
-  if (!partner.partnerLoaded || isLoading) return <LoadingV2 />;
+  useEffect(() => {
+    if (!partner.partnerLoaded) return;
+    if (!partner.partner?.accessToken) {
+      partner.actions.setPartnerRefreshed();
+      return;
+    }
+    partner.actions.refresh();
+  }, [partner.partnerLoaded]);
+
+  if (!partner.partnerRefreshed || isLoading) return <LoadingV2 />;
 
   // if user don't give location permission then don't allow access to app
   if (
@@ -33,7 +43,7 @@ export default function MainTabs({ role }) {
 
   return partner.partner?.accessToken ? (
     partner.partner?.verified ? (
-      partner.partner.active ? (
+      partner.partner.status !== "new" ? (
         (app?.settings?.prelaunchMode?.active ||
           app?.settings?.driverAppDisabled?.active) &&
         !partner.partner.isAdmin ? (
@@ -46,7 +56,8 @@ export default function MainTabs({ role }) {
             onReload={app.actions?.getSettings}
             onLogout={partner.actions.logout}
           />
-        ) : partner.partner.status === "pending" ? (
+        ) : partner.partner.status === "pending" ||
+          partner.partner.status === "suspended" ? (
           <PendingStack />
         ) : (
           <HomeStack role={role} />

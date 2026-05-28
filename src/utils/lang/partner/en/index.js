@@ -358,6 +358,12 @@ export default {
     pendingStepThree: "Once approved, you can start accepting rides immediately.",
     contactUs: "Contact Support",
   },
+  suspended: {
+    badge: "Suspended",
+    title: "Account Suspended",
+    description: "Your account has been suspended. Please contact our support team for more information.",
+    contactUs: "Contact Support",
+  },
   rating: {
     terrible: "Terrible",
     bad: "Bad",

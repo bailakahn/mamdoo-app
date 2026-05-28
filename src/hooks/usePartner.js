@@ -47,8 +47,8 @@ export default function usePartner() {
   const [forgotPinError, setForgotPinError] = useState(false);
 
   const {
-    auth: { partner, partnerLoaded, uploadDocuments, documentsSubmitted },
-    actions: { getPartner, setPartner, removePartner, setUploadDocuments, setUploadDocument, setDocumentsSubmitted },
+    auth: { partner, partnerLoaded, partnerRefreshed, uploadDocuments, documentsSubmitted },
+    actions: { getPartner, setPartner, removePartner, setPartnerRefreshed, setUploadDocuments, setUploadDocument, setDocumentsSubmitted },
   } = useStore();
 
   useEffect(() => {
@@ -259,6 +259,7 @@ export default function usePartner() {
       })
       .finally(() => {
         setIsLoading(false);
+        setPartnerRefreshed();
       });
   };
 
@@ -498,6 +499,7 @@ export default function usePartner() {
     isLoading,
     isTogglingStatus,
     statusToggleError,
+    partnerRefreshed,
     uploadDocuments,
     documentsSubmitted,
     uploadError,
@@ -522,6 +524,7 @@ export default function usePartner() {
       resetPin,
       setIsLoading,
       setStatusToggleError,
+      setPartnerRefreshed,
       setUploadDocuments,
       loadDocumentState,
       uploadDocument,

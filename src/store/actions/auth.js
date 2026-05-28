@@ -48,6 +48,9 @@ export default function authActions(state, dispatch) {
                 dispatch({ type: types.REMOVE_PARTNER });
             });
         },
+        setPartnerRefreshed: () => {
+            dispatch({ type: types.PARTNER_REFRESHED });
+        },
         setUploadDocuments: (documents) => {
             dispatch({ type: types.SET_UPLOAD_DOCUMENTS, documents });
         },

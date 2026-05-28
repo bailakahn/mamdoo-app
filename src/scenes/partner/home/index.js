@@ -29,7 +29,6 @@ import { darkMapStyle } from "_styles/mapStyles";
 import {
   usePartner,
   usePartnerProxy,
-  useNotifications,
   useLanguage,
   useApp,
   useTheme as useMamdooTheme,
@@ -163,7 +162,6 @@ export default function HomeScene() {
   const insets = useSafeAreaInsets();
 
   const { emitLocation } = usePartnerProxy();
-  useNotifications();
   useLanguage();
   useKeepAwake();
 

@@ -7,6 +7,7 @@ import { useStore } from "_store";
 import * as RootNavigation from "_navigations/RootNavigation";
 import { t } from "_utils/lang";
 import Constants from "expo-constants";
+import usePartner from "./usePartner";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -29,6 +30,7 @@ const navigateForEvent = (event, app) => {
 export default function useNotification() {
   const getRequest = useApi();
   const { main: { app } } = useStore();
+  const partner = usePartner();
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
   const processedNotificationId = useRef(null);
 
@@ -45,6 +47,13 @@ export default function useNotification() {
       !data?.event ||
       lastNotificationResponse.actionIdentifier !== Notifications.DEFAULT_ACTION_IDENTIFIER
     ) return;
+
+    // Account status changes: refresh partner state so the navigator re-routes automatically.
+    // Navigating directly would fail because the target stack isn't mounted yet.
+    if (data.event === "ACCOUNT_APPROVED" || data.event === "ACCOUNT_VERIFIED") {
+      partner.actions.refresh();
+      return;
+    }
 
     navigateForEvent(data.event, app);
 

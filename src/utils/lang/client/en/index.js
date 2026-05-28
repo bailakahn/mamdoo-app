@@ -49,17 +49,15 @@ export default {
     skip: "Skip",
     next: "Next",
     done: "Done",
-    onboardingPriceTitle: "No more arbitrary prices",
-    onboardingPriceDescription: "Know the price of your ride before booking",
-    onboardingMapTitle: "Visibility",
-    onboardingMapDescription:
-      "View your  to know the route our drivers will be taking to drop you off",
-    onboardingDestinationTitle: "Enter your destination",
-    onboardingDestinationDescription:
-      "Start typing your destination, we will show you the closest places",
-    onboardingVideoTitle: "Demo",
-    onboardingVideoDescription:
-      "This short video shows how you can book a ride in this new version!",
+    onboardingPriceTitle: "Fixed price, every time",
+    onboardingPriceDescription: "Know exactly what your ride costs before you book. No haggling, no surprises.",
+    onboardingDestinationTitle: "Book in seconds",
+    onboardingDestinationDescription: "Enter your destination and we'll find the nearest driver for you instantly.",
+    onboardingTrackTitle: "Watch your driver arrive",
+    onboardingTrackDescription: "Track your driver in real time from the moment they accept your ride.",
+    onboardingVideoTitle: "See how it works",
+    onboardingVideoDescription: "This short demo shows how easy it is to book a ride.",
+    onboardingGetStarted: "Get Started",
   },
   errors: {
     crashErrorTitle: "Oops, Something Went Wrong",

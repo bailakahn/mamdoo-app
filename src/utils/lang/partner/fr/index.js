@@ -360,6 +360,12 @@ export default {
     pendingStepThree: "Une fois approuvé, vous pourrez commencer à accepter des courses immédiatement.",
     contactUs: "Contacter le support",
   },
+  suspended: {
+    badge: "Suspendu",
+    title: "Compte suspendu",
+    description: "Votre compte a été suspendu. Veuillez contacter notre équipe d'assistance pour plus d'informations.",
+    contactUs: "Contacter le support",
+  },
   rating: {
     terrible: "Terrible",
     bad: "Mauvais",

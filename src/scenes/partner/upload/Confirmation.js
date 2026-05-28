@@ -35,7 +35,7 @@ export default function Confirmation() {
       <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom + 16, 24) }]}>
         <Button
           mode="contained"
-          onPress={() => partner.actions.setPartner({ ...partner.partner, active: true })}
+          onPress={() => partner.actions.setPartner({ ...partner.partner, active: true, status: "pending" })}
           style={styles.btn}
           contentStyle={styles.btnContent}
         >

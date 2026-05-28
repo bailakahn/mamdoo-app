@@ -51,17 +51,15 @@ export default {
     skip: "Passer",
     next: "Suivant",
     done: "Terminer",
-    onboardingPriceTitle: "Fini les prix arbitraires",
-    onboardingPriceDescription:
-      "Soyez informé du prix de votre course à l'avance",
-    onboardingMapTitle: "Visibilité",
-    onboardingMapDescription: "Ayez une visibiliteé sur votre itineraire",
-    onboardingDestinationTitle: "Entrer votre destination",
-    onboardingDestinationDescription:
-      "Commencer á taper votre destination, nous vous suggerons les endroits les plus proches",
-    onboardingVideoTitle: "Commander une course",
-    onboardingVideoDescription:
-      "Cette video vous montre comment commander une course dans notre nouvelle interface!",
+    onboardingPriceTitle: "Prix fixe, à chaque fois",
+    onboardingPriceDescription: "Connaissez le prix de votre course avant de réserver. Sans négociation, sans surprises.",
+    onboardingDestinationTitle: "Réservez en quelques secondes",
+    onboardingDestinationDescription: "Entrez votre destination et nous trouvons le conducteur le plus proche instantanément.",
+    onboardingTrackTitle: "Suivez votre conducteur en direct",
+    onboardingTrackDescription: "Localisez votre conducteur en temps réel dès qu'il accepte votre course.",
+    onboardingVideoTitle: "Voyez comment ça marche",
+    onboardingVideoDescription: "Cette courte démo vous montre à quel point il est simple de commander une course.",
+    onboardingGetStarted: "Commencer",
   },
   errors: {
     crashErrorTitle: "Oops, Quelque chose s'est mal passé",

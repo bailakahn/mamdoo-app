@@ -242,21 +242,9 @@ export default function useRide() {
     // setOnGoingRide();
 
     setStep(3);
-    let retryCount = 0;
-    const maxRetries = 5;
-    let stop = false;
 
-    do {
-      if (retryCount > 0) {
-        console.log("Retry " + retryCount);
-        await new Promise((res) => setTimeout(res, 10000));
-      }
-
-      const {
-        success,
-        foundDrivers = [],
-        requestId,
-      } = (await getRequest({
+    const { requestId } =
+      (await getRequest({
         method: "POST",
         endpoint: "rides/newRequest",
         params: {
@@ -280,33 +268,13 @@ export default function useRide() {
           duration: newRideDetails?.duration?.value,
           distance: newRideDetails?.distance?.value,
           excludedDriver: driverId,
-          requestId,
-          retryCount,
-          maxRetries,
           cabTypeId: newRide.cabTypeId,
         },
       }).catch((err) => {
         console.log(err);
       })) || {};
 
-      // console.log({ success, foundDrivers, requestId });
-      setNewRequestId(requestId);
-      if (foundDrivers.length) {
-        stop = true;
-        // setRideRequestMessage(t("ride.rideFoundDrivers"));
-      }
-
-      // if (retryCount === 1) setRideRequestMessage(t("ride.rideWidenSearch"));
-
-      retryCount++;
-    } while (retryCount <= maxRetries && !stop);
-
-    if (!stop) {
-      // setRideRequestMessage(false);
-      setStep(6);
-      // navigation.navigate("HomeStack", { notFound: true });
-      // setOnGoingRide();
-    }
+    setNewRequestId(requestId);
   };
 
   const cancelRide = () => {

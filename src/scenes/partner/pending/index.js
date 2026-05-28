@@ -7,7 +7,7 @@ import { Button } from "_atoms";
 import { useApp, usePartner } from "_hooks";
 import { t2 } from "_utils/lang";
 
-const STEPS = ["pendingStepOne", "pendingStepTwo", "pendingStepThree"];
+const PENDING_STEPS = ["pendingStepOne", "pendingStepTwo", "pendingStepThree"];
 
 export default function Pending() {
   const { colors } = useTheme();
@@ -15,33 +15,42 @@ export default function Pending() {
   const partner = usePartner();
   const insets = useSafeAreaInsets();
 
+  const isSuspended = partner.partner?.status === "suspended";
+  const ns = isSuspended ? "suspended" : "pending";
+  const iconName = isSuspended ? "block" : "schedule";
+  const iconColor = isSuspended ? colors.error : colors.primary;
+  const iconBg = isSuspended ? colors.error + "18" : colors.primary + "18";
+
   return (
     <SafeAreaView style={[styles.screen, { backgroundColor: colors.background }]} edges={["top"]}>
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
 
         <View style={styles.heroWrap}>
-          <View style={[styles.iconCircle, { backgroundColor: colors.primary + "18" }]}>
-            <Icon name="schedule" size={48} color={colors.primary} />
+          <View style={[styles.iconCircle, { backgroundColor: iconBg }]}>
+            <Icon name={iconName} size={48} color={iconColor} />
           </View>
-          <View style={[styles.badge, { backgroundColor: colors.primary + "18" }]}>
-            <View style={[styles.badgeDot, { backgroundColor: colors.primary }]} />
-            <Text style={[styles.badgeText, { color: colors.primary }]}>{t2("pending.badge")}</Text>
+          <View style={[styles.badge, { backgroundColor: iconBg }]}>
+            <View style={[styles.badgeDot, { backgroundColor: iconColor }]} />
+            <Text style={[styles.badgeText, { color: iconColor }]}>{t2(`${ns}.badge`)}</Text>
           </View>
         </View>
 
-        <Text style={[styles.title, { color: colors.text }]}>{t2("pending.title")}</Text>
-        <Text style={styles.description}>{t2("pending.description")}</Text>
+        <Text style={[styles.title, { color: colors.text }]}>{t2(`${ns}.title`)}</Text>
+        <Text style={styles.description}>{t2(`${ns}.description`)}</Text>
 
-        <Text style={[styles.sectionLabel, { color: colors.text }]}>{t2("pending.nextStepsTitle")}</Text>
-
-        {STEPS.map((key, i) => (
-          <View key={key} style={[styles.step, { borderColor: "#E5E7EB" }]}>
-            <View style={[styles.stepNum, { backgroundColor: colors.primary + "18" }]}>
-              <Text style={[styles.stepNumText, { color: colors.primary }]}>{i + 1}</Text>
-            </View>
-            <Text style={[styles.stepText, { color: colors.text }]}>{t2(`pending.${key}`)}</Text>
-          </View>
-        ))}
+        {!isSuspended && (
+          <>
+            <Text style={[styles.sectionLabel, { color: colors.text }]}>{t2("pending.nextStepsTitle")}</Text>
+            {PENDING_STEPS.map((key, i) => (
+              <View key={key} style={[styles.step, { borderColor: "#E5E7EB" }]}>
+                <View style={[styles.stepNum, { backgroundColor: colors.primary + "18" }]}>
+                  <Text style={[styles.stepNumText, { color: colors.primary }]}>{i + 1}</Text>
+                </View>
+                <Text style={[styles.stepText, { color: colors.text }]}>{t2(`pending.${key}`)}</Text>
+              </View>
+            ))}
+          </>
+        )}
 
       </ScrollView>
 
@@ -49,10 +58,10 @@ export default function Pending() {
         <Button
           mode="contained"
           onPress={() => app.actions.call()}
-          style={styles.btn}
+          style={[styles.btn, isSuspended && { backgroundColor: colors.error }]}
           contentStyle={styles.btnContent}
         >
-          {t2("pending.contactUs")}
+          {t2(`${ns}.contactUs`)}
         </Button>
         <Button
           mode="outlined"
