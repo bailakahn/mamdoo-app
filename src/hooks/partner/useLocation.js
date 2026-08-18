@@ -121,7 +121,7 @@ TaskManager.defineTask(
       return;
     }
     // Only send if the driver is online and the fix is accurate enough
-    if (!request || !partner?.isOnline) return;
+    if (!request || (!partner?.isOnline && !partner?.hasActiveRide)) return;
     const [location] = locations;
     if (!location || location.coords.accuracy > 50) return;
     try {

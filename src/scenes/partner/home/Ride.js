@@ -47,6 +47,7 @@ export default function DriverOnTheWayScene() {
   const [endRideVisible, setEndRideVisible] = useState(false);
   const [panelHeight, setPanelHeight] = useState(0);
   const [routePolyline, setRoutePolyline] = useState([]);
+  const [isAcceptingStacked, setIsAcceptingStacked] = useState(false);
 
   const isArrived = ride.driverArrived;
   const pickupCoord = ride.request?.pickUp?.coordinates?.length === 2
@@ -81,12 +82,26 @@ export default function DriverOnTheWayScene() {
       .catch(() => applyRoute(fallback));
   }, [isArrived, pickupCoord?.latitude, dropOffCoord?.latitude, !!driverCoord]);
 
+  const acceptStackedRequest = async () => {
+    if (isAcceptingStacked) return;
+    setIsAcceptingStacked(true);
+    try {
+      await ride.actions.acceptRequest(
+        location.location
+          ? [location.location.longitude, location.location.latitude]
+          : null
+      );
+    } finally {
+      setIsAcceptingStacked(false);
+    }
+  };
+
   if (!ride.request) return null;
   if (ride.isLoading) return <LoadingV2 />;
 
   const { client, dropOff, pickUp } = ride.request;
   const clientInitials =
-    `${client.firstName.charAt(0)}${client.lastName.charAt(0)}`.toUpperCase();
+    `${client.firstName?.charAt(0) ?? ""}${client.lastName?.charAt(0) ?? ""}`.toUpperCase();
 
   const isGenericPickup = GENERIC_PICKUP_LABELS.some(
     (label) => pickUp?.text?.toLowerCase().trim() === label
@@ -246,7 +261,7 @@ export default function DriverOnTheWayScene() {
                   style={{ fontWeight: "bold", color: colors.text, flex: 1 }}
                   numberOfLines={1}
                 >
-                  {`${client.firstName} ${client.lastName}`}
+                  {`${client.firstName ?? ""} ${client.lastName ?? ""}`}
                 </Text>
                 {isArrived && (
                   <View style={[styles.arrivedBadge, { backgroundColor: colors.primary }]}>
@@ -284,9 +299,9 @@ export default function DriverOnTheWayScene() {
           </View>
 
           {destinationText ? (
-            <View style={[styles.destinationRow, { borderTopColor: colors.surfaceVariant ?? "#E5E7EB" }]}>
+            <View style={[styles.clientDestinationRow, { borderTopColor: colors.surfaceVariant ?? "#E5E7EB" }]}>
               <View style={[styles.destinationDot, { backgroundColor: isArrived ? colors.error : colors.primary }]} />
-              <Text style={[styles.destinationText, { color: colors.text }]} numberOfLines={2}>
+              <Text style={[styles.clientDestinationText, { color: colors.text }]} numberOfLines={2}>
                 {destinationText}
               </Text>
             </View>
@@ -304,6 +319,13 @@ export default function DriverOnTheWayScene() {
             </View>
           )}
         </View>
+
+        {ride.driverHasQueuedRide && (
+          <View style={[styles.queuedConfirmedBanner, { backgroundColor: colors.primary + "18", borderColor: colors.primary + "50" }]}>
+            <Icon name="event-available" size={16} color={colors.primary} style={{ marginRight: 8 }} />
+            <Text style={[styles.queuedConfirmedText, { color: colors.primary }]}>{t2("ride.queuedRideConfirmed")}</Text>
+          </View>
+        )}
 
         <View style={[styles.actions, { paddingBottom: bottomPadding }]}>
           <View style={styles.secondaryRow}>
@@ -348,6 +370,68 @@ export default function DriverOnTheWayScene() {
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* ── Incoming stacked request overlay ─────────────────────────────── */}
+      {!!ride.requestId && (
+        <RNModal
+          visible={!!ride.requestId}
+          transparent
+          animationType="slide"
+          onRequestClose={ride.actions.denyRequest}
+        >
+          <Pressable style={styles.backdrop} onPress={ride.actions.denyRequest}>
+            <View
+              style={[styles.sheet, { backgroundColor: colors.background, paddingBottom: Math.max(insets.bottom + 16, 24) }]}
+              onStartShouldSetResponder={() => true}
+            >
+              <View style={styles.handle} />
+              <View style={styles.modalBody}>
+                <View style={[styles.stackedBadge, { backgroundColor: colors.primary + "18" }]}>
+                  <Icon name="route" size={16} color={colors.primary} />
+                  <Text style={[styles.stackedBadgeText, { color: colors.primary }]}>
+                    {t2("ride.stackedRideTitle")}
+                  </Text>
+                </View>
+                <Text variant="titleLarge" style={[styles.modalTitle, { color: colors.text }]}>
+                  {t2("ride.stackedRideNew")}
+                </Text>
+                <Text style={styles.modalSubtitle}>{t2("ride.stackedRideInfo")}</Text>
+                {ride.requestPreview?.dropOffText && (
+                  <View style={[styles.destinationRow, { borderColor: colors.surfaceVariant ?? "#E5E7EB" }]}>
+                    <Icon name="location-on" size={18} color={colors.error} />
+                    <Text style={[styles.destinationText, { color: colors.text }]} numberOfLines={2}>
+                      {ride.requestPreview.dropOffText}
+                    </Text>
+                  </View>
+                )}
+                <View style={styles.modalButtons}>
+                  <Button
+                    mode="contained"
+                    icon="check"
+                    onPress={acceptStackedRequest}
+                    loading={isAcceptingStacked}
+                    disabled={isAcceptingStacked}
+                    style={styles.modalBtn}
+                    contentStyle={styles.modalBtnContent}
+                  >
+                    {t2("ride.acceptRide")}
+                  </Button>
+                  <Button
+                    mode="outlined"
+                    icon="close"
+                    onPress={ride.actions.denyRequest}
+                    style={[styles.modalBtn, { borderColor: colors.error }]}
+                    contentStyle={styles.modalBtnContent}
+                    textColor={colors.error}
+                  >
+                    {t2("ride.denyRide")}
+                  </Button>
+                </View>
+              </View>
+            </View>
+          </Pressable>
+        </RNModal>
+      )}
     </View>
   );
 }
@@ -400,12 +484,12 @@ const styles = StyleSheet.create({
     flexDirection: "row", alignItems: "center",
     justifyContent: "space-between", marginTop: 4,
   },
-  destinationRow: {
+  clientDestinationRow: {
     flexDirection: "row", alignItems: "center",
     paddingHorizontal: 16, paddingVertical: 12, borderTopWidth: 1,
   },
   destinationDot: { width: 8, height: 8, borderRadius: 4, marginRight: 12 },
-  destinationText: { fontSize: 14, fontWeight: "500", flex: 1 },
+  clientDestinationText: { fontSize: 14, fontWeight: "500", flex: 1 },
   infoBanner: {
     flexDirection: "row", alignItems: "center",
     paddingHorizontal: 16, paddingVertical: 10, gap: 8,
@@ -441,4 +525,40 @@ const styles = StyleSheet.create({
   modalButtons: { width: "100%", gap: 12 },
   modalBtn: { borderRadius: 12, width: "100%" },
   modalBtnContent: { height: 52 },
+
+  // ── Queued ride confirmed banner (inside panel) ───────────────────────────
+  queuedConfirmedBanner: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 16,
+    marginBottom: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 12,
+    borderWidth: 1,
+  },
+  queuedConfirmedText: { fontSize: 13, fontWeight: "600", flex: 1 },
+
+  // ── Stacked request overlay ───────────────────────────────────────────────
+  stackedBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+    marginBottom: 12,
+  },
+  stackedBadgeText: { fontSize: 13, fontWeight: "600" },
+  destinationRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    width: "100%",
+    padding: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    marginBottom: 16,
+  },
+  destinationText: { flex: 1, fontSize: 14, fontWeight: "500" },
 });

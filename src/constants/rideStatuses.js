@@ -6,6 +6,7 @@ export default {
   VOID: "void",
   NO_DRIVER: "no_driver",
   ACCEPTED: "accepted",
+  ACCEPTED_QUEUED: "accepted_queued",
   REFERRED: "referred",
   followUp: {
     NOT_FOLLOWED_UP: "not_followed_up",

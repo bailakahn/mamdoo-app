@@ -18,6 +18,11 @@ const socketEvents = [
   "REQUEST_DENIED",
   "NO_DRIVER",
   "DRIVER_LOCATION",
+  "SEARCH_WIDENING",
+  "SEARCH_STACKED",
+  "DRIVER_QUEUED",
+  "QUEUE_RIDE_STARTED",
+  "QUEUED_RIDE_RESTARTED",
 ];
 
 export default function useProxy() {
@@ -78,6 +83,9 @@ export default function useProxy() {
             // Driver arrived while we were disconnected.
             dispatch({ type: types.DRIVER_ARRIVED, data: {} });
             dispatch({ type: types.SET_RIDE_STEP, step: 5 });
+          } else if (currentRide.status === rideStatuses.ACCEPTED && step === 7) {
+            // Queued ride was activated while disconnected — transition to step 4.
+            dispatch({ type: types.QUEUE_RIDE_STARTED, data: { requestId: String(currentRide._id) } });
           } else if (currentRide.status === rideStatuses.COMPLETED) {
             // Ride ended while we were disconnected.
             dispatch({ type: types.RESET_RIDE });
@@ -135,6 +143,49 @@ export default function useProxy() {
 
         if (event === "DRIVER_ARRIVED") {
           dispatch({ type: types.SET_RIDE_STEP, step: 5 });
+        }
+
+        if (event === "SEARCH_WIDENING") {
+          dispatch({ type: types.SET_SEARCH_STATUS, searchStatus: "widening" });
+          return;
+        }
+
+        if (event === "SEARCH_STACKED") {
+          dispatch({ type: types.SET_SEARCH_STATUS, searchStatus: "stacked" });
+          return;
+        }
+
+        if (event === "DRIVER_QUEUED") {
+          dispatch({ type: types.DRIVER_QUEUED, data });
+          return;
+        }
+
+        if (event === "QUEUE_RIDE_STARTED") {
+          if (!data?.requestId) {
+            dispatch({ type: types.QUEUE_RIDE_STARTED, data });
+            return;
+          }
+          getRequest({
+            method: "GET",
+            endpoint: "rides/getride",
+            params: { rideId: data.requestId },
+          })
+            .then((rideData) => {
+              dispatch({ type: types.QUEUE_RIDE_STARTED, data });
+              if (rideData?.driver?._id) {
+                dispatch({ type: types.SET_CAN_CANCEL });
+                dispatch({ type: types.FOUND_DRIVER, data: { driver: rideData.driver, requestId: data.requestId } });
+              }
+            })
+            .catch(() => {
+              dispatch({ type: types.QUEUE_RIDE_STARTED, data });
+            });
+          return;
+        }
+
+        if (event === "QUEUED_RIDE_RESTARTED") {
+          dispatch({ type: types.QUEUED_RIDE_RESTARTED, data });
+          return;
         }
 
         dispatch({ type: event, data });

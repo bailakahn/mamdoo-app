@@ -13,6 +13,8 @@ const socketEvents = [
   "RESET_REQUEST",
   "CANCEL_REQUEST",
   "ONLINE_STATUS_CHANGE",
+  "QUEUE_RIDE_STARTED",
+  "QUEUED_RIDE_CANCELED",
 ];
 
 export default function usePartnerProxy() {
@@ -60,6 +62,18 @@ export default function usePartnerProxy() {
           dispatch({ type: event });
           dispatch({ type: types.SET_RIDE_CANCELED, canceled: true });
           navigation.navigate("Home");
+          return;
+        }
+
+        if (event === "QUEUE_RIDE_STARTED") {
+          // Queued ride activated — driver will handle via onEndRide response.
+          // This fires as a fallback for reconnect scenarios.
+          dispatch({ type: types.SET_DRIVER_HAS_QUEUED_RIDE, value: false });
+          return;
+        }
+
+        if (event === "QUEUED_RIDE_CANCELED") {
+          dispatch({ type: types.QUEUED_RIDE_CANCELED });
           return;
         }
 

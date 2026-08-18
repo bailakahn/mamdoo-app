@@ -259,6 +259,10 @@ export default {
     doneAndGoHome: "Terminer et rentrer",
     cancelRideLink: "Annuler la course",
     newClient: "Nouveau client",
+    stackedRideTitle: "Près de votre destination",
+    stackedRideNew: "Nouvelle demande de course !",
+    stackedRideInfo: "Le point de prise en charge est proche de votre destination. Acceptez pour la mettre en file après votre course actuelle.",
+    queuedRideConfirmed: "Course en attente confirmée — s'activera à la fin de la course en cours",
   },
   form: {
     fullName: "Prénom Nom",

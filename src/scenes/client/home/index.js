@@ -54,26 +54,21 @@ const FOOTER_H = 68;
 // pixel heights calibrated to actual content + 64dp (48 nav bar + 16 gap).
 // iOS keeps the original percentage-based snaps — do not change them.
 //
-// Android: initial snaps are set slightly BELOW measured content height so the
-// sheet starts with content just slightly clipped (no empty space at bottom),
-// then onLayout springs it up to the exact fit.  Steps 4 and 5 use a shared
-// handleDriverContentHeight callback; step 3 uses the same callback.
+// Steps 4 and 5 use a fixed driver panel (not the animated sheet).
 const SHEET_SNAPS = Platform.OS === "android"
   ? {
       0: [SCREEN_HEIGHT * 0.36, SCREEN_HEIGHT * 0.58],
       2: [SCREEN_HEIGHT * 0.40, SCREEN_HEIGHT * 0.70],
       3: [250],
-      4: [280],
-      5: [280],
       6: [260],
+      7: [260],
     }
   : {
       0: [SCREEN_HEIGHT * 0.36, SCREEN_HEIGHT * 0.58],
       2: [SCREEN_HEIGHT * 0.40, SCREEN_HEIGHT * 0.70],
       3: [SCREEN_HEIGHT * 0.28],
-      4: [SCREEN_HEIGHT * 0.30, SCREEN_HEIGHT * 0.55],
-      5: [SCREEN_HEIGHT * 0.30, SCREEN_HEIGHT * 0.55],
       6: [SCREEN_HEIGHT * 0.22],
+      7: [SCREEN_HEIGHT * 0.28],
     };
 
 const getSnaps = (step) => SHEET_SNAPS[step] ?? SHEET_SNAPS[0];
@@ -178,6 +173,8 @@ export default function Home({ navigation, route }) {
 
   const [tracks, setTracks] = useState(true);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [cancelRideVisible, setCancelRideVisible] = useState(false);
+  const [driverPanelHeight, setDriverPanelHeight] = useState(0);
   const drawerAnim = useRef(new Animated.Value(-DRAWER_WIDTH)).current;
   const sheetHeightAnim = useRef(new Animated.Value(SHEET_SNAPS[0][0])).current;
   // Extend sheet background past the safe area edge so there's no floating gap.
@@ -538,7 +535,7 @@ export default function Home({ navigation, route }) {
         ref={mapRef}
         initialRegion={initialMapRegionRef.current}
         provider={PROVIDER_GOOGLE}
-        mapPadding={{ top: insets.top + 60, bottom: insets.bottom + sheetSnapHeight }}
+        mapPadding={{ top: insets.top + 60, bottom: [4, 5].includes(ride.step) ? driverPanelHeight : insets.bottom + sheetSnapHeight }}
         style={{
           flex: 1,
           width: "100%",
@@ -779,7 +776,7 @@ export default function Home({ navigation, route }) {
           style={{
             position: "absolute",
             right: 16,
-            bottom: insets.bottom + sheetSnapHeight + 12,
+            bottom: [4, 5].includes(ride.step) ? driverPanelHeight + 12 : insets.bottom + sheetSnapHeight + 12,
             width: 44,
             height: 44,
             borderRadius: 22,
@@ -834,12 +831,12 @@ export default function Home({ navigation, route }) {
             <RideDetailView user={user} ride={ride} navigation={navigation} onContentHeight={handleRideDetailHeight} />
           ) : ride.step === 3 ? (
             <DriverSearchView ride={ride} onContentHeight={handleDriverContentHeight} />
-          ) : ride.step === 4 ? (
-            <DriverView ride={ride} liveEta={liveEta} driverIsNearby={driverIsNearby} onContentHeight={handleDriverContentHeight} />
-          ) : ride.step === 5 ? (
-            <DriverArrivedView ride={ride} onContentHeight={handleDriverContentHeight} />
-          ) : ride.step === 6 ? (
+          ) : ride.step === 4 ? null
+          : ride.step === 5 ? null
+          : ride.step === 6 ? (
             <NoDriverView user={user} ride={ride} navigation={navigation} />
+          ) : ride.step === 7 ? (
+            <QueuedRideView ride={ride} />
           ) : (
             <WelcomeView user={user} ride={ride} navigation={navigation} location={location} onContentHeight={handleWelcomeHeight} />
           )}
@@ -876,6 +873,79 @@ export default function Home({ navigation, route }) {
           </Button>
         </View>
       )}
+
+      {/* Fixed driver panel for steps 4 (on the way) and 5 (arrived) — inspired by partner app */}
+      {[4, 5].includes(ride.step) && !ride.rideIsLoading && ride.driver && (
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            backgroundColor: theme?.isDarkMode ? colors.background : "#fff",
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            shadowColor: "#000",
+            shadowOpacity: 0.15,
+            shadowRadius: 10,
+            shadowOffset: { width: 0, height: -4 },
+            elevation: 10,
+            zIndex: 3,
+          }}
+          onLayout={(e) => setDriverPanelHeight(e.nativeEvent.layout.height)}
+        >
+          <DriverActivePanel
+            ride={ride}
+            liveEta={liveEta}
+            driverIsNearby={driverIsNearby}
+            insets={insets}
+            colors={colors}
+            theme={theme}
+            onCancelPress={() => setCancelRideVisible(true)}
+          />
+        </View>
+      )}
+
+      {/* Cancel ride confirmation modal (shared by steps 4 and 5) */}
+      <Portal>
+        <Modal
+          visible={cancelRideVisible}
+          onDismiss={() => setCancelRideVisible(false)}
+          style={{ justifyContent: "flex-end" }}
+          contentContainerStyle={[cancelModalStyles.sheet, { backgroundColor: colors.background }]}
+        >
+          <View style={cancelModalStyles.handle} />
+          <View style={cancelModalStyles.body}>
+            <View style={[cancelModalStyles.icon, { backgroundColor: "#FEE2E2" }]}>
+              <Icon name="warning" size={32} color={colors.error} />
+            </View>
+            <Text variant="titleLarge" style={[cancelModalStyles.title, { color: colors.text }]}>
+              {t("ride.cancelConfirmTitle")}
+            </Text>
+            <Text style={cancelModalStyles.subtitle}>{t("ride.canceConfirmContent")}</Text>
+            <View style={cancelModalStyles.buttons}>
+              <Button
+                mode="contained"
+                buttonColor={colors.error}
+                icon="close"
+                onPress={() => { setCancelRideVisible(false); ride.actions.cancelRide(); }}
+                style={cancelModalStyles.btn}
+                contentStyle={cancelModalStyles.btnContent}
+              >
+                {t("ride.cancelConfirmOk")}
+              </Button>
+              <Button
+                mode="outlined"
+                onPress={() => setCancelRideVisible(false)}
+                style={[cancelModalStyles.btn, { borderColor: colors.primary }]}
+                contentStyle={cancelModalStyles.btnContent}
+              >
+                {t("ride.cancelConfirmCancel")}
+              </Button>
+            </View>
+          </View>
+        </Modal>
+      </Portal>
     </View>
   );
 }
@@ -1188,6 +1258,12 @@ const DriverSearchView = ({ ride, onContentHeight }) => {
   const insets = useSafeAreaInsets();
   const RING_SIZE = 50;
 
+  const statusLabel = ride.searchStatus === "widening"
+    ? t("ride.searchWidening")
+    : ride.searchStatus === "stacked"
+    ? t("ride.searchStacked")
+    : ride.rideRequestMessage || t("ride.wait");
+
   return (
     <View
       onLayout={onContentHeight ? (e) => onContentHeight(e.nativeEvent.layout.height) : undefined}
@@ -1197,7 +1273,7 @@ const DriverSearchView = ({ ride, onContentHeight }) => {
         {`${t("ride.driverSearch")}...`}
       </Text>
       <Text style={{ color: "#9CA3AF", fontSize: 13, marginTop: 2 }}>
-        {ride.rideRequestMessage || t("ride.wait")}
+        {statusLabel}
       </Text>
       <View style={{ alignItems: "center", marginTop: 18 }}>
         <View style={{ width: RING_SIZE * 2.6, height: RING_SIZE * 2.6, alignItems: "center", justifyContent: "center" }}>
@@ -1211,28 +1287,170 @@ const DriverSearchView = ({ ride, onContentHeight }) => {
   );
 };
 
+// Fixed panel used for steps 4 (driver on the way) and 5 (driver arrived).
+// Inspired by the partner app: no animated sheet, no snap points — the panel
+// measures its own height and the map adjusts its bottom padding accordingly.
+const DriverActivePanel = ({ ride, liveEta, driverIsNearby, insets, colors, theme, onCancelPress }) => {
+  const driver = ride.driver;
+  const isArrived = ride.step === 5;
+  const initials = `${driver.firstName?.charAt(0) ?? ""}${driver.lastName?.charAt(0) ?? ""}`.toUpperCase();
+  const isNewDriver = driver.rideCount === 0;
+  const etaLabel = liveEta ?? ride.newRideDetails?.duration?.text;
+  const bottomPad = Math.max(insets.bottom + 8, 16);
+
+  return (
+    <View style={{ paddingBottom: bottomPad }}>
+      {/* Drag handle pill */}
+      <View style={{ paddingVertical: 10, alignItems: "center" }}>
+        <View style={{ width: 50, height: 5, borderRadius: 3, backgroundColor: theme?.isDarkMode ? "#555" : "#e0e0e0" }} />
+      </View>
+
+      {/* Phase header */}
+      <View style={[driverCardStyles.header, { paddingHorizontal: 16 }]}>
+        <Text style={[driverCardStyles.phaseLabel, { color: colors.text }]}>
+          {isArrived
+            ? `${driver.firstName ?? ""} ${t("ride.driverArrived")}`
+            : `${driver.firstName ?? ""} ${t("ride.isOnHisWay")}`}
+        </Text>
+        {isArrived ? (
+          <View style={[driverCardStyles.etaBadge, { backgroundColor: colors.primary + "18" }]}>
+            <Icon name="directions-walk" size={13} color={colors.primary} />
+            <Text style={[driverCardStyles.etaText, { color: colors.primary }]}>{t("ride.meetHimOutside")}</Text>
+          </View>
+        ) : etaLabel ? (
+          <View style={[driverCardStyles.etaBadge, { backgroundColor: colors.primary + "18" }]}>
+            <Icon name="access-time" size={13} color={colors.primary} />
+            <Text style={[driverCardStyles.etaText, { color: colors.primary }]}>{etaLabel}</Text>
+          </View>
+        ) : null}
+      </View>
+
+      {/* "Almost here" proximity banner (step 4 only) */}
+      {!isArrived && driverIsNearby && (
+        <View style={[driverCardStyles.nearbyBanner, { backgroundColor: colors.primary, marginHorizontal: 16 }]}>
+          <Icon name="directions-bike" size={16} color="#fff" />
+          <Text style={driverCardStyles.nearbyText}>{t("ride.driverNearby")}</Text>
+        </View>
+      )}
+
+      {/* Driver card */}
+      <View style={[driverCardStyles.card, { backgroundColor: theme?.isDarkMode ? "#1F2937" : "#F9FAFB", marginHorizontal: 16 }]}>
+        <View style={driverCardStyles.cardRow}>
+          <View>
+            <View style={[driverCardStyles.avatar, { backgroundColor: colors.primary }]}>
+              <Text style={driverCardStyles.avatarText}>{initials}</Text>
+            </View>
+            {isArrived && (
+              <View style={[driverCardStyles.arrivedBadge, { backgroundColor: colors.primary }]}>
+                <Icon name="check" size={11} color="#fff" />
+              </View>
+            )}
+          </View>
+
+          <View style={driverCardStyles.driverInfo}>
+            <Text style={[driverCardStyles.driverName, { color: colors.text }]} numberOfLines={1}>
+              {`${driver.firstName ?? ""} ${driver.lastName ?? ""}`}
+            </Text>
+            <View style={driverCardStyles.metaRow}>
+              <Icon name="phone" size={12} color="#9CA3AF" />
+              <Text style={driverCardStyles.metaText}>{driver.phoneNumber}</Text>
+            </View>
+            {(driver.avgRating != null || driver.rideCount != null) && (
+              <View style={driverCardStyles.statsRow}>
+                {driver.avgRating != null && (
+                  <>
+                    <Icon name="star" size={12} color="#F59E0B" />
+                    <Text style={[driverCardStyles.metaText, { color: "#F59E0B", fontWeight: "700", marginRight: 6 }]}>
+                      {driver.avgRating}
+                    </Text>
+                  </>
+                )}
+                {driver.rideCount != null && (
+                  <>
+                    <Icon name="two-wheeler" size={12} color={isNewDriver ? colors.primary : "#9CA3AF"} />
+                    <Text style={[driverCardStyles.metaText, isNewDriver ? { color: colors.primary, fontWeight: "600" } : {}]}>
+                      {isNewDriver ? t("ride.newDriver") : String(driver.rideCount)}
+                    </Text>
+                  </>
+                )}
+              </View>
+            )}
+          </View>
+
+          {driver.cab?.model && (
+            <View style={[driverCardStyles.vehicleBox, { backgroundColor: colors.primary + "14" }]}>
+              <Image
+                source={images[driver.cab?.cabType?.name] || images["bike"]}
+                cacheKey={`${driver.cab?.cabType?.name}_v2`}
+                style={{ width: 48, height: 34 }}
+                resizeMode="contain"
+              />
+              <Text style={[driverCardStyles.vehicleBoxModel, { color: colors.text }]} numberOfLines={1}>
+                {driver.cab.model}
+              </Text>
+              {driver.cab.licensePlate && (
+                <View style={[driverCardStyles.vehiclePlateTag, { backgroundColor: theme?.isDarkMode ? "#374151" : "#E5E7EB" }]}>
+                  <Text style={[driverCardStyles.vehicleBoxPlate, { color: colors.text }]} numberOfLines={1}>
+                    {driver.cab.licensePlate}
+                  </Text>
+                </View>
+              )}
+            </View>
+          )}
+        </View>
+      </View>
+
+      {/* Action buttons */}
+      <View style={{ paddingHorizontal: 16, marginTop: 8 }}>
+        {isArrived ? (
+          <View style={driverCardStyles.actionRow}>
+            <View style={{ flex: 1, marginRight: 6 }}>
+              <Button mode="contained" icon="phone" onPress={ride.actions.callDriver}
+                style={driverCardStyles.callBtn} contentStyle={{ height: 46 }}>
+                {t("ride.callDriver")}
+              </Button>
+            </View>
+            <View style={{ flex: 1, marginLeft: 6 }}>
+              <Button mode="outlined" icon="map" onPress={ride.actions.openMap}
+                style={[driverCardStyles.callBtn, { borderColor: colors.primary }]} contentStyle={{ height: 46 }}>
+                {t("ride.openMap")}
+              </Button>
+            </View>
+          </View>
+        ) : (
+          <Button mode="contained" icon="phone" onPress={ride.actions.callDriver}
+            style={driverCardStyles.callBtn} contentStyle={{ height: 46 }}>
+            {t("ride.callDriver")}
+          </Button>
+        )}
+        <TouchableOpacity onPress={onCancelPress} style={driverCardStyles.cancelLink}>
+          <Text style={[driverCardStyles.cancelText, { color: colors.error }]}>{t("ride.cancelRide")}</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
 const DriverView = ({ ride, liveEta, driverIsNearby, onContentHeight }) => {
   const { colors } = useTheme();
-  const [visible, setVisible] = useState(false);
   const theme = useMamdooTheme();
-  const insets = useSafeAreaInsets();
 
   const driver = ride.driver;
   if (!driver) return null;
 
-  const initials = `${driver.firstName.charAt(0)}${driver.lastName.charAt(0)}`.toUpperCase();
+  const initials = `${driver.firstName?.charAt(0) ?? ""}${driver.lastName?.charAt(0) ?? ""}`.toUpperCase();
   const isNewDriver = driver.rideCount === 0;
   const etaLabel = liveEta ?? ride.newRideDetails?.duration?.text;
 
   return (
     <View
       onLayout={onContentHeight ? (e) => onContentHeight(e.nativeEvent.layout.height) : undefined}
-      style={{ paddingHorizontal: 16, paddingBottom: Platform.OS === "android" ? Math.max(insets.bottom, 48) : Math.max(insets.bottom + 8, 16) }}
+      style={{ paddingHorizontal: 16, paddingBottom: 8 }}
     >
       {/* Phase header */}
       <View style={driverCardStyles.header}>
         <Text style={[driverCardStyles.phaseLabel, { color: colors.text }]}>
-          {`${driver.firstName} ${t("ride.isOnHisWay")}`}
+          {`${driver.firstName ?? ""} ${t("ride.isOnHisWay")}`}
         </Text>
         {etaLabel && (
           <View style={[driverCardStyles.etaBadge, { backgroundColor: colors.primary + "18" }]}>
@@ -1261,7 +1479,7 @@ const DriverView = ({ ride, liveEta, driverIsNearby, onContentHeight }) => {
 
           <View style={driverCardStyles.driverInfo}>
             <Text style={[driverCardStyles.driverName, { color: colors.text }]} numberOfLines={1}>
-              {`${driver.firstName} ${driver.lastName}`}
+              {`${driver.firstName ?? ""} ${driver.lastName ?? ""}`}
             </Text>
             <View style={driverCardStyles.metaRow}>
               <Icon name="phone" size={12} color="#9CA3AF" />
@@ -1312,85 +1530,28 @@ const DriverView = ({ ride, liveEta, driverIsNearby, onContentHeight }) => {
         </View>
       </View>
 
-      <Button
-        mode="contained"
-        icon="phone"
-        onPress={ride.actions.callDriver}
-        style={driverCardStyles.callBtn}
-        contentStyle={{ height: 46 }}
-      >
-        {t("ride.callDriver")}
-      </Button>
-
-      <TouchableOpacity onPress={() => setVisible(true)} style={driverCardStyles.cancelLink}>
-        <Text style={[driverCardStyles.cancelText, { color: colors.error }]}>
-          {t("ride.cancelRide")}
-        </Text>
-      </TouchableOpacity>
-
-      <Portal>
-        <Modal
-          visible={visible}
-          onDismiss={() => setVisible(false)}
-          style={{ justifyContent: "flex-end" }}
-          contentContainerStyle={[cancelModalStyles.sheet, { backgroundColor: colors.background }]}
-        >
-          <View style={cancelModalStyles.handle} />
-          <View style={cancelModalStyles.body}>
-            <View style={[cancelModalStyles.icon, { backgroundColor: "#FEE2E2" }]}>
-              <Icon name="warning" size={32} color={colors.error} />
-            </View>
-            <Text variant="titleLarge" style={[cancelModalStyles.title, { color: colors.text }]}>
-              {t("ride.cancelConfirmTitle")}
-            </Text>
-            <Text style={cancelModalStyles.subtitle}>{t("ride.canceConfirmContent")}</Text>
-            <View style={cancelModalStyles.buttons}>
-              <Button
-                mode="contained"
-                buttonColor={colors.error}
-                icon="close"
-                onPress={() => { setVisible(false); ride.actions.cancelRide(); }}
-                style={cancelModalStyles.btn}
-                contentStyle={cancelModalStyles.btnContent}
-              >
-                {t("ride.cancelConfirmOk")}
-              </Button>
-              <Button
-                mode="outlined"
-                onPress={() => setVisible(false)}
-                style={[cancelModalStyles.btn, { borderColor: colors.primary }]}
-                contentStyle={cancelModalStyles.btnContent}
-              >
-                {t("ride.cancelConfirmCancel")}
-              </Button>
-            </View>
-          </View>
-        </Modal>
-      </Portal>
     </View>
   );
 };
 
 const DriverArrivedView = ({ ride, onContentHeight }) => {
   const { colors } = useTheme();
-  const [visible, setVisible] = useState(false);
   const theme = useMamdooTheme();
-  const insets = useSafeAreaInsets();
 
   const driver = ride.driver;
   if (!driver) return null;
 
-  const initials = `${driver.firstName.charAt(0)}${driver.lastName.charAt(0)}`.toUpperCase();
+  const initials = `${driver.firstName?.charAt(0) ?? ""}${driver.lastName?.charAt(0) ?? ""}`.toUpperCase();
   const isNewDriver = driver.rideCount === 0;
 
   return (
     <View
       onLayout={onContentHeight ? (e) => onContentHeight(e.nativeEvent.layout.height) : undefined}
-      style={{ paddingHorizontal: 16, paddingBottom: Platform.OS === "android" ? Math.max(insets.bottom, 48) : Math.max(insets.bottom + 8, 16) }}
+      style={{ paddingHorizontal: 16, paddingBottom: 8 }}
     >
       <View style={driverCardStyles.header}>
         <Text style={[driverCardStyles.phaseLabel, { color: colors.text }]}>
-          {`${driver.firstName} ${t("ride.driverArrived")}`}
+          {`${driver.firstName ?? ""} ${t("ride.driverArrived")}`}
         </Text>
         <View style={[driverCardStyles.etaBadge, { backgroundColor: colors.primary + "18" }]}>
           <Icon name="directions-walk" size={13} color={colors.primary} />
@@ -1414,7 +1575,7 @@ const DriverArrivedView = ({ ride, onContentHeight }) => {
 
           <View style={driverCardStyles.driverInfo}>
             <Text style={[driverCardStyles.driverName, { color: colors.text }]} numberOfLines={1}>
-              {`${driver.firstName} ${driver.lastName}`}
+              {`${driver.firstName ?? ""} ${driver.lastName ?? ""}`}
             </Text>
             <View style={driverCardStyles.metaRow}>
               <Icon name="phone" size={12} color="#9CA3AF" />
@@ -1465,77 +1626,6 @@ const DriverArrivedView = ({ ride, onContentHeight }) => {
         </View>
       </View>
 
-      {/* Call + Map row */}
-      <View style={driverCardStyles.actionRow}>
-        <View style={{ flex: 1, marginRight: 6 }}>
-          <Button
-            mode="contained"
-            icon="phone"
-            onPress={ride.actions.callDriver}
-            style={driverCardStyles.callBtn}
-            contentStyle={{ height: 46 }}
-          >
-            {t("ride.callDriver")}
-          </Button>
-        </View>
-        <View style={{ flex: 1, marginLeft: 6 }}>
-          <Button
-            mode="outlined"
-            icon="map"
-            onPress={ride.actions.openMap}
-            style={[driverCardStyles.callBtn, { borderColor: colors.primary }]}
-            contentStyle={{ height: 46 }}
-          >
-            {t("ride.openMap")}
-          </Button>
-        </View>
-      </View>
-
-      <TouchableOpacity onPress={() => setVisible(true)} style={driverCardStyles.cancelLink}>
-        <Text style={[driverCardStyles.cancelText, { color: colors.error }]}>
-          {t("ride.cancelRide")}
-        </Text>
-      </TouchableOpacity>
-
-      <Portal>
-        <Modal
-          visible={visible}
-          onDismiss={() => setVisible(false)}
-          style={{ justifyContent: "flex-end" }}
-          contentContainerStyle={[cancelModalStyles.sheet, { backgroundColor: colors.background }]}
-        >
-          <View style={cancelModalStyles.handle} />
-          <View style={cancelModalStyles.body}>
-            <View style={[cancelModalStyles.icon, { backgroundColor: "#FEE2E2" }]}>
-              <Icon name="warning" size={32} color={colors.error} />
-            </View>
-            <Text variant="titleLarge" style={[cancelModalStyles.title, { color: colors.text }]}>
-              {t("ride.cancelConfirmTitle")}
-            </Text>
-            <Text style={cancelModalStyles.subtitle}>{t("ride.canceConfirmContent")}</Text>
-            <View style={cancelModalStyles.buttons}>
-              <Button
-                mode="contained"
-                buttonColor={colors.error}
-                icon="close"
-                onPress={() => { setVisible(false); ride.actions.cancelRide(); }}
-                style={cancelModalStyles.btn}
-                contentStyle={cancelModalStyles.btnContent}
-              >
-                {t("ride.cancelConfirmOk")}
-              </Button>
-              <Button
-                mode="outlined"
-                onPress={() => setVisible(false)}
-                style={[cancelModalStyles.btn, { borderColor: colors.primary }]}
-                contentStyle={cancelModalStyles.btnContent}
-              >
-                {t("ride.cancelConfirmCancel")}
-              </Button>
-            </View>
-          </View>
-        </Modal>
-      </Portal>
     </View>
   );
 };
@@ -1570,6 +1660,91 @@ const NoDriverView = ({ user, ride, navigation }) => {
           {t("ride.end")}
         </Button>
       </View>
+    </View>
+  );
+};
+
+const QueuedRideView = ({ ride }) => {
+  const { colors } = useTheme();
+  const theme = useMamdooTheme();
+  const insets = useSafeAreaInsets();
+  const [cancelVisible, setCancelVisible] = useState(false);
+  const bottomPad = Platform.OS === "android" ? Math.max(insets.bottom, 48) : Math.max(insets.bottom + 8, 16);
+
+  const driverName = ride.queuedRideDriver?.driverName || "";
+
+  return (
+    <View style={{ paddingHorizontal: 16, paddingBottom: bottomPad }}>
+      <View style={driverCardStyles.header}>
+        <Text style={[driverCardStyles.phaseLabel, { color: colors.text }]}>
+          {t("ride.queuedRideTitle")}
+        </Text>
+        <View style={[driverCardStyles.etaBadge, { backgroundColor: colors.primary + "18" }]}>
+          <Icon name="event-available" size={13} color={colors.primary} />
+          <Text style={[driverCardStyles.etaText, { color: colors.primary }]}>
+            {t("ride.queuedRideBadge")}
+          </Text>
+        </View>
+      </View>
+
+      <View style={[driverCardStyles.card, { backgroundColor: theme.isDarkMode ? "#1F2937" : "#F9FAFB" }]}>
+        <View style={{ padding: 16 }}>
+          {!!driverName && (
+            <Text style={[driverCardStyles.driverName, { color: colors.text, marginBottom: 6 }]}>
+              {driverName}
+            </Text>
+          )}
+          <Text style={{ color: "#9CA3AF", fontSize: 13 }}>
+            {t("ride.queuedRideInfo")}
+          </Text>
+        </View>
+      </View>
+
+      <TouchableOpacity onPress={() => setCancelVisible(true)} style={driverCardStyles.cancelLink}>
+        <Text style={[driverCardStyles.cancelText, { color: colors.error }]}>
+          {t("ride.cancelQueuedRide")}
+        </Text>
+      </TouchableOpacity>
+
+      <Portal>
+        <Modal
+          visible={cancelVisible}
+          onDismiss={() => setCancelVisible(false)}
+          style={{ justifyContent: "flex-end" }}
+          contentContainerStyle={[cancelModalStyles.sheet, { backgroundColor: colors.background }]}
+        >
+          <View style={cancelModalStyles.handle} />
+          <View style={cancelModalStyles.body}>
+            <View style={[cancelModalStyles.icon, { backgroundColor: "#FEE2E2" }]}>
+              <Icon name="warning" size={32} color={colors.error} />
+            </View>
+            <Text variant="titleLarge" style={[cancelModalStyles.title, { color: colors.text }]}>
+              {t("ride.cancelConfirmTitle")}
+            </Text>
+            <Text style={cancelModalStyles.subtitle}>{t("ride.cancelQueuedRideConfirm")}</Text>
+            <View style={cancelModalStyles.buttons}>
+              <Button
+                mode="contained"
+                buttonColor={colors.error}
+                icon="close"
+                onPress={() => { setCancelVisible(false); ride.actions.cancelQueuedRide(); }}
+                style={cancelModalStyles.btn}
+                contentStyle={cancelModalStyles.btnContent}
+              >
+                {t("ride.cancelConfirmOk")}
+              </Button>
+              <Button
+                mode="outlined"
+                onPress={() => setCancelVisible(false)}
+                style={[cancelModalStyles.btn, { borderColor: colors.primary }]}
+                contentStyle={cancelModalStyles.btnContent}
+              >
+                {t("ride.cancelConfirmCancel")}
+              </Button>
+            </View>
+          </View>
+        </Modal>
+      </Portal>
     </View>
   );
 };

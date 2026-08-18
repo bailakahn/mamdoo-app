@@ -195,6 +195,13 @@ export default {
     tripCompleted: "Course terminée !",
     driverNearby: "Votre Mamdoo est presque là !",
     price: "Prix",
+    searchWidening: "Zone de recherche élargie, veuillez patienter...",
+    searchStacked: "Recherche d'un Mamdoo disponible en route...",
+    queuedRideTitle: "Course confirmée — Mamdoo en route",
+    queuedRideBadge: "En attente",
+    queuedRideInfo: "Votre Mamdoo viendra vous chercher après sa course en cours.",
+    cancelQueuedRide: "Annuler la course en attente",
+    cancelQueuedRideConfirm: "Êtes-vous sûr de vouloir annuler ? Votre Mamdoo est en route.",
   },
   form: {
     fullName: "Prénom Nom",

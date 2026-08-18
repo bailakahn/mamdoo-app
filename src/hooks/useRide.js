@@ -51,6 +51,8 @@ export default function useRide() {
       rideIsLoading,
       rideBootstrapping,
       pendingNavigation,
+      searchStatus,
+      queuedRideDriver,
     },
     actions: {
       resetRide,
@@ -73,6 +75,7 @@ export default function useRide() {
       setRideIsLoading,
       setRideBootstrapping,
       setPendingNavigation,
+      setSearchStatus,
     },
   } = useStore();
 
@@ -162,6 +165,8 @@ export default function useRide() {
 
       if (currentRide.status === rideStatuses.REQUEST) {
         setCurrentRide({ ...rideData, step: 3 });
+      } else if (currentRide.status === rideStatuses.ACCEPTED_QUEUED) {
+        setCurrentRide({ ...rideData, step: 7 });
       } else if (currentRide.status === rideStatuses.ACCEPTED) {
         setCurrentRide({ ...rideData, driver: currentRide.driver, step: 4 });
       } else if (currentRide.status === rideStatuses.ONGOING) {
@@ -302,6 +307,21 @@ export default function useRide() {
       params: {
         requestId: newRequestId,
       },
+    })
+      .then(() => {
+        resetRide();
+        navigation.navigate("Home");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const cancelQueuedRide = () => {
+    getRequest({
+      method: "POST",
+      endpoint: "rides/cancelRequest",
+      params: { requestId },
     })
       .then(() => {
         resetRide();
@@ -567,10 +587,13 @@ export default function useRide() {
     ridePrices,
     rideBootstrapping,
     pendingNavigation,
+    searchStatus,
+    queuedRideDriver,
     actions: {
       callDriver,
       cancelRide,
       cancelNewRequest,
+      cancelQueuedRide,
       setRideCanceled,
       setRideDenied,
       resetRide,

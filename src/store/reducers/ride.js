@@ -46,6 +46,9 @@ export default (state = ride, action) => {
         bottomSheetHeight: "20%",
         rideIsLoading: false,
         pendingNavigation: null,
+        searchStatus: null,
+        queuedRideDriver: null,
+        driverHasQueuedRide: false,
       };
     // client no driver
     case types.NO_DRIVER:
@@ -63,6 +66,8 @@ export default (state = ride, action) => {
         newRide: { ...defaultNewRide },
         newRideDetails: { ...defaultNewRideDetails },
         rideIsLoading: false,
+        searchStatus: null,
+        queuedRideDriver: null,
         step: 6,
         // no need to reset map because we are actually keeping the bottom sheet height to show info
         // mapHeight: "80%",
@@ -80,7 +85,10 @@ export default (state = ride, action) => {
         driverArrived: true,
       };
     case types.NEW_REQUEST: {
-      if (state.request) return state;
+      // For normal requests: if the driver is already on a ride, ignore.
+      // For stacked requests (isStacked === true): always process so the
+      // overlay appears on the DriverOnTheWay screen.
+      if (state.request && !action.data.isStacked) return state;
       const requestPreview = {
         price: action.data.price,
         dropOffText: action.data.dropOffText,
@@ -93,13 +101,10 @@ export default (state = ride, action) => {
           ? { latitude: action.data.coordinates[1], longitude: action.data.coordinates[0] }
           : action.data.coordinates || null,
       };
-      persistRide(state, {
-        ...(!state.request?._id && { requestId: action.data.requestId }),
-        requestPreview,
-      });
+      persistRide(state, { requestId: action.data.requestId, requestPreview });
       return {
         ...state,
-        ...(!state.request?._id && { requestId: action.data.requestId }),
+        requestId: action.data.requestId,
         requestPreview,
       };
     }
@@ -266,6 +271,53 @@ export default (state = ride, action) => {
       return {
         ...state,
         pendingNavigation: action.screen,
+      };
+    case types.SET_SEARCH_STATUS:
+      return {
+        ...state,
+        searchStatus: action.searchStatus,
+      };
+    case types.DRIVER_QUEUED:
+      persistRide(state, {
+        requestId: action.data.requestId,
+        queuedRideDriver: { driverName: action.data.driverName, driverId: action.data.driverId },
+        step: 7,
+      });
+      return {
+        ...state,
+        requestId: action.data.requestId,
+        queuedRideDriver: { driverName: action.data.driverName, driverId: action.data.driverId },
+        searchStatus: null,
+        step: 7,
+      };
+    case types.QUEUE_RIDE_STARTED:
+      persistRide(state, {
+        requestId: action.data.requestId,
+        step: 4,
+      });
+      return {
+        ...state,
+        requestId: action.data.requestId,
+        step: 4,
+        searchStatus: null,
+      };
+    case types.QUEUED_RIDE_RESTARTED:
+      persistRide(state, { step: 3, queuedRideDriver: null });
+      return {
+        ...state,
+        step: 3,
+        queuedRideDriver: null,
+        searchStatus: null,
+      };
+    case types.SET_DRIVER_HAS_QUEUED_RIDE:
+      return {
+        ...state,
+        driverHasQueuedRide: action.value,
+      };
+    case types.QUEUED_RIDE_CANCELED:
+      return {
+        ...state,
+        driverHasQueuedRide: false,
       };
     default:
       return state;

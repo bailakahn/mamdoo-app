@@ -191,6 +191,13 @@ export default {
     tripCompleted: "Trip Completed!",
     driverNearby: "Your driver is almost here!",
     price: "Price",
+    searchWidening: "Expanding search area, please wait...",
+    searchStacked: "Looking for an available driver on the way...",
+    queuedRideTitle: "Ride confirmed — driver on the way",
+    queuedRideBadge: "Queued",
+    queuedRideInfo: "Your driver will pick you up after completing their current ride.",
+    cancelQueuedRide: "Cancel queued ride",
+    cancelQueuedRideConfirm: "Are you sure you want to cancel this ride? Your driver is on their way.",
   },
   form: {
     fullName: "Full Name",

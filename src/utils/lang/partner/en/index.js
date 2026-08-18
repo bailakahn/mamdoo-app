@@ -258,6 +258,10 @@ export default {
     doneAndGoHome: "Done & go home",
     cancelRideLink: "Cancel ride",
     newClient: "New client",
+    stackedRideTitle: "Near your destination",
+    stackedRideNew: "New ride request!",
+    stackedRideInfo: "This ride pickup is near your current drop-off. Accept to queue it for after your current ride.",
+    queuedRideConfirmed: "Queued ride confirmed — activates when current ride ends",
   },
   form: {
     fullName: "Full Name",

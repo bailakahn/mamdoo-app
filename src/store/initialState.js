@@ -91,6 +91,9 @@ export default {
     // prevents the home screen from flashing step 1 before state is restored
     rideBootstrapping: true,
     pendingNavigation: null,
+    searchStatus: null,
+    queuedRideDriver: null,
+    driverHasQueuedRide: false,
   },
 };
 

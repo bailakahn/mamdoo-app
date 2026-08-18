@@ -1,7 +1,7 @@
 // ─── Mock driver location ────────────────────────────────────────────────────
 // Flip USE_MOCK_LOCATION to false to use the device's real GPS in dev builds.
 // Never active in production regardless of this flag.
-const USE_MOCK_LOCATION = true;
+const USE_MOCK_LOCATION = false;
 
 export const MOCK_LOCATION_ENABLED =
   process.env.EXPO_PUBLIC_ENV_NAME !== "production" && USE_MOCK_LOCATION;

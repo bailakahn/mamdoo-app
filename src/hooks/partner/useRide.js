@@ -44,7 +44,7 @@ export default function useRide() {
   // const [mockLocationInterval, setMockLocationInterval] = useState(null);
 
   const {
-    ride: { canCancel, driverArrived, request, requestId, requestPreview, canceled, ridePrice },
+    ride: { canCancel, driverArrived, request, requestId, requestPreview, canceled, ridePrice, driverHasQueuedRide },
     auth: { partner },
     actions: {
       resetRide,
@@ -55,6 +55,7 @@ export default function useRide() {
       setOnGoingRide,
       setRidePrice,
       setCurrentRide,
+      setDriverHasQueuedRide,
     },
     dispatch,
   } = useStore();
@@ -193,7 +194,7 @@ export default function useRide() {
         params: { requestId: currentRequest._id, driverId: partner.userId },
       })
         .then(() => { dispatch({ type: types.DRIVER_ARRIVED }); setInfo(true); })
-        .catch(() => { autoArrivedRef.current = false; });
+        .catch((err) => { if (!err?.code) autoArrivedRef.current = false; });
     }
   };
 
@@ -205,15 +206,16 @@ export default function useRide() {
       endpoint: "rides/acceptRequest",
       params: { requestId, driverLocation },
     })
-      .then((ride) => {
+      .then((response) => {
+        const { isStacking, ...rideData } = response;
         resetRequest();
+        if (isStacking) {
+          setDriverHasQueuedRide(true);
+          return;
+        }
         setOnGoingRide();
-        setRide(ride);
+        setRide(rideData);
         setCanCancel();
-        // TODO: set time out to 3 minutes
-        // setTimeout(() => {
-        //     setCanCancel();
-        // }, 10000);
         navigation.navigate("DriverOnTheWay");
       })
       .catch((err) => {
@@ -377,7 +379,25 @@ export default function useRide() {
             coordinates: [longitude, latitude],
           },
         })
-          .then(({ finalPrice }) => {
+          .then(async ({ finalPrice, queuedRideId }) => {
+            if (queuedRideId) {
+              const newRide = await getRequest({
+                method: "GET",
+                endpoint: "rides/getride",
+                params: { rideId: queuedRideId },
+              }).catch(() => null);
+
+              if (newRide?.status === rideStatuses.ACCEPTED) {
+                autoArrivedRef.current = false;
+                setInfo(false);
+                setDriverHasQueuedRide(false);
+                setRide(newRide);
+                dispatch({ type: types.SET_CURRENT_RIDE, ride: { driverArrived: false } });
+                navigation.replace("DriverOnTheWay");
+                return;
+              }
+            }
+
             AsyncStorage.setItem(
               "@mamdoo-partner-pending-summary",
               JSON.stringify({ ridePrice: finalPrice })
@@ -451,6 +471,7 @@ export default function useRide() {
     rating,
     acceptanceRate,
     totalRides,
+    driverHasQueuedRide,
     actions: {
       getCommission,
       resetRequest,
@@ -471,6 +492,7 @@ export default function useRide() {
       reviewRide,
       checkAutoArrival,
       getDirections,
+      setDriverHasQueuedRide,
     },
   };
 

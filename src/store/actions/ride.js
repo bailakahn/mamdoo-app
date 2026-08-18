@@ -80,5 +80,11 @@ export default function rideActions(state, dispatch) {
     setPendingNavigation: (screen) => {
       dispatch({ type: types.SET_PENDING_NAVIGATION, screen });
     },
+    setSearchStatus: (searchStatus) => {
+      dispatch({ type: types.SET_SEARCH_STATUS, searchStatus });
+    },
+    setDriverHasQueuedRide: (value) => {
+      dispatch({ type: types.SET_DRIVER_HAS_QUEUED_RIDE, value });
+    },
   };
 }

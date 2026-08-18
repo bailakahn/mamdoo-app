@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Alert, Platform } from "react-native";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
@@ -29,10 +29,13 @@ const navigateForEvent = (event, app) => {
 
 export default function useNotification() {
   const getRequest = useApi();
-  const { main: { app } } = useStore();
+  const { main: { app }, auth } = useStore();
   const partner = usePartner();
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
   const processedNotificationId = useRef(null);
+  const [pushToken, setPushToken] = useState(null);
+
+  const accessToken = app === "client" ? auth.user?.accessToken : auth.partner?.accessToken;
 
   // Phase 3: handle notification tap (foreground, background, killed-app)
   useEffect(() => {
@@ -67,17 +70,18 @@ export default function useNotification() {
     }
   }, [lastNotificationResponse]);
 
+  // Step 1: get push token once on mount; store in state for deferred save.
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => {
-      if (token) saveNotificationToken(token);
+      if (token) setPushToken(token);
     });
 
     // Phase 1: foreground notifications are handled by real-time socket
     const notificationListener = Notifications.addNotificationReceivedListener(() => {});
 
-    // Phase 1: catch mid-session token rotations (reinstall, OS upgrade)
+    // Phase 1: catch mid-session token rotations; auth is loaded by then so save directly.
     const tokenListener = Notifications.addPushTokenListener(({ data: token }) => {
-      if (token) saveNotificationToken(token);
+      if (token) setPushToken(token);
     });
 
     return () => {
@@ -85,6 +89,15 @@ export default function useNotification() {
       tokenListener.remove();
     };
   }, []);
+
+  // Step 2: save to server once both the push token and auth token are available.
+  // Fires when either becomes ready, handling both race directions.
+  useEffect(() => {
+    if (pushToken && accessToken) {
+      saveNotificationToken(pushToken);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pushToken, !!accessToken]);
 
   const saveNotificationToken = (token) => {
     getRequest({
