@@ -13,3 +13,6 @@ node_modules
 credentials
 .expo
 dist
+
+scratch/
+*.local.md
