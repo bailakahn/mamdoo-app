@@ -62,28 +62,56 @@ export default function Main() {
             <Text style={[styles.roleTitle, { color: colors.text }]}>
               {t("main.iAmAClient")}
             </Text>
-            <Text style={styles.roleSubtitle}>{t("main.clientSubtitle")}</Text>
+            <Text style={[styles.roleSubtitle, { color: colors.placeholder }]}>
+              {t("main.clientSubtitle")}
+            </Text>
           </View>
-          <Icon name="chevron-right" size={22} color="#9CA3AF" />
+          <Icon name="chevron-right" size={22} color={colors.placeholder} />
         </TouchableOpacity>
 
         {/* Driver */}
         <TouchableOpacity
           onPress={() => app.actions.setApp("partner")}
-          style={[styles.roleCard, { borderColor: colors.surfaceVariant ?? "#E5E7EB", marginTop: 12 }]}
+          style={[styles.roleCard, { borderColor: colors.surfaceVariant ?? colors.border, marginTop: 12 }]}
           activeOpacity={0.75}
         >
-          <View style={[styles.roleIcon, { backgroundColor: colors.surfaceVariant ?? "#F3F4F6" }]}>
-            <Icon name="directions-car" size={26} color="#9CA3AF" />
+          <View style={[styles.roleIcon, { backgroundColor: colors.surfaceVariant ?? colors.overlap }]}>
+            <Icon name="directions-car" size={26} color={colors.placeholder} />
           </View>
           <View style={styles.roleText}>
             <Text style={[styles.roleTitle, { color: colors.text }]}>
               {t("main.iAmAPartner")}
             </Text>
-            <Text style={styles.roleSubtitle}>{t("main.partnerSubtitle")}</Text>
+            <Text style={[styles.roleSubtitle, { color: colors.placeholder }]}>
+              {t("main.partnerSubtitle")}
+            </Text>
           </View>
-          <Icon name="chevron-right" size={22} color="#9CA3AF" />
+          <Icon name="chevron-right" size={22} color={colors.placeholder} />
         </TouchableOpacity>
+
+        {/* Covoiturage driver — a third, independent surface, not a mode inside
+            the ride driver app. Absent entirely while the feature is off, same
+            as the drawer entry point it replaces. */}
+        {!!app.settings?.carpoolEnabled && (
+          <TouchableOpacity
+            onPress={() => app.actions.setApp("carpool")}
+            style={[styles.roleCard, { borderColor: colors.surfaceVariant ?? colors.border, marginTop: 12 }]}
+            activeOpacity={0.75}
+          >
+            <View style={[styles.roleIcon, { backgroundColor: colors.surfaceVariant ?? colors.overlap }]}>
+              <Icon name="people" size={26} color={colors.placeholder} />
+            </View>
+            <View style={styles.roleText}>
+              <Text style={[styles.roleTitle, { color: colors.text }]}>
+                {t("main.iAmACarpoolDriver")}
+              </Text>
+              <Text style={[styles.roleSubtitle, { color: colors.placeholder }]}>
+                {t("main.carpoolDriverSubtitle")}
+              </Text>
+            </View>
+            <Icon name="chevron-right" size={22} color={colors.placeholder} />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -135,5 +163,5 @@ const styles = StyleSheet.create({
   },
   roleText: { flex: 1 },
   roleTitle: { fontSize: 15, fontWeight: "600" },
-  roleSubtitle: { color: "#9CA3AF", fontSize: 13, marginTop: 3 },
+  roleSubtitle: { fontSize: 13, marginTop: 3 },
 });

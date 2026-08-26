@@ -67,6 +67,30 @@ export default (state = auth, action) => {
         ...state,
         documentsSubmitted: action.value,
       };
+    case types.SET_CARPOOL_DRIVER:
+      AsyncStorage.setItem("@mamdoo-carpoolDriver", JSON.stringify(action.carpoolDriver));
+      return {
+        ...state,
+        carpoolDriver: action.carpoolDriver,
+      };
+    case types.REMOVE_CARPOOL_DRIVER:
+      AsyncStorage.removeItem("@mamdoo-carpoolDriver");
+      return {
+        ...state,
+        carpoolDriver: null,
+        carpoolUploadDocuments: {},
+        carpoolDocumentsSubmitted: false,
+      };
+    case types.CARPOOL_DRIVER_LOADED:
+      return {
+        ...state,
+        carpoolDriverLoaded: true,
+      };
+    case types.CARPOOL_DRIVER_REFRESHED:
+      return {
+        ...state,
+        carpoolDriverRefreshed: true,
+      };
     default:
       return state;
   }

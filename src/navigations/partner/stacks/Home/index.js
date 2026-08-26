@@ -6,7 +6,14 @@ import { useTimeSpent } from "_hooks/partner";
 
 const Stack = createStackNavigator();
 
-import { HomeScene, Ride, RideSummaryScene, ProfileScene, RidesHistoryScene, RideDetailScene } from "_scenes/partner";
+import {
+  HomeScene,
+  Ride,
+  RideSummaryScene,
+  ProfileScene,
+  RidesHistoryScene,
+  RideDetailScene,
+} from "_scenes/partner";
 
 export default function HomeStack({ role }) {
   const partner = usePartner();

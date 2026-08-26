@@ -11,9 +11,24 @@ var alertShown = false;
 export function useApi() {
   const {
     main: { app },
-    auth: { user = {}, partner = {} },
-    actions: { removeUser, removePartner },
+    auth: { user = {}, partner = {}, carpoolDriver = {} },
+    actions: { removeUser, removePartner, removeCarpoolDriver },
   } = useStore();
+
+  // Keyed by surface rather than a client/not-client split, so a third (or
+  // fourth) surface is a new entry here rather than a rewritten condition — the
+  // binary version silently sent the ride driver's token for any non-client app
+  // the day covoiturage stopped being a screen inside the ride driver app.
+  const tokenBySurface = {
+    client: user?.accessToken,
+    partner: partner?.accessToken,
+    carpool: carpoolDriver?.accessToken,
+  };
+  const removeSessionBySurface = {
+    client: removeUser,
+    partner: removePartner,
+    carpool: removeCarpoolDriver,
+  };
 
   const getRequest = ({ method = "GET", endpoint, params }) => {
     let url = PROVIDER_URL + endpoint;
@@ -21,8 +36,7 @@ export function useApi() {
     const options = {
       headers: {
         app,
-        "x-mamdoo-access-token":
-          app === "client" ? user?.accessToken : partner?.accessToken,
+        "x-mamdoo-access-token": tokenBySurface[app],
         "x-application-version": Application.nativeApplicationVersion,
         "x-build-version": Application.nativeBuildVersion,
         "x-os-type": Platform.OS,
@@ -65,8 +79,7 @@ export function useApi() {
                   text: "OK",
                   onPress: () => {
                     alertShown = false;
-                    if (app === "client") removeUser();
-                    else removePartner();
+                    removeSessionBySurface[app]?.();
                   },
                 },
               ]

@@ -18,6 +18,7 @@ import _ from "lodash";
 import { Colors } from "_styles";
 import ClientRoutes from "./client";
 import PartnerRoutes from "./partner";
+import CarpoolDriverRoutes from "./carpoolDriver";
 import AppEntry from "../";
 import { navigationRef } from "./RootNavigation";
 import { LoadingV2 } from "_atoms";
@@ -161,6 +162,8 @@ export default function NavigationRoot({ mode }) {
           <AppEntry />
         ) : app === "client" ? (
           <ClientRoutes />
+        ) : app === "carpool" ? (
+          <CarpoolDriverRoutes />
         ) : (
           <PartnerRoutes />
         )}

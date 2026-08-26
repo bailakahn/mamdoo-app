@@ -5,6 +5,7 @@ export { default as useApp } from "./useApp";
 export { default as useLocation } from "./useLocation";
 export { default as useRequest } from "./useRequest";
 export { default as useRide } from "./useRide";
+export { default as useCarpool } from "./useCarpool";
 export { default as useTheme } from "./useTheme";
 export { default as useNotifications } from "./useNotifications";
 export { default as useLanguage } from "./useLanguage";

@@ -8,6 +8,7 @@ import * as RootNavigation from "_navigations/RootNavigation";
 import { t } from "_utils/lang";
 import Constants from "expo-constants";
 import usePartner from "./usePartner";
+import useCarpoolAuth from "./carpoolDriver/useCarpoolAuth";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -31,11 +32,21 @@ export default function useNotification() {
   const getRequest = useApi();
   const { main: { app }, auth } = useStore();
   const partner = usePartner();
+  const carpoolAuth = useCarpoolAuth();
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
   const processedNotificationId = useRef(null);
   const [pushToken, setPushToken] = useState(null);
 
-  const accessToken = app === "client" ? auth.user?.accessToken : auth.partner?.accessToken;
+  const tokenBySurface = {
+    client: auth.user?.accessToken,
+    partner: auth.partner?.accessToken,
+    carpool: auth.carpoolDriver?.accessToken,
+  };
+  const refreshSessionBySurface = {
+    partner: partner.actions.refresh,
+    carpool: carpoolAuth.actions.refresh,
+  };
+  const accessToken = tokenBySurface[app];
 
   // Phase 3: handle notification tap (foreground, background, killed-app)
   useEffect(() => {
@@ -54,7 +65,7 @@ export default function useNotification() {
     // Account status changes: refresh partner state so the navigator re-routes automatically.
     // Navigating directly would fail because the target stack isn't mounted yet.
     if (data.event === "ACCOUNT_APPROVED" || data.event === "ACCOUNT_VERIFIED") {
-      partner.actions.refresh();
+      refreshSessionBySurface[app]?.();
       return;
     }
 

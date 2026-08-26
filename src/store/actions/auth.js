@@ -60,5 +60,29 @@ export default function authActions(state, dispatch) {
         setDocumentsSubmitted: (value) => {
             dispatch({ type: types.SET_DOCUMENTS_SUBMITTED, value });
         },
+        setCarpoolDriver: (carpoolDriver) => {
+            dispatch({
+                type: types.SET_CARPOOL_DRIVER,
+                carpoolDriver
+            });
+        },
+        getCarpoolDriver: () => {
+            AsyncStorage.getItem("@mamdoo-carpoolDriver").then((carpoolDriver) => {
+                carpoolDriver &&
+                    dispatch({
+                        type: types.SET_CARPOOL_DRIVER,
+                        carpoolDriver: JSON.parse(carpoolDriver)
+                    });
+                dispatch({ type: types.CARPOOL_DRIVER_LOADED });
+            });
+        },
+        removeCarpoolDriver: () => {
+            AsyncStorage.removeItem("@mamdoo-carpoolDriver").then(() => {
+                dispatch({ type: types.REMOVE_CARPOOL_DRIVER });
+            });
+        },
+        setCarpoolDriverRefreshed: () => {
+            dispatch({ type: types.CARPOOL_DRIVER_REFRESHED });
+        },
     };
 }

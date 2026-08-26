@@ -14,6 +14,14 @@ import {
   RideScene,
   ReviewScene,
   SearchRideScene,
+  CarpoolHomeScene,
+  CarpoolCorridorScene,
+  CarpoolDirectionScene,
+  CarpoolStopsScene,
+  CarpoolTripsScene,
+  CarpoolBookedScene,
+  CarpoolReportScene,
+  CarpoolRateScene,
 } from "_scenes/client";
 
 export default function HomeStack({ role }) {
@@ -41,6 +49,17 @@ export default function HomeStack({ role }) {
           },
         })}
       />
+
+      {/* Covoiturage. Header-less like Home: each screen supplies its own
+          StepHeader so the back control and progress dots stay consistent. */}
+      <Stack.Screen name="CarpoolHome" component={CarpoolHomeScene} />
+      <Stack.Screen name="CarpoolCorridor" component={CarpoolCorridorScene} />
+      <Stack.Screen name="CarpoolDirection" component={CarpoolDirectionScene} />
+      <Stack.Screen name="CarpoolStops" component={CarpoolStopsScene} />
+      <Stack.Screen name="CarpoolTrips" component={CarpoolTripsScene} />
+      <Stack.Screen name="CarpoolBooked" component={CarpoolBookedScene} />
+      <Stack.Screen name="CarpoolReport" component={CarpoolReportScene} />
+      <Stack.Screen name="CarpoolRate" component={CarpoolRateScene} />
 
       <Stack.Group
         screenOptions={{

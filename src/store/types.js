@@ -66,4 +66,24 @@ export default {
   CLEAR_RIDE: "CLEAR_RIDE",
   CANCEL_REQUEST: "CANCEL_REQUEST",
   BOOTSTRAP: "BOOTSTRAP",
+
+  // Covoiturage
+  SET_CARPOOL_MODE: "SET_CARPOOL_MODE",
+  SET_CARPOOL_CORRIDORS: "SET_CARPOOL_CORRIDORS",
+  SET_CARPOOL_SEARCH: "SET_CARPOOL_SEARCH",
+  RESET_CARPOOL_SEARCH: "RESET_CARPOOL_SEARCH",
+  SET_CARPOOL_TRIPS: "SET_CARPOOL_TRIPS",
+  SET_CARPOOL_BOOKINGS: "SET_CARPOOL_BOOKINGS",
+  SET_CARPOOL_LOADING: "SET_CARPOOL_LOADING",
+
+  // Covoiturage driver — its own session, deliberately not the ride partner's.
+  // A human may hold a ride session or a covoiturage session, never both, so this
+  // never needs to coexist with SET_PARTNER, but it is not the same account slot:
+  // reusing it would make switching surfaces indistinguishable from switching
+  // ride accounts, and would have to be split out anyway the day one driver
+  // legitimately does both.
+  SET_CARPOOL_DRIVER: "SET_CARPOOL_DRIVER",
+  REMOVE_CARPOOL_DRIVER: "REMOVE_CARPOOL_DRIVER",
+  CARPOOL_DRIVER_LOADED: "CARPOOL_DRIVER_LOADED",
+  CARPOOL_DRIVER_REFRESHED: "CARPOOL_DRIVER_REFRESHED",
 };

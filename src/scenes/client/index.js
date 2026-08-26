@@ -5,6 +5,16 @@ export { default as RideScene } from "./home/Ride";
 export { default as ReviewScene } from "./home/Review";
 export { default as SearchRideScene } from "./home/SearchRide";
 
+// COVOITURAGE
+export { default as CarpoolHomeScene } from "./carpool";
+export { default as CarpoolCorridorScene } from "./carpool/PickCorridor";
+export { default as CarpoolDirectionScene } from "./carpool/PickDirection";
+export { default as CarpoolStopsScene } from "./carpool/PickStops";
+export { default as CarpoolTripsScene } from "./carpool/TripList";
+export { default as CarpoolBookedScene } from "./carpool/BookedTrip";
+export { default as CarpoolReportScene } from "./carpool/ReportProblem";
+export { default as CarpoolRateScene } from "./carpool/RateTrip";
+
 // FORM
 export { default as RegisterScene } from "./auth/register";
 export { default as LoginScene } from "./auth/login";

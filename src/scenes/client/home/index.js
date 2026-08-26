@@ -32,6 +32,7 @@ import {
   useTheme as useMamdooTheme,
   useNotifications,
   useLanguage,
+  useCarpool,
 } from "_hooks";
 import { LoadingV2, Button, Image } from "_atoms";
 import { Classes } from "_styles";
@@ -950,6 +951,95 @@ export default function Home({ navigation, route }) {
   );
 }
 
+// Course | Covoiturage. A segmented control INSIDE the rider journey, not a second
+// app-level switch — the app already has a role chooser on launch, and two things
+// called "switching" would be one too many for a first-time user (§11).
+//
+// Ride-hailing stays the default and the left-hand option: the existing product
+// must not feel demoted by a new one.
+const ModeSwitch = ({ navigation }) => {
+  const { colors } = useTheme();
+  const carpool = useCarpool();
+  const app = useApp();
+
+  // When covoiturage is switched off the feature does not exist: no tab, no entry
+  // point, nothing to discover. An entry that leads to "nothing available" is
+  // worse than no entry at all.
+  if (!app?.settings?.carpoolEnabled) return null;
+
+  const options = [
+    { key: "course", label: t("carpool.modeCourse"), icon: "local-taxi" },
+    { key: "covoiturage", label: t("carpool.modeCovoiturage"), icon: "groups" },
+  ];
+
+  const onPick = (key) => {
+    carpool.actions.setCarpoolMode(key);
+    if (key === "covoiturage") navigation.navigate("CarpoolHome");
+  };
+
+  return (
+    <View style={modeStyles.wrap}>
+      {options.map((option) => {
+        const active = carpool.mode === option.key;
+        return (
+          <TouchableOpacity
+            key={option.key}
+            onPress={() => onPick(option.key)}
+            activeOpacity={0.8}
+            accessibilityRole="button"
+            accessibilityState={{ selected: active }}
+            accessibilityLabel={option.label}
+            style={[
+              modeStyles.option,
+              {
+                backgroundColor: active ? colors.primary : "transparent",
+              },
+            ]}
+          >
+            <Icon
+              name={option.icon}
+              size={20}
+              color={active ? "#fff" : colors.text}
+            />
+            <Text
+              style={[
+                modeStyles.label,
+                { color: active ? "#fff" : colors.text },
+              ]}
+            >
+              {option.label}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+};
+
+const modeStyles = StyleSheet.create({
+  wrap: {
+    flexDirection: "row",
+    width: "100%",
+    backgroundColor: "rgba(127,127,127,0.12)",
+    borderRadius: 12,
+    padding: 4,
+    marginTop: 14,
+    gap: 4,
+  },
+  option: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    // Large enough to hit without precision, per §11.
+    height: 46,
+    borderRadius: 9,
+  },
+  // Icon always paired with a word — never icon-only for a primary control.
+  label: { fontSize: 15, fontWeight: "600" },
+});
+
 const WelcomeView = ({ user, ride, navigation, location, onContentHeight }) => {
   const { colors } = useTheme();
   const app = useApp();
@@ -1024,6 +1114,7 @@ const WelcomeView = ({ user, ride, navigation, location, onContentHeight }) => {
           }}
         />
       </View>
+      <ModeSwitch navigation={navigation} />
       {ride.validCountry ? (
         ride.validWorkingHours ? (
           <View

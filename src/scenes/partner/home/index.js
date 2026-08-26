@@ -929,6 +929,10 @@ export default function HomeScene() {
               colors={colors}
             />
 
+            {/* Covoiturage is its own surface now, chosen at the role screen
+                (src/index.js) rather than reached from inside the ride driver
+                app — a ride driver switching to it logs out of this session. */}
+
             <Divider style={{ marginVertical: 4 }} />
 
             {/* Dark mode toggle */}

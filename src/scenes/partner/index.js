@@ -3,6 +3,9 @@ export { default as HomeScene } from "./home";
 export { default as Ride } from "./home/Ride";
 export { default as RideSummaryScene } from "./home/RideSummary";
 
+// Covoiturage lives in its own surface now (_scenes/carpoolDriver) — it is not
+// a mode inside the ride driver app.
+
 // UPLOAD
 export { default as NotActiveScene } from "./upload/NotActive";
 export { default as UploadScene } from "./upload/Upload";

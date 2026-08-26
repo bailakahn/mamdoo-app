@@ -33,7 +33,29 @@ const defaultNewRideDetails = {
   notifiedArrival: false,
 };
 
-export { defaultNewRide, defaultNewRideDetails };
+const defaultCarpoolSearch = {
+  corridorId: null,
+  corridorCode: null,
+  direction: null,
+  boardStop: null,
+  exitStop: null,
+  serviceDate: null,
+  womenOnly: false,
+};
+
+export { defaultNewRide, defaultNewRideDetails, defaultCarpoolSearch };
+
+export const carpool = {
+  mode: "course",
+  corridors: [],
+  kaloumRoads: [],
+  corridorsLoaded: false,
+  search: defaultCarpoolSearch,
+  trips: [],
+  searched: false,
+  bookings: [],
+  isLoading: false,
+};
 
 export default {
   main: {
@@ -62,6 +84,15 @@ export default {
       cabLicense:         { uri: null, status: "idle", s3Key: null },
     },
     documentsSubmitted: false,
+    // Its own slot, deliberately not reusing `partner` — see the note by
+    // SET_CARPOOL_DRIVER in store/types.js. Document keys are not listed here:
+    // the required set is configured server-side, so the shape is populated once
+    // that list is fetched rather than declared up front.
+    carpoolDriver: null,
+    carpoolDriverLoaded: false,
+    carpoolDriverRefreshed: false,
+    carpoolUploadDocuments: {},
+    carpoolDocumentsSubmitted: false,
   },
   ride: {
     driver: null,
@@ -94,6 +125,17 @@ export default {
     searchStatus: null,
     queuedRideDriver: null,
     driverHasQueuedRide: false,
+  },
+  carpool: {
+    mode: "course",
+    corridors: [],
+    kaloumRoads: [],
+    corridorsLoaded: false,
+    search: defaultCarpoolSearch,
+    trips: [],
+    searched: false,
+    bookings: [],
+    isLoading: false,
   },
 };
 
