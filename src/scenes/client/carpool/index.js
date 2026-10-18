@@ -29,17 +29,26 @@ export default function CarpoolHome({ navigation }) {
   const user = useUser();
 
   const [loaded, setLoaded] = useState(false);
+  const [usualRoute, setUsualRoute] = useState(null);
 
   useFocusEffect(
     useCallback(() => {
       carpool.actions.loadBookings("upcoming").then(() => setLoaded(true));
       carpool.actions.loadCorridors();
+      carpool.actions.loadSavedRoute().then(setUsualRoute);
     }, [])
   );
 
   const startSearch = () => {
     carpool.actions.resetCarpoolSearch();
     navigation.navigate("CarpoolCorridor");
+  };
+
+  // One tap from the home screen to the trip list for the saved commute.
+  const bookUsual = () => {
+    carpool.actions.resetCarpoolSearch();
+    carpool.actions.applySavedRoute(usualRoute);
+    navigation.navigate("CarpoolTrips");
   };
 
   const upcoming = carpool.bookings || [];
@@ -69,6 +78,26 @@ export default function CarpoolHome({ navigation }) {
           </TouchableOpacity>
         </View>
 
+        {usualRoute && (
+          <View style={styles.section}>
+            <Text style={styles.sectionLabel}>{t("carpool.usualRoute")}</Text>
+            <TouchableOpacity
+              activeOpacity={0.75}
+              onPress={bookUsual}
+              style={[styles.bookingCard, { backgroundColor: colors.background }]}
+            >
+              <Text style={styles.bookingRoute} numberOfLines={2}>
+                {usualRoute.boardStopId?.name} → {usualRoute.exitStopId?.name}
+              </Text>
+              <View style={styles.bookingFooter}>
+                <Icon name="repeat" size={16} color="#6B7280" />
+                <Text style={styles.bookingDriver}>{t("carpool.usualRouteBook")}</Text>
+                <Icon name="chevron-right" size={20} color="#9CA3AF" />
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
+
         {loaded && upcoming.length > 0 && (
           <View style={styles.section}>
             <Text style={styles.sectionLabel}>{t("carpool.yourSeats")}</Text>
@@ -91,6 +120,11 @@ export default function CarpoolHome({ navigation }) {
                   {booking.trip?.stopSequence?.[booking.boardIndex]?.name} →{" "}
                   {booking.trip?.stopSequence?.[booking.exitIndex]?.name}
                 </Text>
+                {booking.status === "cancelled_admin" && (
+                  <Text style={[styles.bookingDriver, { color: colors.error }]}>
+                    {t("carpool.bookingCancelledAdmin")}
+                  </Text>
+                )}
                 <View style={styles.bookingFooter}>
                   <Icon name="person" size={16} color="#6B7280" />
                   <Text style={styles.bookingDriver}>
@@ -129,6 +163,15 @@ export default function CarpoolHome({ navigation }) {
             {t("carpool.findASeat")}
           </Button>
         </View>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate("CarpoolOnboarding", { replay: true })}
+          accessibilityRole="button"
+          style={styles.infoRow}
+        >
+          <Icon name="help-outline" size={20} color={colors.primary} />
+          <Text style={[styles.infoText, { color: colors.primary }]}>{t("carpool.howItWorks")}</Text>
+        </TouchableOpacity>
 
         <View style={styles.infoRow}>
           <Icon name="payments" size={20} color="#6B7280" />

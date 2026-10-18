@@ -53,6 +53,18 @@ export default function useCarpool() {
     return result;
   };
 
+  const deleteCar = async (carId) => {
+    const result = await call({ endpoint: "carpool/deleteCar", params: { carId } });
+    if (result) await loadProfile();
+    return result;
+  };
+
+  const setActiveCar = async (carId) => {
+    const result = await call({ endpoint: "carpool/setActiveCar", params: { carId } });
+    if (result) await loadProfile();
+    return result;
+  };
+
   const loadTemplates = useCallback(async () => {
     const result = await getRequest({
       method: "GET",
@@ -105,6 +117,15 @@ export default function useCarpool() {
   const skipTrip = async (tripId) =>
     call({ endpoint: "carpool/skipTrip", params: { tripId } });
 
+  // Tells riders at a stop the car is about `minutes` away. The server sends each
+  // rider this once, so repeating the call is harmless.
+  const notifyApproaching = async (tripId, stopIndex, minutes) =>
+    call({ endpoint: "carpool/notifyApproaching", params: { tripId, stopIndex, minutes }, silent: true });
+
+  // Test builds only: a trip from this template leaving in 20 minutes.
+  const createTestTrip = async (templateId) =>
+    call({ endpoint: "carpool/createTestTrip", params: { templateId } });
+
   const cancelTrip = async (tripId, reason) =>
     call({ endpoint: "carpool/cancelTrip", params: { tripId, reason } });
 
@@ -118,8 +139,8 @@ export default function useCarpool() {
   const startTrip = async (tripId) =>
     call({ endpoint: "carpool/startTrip", params: { tripId } });
 
-  const arriveAtStop = async (tripId, stopIndex) =>
-    call({ endpoint: "carpool/arriveAtStop", params: { tripId, stopIndex } });
+  const arriveAtStop = async (tripId, stopIndex, coords) =>
+    call({ endpoint: "carpool/arriveAtStop", params: { tripId, stopIndex, ...coords } });
 
   const markAboard = async (bookingId) =>
     call({ endpoint: "carpool/markAboard", params: { bookingId } });
@@ -203,6 +224,8 @@ export default function useCarpool() {
       "errors.carpoolTripNotPending": t2("carpoolDriver.errorNotPending"),
       "errors.carpoolCarNotFound": t2("carpoolDriver.errorCarNotFound"),
       "errors.carpoolNotYourPassenger": t2("carpoolDriver.errorNotYourPassenger"),
+      "errors.carpoolSeatsBelowBooked": t2("carpoolDriver.errorSeatsBelowBooked"),
+      "errors.carpoolTestTripUsed": t2("carpoolDriver.errorTestTripUsed"),
     };
     // Server messages for grace countdowns carry the seconds remaining, which is
     // more useful than any generic copy we could write.
@@ -219,6 +242,8 @@ export default function useCarpool() {
       loadProfile,
       enroll,
       saveCar,
+      deleteCar,
+      setActiveCar,
       loadTemplates,
       saveTemplate,
       deleteTemplate,
@@ -226,6 +251,8 @@ export default function useCarpool() {
       confirmTrip,
       skipTrip,
       cancelTrip,
+      notifyApproaching,
+      createTestTrip,
       getTrip,
       startTrip,
       arriveAtStop,

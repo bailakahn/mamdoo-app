@@ -12,7 +12,29 @@ import { t2 } from "_utils/lang";
 const CORRIDOR_COLORS = { red: "#C8322D", blue: "#2563A8", purple: "#6D4AA6" };
 const DAYS = [1, 2, 3, 4, 5, 6, 0];
 const SEAT_OPTIONS = [1, 2, 3, 4];
-const HOURS = ["05:30", "06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "16:00", "17:00", "17:30", "18:00", "18:30"];
+
+// 15-minute slots across the two commute windows, generated rather than hand-listed
+// so a driver leaving at, say, 06:45 has an option — the old fixed 12-slot list
+// (:00/:30 only) had no way to express that.
+const timeSlots = (startHour, startMinute, endHour, endMinute, stepMinutes) => {
+  const slots = [];
+  let h = startHour;
+  let m = startMinute;
+  while (h < endHour || (h === endHour && m <= endMinute)) {
+    slots.push(`${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`);
+    m += stepMinutes;
+    if (m >= 60) {
+      m -= 60;
+      h += 1;
+    }
+  }
+  return slots;
+};
+
+const HOURS = [
+  ...timeSlots(5, 0, 9, 0, 15),
+  ...timeSlots(15, 30, 19, 30, 15),
+];
 
 // Publishing a recurring trip, as a wizard rather than a form.
 //
@@ -72,7 +94,7 @@ export default function CarpoolTemplateForm({ navigation, route }) {
     })();
   }, []);
 
-  const car = carpool.profile?.cars?.[0];
+  const car = carpool.profile?.cars?.find((c) => c.active) || carpool.profile?.cars?.[0];
   const corridor = data.corridors.find((c) => c._id === form.corridorId);
 
   // The full route in travel order, so origin and destination can be picked from

@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { HomeScene, EnrollScene, CarScene, DocumentsScene } from "_scenes/carpoolDriver";
+import { HomeScene, EnrollScene, CarScene, MyCarsScene, DocumentsScene } from "_scenes/carpoolDriver";
 
 const Stack = createStackNavigator();
 
@@ -17,6 +17,7 @@ export default function HomeTabStack() {
       <Stack.Screen name="CarpoolDriverHome" component={HomeScene} />
       <Stack.Screen name="CarpoolEnroll" component={EnrollScene} />
       <Stack.Screen name="CarpoolCar" component={CarScene} />
+      <Stack.Screen name="CarpoolMyCars" component={MyCarsScene} />
       <Stack.Screen name="Documents" component={DocumentsScene} />
     </Stack.Navigator>
   );

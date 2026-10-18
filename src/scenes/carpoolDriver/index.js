@@ -6,8 +6,10 @@ export { default as CompleteProfileScene } from "./CompleteProfile";
 
 // ONBOARDING / HOME
 export { default as HomeScene } from "./Home";
+export { default as OnboardingScene } from "./Onboarding";
 export { default as EnrollScene } from "./Enroll";
 export { default as CarScene } from "./CarForm";
+export { default as MyCarsScene } from "./MyCars";
 export { default as DocumentsScene } from "./Documents";
 
 // TEMPLATES / TRIPS

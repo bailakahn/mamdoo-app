@@ -20,9 +20,24 @@ Notifications.setNotificationHandler({
 });
 
 // Phase 3: navigate to the right screen on notification tap
-const navigateForEvent = (event, app) => {
+const navigateForEvent = (event, app, data) => {
   if (event === "END_RIDE" && app === "client") {
     RootNavigation.navigate("Review");
+    return;
+  }
+  // The driver cancelled a covoiturage trip: open that trip so the rider sees the
+  // cancellation and can look for another car on the same route.
+  if (event === "RIDER_TRIP_CANCELLED" && app === "client") {
+    RootNavigation.navigate("CarpoolBooked", { tripId: data?.tripId });
+    return;
+  }
+  // Reminders and live-trip pushes open the trip itself, on whichever side.
+  if (event === "CARPOOL_TRIP" && app === "client") {
+    RootNavigation.navigate("CarpoolBooked", { tripId: data?.tripId });
+    return;
+  }
+  if (event === "CARPOOL_TRIP" && app === "carpool") {
+    RootNavigation.navigate("TripsTab", { screen: "CarpoolDayOf", params: { tripId: data?.tripId } });
     return;
   }
   RootNavigation.navigate("Home");
@@ -69,7 +84,7 @@ export default function useNotification() {
       return;
     }
 
-    navigateForEvent(data.event, app);
+    navigateForEvent(data.event, app, data);
 
     // Re-deliver the socket event via server (works for killed-app cold launch)
     if (data.topic) {

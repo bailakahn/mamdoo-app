@@ -12,12 +12,16 @@ const SEAT_OPTIONS = [1, 2, 3, 4];
 // Registering the car. Seats are a row of big number buttons rather than a
 // stepper or a picker: it is the one field a driver must get exactly right, and
 // tapping "3" is unambiguous in a way that +/- controls are not.
-export default function CarpoolCarForm({ navigation }) {
+export default function CarpoolCarForm({ navigation, route }) {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const carpool = useCarpool();
 
-  const existing = carpool.profile?.cars?.[0] || null;
+  // A carId in the route means edit; none means a genuinely new car — this
+  // used to always mean "edit the first car", which made adding a second car
+  // impossible from here.
+  const { carId } = route.params || {};
+  const existing = carId ? carpool.profile?.cars?.find((c) => c._id === carId) || null : null;
 
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");

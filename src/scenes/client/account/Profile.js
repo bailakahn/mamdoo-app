@@ -31,17 +31,30 @@ export default function ProfileScene({ navigation }) {
     `${u.firstName?.charAt(0) ?? ""}${u.lastName?.charAt(0) ?? ""}`.toUpperCase() || "?";
 
   const openEdit = () => {
-    setEditUser({ firstName: u.firstName, lastName: u.lastName });
+    setEditUser({ firstName: u.firstName, lastName: u.lastName, gender: u.gender });
     setEditVisible(true);
   };
 
   const saveEdit = () => {
-    user.actions.saveChanges({ firstName: editUser.firstName, lastName: editUser.lastName }, () => {
+    user.actions.saveChanges({
+      firstName: editUser.firstName,
+      lastName: editUser.lastName,
+      gender: editUser.gender,
+    }, () => {
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 3000);
     }, () => {});
     setEditVisible(false);
   };
+
+  const genderLabel = (value) =>
+    value === "female"
+      ? t("profile.genderFemale")
+      : value === "male"
+      ? t("profile.genderMale")
+      : value === "undisclosed"
+      ? t("profile.genderUndisclosed")
+      : t("profile.genderNotSet");
 
   const bottomPadding = Math.max(insets.bottom + 12, 24);
 
@@ -77,6 +90,36 @@ export default function ProfileScene({ navigation }) {
               style={styles.input}
               outlineStyle={{ borderRadius: 12 }}
             />
+
+            <Text style={[styles.genderLabel, { color: colors.text }]}>{t("profile.gender")}</Text>
+            <Text style={{ color: "#9CA3AF", fontSize: 12, marginBottom: 10 }}>
+              {t("profile.genderHint")}
+            </Text>
+            <View style={styles.genderRow}>
+              {["female", "male", "undisclosed"].map((value) => {
+                const active = editUser.gender === value;
+                return (
+                  <TouchableOpacity
+                    key={value}
+                    onPress={() => setEditUser({ ...editUser, gender: value })}
+                    accessibilityRole="button"
+                    accessibilityState={{ selected: active }}
+                    style={[
+                      styles.genderChip,
+                      {
+                        backgroundColor: active ? colors.primary : "transparent",
+                        borderColor: active ? colors.primary : colors.border,
+                      },
+                    ]}
+                  >
+                    <Text style={{ color: active ? "#fff" : colors.text, fontSize: 13, fontWeight: "600" }}>
+                      {genderLabel(value)}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+
             <View style={styles.sheetActions}>
               <Button mode="contained" onPress={saveEdit} style={styles.sheetBtn} contentStyle={{ height: 50 }}>
                 {t("profile.saveChanges")}
@@ -175,7 +218,9 @@ export default function ProfileScene({ navigation }) {
             <Divider />
             <InfoRow label={t("form.lastName") || "Last name"} value={u.lastName} colors={colors} />
             <Divider />
-            <InfoRow label={t("form.phoneNumber") || "Phone"} value={u.phoneNumber} colors={colors} last />
+            <InfoRow label={t("form.phoneNumber") || "Phone"} value={u.phoneNumber} colors={colors} />
+            <Divider />
+            <InfoRow label={t("profile.gender")} value={genderLabel(u.gender)} colors={colors} last />
           </View>
         </View>
 
@@ -239,6 +284,16 @@ const styles = StyleSheet.create({
   handle: { alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "#e0e0e0", marginBottom: 16 },
   sheetTitle: { fontWeight: "700", marginBottom: 16 },
   input: { marginBottom: 12 },
+  genderLabel: { fontSize: 14, fontWeight: "600", marginBottom: 4 },
+  genderRow: { flexDirection: "row", gap: 10, marginBottom: 12 },
+  genderChip: {
+    flex: 1,
+    height: 44,
+    borderRadius: 10,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   sheetActions: { marginTop: 8, gap: 12 },
   sheetBtn: { borderRadius: 12 },
   deleteIcon: { width: 64, height: 64, borderRadius: 32, justifyContent: "center", alignItems: "center" },

@@ -36,9 +36,26 @@ const getAppName = () => {
   return `Mamdoo (Dev)`;
 };
 
+// One Sentry project per environment, so staging noise never mixes with prod.
+const getSentryProject = () =>
+  process.env.EXPO_PUBLIC_ENV_NAME === "production"
+    ? "mamdoo-app-production"
+    : "mamdoo-app-staging";
+
 module.exports = ({ config }) => ({
   ...config,
   name: getAppName(),
+  plugins: [
+    ...(config.plugins || []),
+    [
+      "@sentry/react-native/expo",
+      {
+        url: "https://sentry.io/",
+        organization: "mamdoo",
+        project: getSentryProject(),
+      },
+    ],
+  ],
   ios: {
     ...config.ios,
     bundleIdentifier: getBundleId(),

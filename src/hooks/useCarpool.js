@@ -119,6 +119,13 @@ export default function useCarpool() {
       params: { tripId },
     }).catch(() => null);
 
+  const confirmArrival = async (bookingId, stopIndex, coords) =>
+    getRequest({
+      method: "POST",
+      endpoint: "carpool/confirmArrival",
+      params: { bookingId, stopIndex, ...coords },
+    }).catch(() => null);
+
   const cancelBooking = async (bookingId) => {
     setCarpoolLoading(true);
     const result = await getRequest({
@@ -174,6 +181,42 @@ export default function useCarpool() {
     return search.direction === "outbound" ? [...inbound].reverse() : inbound;
   };
 
+  // The rider's usual commute, if they saved one. Null when none is saved.
+  const loadSavedRoute = async () => {
+    const result = await getRequest({
+      method: "GET",
+      endpoint: "carpool/getSavedRoute",
+    }).catch(() => null);
+    return result?.route || null;
+  };
+
+  const saveUsualRoute = async () => {
+    if (!search.corridorId || !search.boardStop || !search.exitStop || !search.direction) {
+      return null;
+    }
+    const result = await getRequest({
+      method: "POST",
+      endpoint: "carpool/saveRoute",
+      params: {
+        corridorId: search.corridorId,
+        direction: search.direction,
+        boardStopId: search.boardStop._id,
+        exitStopId: search.exitStop._id,
+      },
+    }).catch(() => null);
+    return result?.success ? result.route : null;
+  };
+
+  // Loads a saved route into the search so the trip list is one tap away.
+  const applySavedRoute = (route) =>
+    setCarpoolSearch({
+      corridorId: route.corridorId?._id,
+      corridorCode: route.corridorId?.code,
+      direction: route.direction,
+      boardStop: { _id: route.boardStopId?._id, name: route.boardStopId?.name },
+      exitStop: { _id: route.exitStopId?._id, name: route.exitStopId?.name },
+    });
+
   return {
     mode,
     corridors,
@@ -196,8 +239,12 @@ export default function useCarpool() {
       loadBookings,
       getTrip,
       getTripEvents,
+      confirmArrival,
       cancelBooking,
       stopsInTravelOrder,
+      loadSavedRoute,
+      saveUsualRoute,
+      applySavedRoute,
     },
   };
 }

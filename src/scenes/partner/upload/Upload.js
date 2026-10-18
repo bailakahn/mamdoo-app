@@ -20,8 +20,7 @@ const DOCS = [
     icon: "badge",
     titleKey: "driverLicense",
     route: "DriverLicense",
-    required: false,
-    optional: true,
+    required: true,
     getStatus: (docs) => {
       const f = docs?.driverLicenseFront?.status ?? "idle";
       const b = docs?.driverLicenseBack?.status ?? "idle";

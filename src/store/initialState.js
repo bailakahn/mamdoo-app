@@ -68,6 +68,8 @@ export default {
     backgroundPermission: "notLoaded",
     backgroundPermissionReady: false,
     appLaunched: false,
+    // Carpool onboarding seen on this phone, separately for riders and drivers.
+    carpoolOnboarded: { rider: false, driver: false },
     googleMapsSessionToken: null,
     cabTypes: [],
   },

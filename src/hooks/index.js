@@ -10,6 +10,8 @@ export { default as useTheme } from "./useTheme";
 export { default as useNotifications } from "./useNotifications";
 export { default as useLanguage } from "./useLanguage";
 export { default as useFeedback } from "./useFeedback";
+export { default as useMonitoring } from "./useMonitoring";
+export { default as useCarpoolOnboarding } from "./useCarpoolOnboarding";
 
 // PARTNER
 export { default as usePartner } from "./usePartner";

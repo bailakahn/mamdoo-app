@@ -233,7 +233,8 @@ export default function useUser() {
       .then((res) => {
         if (res.success) setUser({ ...user, verified: true });
         else {
-          if (res?.isUsed) setVerificationError(t("errors.isUsed"));
+          if (res?.tooManyAttempts) setVerificationError(t("errors.codeTooManyAttempts"));
+          else if (res?.isUsed) setVerificationError(t("errors.isUsed"));
           else if (res?.expired) setVerificationError(t("errors.expired"));
           else if (res?.notFound) setVerificationError(t("errors.notFound"));
           else setVerificationError(t("errors.invalidCode"));

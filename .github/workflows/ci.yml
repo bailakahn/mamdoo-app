@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [develop, staging, main]
+  pull_request:
+    branches: [develop, staging, main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
+          cache: yarn
+      - run: yarn install --ignore-engines
+      - run: yarn test
+
+  # There's no server to boot for a React Native app, so the equivalent check
+  # is the one this whole project has been leaning on by hand all along: does
+  # the whole dependency graph actually resolve and bundle. `expo export` is
+  # the same thing `expo start` + pulling a bundle over HTTP proves, just
+  # one-shot and CI-friendly instead of a long-running dev server.
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
+          cache: yarn
+      - run: yarn install --ignore-engines
+      - run: npx expo export --platform android

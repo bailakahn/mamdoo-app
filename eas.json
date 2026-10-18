@@ -5,7 +5,7 @@
   },
   "build": {
     "base": {
-      "node": "20.19.5",
+      "node": "24.19.0",
       "yarn": "1.22.22"
     },
     "development": {
@@ -21,11 +21,13 @@
     "staging": {
       "extends": "base",
       "channel": "staging",
+      "environment": "preview",
       "env": {
         "EXPO_PUBLIC_ENV_NAME": "staging",
         "EXPO_PUBLIC_PROXY_URL": "https://staging-mamdoo-proxy.herokuapp.com",
         "EXPO_PUBLIC_PROVIDER_URL": "https://staging-mamdoo-provider.herokuapp.com/",
-        "SERVICE_ACCOUNT_KEY": "credentials/staging.json"
+        "SERVICE_ACCOUNT_KEY": "credentials/staging.json",
+        "EXPO_PUBLIC_SENTRY_DSN": "https://6c6eb61471e3e30814679c0309393907@o4504817287954432.ingest.us.sentry.io/4512212782874624"
       },
       "distribution": "internal",
       "android": {
@@ -35,10 +37,12 @@
     "production": {
       "extends": "base",
       "channel": "production",
+      "environment": "production",
       "env": {
         "EXPO_PUBLIC_ENV_NAME": "production",
         "EXPO_PUBLIC_PROXY_URL": "https://prod-mamdoo-proxy.herokuapp.com",
-        "EXPO_PUBLIC_PROVIDER_URL": "https://prod-mamdoo-provider.herokuapp.com/"
+        "EXPO_PUBLIC_PROVIDER_URL": "https://prod-mamdoo-provider.herokuapp.com/",
+        "EXPO_PUBLIC_SENTRY_DSN": "https://fb99b7d6eb909694b4eeb64027266c79@o4504817287954432.ingest.us.sentry.io/4512212791721984"
       },
       "autoIncrement": true
     }

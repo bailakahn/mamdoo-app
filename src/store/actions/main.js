@@ -83,6 +83,9 @@ export default function mainActions(state, dispatch) {
         appLaunched,
       });
     },
+    setCarpoolOnboarded: (role, seen = true) => {
+      dispatch({ type: types.SET_CARPOOL_ONBOARDED, role, seen });
+    },
     setGoogleMapsSessionToken: (token) => {
       dispatch({
         type: types.SET_GOOGLE_MAPS_SESSION_TOKEN,
@@ -96,7 +99,9 @@ export default function mainActions(state, dispatch) {
         AsyncStorage.getItem("@mamdoo-background-permission"),
         AsyncStorage.getItem("@mamdoo-app-launched"),
         AsyncStorage.getItem("@mamdoo-settings"),
-      ]).then(([app, darkMode, backgroundPermission, appLaunched, cachedSettings]) => {
+        AsyncStorage.getItem("@mamdoo-carpool-onboarded-rider"),
+        AsyncStorage.getItem("@mamdoo-carpool-onboarded-driver"),
+      ]).then(([app, darkMode, backgroundPermission, appLaunched, cachedSettings, riderOnboarded, driverOnboarded]) => {
         dispatch({
           type: types.BOOTSTRAP,
           app: app ?? null,
@@ -104,6 +109,7 @@ export default function mainActions(state, dispatch) {
           backgroundPermission: backgroundPermission ?? "notLoaded",
           appLaunched: appLaunched === "true",
           settings: cachedSettings ? JSON.parse(cachedSettings) : null,
+          carpoolOnboarded: { rider: riderOnboarded === "true", driver: driverOnboarded === "true" },
         });
       });
     },

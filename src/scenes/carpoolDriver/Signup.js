@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 import { Text, useTheme, TextInput as PaperInput } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -18,11 +18,16 @@ export default function CarpoolSignup({ navigation }) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [error, setError] = useState(null);
 
-  const canSubmit = phoneNumber.length === 9;
+  const canSubmit = phoneNumber.length === 9 && !carpoolAuth.isLoading;
+  // One request at a time: a quick second tap would send a second SMS.
+  const sendingRef = useRef(false);
 
   const onSubmit = async () => {
+    if (sendingRef.current) return;
+    sendingRef.current = true;
     setError(null);
     const result = await carpoolAuth.actions.signup(phoneNumber);
+    sendingRef.current = false;
     if (result?.success) {
       navigation.navigate("VerifyCode");
     } else {

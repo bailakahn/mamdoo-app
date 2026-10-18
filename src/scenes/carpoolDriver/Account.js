@@ -15,15 +15,15 @@ export default function CarpoolAccount({ navigation }) {
   const carpool = useCarpool();
   const theme = useMamdooTheme();
 
-  const car = carpool.profile?.cars?.[0];
+  const car = carpool.profile?.cars?.find((c) => c.active) || carpool.profile?.cars?.[0];
   const driver = carpoolAuth.carpoolDriver;
 
   const menu = useMemo(
     () => [
       {
-        title: t2("carpoolDriver.myCar"),
+        title: t2("carpoolDriver.myCarsTitle"),
         icon: "car",
-        onPress: () => navigation.navigate("CarpoolCar", { car }),
+        onPress: () => navigation.navigate("CarpoolMyCars"),
       },
       {
         title: t2("carpoolDriver.documentsTitle"),
@@ -39,6 +39,16 @@ export default function CarpoolAccount({ navigation }) {
             },
           ]
         : []),
+      {
+        title: t2("carpoolDriver.howItWorks"),
+        icon: "help-circle-outline",
+        onPress: () => navigation.navigate("CarpoolOnboarding"),
+      },
+      {
+        title: t2("emergencyContacts.title"),
+        icon: "shield-account-outline",
+        onPress: () => navigation.navigate("EmergencyContacts"),
+      },
       {
         title: t2("account.changeApp"),
         icon: "compare-horizontal",

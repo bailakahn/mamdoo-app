@@ -7,6 +7,8 @@ import { withTheme } from "react-native-paper";
 import { Classes, Mixins } from "_styles";
 import { t } from "_utils/lang";
 import { Button } from "_atoms";
+import { captureError } from "_utils/monitoring";
+import { saveCrash } from "_utils/crashLog";
 
 export class ErrorBoundary extends React.Component {
   state = {
@@ -17,8 +19,11 @@ export class ErrorBoundary extends React.Component {
     return { error: true };
   }
 
+  // The fallback screen hides the crash from the user, so it must be reported
+  // here or it is lost entirely.
   componentDidCatch(error, errorInfo) {
-    // deal with errorInfo if needed
+    captureError(error, { componentStack: errorInfo?.componentStack });
+    saveCrash(error, { isFatal: false, source: "render" });
   }
 
   destroyAuthToken = async () => {

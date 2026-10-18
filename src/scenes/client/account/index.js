@@ -41,6 +41,13 @@ export default function AccountScene({ navigation, route }) {
         },
       },
       {
+        title: t("emergencyContacts.title"),
+        icon: "shield-account-outline",
+        onPress: () => {
+          navigation.navigate("EmergencyContacts");
+        },
+      },
+      {
         title: t("account.switchToDriver"),
         icon: "steering",
         onPress: () => {

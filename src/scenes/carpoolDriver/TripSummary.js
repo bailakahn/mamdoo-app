@@ -63,6 +63,11 @@ export default function CarpoolTripSummary({ navigation, route }) {
           )}
           <Line
             colors={colors}
+            label={t2("carpoolDriver.summaryCash")}
+            value={formatPrice(summary.cashCollectedGnf)}
+          />
+          <Line
+            colors={colors}
             emphasis
             label={t2("carpoolDriver.summaryCommission")}
             value={formatPrice(commission.totalGnf)}

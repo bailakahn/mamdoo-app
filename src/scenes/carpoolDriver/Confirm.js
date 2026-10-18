@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { View, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity } from "react-native";
+import { View, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity, Alert } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
@@ -9,16 +9,18 @@ import { StepHeader } from "_molecules";
 import { useCarpool } from "_hooks/carpoolDriver";
 import { t2 } from "_utils/lang";
 
+// Must match the carpoolDriverFreeSkipHours config (provider).
+const FREE_CANCEL_HOURS = 6;
+const MAX_SEATS = 4;
+
 const formatTime = (iso) => {
   const d = new Date(iso);
   return `${String(d.getUTCHours()).padStart(2, "0")}:${String(d.getUTCMinutes()).padStart(2, "0")}`;
 };
 
-// The nightly confirmation. §11 requires this to be ONE TAP, so confirming is a
-// single full-width button per trip and nothing else is required.
-//
-// Adjusting seats is deliberately secondary — a small link under the main action —
-// because the overwhelmingly common answer is "yes, as usual".
+// Trips are already published, so there is nothing to confirm. This screen is the
+// evening heads-up: tomorrow's trips are running unless the driver changes them.
+// Seat changes can go down to the number already booked, never below it.
 export default function CarpoolConfirm({ navigation }) {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
@@ -43,9 +45,33 @@ export default function CarpoolConfirm({ navigation }) {
     if (result) await load();
   };
 
-  const onSkip = async (trip) => {
+  // Cancelling a published trip strands any booked riders, so it always asks first.
+  // Inside the free window the cost is shown, not discovered afterwards.
+  const onCancel = (trip) => {
+    const hoursToDeparture = (new Date(trip.departureAt) - Date.now()) / 3600000;
+    const late = hoursToDeparture < FREE_CANCEL_HOURS;
+    Alert.alert(
+      t2("carpoolDriver.cancelTitle"),
+      [
+        t2("carpoolDriver.cancelFreeHint"),
+        late && t2("carpoolDriver.cancelLateWarning", { hours: FREE_CANCEL_HOURS }),
+      ]
+        .filter(Boolean)
+        .join("\n\n"),
+      [
+        { text: t2("carpoolDriver.cancelKeep"), style: "cancel" },
+        {
+          text: t2("carpoolDriver.cancelConfirm"),
+          style: "destructive",
+          onPress: () => doCancel(trip),
+        },
+      ]
+    );
+  };
+
+  const doCancel = async (trip) => {
     setBusyId(trip._id);
-    const result = await carpool.actions.skipTrip(trip._id);
+    const result = await carpool.actions.cancelTrip(trip._id, "driver_cancelled_heads_up");
     setBusyId(null);
     if (result) await load();
   };
@@ -97,50 +123,65 @@ export default function CarpoolConfirm({ navigation }) {
                 {trip.stopSequence?.[trip.stopSequence.length - 1]?.name}
               </Text>
 
+              {(() => {
+                // seatsLeft = offered minus the busiest hop, so booked = offered - left.
+                const booked = (trip.seatsOffered ?? 0) - (trip.seatsLeft ?? 0);
+                return (
+                  <Text style={[styles.adjustLabel, { color: colors.placeholder }]}>
+                    {t2("carpoolDriver.seatsOpen", { count: trip.seatsLeft ?? 0 })} ·{" "}
+                    {t2("carpoolDriver.seatsBooked", { count: booked })}
+                  </Text>
+                );
+              })()}
+
               {adjusting === trip._id ? (
                 <>
                   <Text style={styles.adjustLabel}>{t2("carpoolDriver.howManyTomorrow")}</Text>
                   <View style={styles.seatRow}>
-                    {[1, 2, 3, 4].map((n) => (
-                      <TouchableOpacity
-                        key={n}
-                        onPress={() => onConfirm(trip, n)}
-                        accessibilityRole="button"
-                        accessibilityLabel={t2("carpoolDriver.seatsCount", { count: n })}
-                        style={[styles.seatBox, { borderColor: colors.primary }]}
-                      >
-                        <Text style={[styles.seatNumber, { color: colors.text }]}>{n}</Text>
-                      </TouchableOpacity>
-                    ))}
+                    {[1, 2, 3, 4]
+                      .filter((n) => n <= MAX_SEATS)
+                      .map((n) => {
+                        const bookedSeats = (trip.seatsOffered ?? 0) - (trip.seatsLeft ?? 0);
+                        const blocked = n < bookedSeats;
+                        return (
+                          <TouchableOpacity
+                            key={n}
+                            disabled={blocked || !!busyId}
+                            onPress={() => onConfirm(trip, n)}
+                            accessibilityRole="button"
+                            accessibilityState={{ disabled: blocked }}
+                            accessibilityLabel={t2("carpoolDriver.seatsCount", { count: n })}
+                            style={[
+                              styles.seatBox,
+                              { borderColor: colors.primary, opacity: blocked ? 0.3 : 1 },
+                            ]}
+                          >
+                            <Text style={[styles.seatNumber, { color: colors.text }]}>{n}</Text>
+                          </TouchableOpacity>
+                        );
+                      })}
                   </View>
+                  {(trip.seatsOffered ?? 0) - (trip.seatsLeft ?? 0) > 0 && (
+                    <Text style={[styles.adjustLabel, { color: colors.placeholder }]}>
+                      {t2("carpoolDriver.seatsBelowBooked", {
+                        count: (trip.seatsOffered ?? 0) - (trip.seatsLeft ?? 0),
+                      })}
+                    </Text>
+                  )}
                 </>
               ) : (
-                <>
-                  <Button
-                    mode="contained"
-                    icon="check"
-                    loading={busyId === trip._id}
-                    disabled={!!busyId}
-                    onPress={() => onConfirm(trip)}
-                    style={styles.confirmButton}
-                    contentStyle={styles.confirmContent}
-                  >
-                    {t2("carpoolDriver.yesDriving", { seats: trip.seatsOffered })}
-                  </Button>
-
-                  <View style={styles.secondaryRow}>
-                    <TouchableOpacity onPress={() => setAdjusting(trip._id)}>
-                      <Text style={[styles.link, { color: colors.primary }]}>
-                        {t2("carpoolDriver.changeSeats")}
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => onSkip(trip)} disabled={!!busyId}>
-                      <Text style={[styles.link, { color: "#B3261E" }]}>
-                        {t2("carpoolDriver.notTomorrow")}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </>
+                <View style={styles.secondaryRow}>
+                  <TouchableOpacity onPress={() => setAdjusting(trip._id)}>
+                    <Text style={[styles.link, { color: colors.primary }]}>
+                      {t2("carpoolDriver.changeSeats")}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => onCancel(trip)} disabled={!!busyId}>
+                    <Text style={[styles.link, { color: "#B3261E" }]}>
+                      {t2("carpoolDriver.notTomorrow")}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               )}
             </View>
           ))}

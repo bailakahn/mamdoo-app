@@ -10,6 +10,7 @@ import {
   FeedbackScene,
   RideDetailScene,
 } from "_scenes/client";
+import { EmergencyContactsScreen } from "_organisms";
 
 import { t } from "_utils/lang";
 
@@ -43,6 +44,12 @@ export default function AccountStack({ role }) {
       <Stack.Screen
         name="Feedback"
         component={FeedbackScene}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="EmergencyContacts"
+        component={EmergencyContactsScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

@@ -83,6 +83,11 @@ export default function useCarpoolAuth() {
     return result;
   };
 
+  // Sends a fresh code to the same number. The server refuses within 30 s of the
+  // last one; the previous code stays valid next to the new one.
+  const resendCode = async () =>
+    getRequest({ method: "POST", endpoint: "auth/resend" }).catch((err) => ({ error: err }));
+
   const completeProfile = async ({ firstName, lastName, pin }) => {
     setIsLoading(true);
     const result = await getRequest({
@@ -119,6 +124,7 @@ export default function useCarpoolAuth() {
       loadSession: getCarpoolDriver,
       signup,
       verifyCode,
+      resendCode,
       completeProfile,
       refresh,
       logout,

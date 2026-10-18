@@ -6,11 +6,17 @@ import ErrorBoundary from "_components/organisms/ErrorBoundary";
 import React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { initMonitoring, wrapApp } from "_utils/monitoring";
+import { installCrashLog } from "_utils/crashLog";
+
+// Both start before anything renders, so a crash during startup is still caught.
+initMonitoring();
+installCrashLog();
 
 // Keep the OS splash screen visible until NavigationRoot is ready.
 SplashScreen.preventAutoHideAsync();
 
-export default function App() {
+function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
@@ -25,3 +31,5 @@ export default function App() {
     </GestureHandlerRootView>
   );
 }
+
+export default wrapApp(App);

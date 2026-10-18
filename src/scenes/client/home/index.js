@@ -33,6 +33,7 @@ import {
   useNotifications,
   useLanguage,
   useCarpool,
+  useCarpoolOnboarding,
 } from "_hooks";
 import { LoadingV2, Button, Image } from "_atoms";
 import { Classes } from "_styles";
@@ -961,6 +962,7 @@ const ModeSwitch = ({ navigation }) => {
   const { colors } = useTheme();
   const carpool = useCarpool();
   const app = useApp();
+  const onboarding = useCarpoolOnboarding();
 
   // When covoiturage is switched off the feature does not exist: no tab, no entry
   // point, nothing to discover. An entry that leads to "nothing available" is
@@ -974,7 +976,8 @@ const ModeSwitch = ({ navigation }) => {
 
   const onPick = (key) => {
     carpool.actions.setCarpoolMode(key);
-    if (key === "covoiturage") navigation.navigate("CarpoolHome");
+    // First time on this phone: explain carpooling before showing it.
+    if (key === "covoiturage") navigation.navigate(onboarding.riderSeen ? "CarpoolHome" : "CarpoolOnboarding");
   };
 
   return (

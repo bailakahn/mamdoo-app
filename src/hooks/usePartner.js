@@ -47,9 +47,18 @@ export default function usePartner() {
   const [forgotPinError, setForgotPinError] = useState(false);
 
   const {
-    auth: { partner, partnerLoaded, partnerRefreshed, uploadDocuments, documentsSubmitted },
-    actions: { getPartner, setPartner, removePartner, setPartnerRefreshed, setUploadDocuments, setUploadDocument, setDocumentsSubmitted },
+    auth: { partner, partnerLoaded, partnerRefreshed, uploadDocuments, documentsSubmitted, carpoolDriver },
+    actions: { getPartner, setPartner, removePartner, setPartnerRefreshed, setUploadDocuments, setUploadDocument, setDocumentsSubmitted, removeCarpoolDriver },
   } = useStore();
+
+  // The mirror of useCarpoolAuth's clearStaleRideSession — a human starting a ride
+  // session on this device should not leave a carpool one sitting underneath it.
+  // No server call needed here the way the other direction needs drivers/setOnline:
+  // carpool never sets a ride-dispatch-relevant flag, so there is nothing to tell
+  // the server before dropping it locally.
+  const clearStaleCarpoolSession = () => {
+    if (carpoolDriver?.accessToken) removeCarpoolDriver();
+  };
 
   useEffect(() => {
     if (!partner) getPartner();
@@ -126,6 +135,7 @@ export default function usePartner() {
     })
       .then((newPartner) => {
         setPartner(newPartner);
+        clearStaleCarpoolSession();
       })
       .catch((err) => {
         console.log(err);
@@ -153,6 +163,7 @@ export default function usePartner() {
     })
       .then((user) => {
         setPartner(user);
+        clearStaleCarpoolSession();
       })
       .catch((err) => {
         console.log(err);
@@ -318,7 +329,8 @@ export default function usePartner() {
         console.log({ res });
         if (res.success) setPartner({ ...partner, verified: true });
         else {
-          if (res?.isUsed) setVerificationError(t("errors.isUsed"));
+          if (res?.tooManyAttempts) setVerificationError(t("errors.codeTooManyAttempts"));
+          else if (res?.isUsed) setVerificationError(t("errors.isUsed"));
           else if (res?.expired) setVerificationError(t("errors.expired"));
           else if (res?.notFound) setVerificationError(t("errors.notFound"));
           else setVerificationError(t("errors.invalidCode"));

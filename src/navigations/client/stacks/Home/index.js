@@ -18,6 +18,7 @@ import {
   CarpoolCorridorScene,
   CarpoolDirectionScene,
   CarpoolStopsScene,
+  CarpoolOnboardingScene,
   CarpoolTripsScene,
   CarpoolBookedScene,
   CarpoolReportScene,
@@ -56,6 +57,7 @@ export default function HomeStack({ role }) {
       <Stack.Screen name="CarpoolCorridor" component={CarpoolCorridorScene} />
       <Stack.Screen name="CarpoolDirection" component={CarpoolDirectionScene} />
       <Stack.Screen name="CarpoolStops" component={CarpoolStopsScene} />
+      <Stack.Screen name="CarpoolOnboarding" component={CarpoolOnboardingScene} />
       <Stack.Screen name="CarpoolTrips" component={CarpoolTripsScene} />
       <Stack.Screen name="CarpoolBooked" component={CarpoolBookedScene} />
       <Stack.Screen name="CarpoolReport" component={CarpoolReportScene} />

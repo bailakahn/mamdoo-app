@@ -56,9 +56,32 @@ export default function ReportProblem({ navigation, route }) {
       ? t("dispute.sentAuto")
       : t("dispute.sentAutoRejected");
 
+    // Appealing only makes sense once there is a verdict to disagree with, and
+    // not when it already went the rider's way — matches exactly what the
+    // server itself enforces in appealDispute, so this is a shortcut to a
+    // clearly-losing tap, not the real gate.
+    const canAppeal = result.autoResolved && result.dispute?.outcome !== "upheld";
+
     Alert.alert(t("dispute.sentTitle"), message, [
+      ...(canAppeal
+        ? [{ text: t("dispute.appeal"), onPress: () => appeal(result.dispute._id) }]
+        : []),
       { text: "OK", onPress: () => navigation.goBack() },
     ]);
+  };
+
+  const appeal = async (disputeId) => {
+    const result = await getRequest({
+      method: "POST",
+      endpoint: "carpool/appealDispute",
+      params: { disputeId },
+    }).catch((err) => ({ error: err }));
+
+    Alert.alert(
+      t("dispute.title"),
+      result?.success ? t("dispute.appealSent") : t("dispute.appealFailed"),
+      [{ text: "OK", onPress: () => navigation.goBack() }]
+    );
   };
 
   return (

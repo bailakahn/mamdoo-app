@@ -68,6 +68,7 @@ export default (state = main, action) => {
         backgroundPermissionReady: true,
         appLaunched: action.appLaunched,
         settings: action.settings || state.settings,
+        carpoolOnboarded: action.carpoolOnboarded || state.carpoolOnboarded,
       };
     case types.SET_APP_LAUNCHED:
       AsyncStorage.setItem(
@@ -77,6 +78,12 @@ export default (state = main, action) => {
       return {
         ...state,
         appLaunched: action.appLaunched,
+      };
+    case types.SET_CARPOOL_ONBOARDED:
+      AsyncStorage.setItem(`@mamdoo-carpool-onboarded-${action.role}`, action.seen ? "true" : "false");
+      return {
+        ...state,
+        carpoolOnboarded: { ...state.carpoolOnboarded, [action.role]: action.seen },
       };
     case types.SET_GOOGLE_MAPS_SESSION_TOKEN:
       return {

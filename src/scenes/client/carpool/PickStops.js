@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import {
   View,
   ScrollView,
@@ -8,10 +8,21 @@ import {
 } from "react-native";
 import { Text, useTheme, Searchbar } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import Icon from "@expo/vector-icons/MaterialIcons";
 import { StepHeader } from "_molecules";
-import { useCarpool } from "_hooks";
+import * as Location from "expo-location";
+import { useCarpool, useTheme as useMamdooTheme } from "_hooks";
+import { darkMapStyle } from "_styles/mapStyles";
 import { t } from "_utils/lang";
+
+// A5: only Mamdoo's own pickup/dropoff points, on a map, as an alternative to
+// the list — the fastest way for a confident rider to recognise a corner they
+// already know, and (per the backlog) the fastest way for ops to spot a stop
+// sitting in the wrong place. Toggled, not a replacement: the searchable list
+// stays the default, since a corridor's 60+ stops are still easier to scan by
+// neighbourhood name for most riders most of the time.
+const CORRIDOR_COLORS = { red: "#C8322D", blue: "#2563A8", purple: "#6D4AA6" };
 
 // Board and exit are asked one at a time. Picking "where do you get on" first lets
 // the exit list be filtered to stops that come after it, so a rider can never
@@ -30,14 +41,31 @@ const normalise = (value = "") =>
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "");
 
+// Straight-line distance in metres. Good enough to rank stops that are a few
+// hundred metres apart; no routing is needed for "which stop is closest to me".
+const metresBetween = (a, b) => {
+  const R = 6371000;
+  const toRad = (deg) => (deg * Math.PI) / 180;
+  const dLat = toRad(b.latitude - a.latitude);
+  const dLng = toRad(b.longitude - a.longitude);
+  const h =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(a.latitude)) * Math.cos(toRad(b.latitude)) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+};
+
 export default function PickStops({ navigation }) {
   const { colors } = useTheme();
+  const mamdooTheme = useMamdooTheme();
   const insets = useSafeAreaInsets();
   const carpool = useCarpool();
+  const mapRef = useRef(null);
+  const [here, setHere] = useState(null);
 
   const [phase, setPhase] = useState(carpool.search.boardStop ? "exit" : "board");
   const [query, setQuery] = useState("");
   const [openHood, setOpenHood] = useState(null);
+  const [viewMode, setViewMode] = useState("list");
 
   const stops = useMemo(
     () => carpool.actions.stopsInTravelOrder(),
@@ -46,6 +74,49 @@ export default function PickStops({ navigation }) {
 
   const boardIndex = stops.findIndex((s) => s._id === carpool.search.boardStop?._id);
   const options = phase === "board" ? stops : stops.slice(boardIndex + 1);
+
+  // Riders mostly know where they are standing, so the three closest stops are
+  // offered first. Uses the last known fix only, so opening this screen never
+  // prompts for permission. Skipped silently when there is no fix.
+  useEffect(() => {
+    Location.getLastKnownPositionAsync({ maxAge: 120000 })
+      .then((fix) => {
+        if (fix) setHere({ latitude: fix.coords.latitude, longitude: fix.coords.longitude });
+      })
+      .catch(() => {});
+  }, []);
+
+  const nearest = useMemo(() => {
+    if (!here) return [];
+    return [...options]
+      .map((stop) => ({
+        stop,
+        metres: metresBetween(here, {
+          latitude: stop.location.coordinates[1],
+          longitude: stop.location.coordinates[0],
+        }),
+      }))
+      .sort((a, b) => a.metres - b.metres)
+      .slice(0, 3)
+      .map(({ stop }) => stop);
+  }, [here, options]);
+
+  const corridorColor =
+    CORRIDOR_COLORS[carpool.search.corridorCode] || colors.primary;
+
+  // Fits every stop currently offered into view whenever the list changes —
+  // switching phase (board → exit) or corridor shrinks or moves the set, and a
+  // stale framing would leave half the pins off-screen.
+  useEffect(() => {
+    if (viewMode !== "map" || !mapRef.current || options.length === 0) return;
+    mapRef.current.fitToCoordinates(
+      options.map((s) => ({
+        latitude: s.location.coordinates[1],
+        longitude: s.location.coordinates[0],
+      })),
+      { edgePadding: { top: 60, right: 60, bottom: 60, left: 60 }, animated: true }
+    );
+  }, [viewMode, options]);
 
   // Grouped in travel order: neighbourhoods appear in the order the car reaches
   // them, and stops within each keep their order too.
@@ -159,17 +230,77 @@ export default function PickStops({ navigation }) {
       />
 
       <View style={styles.searchWrap}>
-        <Searchbar
-          placeholder={t("carpool.searchStops")}
-          value={query}
-          onChangeText={setQuery}
-          style={[styles.search, { backgroundColor: colors.overlap }]}
-          inputStyle={styles.searchInput}
-          elevation={0}
-        />
+        <View style={styles.searchRow}>
+          {viewMode === "list" && (
+            <Searchbar
+              placeholder={t("carpool.searchStops")}
+              value={query}
+              onChangeText={setQuery}
+              style={[styles.search, { backgroundColor: colors.overlap }]}
+              inputStyle={styles.searchInput}
+              elevation={0}
+            />
+          )}
+          <TouchableOpacity
+            onPress={() => setViewMode(viewMode === "list" ? "map" : "list")}
+            accessibilityRole="button"
+            accessibilityLabel={
+              viewMode === "list" ? t("carpool.viewOnMap") : t("carpool.viewAsList")
+            }
+            style={[
+              styles.viewToggle,
+              { borderColor: colors.border, backgroundColor: colors.overlap },
+              viewMode === "map" && styles.viewToggleFull,
+            ]}
+          >
+            <Icon
+              name={viewMode === "list" ? "map" : "view-list"}
+              size={20}
+              color={colors.primary}
+            />
+            {viewMode === "map" && (
+              <Text style={[styles.viewToggleText, { color: colors.primary }]}>
+                {t("carpool.viewAsList")}
+              </Text>
+            )}
+          </TouchableOpacity>
+        </View>
       </View>
 
-      {options.length === 0 ? (
+      {viewMode === "map" ? (
+        <MapView
+          ref={mapRef}
+          provider={PROVIDER_GOOGLE}
+          style={styles.map}
+          customMapStyle={mamdooTheme.isDarkMode ? darkMapStyle : []}
+          initialRegion={{
+            latitude: 9.6412,
+            longitude: -13.5784,
+            latitudeDelta: 0.2,
+            longitudeDelta: 0.2,
+          }}
+        >
+          {options.map((stop) => {
+            const selected =
+              phase === "board"
+                ? carpool.search.boardStop?._id === stop._id
+                : carpool.search.exitStop?._id === stop._id;
+            return (
+              <Marker
+                key={stop._id}
+                coordinate={{
+                  latitude: stop.location.coordinates[1],
+                  longitude: stop.location.coordinates[0],
+                }}
+                title={stop.name}
+                description={stop.neighbourhood || undefined}
+                pinColor={selected ? colors.primary : corridorColor}
+                onPress={() => onSelect(stop)}
+              />
+            );
+          })}
+        </MapView>
+      ) : options.length === 0 ? (
         <View style={styles.center}>
           <Text style={[styles.empty, { color: colors.placeholder }]}>
             {t("carpool.noStopsAfter")}
@@ -183,6 +314,17 @@ export default function PickStops({ navigation }) {
             { paddingBottom: Math.max(insets.bottom + 16, 28) },
           ]}
         >
+          {!matches && nearest.length > 0 && (
+            <View style={styles.group}>
+              <Text style={[styles.resultCount, { color: colors.placeholder }]}>
+                {t("carpool.nearestToYou")}
+              </Text>
+              {nearest.map((stop) => (
+                <StopRow key={`${stop._id}-near`} stop={stop} showHood />
+              ))}
+            </View>
+          )}
+
           {matches ? (
             matches.length === 0 ? (
               <View style={styles.center}>
@@ -256,8 +398,22 @@ export default function PickStops({ navigation }) {
 const styles = StyleSheet.create({
   screen: { flex: 1 },
   searchWrap: { paddingHorizontal: 20, paddingBottom: 10 },
-  search: { borderRadius: 12 },
+  searchRow: { flexDirection: "row", alignItems: "center", gap: 10 },
+  search: { flex: 1, borderRadius: 12 },
   searchInput: { fontSize: 15, minHeight: 0 },
+  viewToggle: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 6,
+    height: 44,
+    width: 44,
+    borderRadius: 12,
+    borderWidth: 1,
+  },
+  viewToggleFull: { flex: 1, width: undefined, paddingHorizontal: 16 },
+  viewToggleText: { fontSize: 14, fontWeight: "600" },
+  map: { flex: 1 },
   list: { paddingHorizontal: 20, paddingTop: 2 },
   center: { alignItems: "center", justifyContent: "center", padding: 32, gap: 10 },
   empty: { fontSize: 15, textAlign: "center", lineHeight: 21 },

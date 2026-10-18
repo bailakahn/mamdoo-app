@@ -8,6 +8,7 @@ import { Button } from "_atoms";
 import { StepHeader } from "_molecules";
 import { useCarpool } from "_hooks/carpoolDriver";
 import { t2 } from "_utils/lang";
+import { SIMULATOR_AVAILABLE } from "_hooks/carpoolDriver/useDriverPosition";
 
 const DAY_ORDER = [1, 2, 3, 4, 5, 6, 0];
 
@@ -22,6 +23,22 @@ export default function CarpoolTemplates({ navigation }) {
       carpool.actions.loadTemplates().then(() => setLoading(false));
     }, [])
   );
+
+  const onTestTrip = async (template) => {
+    const result = await carpool.actions.createTestTrip(template._id);
+    if (!result?.trip) return;
+    Alert.alert(
+      t2("carpoolDriver.testTripCreatedTitle"),
+      t2("carpoolDriver.testTripCreatedBody", { time: result.trip.departureTime }),
+      [
+        { text: t2("carpoolDriver.close"), style: "cancel" },
+        {
+          text: t2("carpoolDriver.testTripOpen"),
+          onPress: () => navigation.navigate("CarpoolDayOf", { tripId: result.trip._id }),
+        },
+      ]
+    );
+  };
 
   const onDelete = (template) => {
     Alert.alert(t2("carpoolDriver.deleteTitle"), t2("carpoolDriver.deleteBody"), [
@@ -114,6 +131,14 @@ export default function CarpoolTemplates({ navigation }) {
                     {t2("carpoolDriver.edit")}
                   </Text>
                 </TouchableOpacity>
+                {/* Test builds only. */}
+                {SIMULATOR_AVAILABLE && (
+                  <TouchableOpacity onPress={() => onTestTrip(template)} accessibilityRole="button">
+                    <Text style={[styles.link, { color: colors.primary }]}>
+                      {t2("carpoolDriver.testTrip")}
+                    </Text>
+                  </TouchableOpacity>
+                )}
                 <TouchableOpacity onPress={() => onDelete(template)} accessibilityRole="button">
                   <Text style={[styles.link, { color: "#B3261E" }]}>
                     {t2("carpoolDriver.delete")}

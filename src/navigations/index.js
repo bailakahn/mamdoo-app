@@ -13,7 +13,8 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Icon from "@expo/vector-icons/MaterialIcons";
 import { useStore } from "_store";
-import { useApp, useTheme } from "_hooks";
+import { useApp, useTheme, useMonitoring } from "_hooks";
+import { setScreen } from "_utils/crashLog";
 import _ from "lodash";
 import { Colors } from "_styles";
 import ClientRoutes from "./client";
@@ -59,6 +60,7 @@ export default function NavigationRoot({ mode }) {
   const mamdooTheme = useTheme();
 
   const { app, appLoaded, settings, actions } = useApp();
+  useMonitoring();
 
   const {
     main: { backgroundPermission, backgroundPermissionReady },
@@ -157,7 +159,12 @@ export default function NavigationRoot({ mode }) {
   return (
     <PaperProvider theme={{ ...theme }}>
       <StatusBar style={mamdooTheme.isDarkMode ? "light" : "dark"} />
-      <NavigationContainer ref={navigationRef} theme={theme}>
+      <NavigationContainer
+        ref={navigationRef}
+        theme={theme}
+        onReady={() => setScreen(navigationRef.current?.getCurrentRoute()?.name)}
+        onStateChange={() => setScreen(navigationRef.current?.getCurrentRoute()?.name)}
+      >
         {!app ? (
           <AppEntry />
         ) : app === "client" ? (

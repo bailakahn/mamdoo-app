@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useCarpoolAuth } from "_hooks/carpoolDriver";
-import { useNotifications } from "_hooks";
+import { useNotifications, useCarpoolOnboarding } from "_hooks";
+import { OnboardingScene } from "_scenes/carpoolDriver";
 import { LoadingV2 } from "_atoms";
 import AuthStack from "./stacks/Auth";
 import HomeTabs from "./stacks/Home";
@@ -16,6 +17,7 @@ import HomeTabs from "./stacks/Home";
 // requested in context — not the app's entire covoiturage session.
 export default function CarpoolDriverRoot() {
   const carpoolAuth = useCarpoolAuth();
+  const onboarding = useCarpoolOnboarding();
   useNotifications();
 
   useEffect(() => {
@@ -34,6 +36,10 @@ export default function CarpoolDriverRoot() {
   }, []);
 
   if (!carpoolAuth.carpoolDriverLoaded) return <LoadingV2 />;
+
+  // First opening on this phone: explain carpooling before sign-up or the home.
+  // Finishing marks it seen in the store, which re-renders this root onwards.
+  if (!onboarding.driverSeen) return <OnboardingScene onDone={() => {}} />;
 
   const session = carpoolAuth.carpoolDriver;
   const isComplete = !!session?.accessToken && !!session?.verified && !session?.needsProfile;

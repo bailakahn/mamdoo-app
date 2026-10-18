@@ -146,6 +146,25 @@ export default function CarpoolDriverHome({ navigation }) {
           </TouchableOpacity>
         )}
 
+        {profile?.adminCancelledTrips?.length > 0 && (
+          <View style={styles.confirmCard}>
+            <Icon name="info" size={26} color="#92400E" />
+            <View style={styles.stepText}>
+              <Text style={styles.confirmTitle}>
+                {t2("carpoolDriver.adminCancelledTitle", {
+                  count: profile.adminCancelledTrips.length,
+                })}
+              </Text>
+              <Text style={styles.confirmHint}>
+                {profile.adminCancelledTrips
+                  .map((trip) => `${formatTime(trip.departureAt)} · ${trip.corridorId?.name ?? ""}`)
+                  .join("  ·  ")}
+              </Text>
+              <Text style={styles.confirmHint}>{t2("carpoolDriver.adminCancelledHint")}</Text>
+            </View>
+          </View>
+        )}
+
         {!setupDone ? (
           <View style={styles.section}>
             <Text style={[styles.sectionLabel, { color: colors.placeholder }]}>
@@ -165,7 +184,11 @@ export default function CarpoolDriverHome({ navigation }) {
               active={!!profile?.enrolled && !onboarding?.hasCar}
               label={t2("carpoolDriver.stepCar")}
               hint={t2("carpoolDriver.stepCarHint")}
-              onPress={() => navigation.navigate("CarpoolCar")}
+              onPress={() =>
+                onboarding?.hasCar
+                  ? navigation.navigate("CarpoolMyCars")
+                  : navigation.navigate("CarpoolCar")
+              }
             />
             <Step
               colors={colors}
@@ -173,7 +196,11 @@ export default function CarpoolDriverHome({ navigation }) {
               active={!!onboarding?.hasCar && !onboarding?.hasRequiredDocuments}
               label={t2("carpoolDriver.stepDocuments")}
               hint={t2("carpoolDriver.stepDocumentsHint")}
-              onPress={() => navigation.navigate("Documents", { carId: profile?.cars?.[0]?._id })}
+              onPress={() =>
+                navigation.navigate("Documents", {
+                  carId: (profile?.cars?.find((c) => c.active) || profile?.cars?.[0])?._id,
+                })
+              }
             />
             <Step
               colors={colors}
